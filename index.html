@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ChessConnect – Connecting the Chess World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --blue: #1E73E8;
+  --blue-dark: #1557C0;
+  --blue-light: #4A9AF5;
+  --blue-pale: #EBF3FE;
+  --blue-mid: #D0E6FF;
+  --white: #FFFFFF;
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-400: #94A3B8;
+  --gray-600: #475569;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(30,115,232,0.10);
+  --shadow-lg: 0 8px 40px rgba(30,115,232,0.16);
+  --glass: rgba(255,255,255,0.72);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); color: var(--gray-800); background: var(--white); -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; font-family: var(--font-body); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0px) rotate(-2deg); }
+  50%      { transform: translateY(-12px) rotate(-2deg); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(30,115,232,0.4); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 12px rgba(30,115,232,0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(30,115,232,0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%; height: 68px;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(30,115,232,0.08);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 2px 20px rgba(30,115,232,0.10); }
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-logo-text { font-family: 'Arial', sans-serif; font-weight: bold; font-size: 1.3rem; letter-spacing: -0.5px; }
+.nav-logo-text .chess { color: #102C57; }
+.nav-logo-text .connect { color: #4285F4; }
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--gray-600); transition: color 0.2s; }
+.nav-links a:hover { color: var(--blue); }
+.nav-cta { display: flex; gap: 10px; }
+.btn-ghost {
+  padding: 8px 18px; border-radius: 10px; font-size: 0.88rem; font-weight: 500;
+  color: var(--blue); border: 1.5px solid var(--blue);
+  background: transparent; transition: all 0.2s;
+}
+.btn-ghost:hover { background: var(--blue-pale); }
+.btn-primary {
+  padding: 8px 18px; border-radius: 10px; font-size: 0.88rem; font-weight: 600;
+  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  box-shadow: 0 2px 12px rgba(30,115,232,0.30); transition: all 0.2s;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(30,115,232,0.40); }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  padding: 100px 5% 60px;
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--gray-200);
+}
+.hero::before { display: none; }
+.hero::after  { display: none; }
+.hero-inner {
+  max-width: 1200px; width: 100%; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  position: relative; z-index: 1;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(30,115,232,0.1); border: 1px solid rgba(30,115,232,0.2);
+  color: var(--blue); padding: 6px 14px; border-radius: 100px;
+  font-size: 0.82rem; font-weight: 600; margin-bottom: 20px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--blue);
+  animation: pulse-ring 2s infinite;
+}
+.hero h1 {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.2rem);
+  line-height: 1.18; color: var(--gray-900); margin-bottom: 20px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 span { color: var(--blue); }
+.hero-sub {
+  font-size: 1.05rem; color: var(--gray-600); line-height: 1.7;
+  max-width: 440px; margin-bottom: 32px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+.btn-lg-primary {
+  padding: 14px 28px; border-radius: 12px; font-size: 1rem; font-weight: 600;
+  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  box-shadow: 0 4px 20px rgba(30,115,232,0.35); transition: all 0.25s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-lg-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(30,115,232,0.45); }
+.btn-lg-ghost {
+  padding: 14px 28px; border-radius: 12px; font-size: 1rem; font-weight: 600;
+  color: var(--blue); background: white; border: 1.5px solid var(--blue-mid);
+  box-shadow: var(--shadow); transition: all 0.25s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-lg-ghost:hover { background: var(--blue-pale); transform: translateY(-2px); }
+
+
+/* Hero Chess Illustration */
+.hero-visual { position: relative; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.8s 0.3s both; }
+.chess-board-card {
+  width: 320px; height: 320px;
+  background: white; border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  display: grid; grid-template-columns: repeat(8,1fr); overflow: hidden;
+  animation: float 5s ease-in-out infinite;
+  border: 1px solid var(--blue-mid);
+}
+.chess-cell { aspect-ratio: 1; }
+.chess-cell.dark { background: #1E73E8; opacity: 0.18; }
+.chess-cell.light { background: white; }
+.coach-card-floating {
+  position: absolute; bottom: -20px; left: -30px;
+  background: white; border-radius: 14px; padding: 14px 18px;
+  box-shadow: var(--shadow-lg); border: 1px solid var(--blue-mid);
+  display: flex; align-items: center; gap: 12px; min-width: 210px;
+}
+.coach-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,#4A9AF5,#1E73E8); display:flex;align-items:center;justify-content:center;font-size:1.1rem; }
+.coach-card-name { font-weight: 600; font-size: 0.9rem; color: var(--gray-900); }
+.coach-card-sub { font-size: 0.76rem; color: var(--gray-400); }
+.rating-badge-floating {
+  position: absolute; top: -10px; right: -20px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: white; border-radius: 12px; padding: 10px 16px;
+  font-size: 0.82rem; font-weight: 600; box-shadow: 0 4px 16px rgba(30,115,232,0.35);
+}
+
+/* ===== SECTION SHARED ===== */
+.section { padding: 80px 5%; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-tag {
+  display: inline-block; background: var(--blue-pale); color: var(--blue);
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 100px; margin-bottom: 14px;
+}
+.section-title {
+  font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--gray-900); line-height: 1.25; margin-bottom: 12px;
+}
+.section-sub { color: var(--gray-600); font-size: 1rem; line-height: 1.7; max-width: 520px; }
+
+/* ===== HOW IT WORKS ===== */
+.hiw { background: var(--white); border-top: 1px solid var(--gray-200); border-bottom: 1px solid var(--gray-200); }
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+.step-card {
+  background: white; border-radius: var(--radius); padding: 32px;
+  border: 1px solid var(--blue-mid); box-shadow: var(--shadow);
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.step-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--blue-light));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+}
+.step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.step-card:hover::before { transform: scaleX(1); }
+.step-num {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--blue-pale); color: var(--blue);
+  font-family: var(--font-display); font-size: 1.1rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+}
+.step-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px; box-shadow: 0 4px 12px rgba(30,115,232,0.25);
+}
+.step-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.step-title { font-weight: 600; font-size: 1.05rem; color: var(--gray-900); margin-bottom: 8px; }
+.step-desc { font-size: 0.9rem; color: var(--gray-600); line-height: 1.65; }
+
+/* ===== COACHES SECTION ===== */
+.coaches-section { background: var(--white); border-bottom: 1px solid var(--gray-200); }
+.coaches-grid { display: block; }
+.coach-card {
+  background: white; border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow); border: 1px solid var(--gray-200);
+  transition: all 0.3s;
+}
+.coach-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--blue-mid); }
+.coach-card-header {
+  background: linear-gradient(135deg, #EBF3FE, #D0E6FF);
+  padding: 28px 24px 20px;
+  display: flex; align-items: flex-start; gap: 16px; position: relative;
+}
+.coach-photo {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; border: 3px solid white; flex-shrink: 0;
+}
+.coach-info { flex: 1; }
+.coach-name { font-weight: 700; font-size: 1.05rem; color: var(--gray-900); }
+.coach-city { font-size: 0.82rem; color: var(--gray-600); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+.coach-fide-badge {
+  position: absolute; top: 16px; right: 16px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: white; font-size: 0.72rem; font-weight: 700; padding: 4px 10px;
+  border-radius: 100px; letter-spacing: 0.03em;
+}
+.coach-card-body { padding: 20px 24px; }
+.coach-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.coach-tag {
+  background: var(--blue-pale); color: var(--blue); font-size: 0.75rem;
+  font-weight: 500; padding: 3px 10px; border-radius: 100px;
+}
+.coach-bio { font-size: 0.875rem; color: var(--gray-600); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.coach-card-footer { padding: 16px 24px; border-top: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
+.coach-rating-text { font-size: 0.82rem; color: var(--gray-600); }
+.coach-rating-num { font-weight: 700; color: var(--blue); }
+.coach-contact-btns { display: flex; gap: 8px; }
+.btn-contact {
+  padding: 7px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+  display: flex; align-items: center; gap: 5px; transition: all 0.2s;
+}
+.btn-call { background: var(--blue-pale); color: var(--blue); }
+.btn-call:hover { background: var(--blue); color: white; }
+.btn-wa { background: #E8F8F0; color: #25D366; }
+.btn-wa:hover { background: #25D366; color: white; }
+
+/* ===== REGISTRATION SECTION ===== */
+.register-section {
+  background: var(--white);
+  padding: 80px 5%;
+  border-bottom: 1px solid var(--gray-200);
+}
+.register-inner { max-width: 680px; margin: 0 auto; }
+.register-header { text-align: center; margin-bottom: 40px; }
+/* Progress Bar */
+.progress-bar-container { margin-bottom: 40px; }
+.progress-steps { display: flex; justify-content: space-between; position: relative; }
+.progress-steps::before {
+  content: ''; position: absolute; top: 18px; left: 0; right: 0; height: 2px;
+  background: var(--blue-mid); z-index: 0;
+}
+.progress-fill {
+  position: absolute; top: 18px; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--blue-light));
+  transition: width 0.5s ease; z-index: 1;
+}
+.progress-step { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 2; }
+.progress-step-circle {
+  width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--blue-mid);
+  background: white; display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; color: var(--gray-400);
+  transition: all 0.3s;
+}
+.progress-step.active .progress-step-circle { border-color: var(--blue); background: var(--blue); color: white; }
+.progress-step.done .progress-step-circle { border-color: var(--blue); background: var(--blue); color: white; }
+.progress-step-label { font-size: 0.75rem; font-weight: 500; color: var(--gray-400); transition: color 0.3s; }
+.progress-step.active .progress-step-label { color: var(--blue); font-weight: 600; }
+.progress-step.done .progress-step-label { color: var(--blue); }
+
+/* Form Card */
+.form-card {
+  background: white; border-radius: 20px; padding: 40px;
+  box-shadow: var(--shadow-lg); border: 1px solid var(--blue-mid);
+}
+.form-step { display: none; }
+.form-step.active { display: block; animation: fadeUp 0.4s ease; }
+.form-step-title { font-family: var(--font-display); font-size: 1.4rem; color: var(--gray-900); margin-bottom: 6px; }
+.form-step-sub { font-size: 0.9rem; color: var(--gray-400); margin-bottom: 28px; }
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--gray-700); margin-bottom: 7px; }
+.form-label span.req { color: var(--blue); }
+.form-input {
+  width: 100%; padding: 12px 16px; border-radius: 12px;
+  border: 1.5px solid var(--gray-200); font-family: var(--font-body); font-size: 0.95rem;
+  color: var(--gray-800); background: white; transition: all 0.2s; outline: none;
+}
+.form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,115,232,0.10); }
+.form-input::placeholder { color: var(--gray-400); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-select {
+  width: 100%; padding: 12px 16px; border-radius: 12px;
+  border: 1.5px solid var(--gray-200); font-family: var(--font-body); font-size: 0.95rem;
+  color: var(--gray-800); background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+  appearance: none; transition: all 0.2s; outline: none;
+}
+.form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,115,232,0.10); }
+/* Toggle */
+.toggle-group { display: flex; gap: 0; background: var(--gray-100); border-radius: 10px; padding: 4px; }
+.toggle-btn {
+  flex: 1; padding: 9px; border-radius: 8px; font-size: 0.88rem; font-weight: 500;
+  color: var(--gray-600); background: transparent; transition: all 0.2s;
+}
+.toggle-btn.active { background: white; color: var(--blue); font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+/* Multi select chips */
+.chips-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 7px 14px; border-radius: 100px; font-size: 0.82rem; font-weight: 500;
+  border: 1.5px solid var(--gray-200); color: var(--gray-600); background: white;
+  cursor: pointer; transition: all 0.2s;
+}
+.chip:hover { border-color: var(--blue); color: var(--blue); }
+.chip.selected { border-color: var(--blue); background: var(--blue-pale); color: var(--blue); }
+/* Completion bar */
+.completion-bar-wrap { margin-bottom: 24px; }
+.completion-label { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 500; margin-bottom: 6px; }
+.completion-label span:last-child { color: var(--blue); font-weight: 700; }
+.completion-bar { height: 6px; background: var(--blue-mid); border-radius: 100px; overflow: hidden; }
+.completion-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-light)); border-radius: 100px; transition: width 0.4s ease; }
+/* OTP Styles */
+.btn-send-otp {
+  padding: 12px 18px; border-radius: 12px; font-size: 0.88rem; font-weight: 600;
+  color: white; background: #25D366;
+  display: flex; align-items: center; gap: 7px; white-space: nowrap;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.btn-send-otp:hover { background: #1DAF57; transform: translateY(-1px); }
+.btn-send-otp:disabled { background: var(--gray-200); color: var(--gray-400); transform: none; cursor: not-allowed; }
+.otp-input {
+  width: 44px; height: 52px; border-radius: 10px; border: 1.5px solid var(--gray-200);
+  text-align: center; font-size: 1.2rem; font-weight: 700; color: var(--gray-900);
+  font-family: var(--font-body); outline: none; transition: all 0.2s;
+}
+.otp-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,115,232,0.10); }
+.otp-input.filled { border-color: var(--blue); background: var(--blue-pale); }
+.btn-verify-otp {
+  padding: 12px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600;
+  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  transition: all 0.2s; white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(30,115,232,0.25);
+}
+.btn-verify-otp:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,115,232,0.35); }
+.otp-block { animation: fadeUp 0.35s ease; }
+.photo-upload {
+  border: 2px dashed var(--blue-mid); border-radius: 14px; padding: 32px;
+  text-align: center; cursor: pointer; transition: all 0.2s; background: var(--blue-pale);
+}
+.photo-upload:hover { border-color: var(--blue); background: rgba(30,115,232,0.05); }
+.photo-upload-icon { font-size: 2rem; margin-bottom: 8px; }
+.photo-upload p { font-size: 0.88rem; color: var(--gray-600); }
+/* Form nav */
+.form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--gray-100); }
+.btn-back {
+  padding: 11px 22px; border-radius: 10px; font-size: 0.9rem; font-weight: 500;
+  color: var(--gray-600); background: var(--gray-100); transition: all 0.2s;
+}
+.btn-back:hover { background: var(--gray-200); }
+.btn-next {
+  padding: 11px 28px; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
+  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  box-shadow: 0 4px 16px rgba(30,115,232,0.30); transition: all 0.2s;
+}
+.btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(30,115,232,0.40); }
+.btn-publish {
+  padding: 12px 32px; border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  box-shadow: 0 4px 16px rgba(30,115,232,0.30); transition: all 0.2s;
+}
+.btn-publish:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(30,115,232,0.45); }
+.fide-fields { overflow: hidden; max-height: 0; transition: max-height 0.4s ease, opacity 0.3s; opacity: 0; }
+.fide-fields.show { max-height: 200px; opacity: 1; }
+
+/* ===== PROFILE PREVIEW ===== */
+.profile-preview { display: none; }
+.profile-preview.active { display: block; }
+.profile-top {
+  background: linear-gradient(160deg, var(--blue-pale), var(--blue-mid));
+  border-radius: 20px 20px 0 0; padding: 36px 36px 28px;
+  display: flex; gap: 24px; align-items: flex-start; position: relative;
+}
+.profile-photo-lg {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; border: 4px solid white; flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(30,115,232,0.25);
+}
+.profile-main-info { flex: 1; }
+.profile-name { font-family: var(--font-display); font-size: 1.6rem; color: var(--gray-900); }
+.profile-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.profile-meta-pill {
+  background: white; color: var(--gray-700); font-size: 0.8rem; font-weight: 500;
+  padding: 4px 12px; border-radius: 100px; box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  display: flex; align-items: center; gap: 5px;
+}
+.fide-pill { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; }
+.profile-body { padding: 28px 36px; }
+.profile-section-title { font-weight: 700; color: var(--gray-900); margin-bottom: 10px; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.profile-bio { font-size: 0.95rem; color: var(--gray-600); line-height: 1.7; margin-bottom: 28px; }
+.profile-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.profile-detail { background: var(--gray-50); border-radius: 12px; padding: 14px 18px; }
+.profile-detail-label { font-size: 0.75rem; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.profile-detail-val { font-size: 0.95rem; font-weight: 600; color: var(--gray-800); }
+.profile-contact-row { display: flex; gap: 12px; margin-top: 24px; }
+.btn-lg-call { padding: 13px 24px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; background: var(--blue-pale); color: var(--blue); display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+.btn-lg-call:hover { background: var(--blue); color: white; }
+.btn-lg-wa { padding: 13px 24px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; background: #E8F8F0; color: #25D366; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+.btn-lg-wa:hover { background: #25D366; color: white; }
+
+/* ===== SUCCESS MESSAGE ===== */
+.success-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(15,23,42,0.6); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center;
+}
+.success-overlay.show { display: flex; animation: fadeIn 0.3s; }
+.success-card {
+  background: white; border-radius: 24px; padding: 48px 40px;
+  text-align: center; max-width: 400px; width: 90%; box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+  animation: fadeUp 0.4s;
+}
+.success-icon { font-size: 3.5rem; margin-bottom: 16px; }
+.success-title { font-family: var(--font-display); font-size: 1.6rem; color: var(--gray-900); margin-bottom: 10px; }
+.success-desc { font-size: 0.95rem; color: var(--gray-600); line-height: 1.65; margin-bottom: 28px; }
+.btn-view-profile {
+  display: inline-block; padding: 13px 28px; border-radius: 12px; font-size: 0.95rem; font-weight: 700;
+  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  box-shadow: 0 4px 20px rgba(30,115,232,0.35);
+}
+
+/* ===== WHY CHESSCONNECT ===== */
+.why-section { background: linear-gradient(160deg, var(--gray-900) 0%, #0F2044 100%); color: white; }
+.why-section .section-tag { background: rgba(30,115,232,0.2); }
+.why-section .section-title { color: white; }
+.why-section .section-sub { color: rgba(255,255,255,0.6); }
+.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+.why-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius); padding: 28px;
+  backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.why-card:hover { background: rgba(30,115,232,0.15); border-color: rgba(30,115,232,0.4); transform: translateY(-4px); }
+.why-card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(30,115,232,0.25);
+  border: 1px solid rgba(74,154,245,0.35);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.why-card-icon svg { width: 22px; height: 22px; stroke: #7EC8FF; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.why-card-title { font-weight: 700; color: white; margin-bottom: 8px; }
+.why-card-desc { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.65; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--gray-900); color: rgba(255,255,255,0.7);
+  padding: 40px 5%; text-align: center;
+}
+.footer-logo { font-family: var(--font-display); font-size: 1.4rem; color: white; margin-bottom: 8px; }
+.footer-sub { font-size: 0.85rem; margin-bottom: 24px; }
+.footer-links { display: flex; justify-content: center; gap: 24px; font-size: 0.85rem; margin-bottom: 24px; }
+.footer-links a { transition: color 0.2s; }
+.footer-links a:hover { color: var(--blue-light); }
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .steps-grid, .coaches-grid, .why-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .profile-details-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .hero-stats { gap: 20px; }
+  .form-card { padding: 28px 20px; }
+  .profile-top { flex-direction: column; }
+  .profile-contact-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <span class="nav-logo-text"><span class="chess">Chess</span><span class="connect">Connect</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="#coaches">Find Coaches</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#why">Why Us</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn-ghost" onclick="scrollToRegister()">List Yourself</button>
+    <button class="btn-primary" onclick="document.getElementById('coaches').scrollIntoView({behavior:'smooth'})">Find a Coach</button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="hero-badge-dot"></span> Get listed in just 3 minutes. Go live instantly.</div>
+      <h1>Find Trusted <span>Chess Coaches</span> Near You</h1>
+      <p class="hero-sub">Connect directly with experienced individual chess trainers. Online &amp; Offline sessions available across India.</p>
+      <div class="hero-ctas">
+        <button class="btn-lg-primary" onclick="document.getElementById('coaches').scrollIntoView({behavior:'smooth'})">
+          Find a Coach
+        </button>
+        <button class="btn-lg-ghost" onclick="scrollToRegister()">
+          ✦ List Yourself Free
+        </button>
+      </div>
+
+    </div>
+    <div class="hero-visual">
+      <div class="chess-board-card" id="chessBoard"></div>
+      <div class="coach-card-floating">
+        <div class="coach-avatar">♚</div>
+        <div>
+          <div class="coach-card-name">GM Arjun Mehta</div>
+          <div class="coach-card-sub">⭐ 2540 FIDE · Mumbai</div>
+        </div>
+      </div>
+      <div class="rating-badge-floating">🏆 FIDE Rated</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section hiw" id="how-it-works">
+  <div class="section-inner">
+    <div class="animate-on-scroll">
+      <div class="section-tag">How It Works</div>
+      <h2 class="section-title">List Your Profile in 3 Simple Steps</h2>
+      <p class="section-sub">Coaches go live in under 3 minutes. No technical skills needed.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card animate-on-scroll">
+        <div class="step-num">1</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="step-title">Basic Info</div>
+        <div class="step-desc">Enter your name, city, contact number, and preferred coaching mode (Online, Offline, or Both).</div>
+      </div>
+      <div class="step-card animate-on-scroll">
+        <div class="step-num">2</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="step-title">Expertise & Credentials</div>
+        <div class="step-desc">Share your experience, levels taught, languages, and FIDE rating if you're a rated player.</div>
+      </div>
+      <div class="step-card animate-on-scroll">
+        <div class="step-num">3</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        </div>
+        <div class="step-title">Publish & Go Live</div>
+        <div class="step-desc">Add your bio, photo, and fees. Hit Publish — your profile goes live instantly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SAMPLE PROFILE ===== -->
+<section class="section coaches-section" id="coaches">
+  <div class="section-inner">
+    <div class="animate-on-scroll" style="text-align:center">
+      <div class="section-tag">Sample Profile</div>
+      <h2 class="section-title">See a Sample Coach Profile</h2>
+      <p class="section-sub" style="margin:0 auto">This is exactly how your profile will appear to students once you publish. Clean, professional, and easy to contact.</p>
+    </div>
+    <div style="max-width:420px;margin:48px auto 0;position:relative" class="animate-on-scroll">
+      <!-- Demo label -->
+      <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:white;border:1.5px solid var(--blue-mid);color:var(--blue);font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:100px;letter-spacing:0.06em;white-space:nowrap">SAMPLE PROFILE</div>
+      <div id="coachesGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY CHESSCONNECT ===== -->
+<section class="section why-section" id="why">
+  <div class="section-inner">
+    <div class="animate-on-scroll">
+      <div class="section-tag">Why ChessConnect</div>
+      <h2 class="section-title">The Smarter Way to Grow as a Chess Coach</h2>
+      <p class="section-sub">We're built for coaches first. No commissions, no barriers.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card animate-on-scroll">
+        <div class="why-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="why-card-title">Go Live in 3 Minutes</div>
+        <div class="why-card-desc">The fastest coach onboarding in the market. Fill 3 steps and your profile is live immediately.</div>
+      </div>
+      <div class="why-card animate-on-scroll">
+        <div class="why-card-icon">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>
+        </div>
+        <div class="why-card-title">Zero Commission</div>
+        <div class="why-card-desc">Students contact you directly. Every rupee stays with you — we take nothing from your sessions.</div>
+      </div>
+      <div class="why-card animate-on-scroll">
+        <div class="why-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="why-card-title">Targeted Discovery</div>
+        <div class="why-card-desc">Parents and students searching for chess coaches find you — filtered by city, mode, level and FIDE rating.</div>
+      </div>
+      <div class="why-card animate-on-scroll">
+        <div class="why-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div class="why-card-title">FIDE Rating Badge</div>
+        <div class="why-card-desc">FIDE Rated players get a prominent FIDE badge on their profile — building instant credibility with students.</div>
+      </div>
+      <div class="why-card animate-on-scroll">
+        <div class="why-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="why-card-title">WhatsApp Direct Contact</div>
+        <div class="why-card-desc">Students can reach you instantly via WhatsApp or call directly — the way coaches prefer to communicate.</div>
+      </div>
+      <div class="why-card animate-on-scroll">
+        <div class="why-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="why-card-title">Online & Offline Both</div>
+        <div class="why-card-desc">Whether you coach online or in person, ChessConnect connects you with the right students for your style.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REGISTER SECTION ===== -->
+<section class="section register-section" id="register">
+  <div class="register-inner">
+    <div class="register-header animate-on-scroll">
+      <div class="section-tag">Coach Registration</div>
+      <h2 class="section-title">List Your Profile – It's Free</h2>
+      <p class="section-sub" style="margin: 0 auto; text-align: center;">Complete 3 quick steps and go live on ChessConnect.</p>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-bar-container animate-on-scroll">
+      <div class="progress-steps" id="progressSteps">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        <div class="progress-step active" id="pStep1">
+          <div class="progress-step-circle">1</div>
+          <div class="progress-step-label">Basic Info</div>
+        </div>
+        <div class="progress-step" id="pStep2">
+          <div class="progress-step-circle">2</div>
+          <div class="progress-step-label">Expertise</div>
+        </div>
+        <div class="progress-step" id="pStep3">
+          <div class="progress-step-circle">3</div>
+          <div class="progress-step-label">Publish</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card animate-on-scroll" id="formCard">
+      <!-- STEP 1 -->
+      <div class="form-step active" id="step1">
+        <div class="form-step-title">Basic Information</div>
+        <div class="form-step-sub">Step 1 of 3 — Let's start with the essentials</div>
+        <div class="form-group">
+          <label class="form-label">Full Name <span class="req">*</span></label>
+          <input class="form-input" type="text" placeholder="e.g. Arjun Mehta" id="fname"/>
+        </div>
+
+        <!-- WhatsApp OTP Block -->
+        <div class="form-group">
+          <label class="form-label">WhatsApp Number <span class="req">*</span></label>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="flex:1">
+              <input class="form-input" type="tel" placeholder="+91 98765 43210" id="fmobile" style="margin-bottom:0"/>
+            </div>
+            <button class="btn-send-otp" id="sendOtpBtn" onclick="sendOtp()">
+              <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Send OTP
+            </button>
+          </div>
+          <div id="waHint" style="font-size:0.78rem;color:var(--gray-400);margin-top:6px;display:flex;align-items:center;gap:5px">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;flex-shrink:0;stroke:#25D366;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            You will receive a one-time code on this WhatsApp number
+          </div>
+        </div>
+
+        <!-- OTP Input — hidden until Send OTP clicked -->
+        <div class="form-group otp-block" id="otpBlock" style="display:none">
+          <label class="form-label">Enter OTP <span class="req">*</span></label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div style="display:flex;gap:8px" id="otpBoxes">
+              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,1)" id="otp1"/>
+              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,2)" id="otp2"/>
+              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,3)" id="otp3"/>
+              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,4)" id="otp4"/>
+              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,5)" id="otp5"/>
+              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,6)" id="otp6"/>
+            </div>
+            <button class="btn-verify-otp" id="verifyOtpBtn" onclick="verifyOtp()">Verify</button>
+          </div>
+          <div style="margin-top:8px;font-size:0.78rem;color:var(--gray-400)">
+            Didn't receive it? <button onclick="resendOtp()" style="background:none;border:none;color:var(--blue);font-size:0.78rem;font-weight:600;cursor:pointer;padding:0" id="resendBtn">Resend OTP</button>
+            <span id="resendTimer" style="color:var(--gray-400)"> in 30s</span>
+          </div>
+          <!-- Verified badge -->
+          <div id="verifiedBadge" style="display:none;margin-top:10px;background:#F0FFF4;border:1px solid #86EFAC;border-radius:10px;padding:10px 14px;font-size:0.85rem;font-weight:600;color:#16A34A;display:none;align-items:center;gap:8px">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#16A34A;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>
+            WhatsApp number verified successfully
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">City <span class="req">*</span></label>
+          <input class="form-input" type="text" placeholder="e.g. Mumbai" id="fcity"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Coaching Mode <span class="req">*</span></label>
+          <div class="toggle-group" id="modeToggle">
+            <button class="toggle-btn active" onclick="selectMode(this,'Online')">Online</button>
+            <button class="toggle-btn" onclick="selectMode(this,'Offline')">Offline</button>
+            <button class="toggle-btn" onclick="selectMode(this,'Both')">Both</button>
+          </div>
+        </div>
+        <div class="form-nav">
+          <span></span>
+          <button class="btn-next" id="step1Next" onclick="goStep(2)">Next Step →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="form-step" id="step2">
+        <div class="form-step-title">Your Expertise</div>
+        <div class="form-step-sub">Step 2 of 3 — Tell students about your credentials</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Years of Experience <span class="req">*</span></label>
+            <select class="form-select" id="fexp">
+              <option value="">Select years</option>
+              <option>1–2 years</option><option>3–5 years</option>
+              <option>6–10 years</option><option>10+ years</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp Number <span class="req">*</span></label>
+            <input class="form-input" type="tel" placeholder="+91 98765 43210" id="fwa"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Levels Taught <span class="req">*</span></label>
+          <div class="chips-group" id="levelsChips">
+            <div class="chip" onclick="toggleChip(this)">Beginner</div>
+            <div class="chip" onclick="toggleChip(this)">Intermediate</div>
+            <div class="chip" onclick="toggleChip(this)">Advanced</div>
+            <div class="chip" onclick="toggleChip(this)">Tournament Players</div>
+            <div class="chip" onclick="toggleChip(this)">Kids (5–10)</div>
+            <div class="chip" onclick="toggleChip(this)">All Levels</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Languages Spoken <span class="req">*</span></label>
+          <div class="chips-group" id="langChips">
+            <div class="chip" onclick="toggleChip(this)">English</div>
+            <div class="chip" onclick="toggleChip(this)">Hindi</div>
+            <div class="chip" onclick="toggleChip(this)">Tamil</div>
+            <div class="chip" onclick="toggleChip(this)">Telugu</div>
+            <div class="chip" onclick="toggleChip(this)">Marathi</div>
+            <div class="chip" onclick="toggleChip(this)">Bengali</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Are you a FIDE Rated Player? <span class="req">*</span></label>
+          <div class="toggle-group" id="ratedToggle">
+            <button class="toggle-btn" onclick="toggleRated(this, true)">Yes, I'm Rated</button>
+            <button class="toggle-btn active" onclick="toggleRated(this, false)">Not Rated</button>
+          </div>
+        </div>
+        <div class="fide-fields" id="fideFields">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Highest FIDE Rating <span class="req">*</span></label>
+              <input class="form-input" type="number" placeholder="e.g. 2100" id="ffide"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">FIDE ID <span class="req">*</span></label>
+              <input class="form-input" type="text" placeholder="e.g. 5003952" id="ffideid"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-nav">
+          <button class="btn-back" onclick="goStep(1)">← Back</button>
+          <button class="btn-next" onclick="goStep(3)">Next Step →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="form-step" id="step3">
+        <div class="form-step-title">Final Touches</div>
+        <div class="form-step-sub">Step 3 of 3 — Almost there! Complete your profile.</div>
+        <!-- Completion bar -->
+        <div class="completion-bar-wrap">
+          <div class="completion-label"><span>Profile Completion</span><span id="completionPct">40%</span></div>
+          <div class="completion-bar"><div class="completion-fill" id="completionFill" style="width:40%"></div></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Short Bio <span class="req">*</span> <span style="color:var(--gray-400);font-weight:400">(min 100 characters)</span></label>
+          <textarea class="form-input" rows="4" placeholder="Tell students about your coaching philosophy, achievements, teaching approach..." id="fbio" oninput="updateCompletion()" style="resize:vertical"></textarea>
+          <div id="bioCount" style="font-size:0.78rem;color:var(--gray-400);margin-top:4px;text-align:right">0 / 100 characters</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profile Photo <span style="color:var(--gray-400);font-weight:400">(optional)</span></label>
+          <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+            <div class="photo-upload-icon">📸</div>
+            <p>Click to upload photo <br><span style="color:var(--gray-400);font-size:0.78rem">JPG or PNG, max 5MB</span></p>
+          </div>
+          <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Starting Fees / month <span style="color:var(--gray-400);font-weight:400">(optional)</span></label>
+            <input class="form-input" type="text" placeholder="e.g. ₹2000/month" id="ffees" oninput="updateCompletion()"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Trial Class Available? <span class="req">*</span></label>
+            <div class="toggle-group" id="trialToggle">
+              <button class="toggle-btn active" onclick="setToggle(this, 'trial', 'Yes')">Yes</button>
+              <button class="toggle-btn" onclick="setToggle(this, 'trial', 'No')">No</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-nav">
+          <button class="btn-back" onclick="goStep(2)">← Back</button>
+          <button class="btn-publish" onclick="publishProfile()">🚀 Publish Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROFILE PREVIEW ===== -->
+<section class="section" id="profilePreviewSection" style="display:none;background:var(--gray-50)">
+  <div style="max-width:760px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:32px">
+      <div class="section-tag">Your Profile</div>
+      <h2 class="section-title">Profile Preview</h2>
+      <p style="color:var(--gray-600)">This is how students will see your profile.</p>
+    </div>
+    <div style="background:white;border-radius:20px;box-shadow:var(--shadow-lg);border:1px solid var(--blue-mid);overflow:hidden">
+      <div class="profile-top">
+        <div class="profile-photo-lg" id="ppPhoto"></div>
+        <div class="profile-main-info">
+          <div class="profile-name" id="ppName">Coach Name</div>
+          <div style="font-size:0.9rem;color:var(--gray-600);margin-top:4px" id="ppExp">Experience · City</div>
+          <div class="profile-meta" id="ppMeta"></div>
+        </div>
+      </div>
+      <div class="profile-body">
+        <div class="profile-section-title">About</div>
+        <div class="profile-bio" id="ppBio">Bio goes here.</div>
+        <div class="profile-section-title" style="margin-top:24px">Details</div>
+        <div class="profile-details-grid" id="ppDetails"></div>
+        <div class="profile-section-title" style="margin-top:24px">Contact</div>
+        <div class="profile-contact-row">
+          <button class="btn-lg-call">📞 Call Coach</button>
+          <button class="btn-lg-wa">💬 WhatsApp</button>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <button class="btn-lg-ghost" onclick="location.reload()">← Edit Profile</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo" style="font-family:'Arial',sans-serif;font-weight:bold;letter-spacing:-0.5px"><span style="color:#D0E6FF">Chess</span><span style="color:#4285F4">Connect</span></div>
+  <div class="footer-sub">Connecting the Chess World</div>
+  <div class="footer-links">
+    <a href="#">For Coaches</a>
+    <a href="#">For Students</a>
+    <a href="#">About</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 ChessConnect. All rights reserved. Made with ❤️ for the chess community.</div>
+</footer>
+
+<!-- ===== SUCCESS OVERLAY ===== -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">You're Live!</div>
+    <div class="success-desc">Your profile has been published on ChessConnect. Students can now find and contact you directly.</div>
+    <a class="btn-view-profile" href="#profilePreviewSection" onclick="closeSuccessAndPreview()">View My Profile →</a>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+/* ===== WHATSAPP OTP LOGIC ===== */
+let otpVerified = false;
+let resendInterval = null;
+
+function sendOtp() {
+  const mobile = document.getElementById('fmobile').value.trim();
+  if (!mobile) { alert('Please enter your WhatsApp number first.'); return; }
+
+  const btn = document.getElementById('sendOtpBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending...';
+
+  // Simulate API call (replace with real WhatsApp API)
+  setTimeout(() => {
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Sent!';
+    btn.style.background = '#16A34A';
+    document.getElementById('otpBlock').style.display = 'block';
+    document.getElementById('otp1').focus();
+    startResendTimer();
+  }, 1500);
+}
+
+function startResendTimer() {
+  let seconds = 30;
+  const timerEl = document.getElementById('resendTimer');
+  const resendBtn = document.getElementById('resendBtn');
+  resendBtn.style.opacity = '0.4';
+  resendBtn.style.pointerEvents = 'none';
+  clearInterval(resendInterval);
+  resendInterval = setInterval(() => {
+    seconds--;
+    timerEl.textContent = ' in ' + seconds + 's';
+    if (seconds <= 0) {
+      clearInterval(resendInterval);
+      timerEl.textContent = '';
+      resendBtn.style.opacity = '1';
+      resendBtn.style.pointerEvents = 'auto';
+    }
+  }, 1000);
+}
+
+function resendOtp() {
+  const btn = document.getElementById('sendOtpBtn');
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Send OTP';
+  btn.style.background = '#25D366';
+  sendOtp();
+}
+
+function otpMove(input, index) {
+  input.classList.toggle('filled', input.value.length > 0);
+  if (input.value.length === 1 && index < 6) {
+    document.getElementById('otp' + (index + 1)).focus();
+  }
+}
+
+function verifyOtp() {
+  const code = [1,2,3,4,5,6].map(i => document.getElementById('otp'+i).value).join('');
+  if (code.length < 6) { alert('Please enter the complete 6-digit OTP.'); return; }
+
+  const btn = document.getElementById('verifyOtpBtn');
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+
+  // Simulate verification (replace with real API call)
+  setTimeout(() => {
+    otpVerified = true;
+    document.getElementById('otpBoxes').style.display = 'none';
+    btn.style.display = 'none';
+    const badge = document.getElementById('verifiedBadge');
+    badge.style.display = 'flex';
+  }, 1200);
+}
+
+/* ===== CSS for spin animation ===== */
+const spinStyle = document.createElement('style');
+spinStyle.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+document.head.appendChild(spinStyle);
+const board = document.getElementById('chessBoard');
+for(let r=0;r<8;r++){for(let c=0;c<8;c++){const cell=document.createElement('div');cell.className='chess-cell '+((r+c)%2===0?'light':'dark');board.appendChild(cell);}}
+
+/* ===== NAV SCROLL ===== */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40);
+});
+
+/* ===== SCROLL ANIMATIONS ===== */
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});},{threshold:0.12});
+document.querySelectorAll('.animate-on-scroll').forEach(el=>observer.observe(el));
+
+/* ===== COACHES DATA ===== */
+const coaches=[
+  {name:'GM Arjun Mehta',city:'Mumbai',exp:'12 yrs',mode:'Online & Offline',rating:'2540',fide:true,bio:'FIDE Grandmaster with 12 years of coaching experience. Trained national-level players. Specializes in endgame technique and opening theory.',levels:['Advanced','Tournament Players'],langs:['English','Hindi'],fees:'₹5,000/mo',trial:true,emoji:'♚'},
+];
+const grid=document.getElementById('coachesGrid');
+coaches.slice(0,1).forEach(c=>{
+  const card=document.createElement('div');
+  card.className='coach-card animate-on-scroll';
+  card.innerHTML=`
+    <div class="coach-card-header">
+      <div class="coach-photo">${c.emoji}</div>
+      <div class="coach-info">
+        <div class="coach-name">${c.name}</div>
+        <div class="coach-city">📍 ${c.city} · ${c.exp}</div>
+        <div class="coach-city" style="margin-top:2px">🌐 ${c.mode}</div>
+      </div>
+      ${c.fide?`<div class="coach-fide-badge">FIDE ${c.rating}</div>`:''}
+    </div>
+    <div class="coach-card-body">
+      <div class="coach-tags">${c.levels.map(l=>`<span class="coach-tag">${l}</span>`).join('')}${c.langs.map(l=>`<span class="coach-tag" style="background:#F0FFF4;color:#16A34A">${l}</span>`).join('')}</div>
+      <div class="coach-bio">${c.bio}</div>
+    </div>
+    <div class="coach-card-footer">
+      <div>
+        <div class="coach-rating-text">${c.fees?'From <span class="coach-rating-num">'+c.fees+'</span>':''} ${c.trial?'· ✓ Trial available':''}</div>
+      </div>
+      <div class="coach-contact-btns">
+        <button class="btn-contact btn-call">📞 Call</button>
+        <button class="btn-contact btn-wa">💬 WhatsApp</button>
+      </div>
+    </div>`;
+  grid.appendChild(card);
+  observer.observe(card);
+});
+
+/* ===== STEP LOGIC ===== */
+let currentStep=1;
+const formData={mode:'Online',rated:false,trial:'Yes'};
+
+function goStep(n){
+  document.getElementById('step'+currentStep).classList.remove('active');
+  document.getElementById('step'+n).classList.add('active');
+  // Update progress
+  ['pStep1','pStep2','pStep3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i+1<n)el.classList.add('done');
+    if(i+1===n)el.classList.add('active');
+  });
+  const fills=[0,0,50,100];
+  document.getElementById('progressFill').style.width=fills[n]+'%';
+  currentStep=n;
+  document.getElementById('formCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function selectMode(btn,val){
+  document.querySelectorAll('#modeToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');formData.mode=val;
+}
+function toggleChip(chip){chip.classList.toggle('selected');}
+function toggleRated(btn,isRated){
+  document.querySelectorAll('#ratedToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  formData.rated=isRated;
+  const ff=document.getElementById('fideFields');
+  if(isRated){ff.classList.add('show');}else{ff.classList.remove('show');}
+}
+function setToggle(btn,id,val){
+  const parent=document.getElementById(id+'Toggle');
+  if(parent){parent.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  formData[id]=val;
+}
+
+/* ===== COMPLETION BAR ===== */
+function updateCompletion(){
+  const bio=document.getElementById('fbio').value;
+  document.getElementById('bioCount').textContent=bio.length+' / 100 characters';
+  document.getElementById('bioCount').style.color=bio.length>=100?'#16A34A':'var(--gray-400)';
+  const fees=document.getElementById('ffees').value;
+  let pct=40;
+  if(bio.length>=100)pct+=40;
+  if(fees)pct+=20;
+  pct=Math.min(pct,100);
+  document.getElementById('completionFill').style.width=pct+'%';
+  document.getElementById('completionPct').textContent=pct+'%';
+}
+
+function handlePhoto(input){
+  if(input.files&&input.files[0]){
+    const wrap=input.previousElementSibling;
+    wrap.innerHTML='<div class="photo-upload-icon">✅</div><p>Photo uploaded: '+input.files[0].name+'</p>';
+    updateCompletion();
+  }
+}
+
+/* ===== PUBLISH ===== */
+function publishProfile(){
+  const bio=document.getElementById('fbio').value;
+  if(bio.length<100){alert('Please write at least 100 characters in your bio.');return;}
+  // Populate preview
+  const name=document.getElementById('fname').value||'Coach';
+  const city=document.getElementById('fcity').value||'Your City';
+  const exp=document.getElementById('fexp').value||'—';
+  const fide=document.getElementById('ffide').value;
+  const fees=document.getElementById('ffees').value;
+  const levels=[...document.querySelectorAll('#levelsChips .chip.selected')].map(c=>c.textContent);
+  const langs=[...document.querySelectorAll('#langChips .chip.selected')].map(c=>c.textContent);
+  document.getElementById('ppName').textContent=name;
+  document.getElementById('ppExp').textContent=exp+' · '+city;
+  document.getElementById('ppBio').textContent=bio;
+  const meta=document.getElementById('ppMeta');
+  meta.innerHTML='';
+  const pills=[
+    {icon:'📍',text:city},{icon:'🌐',text:formData.mode},{icon:'🗣',text:langs.join(', ')||'—'}
+  ];
+  if(formData.rated&&fide){pills.push({icon:'🏆',text:'FIDE '+fide,cls:'fide-pill'});}
+  pills.forEach(p=>{const sp=document.createElement('div');sp.className='profile-meta-pill '+(p.cls||'');sp.textContent=p.icon+' '+p.text;meta.appendChild(sp);});
+  const details=document.getElementById('ppDetails');
+  const detailData=[
+    {label:'Levels Taught',val:levels.join(', ')||'All Levels'},
+    {label:'Fees',val:fees||'Contact for pricing'},
+    {label:'Trial Class',val:formData.trial||'Yes'},
+    {label:'Experience',val:exp},
+  ];
+  details.innerHTML=detailData.map(d=>`<div class="profile-detail"><div class="profile-detail-label">${d.label}</div><div class="profile-detail-val">${d.val}</div></div>`).join('');
+  // Show success
+  document.getElementById('successOverlay').classList.add('show');
+}
+
+function closeSuccessAndPreview(){
+  document.getElementById('successOverlay').classList.remove('show');
+  document.getElementById('register').style.display='none';
+  document.getElementById('profilePreviewSection').style.display='block';
+  setTimeout(()=>{document.getElementById('profilePreviewSection').scrollIntoView({behavior:'smooth'});},100);
+}
+
+function scrollToRegister(){
+  document.getElementById('register').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
