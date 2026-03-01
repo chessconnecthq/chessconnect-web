@@ -109,8 +109,8 @@ nav.scrolled { box-shadow: 0 2px 20px rgba(30,115,232,0.10); }
 .hero::before { display: none; }
 .hero::after  { display: none; }
 .hero-inner {
-  max-width: 1200px; width: 100%; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  max-width: 760px; width: 100%; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: flex-start;
   position: relative; z-index: 1;
 }
 .hero-badge {
@@ -556,17 +556,6 @@ footer {
         </button>
       </div>
 
-    </div>
-    <div class="hero-visual">
-      <div class="chess-board-card" id="chessBoard"></div>
-      <div class="coach-card-floating">
-        <div class="coach-avatar">♚</div>
-        <div>
-          <div class="coach-card-name">GM Arjun Mehta</div>
-          <div class="coach-card-sub">⭐ 2540 FIDE · Mumbai</div>
-        </div>
-      </div>
-      <div class="rating-badge-floating">🏆 FIDE Rated</div>
     </div>
   </div>
 </section>
@@ -1028,9 +1017,6 @@ function verifyOtp() {
 const spinStyle = document.createElement('style');
 spinStyle.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
 document.head.appendChild(spinStyle);
-const board = document.getElementById('chessBoard');
-for(let r=0;r<8;r++){for(let c=0;c<8;c++){const cell=document.createElement('div');cell.className='chess-cell '+((r+c)%2===0?'light':'dark');board.appendChild(cell);}}
-
 /* ===== NAV SCROLL ===== */
 window.addEventListener('scroll',()=>{
   document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40);
