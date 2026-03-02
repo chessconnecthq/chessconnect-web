@@ -1,1184 +1,1189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ChessConnect – Connecting the Chess World</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-/* ===== CSS VARIABLES ===== */
-:root {
-  --blue: #1E73E8;
-  --blue-dark: #1557C0;
-  --blue-light: #4A9AF5;
-  --blue-pale: #EBF3FE;
-  --blue-mid: #D0E6FF;
-  --white: #FFFFFF;
-  --gray-50: #F8FAFC;
-  --gray-100: #F1F5F9;
-  --gray-200: #E2E8F0;
-  --gray-400: #94A3B8;
-  --gray-600: #475569;
-  --gray-800: #1E293B;
-  --gray-900: #0F172A;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 4px 24px rgba(30,115,232,0.10);
-  --shadow-lg: 0 8px 40px rgba(30,115,232,0.16);
-  --glass: rgba(255,255,255,0.72);
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ChessConnect – Find Trusted Chess Coaches Near You</title>
+  <meta name="description" content="India's chess coach marketplace. Connect directly with experienced individual chess trainers. Online & Offline sessions available across India."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --blue: #1E73E8;
+      --blue-logo: #4285F4;
+      --navy: #102C57;
+      --navy-light: #1a3d73;
+      --white: #ffffff;
+      --off-white: #F8FAFF;
+      --gray: #6B7280;
+      --gray-light: #E5E9F2;
+      --green: #10B981;
+      --red: #EF4444;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --shadow-sm: 0 1px 3px rgba(16,44,87,0.08);
+      --shadow-md: 0 4px 16px rgba(16,44,87,0.12);
+      --shadow-lg: 0 8px 32px rgba(16,44,87,0.16);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
 
-/* ===== RESET ===== */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: var(--font-body); color: var(--gray-800); background: var(--white); -webkit-font-smoothing: antialiased; }
-img { max-width: 100%; }
-a { text-decoration: none; color: inherit; }
-button { cursor: pointer; border: none; font-family: var(--font-body); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-@keyframes float {
-  0%,100% { transform: translateY(0px) rotate(-2deg); }
-  50%      { transform: translateY(-12px) rotate(-2deg); }
-}
-@keyframes pulse-ring {
-  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(30,115,232,0.4); }
-  70%  { transform: scale(1);    box-shadow: 0 0 0 12px rgba(30,115,232,0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(30,115,232,0); }
-}
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+    html { scroll-behavior: smooth; }
 
-.animate-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+    body {
+      font-family: var(--font-body);
+      color: var(--navy);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* ===== NAVIGATION ===== */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 5%; height: 68px;
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(30,115,232,0.08);
-  transition: box-shadow 0.3s;
-}
-nav.scrolled { box-shadow: 0 2px 20px rgba(30,115,232,0.10); }
-.nav-logo { display: flex; align-items: center; gap: 10px; }
-.nav-logo-text { font-family: 'Arial', sans-serif; font-weight: bold; font-size: 1.3rem; letter-spacing: -0.5px; }
-.nav-logo-text .chess { color: #102C57; }
-.nav-logo-text .connect { color: #4285F4; }
-.nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--gray-600); transition: color 0.2s; }
-.nav-links a:hover { color: var(--blue); }
-.nav-cta { display: flex; gap: 10px; }
-.btn-ghost {
-  padding: 8px 18px; border-radius: 10px; font-size: 0.88rem; font-weight: 500;
-  color: var(--blue); border: 1.5px solid var(--blue);
-  background: transparent; transition: all 0.2s;
-}
-.btn-ghost:hover { background: var(--blue-pale); }
-.btn-primary {
-  padding: 8px 18px; border-radius: 10px; font-size: 0.88rem; font-weight: 600;
-  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  box-shadow: 0 2px 12px rgba(30,115,232,0.30); transition: all 0.2s;
-}
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(30,115,232,0.40); }
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 68px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    nav.scrolled {
+      border-color: var(--gray-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-logo-wrap {
+      display: flex; flex-direction: column; text-decoration: none; line-height: 1;
+    }
+    .nav-logo-text {
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -1.2px;
+      display: flex;
+    }
+    .nav-logo-tagline {
+      font-size: 0.65rem; font-weight: 500;
+      color: var(--gray); letter-spacing: 0.04em;
+      margin-top: 1px;
+    }
+    .chess { color: var(--navy); }
+    .connect { color: var(--blue-logo); }
 
-/* ===== HERO ===== */
-.hero {
-  min-height: 100vh;
-  background: var(--white);
-  display: flex; align-items: center; justify-content: center;
-  padding: 100px 5% 60px;
-  position: relative; overflow: hidden;
-  border-bottom: 1px solid var(--gray-200);
-}
-.hero::before { display: none; }
-.hero::after  { display: none; }
-.hero-inner {
-  max-width: 760px; width: 100%; margin: 0 auto;
-  display: flex; flex-direction: column; align-items: flex-start;
-  position: relative; z-index: 1;
-}
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(30,115,232,0.1); border: 1px solid rgba(30,115,232,0.2);
-  color: var(--blue); padding: 6px 14px; border-radius: 100px;
-  font-size: 0.82rem; font-weight: 600; margin-bottom: 20px;
-  animation: fadeUp 0.5s ease both;
-}
-.hero-badge-dot {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--blue);
-  animation: pulse-ring 2s infinite;
-}
-.hero h1 {
-  font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.2rem);
-  line-height: 1.18; color: var(--gray-900); margin-bottom: 20px;
-  animation: fadeUp 0.6s 0.1s ease both;
-}
-.hero h1 span { color: var(--blue); }
-.hero-sub {
-  font-size: 1.05rem; color: var(--gray-600); line-height: 1.7;
-  max-width: 440px; margin-bottom: 32px;
-  animation: fadeUp 0.6s 0.2s ease both;
-}
-.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
-.btn-lg-primary {
-  padding: 14px 28px; border-radius: 12px; font-size: 1rem; font-weight: 600;
-  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  box-shadow: 0 4px 20px rgba(30,115,232,0.35); transition: all 0.25s;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-lg-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(30,115,232,0.45); }
-.btn-lg-ghost {
-  padding: 14px 28px; border-radius: 12px; font-size: 1rem; font-weight: 600;
-  color: var(--blue); background: white; border: 1.5px solid var(--blue-mid);
-  box-shadow: var(--shadow); transition: all 0.25s;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-lg-ghost:hover { background: var(--blue-pale); transform: translateY(-2px); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--navy); text-decoration: none; opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
 
+    .nav-ctas { display: flex; gap: 0.75rem; align-items: center; }
+    .btn-ghost {
+      font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
+      color: var(--navy); background: transparent;
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      padding: 0.5rem 1.1rem; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--blue); background: var(--off-white); }
+    .btn-primary {
+      font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
+      color: var(--white); background: var(--blue);
+      border: none; border-radius: 8px;
+      padding: 0.5rem 1.25rem; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--navy); }
+    .btn-primary:active { transform: scale(0.98); }
 
-/* Hero Chess Illustration */
-.hero-visual { position: relative; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.8s 0.3s both; }
-.chess-board-card {
-  width: 320px; height: 320px;
-  background: white; border-radius: 20px;
-  box-shadow: var(--shadow-lg);
-  display: grid; grid-template-columns: repeat(8,1fr); overflow: hidden;
-  animation: float 5s ease-in-out infinite;
-  border: 1px solid var(--blue-mid);
-}
-.chess-cell { aspect-ratio: 1; }
-.chess-cell.dark { background: #1E73E8; opacity: 0.18; }
-.chess-cell.light { background: white; }
-.coach-card-floating {
-  position: absolute; bottom: -20px; left: -30px;
-  background: white; border-radius: 14px; padding: 14px 18px;
-  box-shadow: var(--shadow-lg); border: 1px solid var(--blue-mid);
-  display: flex; align-items: center; gap: 12px; min-width: 210px;
-}
-.coach-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,#4A9AF5,#1E73E8); display:flex;align-items:center;justify-content:center;font-size:1.1rem; }
-.coach-card-name { font-weight: 600; font-size: 0.9rem; color: var(--gray-900); }
-.coach-card-sub { font-size: 0.76rem; color: var(--gray-400); }
-.rating-badge-floating {
-  position: absolute; top: -10px; right: -20px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  color: white; border-radius: 12px; padding: 10px 16px;
-  font-size: 0.82rem; font-weight: 600; box-shadow: 0 4px 16px rgba(30,115,232,0.35);
-}
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+      background: linear-gradient(160deg, #EEF4FF 0%, #F8FAFF 40%, #fff 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(30,115,232,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(30,115,232,0.08); color: var(--blue);
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+      padding: 0.4rem 1rem; border-radius: 100px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(30,115,232,0.15);
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800; line-height: 1.15;
+      color: var(--navy); margin-bottom: 1.25rem;
+      max-width: 750px;
+    }
+    .hero h1 span { color: var(--blue); }
+    .hero p {
+      font-size: 1.1rem; color: var(--gray);
+      max-width: 560px; margin-bottom: 2.5rem; line-height: 1.7;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-hero-primary {
+      font-family: var(--font-body); font-size: 1rem; font-weight: 700;
+      color: var(--white); background: var(--blue);
+      border: none; border-radius: 10px;
+      padding: 0.9rem 2rem; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(30,115,232,0.3);
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      position: relative;
+    }
+    .btn-hero-primary:hover { background: var(--navy); box-shadow: 0 6px 24px rgba(16,44,87,0.25); }
+    .btn-hero-primary:active { transform: scale(0.98); }
+    .btn-hero-secondary {
+      font-family: var(--font-body); font-size: 1rem; font-weight: 600;
+      color: var(--navy); background: var(--white);
+      border: 1.5px solid var(--gray-light); border-radius: 10px;
+      padding: 0.9rem 2rem; cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .btn-hero-secondary:hover { border-color: var(--blue); box-shadow: var(--shadow-sm); }
 
-/* ===== SECTION SHARED ===== */
-.section { padding: 80px 5%; }
-.section-inner { max-width: 1200px; margin: 0 auto; }
-.section-tag {
-  display: inline-block; background: var(--blue-pale); color: var(--blue);
-  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 5px 14px; border-radius: 100px; margin-bottom: 14px;
-}
-.section-title {
-  font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem);
-  color: var(--gray-900); line-height: 1.25; margin-bottom: 12px;
-}
-.section-sub { color: var(--gray-600); font-size: 1rem; line-height: 1.7; max-width: 520px; }
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3.5rem;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      font-family: var(--font-heading); font-size: 2rem; font-weight: 800;
+      color: var(--navy); line-height: 1;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--gray); margin-top: 0.25rem; font-weight: 500; }
 
-/* ===== HOW IT WORKS ===== */
-.hiw { background: var(--white); border-top: 1px solid var(--gray-200); border-bottom: 1px solid var(--gray-200); }
-.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
-.step-card {
-  background: white; border-radius: var(--radius); padding: 32px;
-  border: 1px solid var(--blue-mid); box-shadow: var(--shadow);
-  transition: all 0.3s; position: relative; overflow: hidden;
-}
-.step-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--blue), var(--blue-light));
-  transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
-}
-.step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.step-card:hover::before { transform: scaleX(1); }
-.step-num {
-  width: 40px; height: 40px; border-radius: 12px;
-  background: var(--blue-pale); color: var(--blue);
-  font-family: var(--font-display); font-size: 1.1rem; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
-}
-.step-icon {
-  width: 48px; height: 48px; border-radius: 12px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 18px; box-shadow: 0 4px 12px rgba(30,115,232,0.25);
-}
-.step-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.step-title { font-weight: 600; font-size: 1.05rem; color: var(--gray-900); margin-bottom: 8px; }
-.step-desc { font-size: 0.9rem; color: var(--gray-600); line-height: 1.65; }
+    /* pulse ring on CTA */
+    .pulse-wrap { position: relative; display: inline-block; }
+    .pulse-ring {
+      position: absolute; inset: -6px;
+      border-radius: 14px;
+      border: 2px solid rgba(30,115,232,0.4);
+      animation: pulse-anim 2s ease-out infinite;
+      pointer-events: none;
+    }
+    @keyframes pulse-anim {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.15); }
+    }
 
-/* ===== COACHES SECTION ===== */
-.coaches-section { background: var(--white); border-bottom: 1px solid var(--gray-200); }
-.coaches-grid { display: block; }
-.coach-card {
-  background: white; border-radius: var(--radius); overflow: hidden;
-  box-shadow: var(--shadow); border: 1px solid var(--gray-200);
-  transition: all 0.3s;
-}
-.coach-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--blue-mid); }
-.coach-card-header {
-  background: linear-gradient(135deg, #EBF3FE, #D0E6FF);
-  padding: 28px 24px 20px;
-  display: flex; align-items: flex-start; gap: 16px; position: relative;
-}
-.coach-photo {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem; border: 3px solid white; flex-shrink: 0;
-}
-.coach-info { flex: 1; }
-.coach-name { font-weight: 700; font-size: 1.05rem; color: var(--gray-900); }
-.coach-city { font-size: 0.82rem; color: var(--gray-600); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
-.coach-fide-badge {
-  position: absolute; top: 16px; right: 16px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  color: white; font-size: 0.72rem; font-weight: 700; padding: 4px 10px;
-  border-radius: 100px; letter-spacing: 0.03em;
-}
-.coach-card-body { padding: 20px 24px; }
-.coach-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.coach-tag {
-  background: var(--blue-pale); color: var(--blue); font-size: 0.75rem;
-  font-weight: 500; padding: 3px 10px; border-radius: 100px;
-}
-.coach-bio { font-size: 0.875rem; color: var(--gray-600); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.coach-card-footer { padding: 16px 24px; border-top: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
-.coach-rating-text { font-size: 0.82rem; color: var(--gray-600); }
-.coach-rating-num { font-weight: 700; color: var(--blue); }
-.coach-contact-btns { display: flex; gap: 8px; }
-.btn-contact {
-  padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600;
-  display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-family: var(--font-body);
-}
-.btn-call { background: var(--blue-pale); color: var(--blue); border: 1.5px solid var(--blue-mid); }
-.btn-call:hover { background: var(--blue); color: white; border-color: var(--blue); }
-.btn-wa { background: #F0FDF4; color: #16A34A; border: 1.5px solid #BBF7D0; }
-.btn-wa:hover { background: #25D366; color: white; border-color: #25D366; }
-.coach-tag-lang { background: var(--blue-pale) !important; color: var(--blue) !important; border: 1px solid var(--blue-mid); }
-.trial-badge { display: inline-flex; align-items: center; gap: 3px; background: #F0FDF4; color: #16A34A; font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 100px; border: 1px solid #BBF7D0; margin-left: 6px; }
+    /* ── SECTIONS SHARED ── */
+    section { padding: 80px 5%; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--blue); text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+      font-weight: 800; color: var(--navy); line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1rem; color: var(--gray); max-width: 520px; line-height: 1.7;
+    }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-header { margin-bottom: 3rem; }
+    .section-header.center { text-align: center; }
+    .section-header.center .section-sub { margin: 0 auto; }
 
-/* ===== REGISTRATION SECTION ===== */
-.register-section {
-  background: var(--white);
-  padding: 80px 5%;
-  border-bottom: 1px solid var(--gray-200);
-}
-.register-inner { max-width: 680px; margin: 0 auto; }
-.register-header { text-align: center; margin-bottom: 40px; }
-/* Progress Bar */
-.progress-bar-container { margin-bottom: 40px; }
-.progress-steps { display: flex; justify-content: space-between; position: relative; }
-.progress-steps::before {
-  content: ''; position: absolute; top: 18px; left: 0; right: 0; height: 2px;
-  background: var(--blue-mid); z-index: 0;
-}
-.progress-fill {
-  position: absolute; top: 18px; left: 0; height: 2px;
-  background: linear-gradient(90deg, var(--blue), var(--blue-light));
-  transition: width 0.5s ease; z-index: 1;
-}
-.progress-step { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 2; }
-.progress-step-circle {
-  width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--blue-mid);
-  background: white; display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; font-weight: 700; color: var(--gray-400);
-  transition: all 0.3s;
-}
-.progress-step.active .progress-step-circle { border-color: var(--blue); background: var(--blue); color: white; }
-.progress-step.done .progress-step-circle { border-color: var(--blue); background: var(--blue); color: white; }
-.progress-step-label { font-size: 0.75rem; font-weight: 500; color: var(--gray-400); transition: color 0.3s; }
-.progress-step.active .progress-step-label { color: var(--blue); font-weight: 600; }
-.progress-step.done .progress-step-label { color: var(--blue); }
+    /* animate on scroll */
+    .animate-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
-/* Form Card */
-.form-card {
-  background: white; border-radius: 20px; padding: 40px;
-  box-shadow: var(--shadow-lg); border: 1px solid var(--blue-mid);
-}
-.form-step { display: none; }
-.form-step.active { display: block; animation: fadeUp 0.4s ease; }
-.form-step-title { font-family: var(--font-display); font-size: 1.4rem; color: var(--gray-900); margin-bottom: 6px; }
-.form-step-sub { font-size: 0.9rem; color: var(--gray-400); margin-bottom: 28px; }
-.form-group { margin-bottom: 20px; }
-.form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--gray-700); margin-bottom: 7px; }
-.form-label span.req { color: var(--blue); }
-.form-input {
-  width: 100%; padding: 12px 16px; border-radius: 12px;
-  border: 1.5px solid var(--gray-200); font-family: var(--font-body); font-size: 0.95rem;
-  color: var(--gray-800); background: white; transition: all 0.2s; outline: none;
-}
-.form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,115,232,0.10); }
-.form-input::placeholder { color: var(--gray-400); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-select {
-  width: 100%; padding: 12px 16px; border-radius: 12px;
-  border: 1.5px solid var(--gray-200); font-family: var(--font-body); font-size: 0.95rem;
-  color: var(--gray-800); background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center;
-  appearance: none; transition: all 0.2s; outline: none;
-}
-.form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,115,232,0.10); }
-/* Toggle */
-.toggle-group { display: flex; gap: 0; background: var(--gray-100); border-radius: 10px; padding: 4px; }
-.toggle-btn {
-  flex: 1; padding: 9px; border-radius: 8px; font-size: 0.88rem; font-weight: 500;
-  color: var(--gray-600); background: transparent; transition: all 0.2s;
-}
-.toggle-btn.active { background: white; color: var(--blue); font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-/* Multi select chips */
-.chips-group { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip {
-  padding: 7px 14px; border-radius: 100px; font-size: 0.82rem; font-weight: 500;
-  border: 1.5px solid var(--gray-200); color: var(--gray-600); background: white;
-  cursor: pointer; transition: all 0.2s;
-}
-.chip:hover { border-color: var(--blue); color: var(--blue); }
-.chip.selected { border-color: var(--blue); background: var(--blue-pale); color: var(--blue); }
-/* Completion bar */
-.completion-bar-wrap { margin-bottom: 24px; }
-.completion-label { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 500; margin-bottom: 6px; }
-.completion-label span:last-child { color: var(--blue); font-weight: 700; }
-.completion-bar { height: 6px; background: var(--blue-mid); border-radius: 100px; overflow: hidden; }
-.completion-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-light)); border-radius: 100px; transition: width 0.4s ease; }
-/* OTP Styles */
-.btn-send-otp {
-  padding: 12px 18px; border-radius: 12px; font-size: 0.88rem; font-weight: 600;
-  color: white; background: #25D366;
-  display: flex; align-items: center; gap: 7px; white-space: nowrap;
-  transition: all 0.2s; flex-shrink: 0;
-}
-.btn-send-otp:hover { background: #1DAF57; transform: translateY(-1px); }
-.btn-send-otp:disabled { background: var(--gray-200); color: var(--gray-400); transform: none; cursor: not-allowed; }
-.otp-input {
-  width: 44px; height: 52px; border-radius: 10px; border: 1.5px solid var(--gray-200);
-  text-align: center; font-size: 1.2rem; font-weight: 700; color: var(--gray-900);
-  font-family: var(--font-body); outline: none; transition: all 0.2s;
-}
-.otp-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,115,232,0.10); }
-.otp-input.filled { border-color: var(--blue); background: var(--blue-pale); }
-.btn-verify-otp {
-  padding: 12px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600;
-  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  transition: all 0.2s; white-space: nowrap;
-  box-shadow: 0 2px 12px rgba(30,115,232,0.25);
-}
-.btn-verify-otp:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,115,232,0.35); }
-.otp-block { animation: fadeUp 0.35s ease; }
-.photo-upload {
-  border: 2px dashed var(--blue-mid); border-radius: 14px; padding: 32px;
-  text-align: center; cursor: pointer; transition: all 0.2s; background: var(--blue-pale);
-}
-.photo-upload:hover { border-color: var(--blue); background: rgba(30,115,232,0.05); }
-.photo-upload-icon { font-size: 2rem; margin-bottom: 8px; }
-.photo-upload p { font-size: 0.88rem; color: var(--gray-600); }
-/* Form nav */
-.form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--gray-100); }
-.btn-back {
-  padding: 11px 22px; border-radius: 10px; font-size: 0.9rem; font-weight: 500;
-  color: var(--gray-600); background: var(--gray-100); transition: all 0.2s;
-}
-.btn-back:hover { background: var(--gray-200); }
-.btn-next {
-  padding: 11px 28px; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
-  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  box-shadow: 0 4px 16px rgba(30,115,232,0.30); transition: all 0.2s;
-}
-.btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(30,115,232,0.40); }
-.btn-publish {
-  padding: 12px 32px; border-radius: 10px; font-size: 0.95rem; font-weight: 700;
-  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  box-shadow: 0 4px 16px rgba(30,115,232,0.30); transition: all 0.2s;
-}
-.btn-publish:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(30,115,232,0.45); }
-.fide-fields { overflow: hidden; max-height: 0; transition: max-height 0.4s ease, opacity 0.3s; opacity: 0; }
-.fide-fields.show { max-height: 200px; opacity: 1; }
+    /* ── HOW IT WORKS ── */
+    #how-it-works { background: var(--off-white); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; margin-top: 1rem;
+    }
+    .step-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2rem; border: 1px solid var(--gray-light);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .step-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--blue); color: var(--white);
+      font-weight: 800; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--navy); }
+    .step-card p { font-size: 0.9rem; color: var(--gray); line-height: 1.65; }
 
-/* ===== PROFILE PREVIEW ===== */
-.profile-preview { display: none; }
-.profile-preview.active { display: block; }
-.profile-top {
-  background: linear-gradient(160deg, var(--blue-pale), var(--blue-mid));
-  border-radius: 20px 20px 0 0; padding: 36px 36px 28px;
-  display: flex; gap: 24px; align-items: flex-start; position: relative;
-}
-.profile-photo-lg {
-  width: 88px; height: 88px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 2.2rem; border: 4px solid white; flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(30,115,232,0.25);
-}
-.profile-main-info { flex: 1; }
-.profile-name { font-family: var(--font-display); font-size: 1.6rem; color: var(--gray-900); }
-.profile-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-.profile-meta-pill {
-  background: white; color: var(--gray-700); font-size: 0.8rem; font-weight: 500;
-  padding: 4px 12px; border-radius: 100px; box-shadow: 0 1px 6px rgba(0,0,0,0.08);
-  display: flex; align-items: center; gap: 5px;
-}
-.fide-pill { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; }
-.profile-body { padding: 28px 36px; }
-.profile-section-title { font-weight: 700; color: var(--gray-900); margin-bottom: 10px; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; }
-.profile-bio { font-size: 0.95rem; color: var(--gray-600); line-height: 1.7; margin-bottom: 28px; }
-.profile-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
-.profile-detail { background: var(--gray-50); border-radius: 12px; padding: 14px 18px; }
-.profile-detail-label { font-size: 0.75rem; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-.profile-detail-val { font-size: 0.95rem; font-weight: 600; color: var(--gray-800); }
-.profile-contact-row { display: flex; gap: 12px; margin-top: 24px; }
-.btn-lg-call { padding: 13px 24px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; background: var(--blue-pale); color: var(--blue); display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
-.btn-lg-call:hover { background: var(--blue); color: white; }
-.btn-lg-wa { padding: 13px 24px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; background: #E8F8F0; color: #25D366; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
-.btn-lg-wa:hover { background: #25D366; color: white; }
+    /* ── SAMPLE PROFILE ── */
+    #sample { background: var(--white); }
+    .sample-wrapper {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
+    }
+    .sample-card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--gray-light); box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .sample-card-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 1.75rem 1.75rem 1.25rem; color: var(--white);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .sample-avatar {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 800; flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    .sample-name { font-weight: 700; font-size: 1.1rem; }
+    .sample-meta { font-size: 0.85rem; opacity: 0.8; margin-top: 0.2rem; }
+    .fide-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      background: #F59E0B; color: #fff;
+      font-size: 0.72rem; font-weight: 700;
+      padding: 0.2rem 0.55rem; border-radius: 100px;
+      margin-top: 0.5rem;
+    }
+    .sample-body { padding: 1.5rem 1.75rem; }
+    .sample-section { margin-bottom: 1.1rem; }
+    .sample-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--gray); text-transform: uppercase; margin-bottom: 0.4rem; }
+    .sample-section p { font-size: 0.88rem; color: var(--navy); line-height: 1.6; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-size: 0.78rem; font-weight: 600;
+      background: var(--off-white); color: var(--navy);
+      border: 1px solid var(--gray-light); border-radius: 100px;
+      padding: 0.25rem 0.7rem;
+    }
+    .sample-ctas { display: flex; gap: 0.75rem; padding: 0 1.75rem 1.75rem; }
+    .btn-call {
+      flex: 1; font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
+      background: var(--off-white); color: var(--navy);
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      padding: 0.65rem; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-call:hover { background: var(--gray-light); }
+    .btn-wa {
+      flex: 1; font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
+      background: #25D366; color: var(--white);
+      border: none; border-radius: 8px;
+      padding: 0.65rem; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-wa:hover { background: #1ebe5a; }
+    .sample-text h3 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 0.75rem; }
+    .sample-text p { font-size: 0.95rem; color: var(--gray); line-height: 1.7; margin-bottom: 1rem; }
+    .sample-highlights { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .sample-highlights li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: var(--navy); }
+    .sample-highlights li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; }
 
-/* ===== SUCCESS MESSAGE ===== */
-.success-overlay {
-  display: none; position: fixed; inset: 0; z-index: 200;
-  background: rgba(15,23,42,0.6); backdrop-filter: blur(6px);
-  align-items: center; justify-content: center;
-}
-.success-overlay.show { display: flex; animation: fadeIn 0.3s; }
-.success-card {
-  background: white; border-radius: 24px; padding: 48px 40px;
-  text-align: center; max-width: 400px; width: 90%; box-shadow: 0 24px 80px rgba(0,0,0,0.2);
-  animation: fadeUp 0.4s;
-}
-.success-icon { font-size: 3.5rem; margin-bottom: 16px; }
-.success-title { font-family: var(--font-display); font-size: 1.6rem; color: var(--gray-900); margin-bottom: 10px; }
-.success-desc { font-size: 0.95rem; color: var(--gray-600); line-height: 1.65; margin-bottom: 28px; }
-.btn-view-profile {
-  display: inline-block; padding: 13px 28px; border-radius: 12px; font-size: 0.95rem; font-weight: 700;
-  color: white; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-  box-shadow: 0 4px 20px rgba(30,115,232,0.35);
-}
+    /* ── WHY ── */
+    #why { background: var(--off-white); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .why-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 1.75rem; border: 1px solid var(--gray-light);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .why-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .why-icon {
+      width: 46px; height: 46px; border-radius: 10px;
+      background: rgba(30,115,232,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1rem;
+    }
+    .why-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.45rem; }
+    .why-card p { font-size: 0.875rem; color: var(--gray); line-height: 1.65; }
 
-/* ===== WHY CHESSCONNECT ===== */
-.why-section { background: linear-gradient(160deg, var(--gray-900) 0%, #0F2044 100%); color: white; }
-.why-section .section-tag { background: rgba(30,115,232,0.2); }
-.why-section .section-title { color: white; }
-.why-section .section-sub { color: rgba(255,255,255,0.6); }
-.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
-.why-card {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
-  border-radius: var(--radius); padding: 28px;
-  backdrop-filter: blur(10px); transition: all 0.3s;
-}
-.why-card:hover { background: rgba(30,115,232,0.15); border-color: rgba(30,115,232,0.4); transform: translateY(-4px); }
-.why-card-icon {
-  width: 48px; height: 48px; border-radius: 12px;
-  background: rgba(30,115,232,0.25);
-  border: 1px solid rgba(74,154,245,0.35);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 18px;
-}
-.why-card-icon svg { width: 22px; height: 22px; stroke: #7EC8FF; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.why-card-title { font-weight: 700; color: white; margin-bottom: 8px; }
-.why-card-desc { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.65; }
+    /* ── REGISTER ── */
+    #register { background: var(--white); }
+    .register-inner { max-width: 640px; margin: 0 auto; }
 
-/* ===== FOOTER ===== */
-footer {
-  background: var(--gray-900); color: rgba(255,255,255,0.7);
-  padding: 40px 5%; text-align: center;
-}
-.footer-logo { font-family: var(--font-display); font-size: 1.4rem; color: white; margin-bottom: 8px; }
-.footer-sub { font-size: 0.85rem; margin-bottom: 24px; }
-.footer-links { display: flex; justify-content: center; gap: 24px; font-size: 0.85rem; margin-bottom: 24px; }
-.footer-links a { transition: color 0.2s; }
-.footer-links a:hover { color: var(--blue-light); }
-.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+    /* Step indicator */
+    .step-indicator {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 2.5rem; gap: 0;
+    }
+    .step-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700;
+      background: var(--gray-light); color: var(--gray);
+      transition: background 0.3s, color 0.3s;
+      position: relative; z-index: 1;
+    }
+    .step-dot.active { background: var(--blue); color: var(--white); }
+    .step-dot.done { background: var(--green); color: var(--white); }
+    .step-line {
+      flex: 1; height: 2px; background: var(--gray-light);
+      transition: background 0.3s; max-width: 80px;
+    }
+    .step-line.done { background: var(--green); }
+    .step-label-row {
+      display: flex; justify-content: space-between;
+      max-width: 320px; margin: 0.5rem auto 0;
+    }
+    .step-label { font-size: 0.72rem; font-weight: 600; color: var(--gray); text-align: center; flex: 1; }
+    .step-label.active { color: var(--blue); }
+    .step-label.done { color: var(--green); }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero-visual { display: none; }
-  .steps-grid, .coaches-grid, .why-grid { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .profile-details-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  .nav-links { display: none; }
-  .hero-stats { gap: 20px; }
-  .form-card { padding: 28px 20px; }
-  .profile-top { flex-direction: column; }
-  .profile-contact-row { flex-direction: column; }
-}
-</style>
+    /* Form card */
+    .form-card {
+      background: var(--white); border: 1px solid var(--gray-light);
+      border-radius: var(--radius); padding: 2.25rem;
+      box-shadow: var(--shadow-md);
+    }
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+    .form-step-title {
+      font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800;
+      color: var(--navy); margin-bottom: 0.3rem;
+    }
+    .form-step-sub { font-size: 0.875rem; color: var(--gray); margin-bottom: 1.75rem; }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--navy); margin-bottom: 0.4rem;
+    }
+    .form-label span { color: var(--red); }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; font-family: var(--font-body); font-size: 0.9rem;
+      color: var(--navy); background: var(--white);
+      border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm);
+      padding: 0.7rem 0.9rem; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(30,115,232,0.1);
+    }
+    .form-input.error, .form-select.error { border-color: var(--red); }
+    .form-textarea { resize: vertical; min-height: 110px; }
+    .field-error { font-size: 0.78rem; color: var(--red); margin-top: 0.3rem; display: none; }
+    .field-error.show { display: block; }
+
+    /* OTP row */
+    .otp-row { display: flex; gap: 0.5rem; }
+    .otp-row .form-input { flex: 1; }
+    .btn-otp {
+      font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+      white-space: nowrap; padding: 0.7rem 1rem;
+      background: var(--blue); color: var(--white);
+      border: none; border-radius: var(--radius-sm); cursor: pointer;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .btn-otp:hover { background: var(--navy); }
+    .btn-otp:disabled { background: var(--gray-light); color: var(--gray); cursor: not-allowed; }
+    .otp-hint { font-size: 0.78rem; color: var(--gray); margin-top: 0.35rem; }
+    .otp-success { font-size: 0.82rem; color: var(--green); font-weight: 600; display: none; margin-top: 0.4rem; }
+    .otp-success.show { display: block; }
+
+    /* Toggle buttons */
+    .toggle-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .toggle-btn {
+      font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+      padding: 0.5rem 1rem; border-radius: 100px;
+      border: 1.5px solid var(--gray-light);
+      background: var(--white); color: var(--navy);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .toggle-btn.selected { background: var(--blue); color: var(--white); border-color: var(--blue); }
+
+    /* Radio style */
+    .radio-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .radio-label {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.88rem; font-weight: 500; cursor: pointer;
+    }
+    .radio-label input { accent-color: var(--blue); }
+
+    /* FIDE conditional */
+    .fide-fields { display: none; }
+    .fide-fields.show { display: block; }
+
+    /* Progress bar */
+    .progress-bar { height: 4px; background: var(--gray-light); border-radius: 100px; margin-bottom: 1.5rem; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 100px; transition: width 0.4s ease; }
+
+    /* Photo upload */
+    .photo-upload {
+      border: 2px dashed var(--gray-light); border-radius: var(--radius-sm);
+      padding: 1.5rem; text-align: center; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .photo-upload:hover { border-color: var(--blue); background: var(--off-white); }
+    .photo-upload input { display: none; }
+    .photo-upload-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .photo-upload-text { font-size: 0.85rem; color: var(--gray); }
+    .photo-preview { display: none; margin-top: 0.75rem; }
+    .photo-preview img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--blue); }
+
+    /* Char count */
+    .char-count { font-size: 0.75rem; color: var(--gray); text-align: right; margin-top: 0.25rem; }
+    .char-count.ok { color: var(--green); }
+
+    /* Form nav */
+    .form-nav { display: flex; gap: 0.75rem; margin-top: 1.75rem; }
+    .btn-back {
+      font-family: var(--font-body); font-size: 0.9rem; font-weight: 600;
+      padding: 0.8rem 1.5rem; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-light); background: var(--white); color: var(--navy);
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-back:hover { background: var(--off-white); }
+    .btn-next {
+      flex: 1; font-family: var(--font-body); font-size: 0.9rem; font-weight: 700;
+      padding: 0.8rem 1.5rem; border-radius: var(--radius-sm);
+      border: none; background: var(--blue); color: var(--white);
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-next:hover { background: var(--navy); }
+    .btn-next:disabled { background: var(--gray-light); color: var(--gray); cursor: not-allowed; }
+    .btn-publish {
+      flex: 1; font-family: var(--font-body); font-size: 0.95rem; font-weight: 700;
+      padding: 0.9rem 1.5rem; border-radius: var(--radius-sm);
+      border: none; background: var(--green); color: var(--white);
+      cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-publish:hover { background: #0da070; }
+    .btn-publish:disabled { background: var(--gray-light); color: var(--gray); cursor: not-allowed; }
+
+    /* Loading spinner */
+    .spinner {
+      width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.4);
+      border-top-color: white; border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    .spinner.show { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success modal */
+    .success-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(16,44,87,0.6); backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .success-overlay.show { display: flex; }
+    .success-modal {
+      background: var(--white); border-radius: var(--radius);
+      padding: 3rem 2.5rem; max-width: 440px; width: 100%;
+      text-align: center; box-shadow: var(--shadow-lg);
+      animation: popIn 0.3s ease;
+    }
+    @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .success-modal h2 { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 0.75rem; }
+    .success-modal p { font-size: 0.95rem; color: var(--gray); line-height: 1.65; margin-bottom: 1.5rem; }
+    .success-modal .btn-primary { padding: 0.85rem 2rem; font-size: 0.95rem; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--navy); color: var(--white);
+      font-size: 0.875rem; font-weight: 500;
+      padding: 0.75rem 1.5rem; border-radius: 100px;
+      box-shadow: var(--shadow-lg); z-index: 300;
+      transition: transform 0.35s ease, opacity 0.35s;
+      opacity: 0; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.error { background: var(--red); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.7);
+      padding: 3rem 5% 2rem;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem;
+      padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand .nav-logo-text { margin-bottom: 0.5rem; }
+    .footer-brand .chess { color: rgba(255,255,255,0.9); }
+    .footer-brand .connect { color: var(--blue-logo); }
+    .footer-brand p { font-size: 0.85rem; max-width: 220px; }
+    .footer-links { display: flex; gap: 3rem; flex-wrap: wrap; }
+    .footer-col h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.9); margin-bottom: 0.75rem; }
+    .footer-col a { display: block; font-size: 0.875rem; color: rgba(255,255,255,0.6); text-decoration: none; margin-bottom: 0.4rem; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      max-width: 1100px; margin: 1.5rem auto 0;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.8rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .sample-wrapper { grid-template-columns: 1fr; }
+      .footer-links { gap: 1.5rem; }
+      .hero-stats { gap: 1.5rem; }
+      .why-grid { gap: 1rem; }
+    }
+    @media (max-width: 500px) {
+      .form-card { padding: 1.5rem; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+      nav { padding: 0 4%; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ===== NAV ===== -->
-<nav id="navbar">
-  <div class="nav-logo">
+<!-- NAV -->
+<nav id="mainNav" aria-label="Main navigation">
+  <a href="#" class="nav-logo-wrap" aria-label="ChessConnect home">
     <span class="nav-logo-text"><span class="chess">Chess</span><span class="connect">Connect</span></span>
-  </div>
-  <div class="nav-links">
-    <a href="#coaches">Find Coaches</a>
+    <span class="nav-logo-tagline">Connecting the Chess World</span>
+  </a>
+  <div class="nav-links" role="navigation">
     <a href="#how-it-works">How It Works</a>
     <a href="#why">Why Us</a>
+    <a href="#register">List Yourself</a>
   </div>
-  <div class="nav-cta">
-    <button class="btn-ghost" onclick="scrollToRegister()">List Yourself</button>
-    <button class="btn-primary" onclick="document.getElementById('coaches').scrollIntoView({behavior:'smooth'})">Find a Coach</button>
+  <div class="nav-ctas">
+    <button class="btn-ghost" onclick="scrollToRegister()" aria-label="Find a coach">Find a Coach</button>
+    <button class="btn-primary" onclick="scrollToRegister()" aria-label="List yourself as a coach">List Yourself</button>
   </div>
 </nav>
 
-<!-- ===== HERO ===== -->
-<section class="hero" id="home">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge"><span class="hero-badge-dot"></span> Get listed in just 3 minutes. Go live instantly.</div>
-      <h1>Find Trusted <span>Chess Coaches</span> Near You</h1>
-      <p class="hero-sub">Connect directly with experienced individual chess trainers. Online &amp; Offline sessions available across India.</p>
-      <div class="hero-ctas">
-        <button class="btn-lg-primary" onclick="document.getElementById('coaches').scrollIntoView({behavior:'smooth'})">
-          Find a Coach
-        </button>
-        <button class="btn-lg-ghost" onclick="scrollToRegister()">
-          ✦ List Yourself Free
-        </button>
-      </div>
-
+<!-- HERO -->
+<section class="hero" id="home" aria-label="Hero section">
+  <div class="hero-badge">♟ India's Chess Coach Marketplace</div>
+  <h1>Find Trusted <span>Chess Coaches</span> Near You</h1>
+  <p>Connect directly with experienced individual chess trainers. Online &amp; Offline sessions available across India.</p>
+  <div class="hero-ctas">
+    <button class="btn-hero-secondary" onclick="scrollToRegister()" aria-label="Find a coach near you">Find a Coach</button>
+    <div class="pulse-wrap">
+      <div class="pulse-ring" aria-hidden="true"></div>
+      <button class="btn-hero-primary" onclick="scrollToRegister()" aria-label="List yourself as a chess coach">✦ List Yourself Free</button>
+    </div>
+  </div>
+  <div class="hero-stats" aria-label="Platform highlights">
+    <div class="stat">
+      <div class="stat-number">3 min</div>
+      <div class="stat-label">To go live</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">0%</div>
+      <div class="stat-label">Commission</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">India</div>
+      <div class="stat-label">Wide reach</div>
     </div>
   </div>
 </section>
 
-<!-- ===== HOW IT WORKS ===== -->
-<section class="section hiw" id="how-it-works">
+<!-- HOW IT WORKS -->
+<section id="how-it-works" aria-label="How it works">
   <div class="section-inner">
-    <div class="animate-on-scroll">
-      <div class="section-tag">How It Works</div>
+    <div class="section-header center animate-on-scroll">
+      <div class="section-label">How It Works</div>
       <h2 class="section-title">List Your Profile in 3 Simple Steps</h2>
       <p class="section-sub">Coaches go live in under 3 minutes. No technical skills needed.</p>
     </div>
     <div class="steps-grid">
       <div class="step-card animate-on-scroll">
-        <div class="step-num">1</div>
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
-        <div class="step-title">Basic Info</div>
-        <div class="step-desc">Enter your name, city, contact number, and preferred coaching mode (Online, Offline, or Both).</div>
+        <div class="step-num" aria-hidden="true">1</div>
+        <h3>Basic Info</h3>
+        <p>Enter your name, city, WhatsApp number, and preferred coaching mode — Online, Offline, or Both.</p>
       </div>
       <div class="step-card animate-on-scroll">
-        <div class="step-num">2</div>
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-        </div>
-        <div class="step-title">Expertise & Credentials</div>
-        <div class="step-desc">Share your experience, levels taught, languages, and FIDE rating if you're a rated player.</div>
+        <div class="step-num" aria-hidden="true">2</div>
+        <h3>Expertise &amp; Credentials</h3>
+        <p>Share your experience, levels taught, languages spoken, and FIDE rating if you're a rated player.</p>
       </div>
       <div class="step-card animate-on-scroll">
-        <div class="step-num">3</div>
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        </div>
-        <div class="step-title">Publish & Go Live</div>
-        <div class="step-desc">Add your bio, photo, and fees. Hit Publish — your profile goes live instantly.</div>
+        <div class="step-num" aria-hidden="true">3</div>
+        <h3>Publish &amp; Go Live</h3>
+        <p>Add your bio, photo, and fees. Hit Publish — your profile is saved and goes live instantly.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== SAMPLE PROFILE ===== -->
-<section class="section coaches-section" id="coaches">
+<!-- SAMPLE PROFILE -->
+<section id="sample" aria-label="Sample coach profile">
   <div class="section-inner">
-    <div class="animate-on-scroll" style="text-align:center">
-      <div class="section-tag">Sample Profile</div>
-      <h2 class="section-title">See a Sample Coach Profile</h2>
-      <p class="section-sub" style="margin:0 auto">This is exactly how your profile will appear to students once you publish. Clean, professional, and easy to contact.</p>
-    </div>
-    <div style="max-width:420px;margin:48px auto 0;position:relative" class="animate-on-scroll">
-      <!-- Demo label -->
-      <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:white;border:1.5px solid var(--blue-mid);color:var(--blue);font-size:0.75rem;font-weight:700;padding:4px 16px;border-radius:100px;letter-spacing:0.06em;white-space:nowrap">SAMPLE PROFILE</div>
-      <div id="coachesGrid"></div>
+    <div class="sample-wrapper">
+      <div class="animate-on-scroll">
+        <div class="section-label">Sample Profile</div>
+        <div class="sample-card" role="article" aria-label="Example coach profile card">
+          <div class="sample-card-header">
+            <div class="sample-avatar" aria-hidden="true">AR</div>
+            <div>
+              <div class="sample-name">Arjun Rao</div>
+              <div class="sample-meta">8 years experience · Bengaluru</div>
+              <div class="fide-badge">♟ FIDE 1840</div>
+            </div>
+          </div>
+          <div class="sample-body">
+            <div class="sample-section">
+              <div class="sample-section-label">About</div>
+              <p>FIDE rated coach specialising in openings and endgame theory. Trained 120+ students from beginner to competitive level across India.</p>
+            </div>
+            <div class="sample-section">
+              <div class="sample-section-label">Teaches</div>
+              <div class="tag-row">
+                <span class="tag">Beginner</span>
+                <span class="tag">Intermediate</span>
+                <span class="tag">Tournament</span>
+                <span class="tag">Kids</span>
+              </div>
+            </div>
+            <div class="sample-section">
+              <div class="sample-section-label">Mode &amp; Languages</div>
+              <div class="tag-row">
+                <span class="tag">Online</span>
+                <span class="tag">Offline</span>
+                <span class="tag">English</span>
+                <span class="tag">Kannada</span>
+              </div>
+            </div>
+            <div class="sample-section">
+              <div class="sample-section-label">Fees</div>
+              <p>₹3,000 / month · Trial class available</p>
+            </div>
+          </div>
+          <div class="sample-ctas">
+            <button class="btn-call" aria-label="Call Arjun Rao">📞 Call Coach</button>
+            <button class="btn-wa" aria-label="WhatsApp Arjun Rao">💬 WhatsApp</button>
+          </div>
+        </div>
+      </div>
+      <div class="sample-text animate-on-scroll">
+        <h3>See a Sample Coach Profile</h3>
+        <p>This is exactly how your profile will appear to students. Clean, professional, and direct — no middleman between you and your next student.</p>
+        <ul class="sample-highlights" aria-label="Profile benefits">
+          <li>FIDE badge builds instant credibility</li>
+          <li>Students contact you directly via WhatsApp or call</li>
+          <li>You keep 100% of your fees — zero commission</li>
+          <li>Filtered discovery by city, mode, level &amp; rating</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ===== WHY CHESSCONNECT ===== -->
-<section class="section why-section" id="why">
+<!-- WHY CHESSCONNECT -->
+<section id="why" aria-label="Why ChessConnect">
   <div class="section-inner">
-    <div class="animate-on-scroll">
-      <div class="section-tag">Why ChessConnect</div>
+    <div class="section-header center animate-on-scroll">
+      <div class="section-label">Why ChessConnect</div>
       <h2 class="section-title">The Smarter Way to Grow as a Chess Coach</h2>
-      <p class="section-sub">We're built for coaches first. No commissions, no barriers.</p>
+      <p class="section-sub">Built for coaches first. No commissions, no barriers.</p>
     </div>
     <div class="why-grid">
       <div class="why-card animate-on-scroll">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div class="why-card-title">Go Live in 3 Minutes</div>
-        <div class="why-card-desc">The fastest coach onboarding in the market. Fill 3 steps and your profile is live immediately.</div>
+        <div class="why-icon" aria-hidden="true">⚡</div>
+        <h3>Go Live in 3 Minutes</h3>
+        <p>The fastest coach onboarding in the market. Fill 3 steps and your profile is live immediately.</p>
       </div>
       <div class="why-card animate-on-scroll">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>
-        </div>
-        <div class="why-card-title">Zero Commission</div>
-        <div class="why-card-desc">Students contact you directly. Every rupee stays with you — we take nothing from your sessions.</div>
+        <div class="why-icon" aria-hidden="true">💰</div>
+        <h3>Zero Commission</h3>
+        <p>Students contact you directly. Every rupee stays with you — we take nothing from your sessions.</p>
       </div>
       <div class="why-card animate-on-scroll">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </div>
-        <div class="why-card-title">Targeted Discovery</div>
-        <div class="why-card-desc">Parents and students searching for chess coaches find you — filtered by city, mode, level and FIDE rating.</div>
+        <div class="why-icon" aria-hidden="true">🎯</div>
+        <h3>Targeted Discovery</h3>
+        <p>Parents and students searching for chess coaches find you — filtered by city, mode, level and FIDE rating.</p>
       </div>
       <div class="why-card animate-on-scroll">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-        </div>
-        <div class="why-card-title">FIDE Rating Badge</div>
-        <div class="why-card-desc">FIDE Rated players get a prominent FIDE badge on their profile — building instant credibility with students.</div>
+        <div class="why-icon" aria-hidden="true">🏅</div>
+        <h3>FIDE Rating Badge</h3>
+        <p>FIDE rated players get a prominent badge on their profile — building instant credibility with students.</p>
       </div>
       <div class="why-card animate-on-scroll">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <div class="why-card-title">WhatsApp Direct Contact</div>
-        <div class="why-card-desc">Students can reach you instantly via WhatsApp or call directly — the way coaches prefer to communicate.</div>
+        <div class="why-icon" aria-hidden="true">💬</div>
+        <h3>WhatsApp Direct Contact</h3>
+        <p>Students reach you instantly via WhatsApp or call directly — the way coaches prefer to communicate.</p>
       </div>
       <div class="why-card animate-on-scroll">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        </div>
-        <div class="why-card-title">Online & Offline Both</div>
-        <div class="why-card-desc">Whether you coach online or in person, ChessConnect connects you with the right students for your style.</div>
+        <div class="why-icon" aria-hidden="true">🌐</div>
+        <h3>Online &amp; Offline Both</h3>
+        <p>Whether you coach online or in person, ChessConnect connects you with the right students for your style.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== REGISTER SECTION ===== -->
-<section class="section register-section" id="register">
-  <div class="register-inner">
-    <div class="register-header animate-on-scroll">
-      <div class="section-tag">Coach Registration</div>
+<!-- REGISTER -->
+<section id="register" aria-label="Coach registration form">
+  <div class="section-inner">
+    <div class="section-header center animate-on-scroll">
+      <div class="section-label">Coach Registration</div>
       <h2 class="section-title">List Your Profile – It's Free</h2>
-      <p class="section-sub" style="margin: 0 auto; text-align: center;">Complete 3 quick steps and go live on ChessConnect.</p>
+      <p class="section-sub">Complete 3 quick steps and go live on ChessConnect.</p>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-bar-container animate-on-scroll">
-      <div class="progress-steps" id="progressSteps">
-        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-        <div class="progress-step active" id="pStep1">
-          <div class="progress-step-circle">1</div>
-          <div class="progress-step-label">Basic Info</div>
-        </div>
-        <div class="progress-step" id="pStep2">
-          <div class="progress-step-circle">2</div>
-          <div class="progress-step-label">Expertise</div>
-        </div>
-        <div class="progress-step" id="pStep3">
-          <div class="progress-step-circle">3</div>
-          <div class="progress-step-label">Publish</div>
-        </div>
+    <div class="register-inner animate-on-scroll">
+      <!-- Step indicator -->
+      <div class="step-indicator" role="progressbar" aria-label="Registration progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3">
+        <div class="step-dot active" id="dot1" aria-label="Step 1: Basic Info">1</div>
+        <div class="step-line" id="line1"></div>
+        <div class="step-dot" id="dot2" aria-label="Step 2: Expertise">2</div>
+        <div class="step-line" id="line2"></div>
+        <div class="step-dot" id="dot3" aria-label="Step 3: Publish">3</div>
       </div>
-    </div>
+      <div class="step-label-row" aria-hidden="true">
+        <span class="step-label active" id="lbl1">Basic Info</span>
+        <span class="step-label" id="lbl2">Expertise</span>
+        <span class="step-label" id="lbl3">Publish</span>
+      </div>
 
-    <!-- Form Card -->
-    <div class="form-card animate-on-scroll" id="formCard">
-      <!-- STEP 1 -->
-      <div class="form-step active" id="step1">
-        <div class="form-step-title">Basic Information</div>
-        <div class="form-step-sub">Step 1 of 3 — Let's start with the essentials</div>
-        <div class="form-group">
-          <label class="form-label">Full Name <span class="req">*</span></label>
-          <input class="form-input" type="text" placeholder="e.g. Arjun Mehta" id="fname"/>
+      <div class="form-card" style="margin-top:1.5rem;">
+
+        <!-- STEP 1 -->
+        <div class="form-step active" id="step1">
+          <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+          <div class="form-step-title">Basic Information</div>
+          <div class="form-step-sub">Step 1 of 3 — Let's start with the essentials</div>
+
+          <div class="form-group">
+            <label class="form-label" for="fullName">Full Name <span aria-hidden="true">*</span></label>
+            <input class="form-input" type="text" id="fullName" placeholder="e.g. Arjun Rao" autocomplete="name" required aria-required="true"/>
+            <div class="field-error" id="err-fullName" role="alert">Please enter your full name.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="whatsapp">WhatsApp Number <span aria-hidden="true">*</span></label>
+            <input class="form-input" type="tel" id="whatsapp" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" autocomplete="tel" required aria-required="true"/>
+            <div class="otp-hint">Our team will reach out on this number to verify your profile.</div>
+            <div class="field-error" id="err-whatsapp" role="alert">Please enter a valid 10-digit WhatsApp number.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="city">City <span aria-hidden="true">*</span></label>
+            <input class="form-input" type="text" id="city" placeholder="e.g. Mumbai, Chennai, Delhi" autocomplete="address-level2" required aria-required="true"/>
+            <div class="field-error" id="err-city" role="alert">Please enter your city.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Coaching Mode <span aria-hidden="true">*</span></label>
+            <div class="toggle-group" role="group" aria-label="Select coaching mode">
+              <button type="button" class="toggle-btn" data-group="mode" data-value="Online" onclick="selectToggle(this)" aria-pressed="false">Online</button>
+              <button type="button" class="toggle-btn" data-group="mode" data-value="Offline" onclick="selectToggle(this)" aria-pressed="false">Offline</button>
+              <button type="button" class="toggle-btn" data-group="mode" data-value="Both" onclick="selectToggle(this)" aria-pressed="false">Both</button>
+            </div>
+            <div class="field-error" id="err-mode" role="alert">Please select a coaching mode.</div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-next" onclick="nextStep(1)" aria-label="Continue to step 2">Next Step →</button>
+          </div>
         </div>
 
-        <!-- WhatsApp OTP Block -->
-        <div class="form-group">
-          <label class="form-label">WhatsApp Number <span class="req">*</span></label>
-          <div style="display:flex;gap:10px;align-items:flex-start">
-            <div style="flex:1">
-              <input class="form-input" type="tel" placeholder="+91 98765 43210" id="fmobile" style="margin-bottom:0"/>
+        <!-- STEP 2 -->
+        <div class="form-step" id="step2">
+          <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
+          <div class="form-step-title">Your Expertise</div>
+          <div class="form-step-sub">Step 2 of 3 — Tell students about your credentials</div>
+
+          <div class="form-group">
+            <label class="form-label" for="experience">Years of Experience <span aria-hidden="true">*</span></label>
+            <select class="form-select" id="experience" required aria-required="true">
+              <option value="">Select years</option>
+              <option value="1-2 years">1–2 years</option>
+              <option value="3-5 years">3–5 years</option>
+              <option value="6-10 years">6–10 years</option>
+              <option value="10+ years">10+ years</option>
+            </select>
+            <div class="field-error" id="err-experience" role="alert">Please select your experience.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Levels Taught <span aria-hidden="true">*</span></label>
+            <div class="toggle-group" role="group" aria-label="Select levels taught (can select multiple)">
+              <button type="button" class="toggle-btn multi" data-group="levels" data-value="Beginner" onclick="toggleMulti(this)" aria-pressed="false">Beginner</button>
+              <button type="button" class="toggle-btn multi" data-group="levels" data-value="Intermediate" onclick="toggleMulti(this)" aria-pressed="false">Intermediate</button>
+              <button type="button" class="toggle-btn multi" data-group="levels" data-value="Advanced" onclick="toggleMulti(this)" aria-pressed="false">Advanced</button>
+              <button type="button" class="toggle-btn multi" data-group="levels" data-value="Tournament Players" onclick="toggleMulti(this)" aria-pressed="false">Tournament Players</button>
+              <button type="button" class="toggle-btn multi" data-group="levels" data-value="Kids (5-10)" onclick="toggleMulti(this)" aria-pressed="false">Kids (5–10)</button>
+              <button type="button" class="toggle-btn multi" data-group="levels" data-value="All Levels" onclick="toggleMulti(this)" aria-pressed="false">All Levels</button>
             </div>
-            <button class="btn-send-otp" id="sendOtpBtn" onclick="sendOtp()">
-              <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              Send OTP
+            <div class="field-error" id="err-levels" role="alert">Please select at least one level.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Languages Spoken <span aria-hidden="true">*</span></label>
+            <div class="toggle-group" role="group" aria-label="Select languages spoken (can select multiple)">
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="English" onclick="toggleMulti(this)" aria-pressed="false">English</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Hindi" onclick="toggleMulti(this)" aria-pressed="false">Hindi</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Tamil" onclick="toggleMulti(this)" aria-pressed="false">Tamil</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Telugu" onclick="toggleMulti(this)" aria-pressed="false">Telugu</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Marathi" onclick="toggleMulti(this)" aria-pressed="false">Marathi</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Bengali" onclick="toggleMulti(this)" aria-pressed="false">Bengali</button>
+            </div>
+            <div class="field-error" id="err-languages" role="alert">Please select at least one language.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Are you a FIDE Rated Player? <span aria-hidden="true">*</span></label>
+            <div class="radio-group" role="group" aria-label="FIDE rating status">
+              <label class="radio-label"><input type="radio" name="fide" value="yes" onchange="toggleFide(true)" aria-label="Yes, I am FIDE rated"/> Yes, I'm Rated</label>
+              <label class="radio-label"><input type="radio" name="fide" value="no" onchange="toggleFide(false)" aria-label="I am not FIDE rated"/> Not Rated</label>
+            </div>
+            <div class="field-error" id="err-fide" role="alert">Please select your FIDE status.</div>
+          </div>
+
+          <div class="fide-fields" id="fideFields">
+            <div class="form-group">
+              <label class="form-label" for="fideRating">Highest FIDE Rating <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="number" id="fideRating" placeholder="e.g. 1840" min="800" max="2900" aria-label="Your highest FIDE rating"/>
+              <div class="field-error" id="err-fideRating" role="alert">Please enter your FIDE rating.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="fideId">FIDE ID <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="text" id="fideId" placeholder="e.g. 25002095" aria-label="Your FIDE ID number"/>
+              <div class="field-error" id="err-fideId" role="alert">Please enter your FIDE ID.</div>
+            </div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-back" onclick="goToStep(1)" aria-label="Go back to step 1">← Back</button>
+            <button class="btn-next" onclick="nextStep(2)" aria-label="Continue to step 3">Next Step →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="form-step" id="step3">
+          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          <div class="form-step-title">Final Touches</div>
+          <div class="form-step-sub">Step 3 of 3 — Almost there! Complete your profile.</div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio">Short Bio <span aria-hidden="true">*</span> <small style="font-weight:400;color:var(--gray)">(min 100 characters)</small></label>
+            <textarea class="form-textarea" id="bio" placeholder="Tell students about your coaching approach, achievements, and teaching style..." maxlength="500" oninput="updateCharCount()" aria-label="Short biography, minimum 100 characters" aria-describedby="charCount" required></textarea>
+            <div class="char-count" id="charCount" aria-live="polite">0 / 100 characters</div>
+            <div class="field-error" id="err-bio" role="alert">Bio must be at least 100 characters.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Profile Photo <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
+            <div class="photo-upload" onclick="document.getElementById('photoInput').click()" role="button" tabindex="0" aria-label="Click to upload profile photo" onkeypress="if(event.key==='Enter') document.getElementById('photoInput').click()">
+              <input type="file" id="photoInput" accept="image/jpeg,image/png" onchange="handlePhoto(event)" aria-label="Upload profile photo, JPG or PNG, max 5MB"/>
+              <div class="photo-upload-icon" aria-hidden="true">📸</div>
+              <div class="photo-upload-text">Click to upload photo &nbsp; JPG or PNG, max 5MB</div>
+              <div class="photo-preview" id="photoPreview"><img id="photoImg" src="" alt="Profile photo preview"/></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="fees">Starting Fees / month <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
+            <input class="form-input" type="text" id="fees" placeholder="e.g. ₹2,500" aria-label="Starting monthly fees (optional)"/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Trial Class Available? <span aria-hidden="true">*</span></label>
+            <div class="radio-group" role="group" aria-label="Trial class availability">
+              <label class="radio-label"><input type="radio" name="trial" value="yes" aria-label="Yes, trial class available"/> Yes</label>
+              <label class="radio-label"><input type="radio" name="trial" value="no" aria-label="No trial class"/> No</label>
+            </div>
+            <div class="field-error" id="err-trial" role="alert">Please select trial class availability.</div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-back" onclick="goToStep(2)" aria-label="Go back to step 2">← Back</button>
+            <button class="btn-publish" id="publishBtn" onclick="publishProfile()" aria-label="Publish your coach profile">
+              <span id="publishText">🚀 Publish Profile</span>
+              <div class="spinner" id="publishSpinner" aria-hidden="true"></div>
             </button>
           </div>
-          <div id="waHint" style="font-size:0.78rem;color:var(--gray-400);margin-top:6px;display:flex;align-items:center;gap:5px">
-            <svg viewBox="0 0 24 24" style="width:13px;height:13px;flex-shrink:0;stroke:#25D366;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            You will receive a one-time code on this WhatsApp number
-          </div>
         </div>
 
-        <!-- OTP Input — hidden until Send OTP clicked -->
-        <div class="form-group otp-block" id="otpBlock" style="display:none">
-          <label class="form-label">Enter OTP <span class="req">*</span></label>
-          <div style="display:flex;gap:10px;align-items:center">
-            <div style="display:flex;gap:8px" id="otpBoxes">
-              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,1)" id="otp1"/>
-              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,2)" id="otp2"/>
-              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,3)" id="otp3"/>
-              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,4)" id="otp4"/>
-              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,5)" id="otp5"/>
-              <input class="otp-input" type="text" maxlength="1" oninput="otpMove(this,6)" id="otp6"/>
-            </div>
-            <button class="btn-verify-otp" id="verifyOtpBtn" onclick="verifyOtp()">Verify</button>
-          </div>
-          <div style="margin-top:8px;font-size:0.78rem;color:var(--gray-400)">
-            Didn't receive it? <button onclick="resendOtp()" style="background:none;border:none;color:var(--blue);font-size:0.78rem;font-weight:600;cursor:pointer;padding:0" id="resendBtn">Resend OTP</button>
-            <span id="resendTimer" style="color:var(--gray-400)"> in 30s</span>
-          </div>
-          <!-- Verified badge -->
-          <div id="verifiedBadge" style="display:none;margin-top:10px;background:#F0FFF4;border:1px solid #86EFAC;border-radius:10px;padding:10px 14px;font-size:0.85rem;font-weight:600;color:#16A34A;display:none;align-items:center;gap:8px">
-            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#16A34A;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>
-            WhatsApp number verified successfully
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">City <span class="req">*</span></label>
-          <input class="form-input" type="text" placeholder="e.g. Mumbai" id="fcity"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Coaching Mode <span class="req">*</span></label>
-          <div class="toggle-group" id="modeToggle">
-            <button class="toggle-btn active" onclick="selectMode(this,'Online')">Online</button>
-            <button class="toggle-btn" onclick="selectMode(this,'Offline')">Offline</button>
-            <button class="toggle-btn" onclick="selectMode(this,'Both')">Both</button>
-          </div>
-        </div>
-        <div class="form-nav">
-          <span></span>
-          <button class="btn-next" id="step1Next" onclick="goStep(2)">Next Step →</button>
-        </div>
-      </div>
-
-      <!-- STEP 2 -->
-      <div class="form-step" id="step2">
-        <div class="form-step-title">Your Expertise</div>
-        <div class="form-step-sub">Step 2 of 3 — Tell students about your credentials</div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Years of Experience <span class="req">*</span></label>
-            <select class="form-select" id="fexp">
-              <option value="">Select years</option>
-              <option>1–2 years</option><option>3–5 years</option>
-              <option>6–10 years</option><option>10+ years</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">WhatsApp Number <span class="req">*</span></label>
-            <input class="form-input" type="tel" placeholder="+91 98765 43210" id="fwa"/>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Levels Taught <span class="req">*</span></label>
-          <div class="chips-group" id="levelsChips">
-            <div class="chip" onclick="toggleChip(this)">Beginner</div>
-            <div class="chip" onclick="toggleChip(this)">Intermediate</div>
-            <div class="chip" onclick="toggleChip(this)">Advanced</div>
-            <div class="chip" onclick="toggleChip(this)">Tournament Players</div>
-            <div class="chip" onclick="toggleChip(this)">Kids (5–10)</div>
-            <div class="chip" onclick="toggleChip(this)">All Levels</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Languages Spoken <span class="req">*</span></label>
-          <div class="chips-group" id="langChips">
-            <div class="chip" onclick="toggleChip(this)">English</div>
-            <div class="chip" onclick="toggleChip(this)">Hindi</div>
-            <div class="chip" onclick="toggleChip(this)">Tamil</div>
-            <div class="chip" onclick="toggleChip(this)">Telugu</div>
-            <div class="chip" onclick="toggleChip(this)">Marathi</div>
-            <div class="chip" onclick="toggleChip(this)">Bengali</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Are you a FIDE Rated Player? <span class="req">*</span></label>
-          <div class="toggle-group" id="ratedToggle">
-            <button class="toggle-btn" onclick="toggleRated(this, true)">Yes, I'm Rated</button>
-            <button class="toggle-btn active" onclick="toggleRated(this, false)">Not Rated</button>
-          </div>
-        </div>
-        <div class="fide-fields" id="fideFields">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Highest FIDE Rating <span class="req">*</span></label>
-              <input class="form-input" type="number" placeholder="e.g. 2100" id="ffide"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">FIDE ID <span class="req">*</span></label>
-              <input class="form-input" type="text" placeholder="e.g. 5003952" id="ffideid"/>
-            </div>
-          </div>
-        </div>
-        <div class="form-nav">
-          <button class="btn-back" onclick="goStep(1)">← Back</button>
-          <button class="btn-next" onclick="goStep(3)">Next Step →</button>
-        </div>
-      </div>
-
-      <!-- STEP 3 -->
-      <div class="form-step" id="step3">
-        <div class="form-step-title">Final Touches</div>
-        <div class="form-step-sub">Step 3 of 3 — Almost there! Complete your profile.</div>
-        <!-- Completion bar -->
-        <div class="completion-bar-wrap">
-          <div class="completion-label"><span>Profile Completion</span><span id="completionPct">40%</span></div>
-          <div class="completion-bar"><div class="completion-fill" id="completionFill" style="width:40%"></div></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Short Bio <span class="req">*</span> <span style="color:var(--gray-400);font-weight:400">(min 100 characters)</span></label>
-          <textarea class="form-input" rows="4" placeholder="Tell students about your coaching philosophy, achievements, teaching approach..." id="fbio" oninput="updateCompletion()" style="resize:vertical"></textarea>
-          <div id="bioCount" style="font-size:0.78rem;color:var(--gray-400);margin-top:4px;text-align:right">0 / 100 characters</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Profile Photo <span style="color:var(--gray-400);font-weight:400">(optional)</span></label>
-          <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
-            <div class="photo-upload-icon">📸</div>
-            <p>Click to upload photo <br><span style="color:var(--gray-400);font-size:0.78rem">JPG or PNG, max 5MB</span></p>
-          </div>
-          <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)"/>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Starting Fees / month <span style="color:var(--gray-400);font-weight:400">(optional)</span></label>
-            <input class="form-input" type="text" placeholder="e.g. ₹2000/month" id="ffees" oninput="updateCompletion()"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Trial Class Available? <span class="req">*</span></label>
-            <div class="toggle-group" id="trialToggle">
-              <button class="toggle-btn active" onclick="setToggle(this, 'trial', 'Yes')">Yes</button>
-              <button class="toggle-btn" onclick="setToggle(this, 'trial', 'No')">No</button>
-            </div>
-          </div>
-        </div>
-        <div class="form-nav">
-          <button class="btn-back" onclick="goStep(2)">← Back</button>
-          <button class="btn-publish" onclick="publishProfile()">🚀 Publish Profile</button>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== PROFILE PREVIEW ===== -->
-<section class="section" id="profilePreviewSection" style="display:none;background:var(--gray-50)">
-  <div style="max-width:760px;margin:0 auto">
-    <div style="text-align:center;margin-bottom:32px">
-      <div class="section-tag">Your Profile</div>
-      <h2 class="section-title">Profile Preview</h2>
-      <p style="color:var(--gray-600)">This is how students will see your profile.</p>
+<!-- FOOTER -->
+<footer aria-label="Site footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo-text" aria-label="ChessConnect home"><span class="chess">Chess</span><span class="connect">Connect</span></a>
+      <p>Connecting the Chess World</p>
     </div>
-    <div style="background:white;border-radius:20px;box-shadow:var(--shadow-lg);border:1px solid var(--blue-mid);overflow:hidden">
-      <div class="profile-top">
-        <div class="profile-photo-lg" id="ppPhoto"></div>
-        <div class="profile-main-info">
-          <div class="profile-name" id="ppName">Coach Name</div>
-          <div style="font-size:0.9rem;color:var(--gray-600);margin-top:4px" id="ppExp">Experience · City</div>
-          <div class="profile-meta" id="ppMeta"></div>
-        </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#why">Why Us</a>
+        <a href="#register">List Yourself</a>
       </div>
-      <div class="profile-body">
-        <div class="profile-section-title">About</div>
-        <div class="profile-bio" id="ppBio">Bio goes here.</div>
-        <div class="profile-section-title" style="margin-top:24px">Details</div>
-        <div class="profile-details-grid" id="ppDetails"></div>
-        <div class="profile-section-title" style="margin-top:24px">Contact</div>
-        <div class="profile-contact-row">
-          <button class="btn-lg-call">📞 Call Coach</button>
-          <button class="btn-lg-wa">💬 WhatsApp</button>
-        </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
       </div>
     </div>
-    <div style="text-align:center;margin-top:28px">
-      <button class="btn-lg-ghost" onclick="location.reload()">← Edit Profile</button>
-    </div>
   </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
-<footer>
-  <div class="footer-logo" style="font-family:'Arial',sans-serif;font-weight:bold;letter-spacing:-0.5px"><span style="color:#D0E6FF">Chess</span><span style="color:#4285F4">Connect</span></div>
-  <div class="footer-sub">Connecting the Chess World</div>
-  <div class="footer-links">
-    <a href="#">For Coaches</a>
-    <a href="#">For Students</a>
-    <a href="#">About</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms</a>
-    <a href="#">Contact</a>
+  <div class="footer-bottom">
+    <span>© 2025 ChessConnect. All rights reserved. Made with ❤️ for the chess community.</span>
   </div>
-  <div class="footer-copy">© 2025 ChessConnect. All rights reserved. Made with ❤️ for the chess community.</div>
 </footer>
 
-<!-- ===== SUCCESS OVERLAY ===== -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-card">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">You're Live!</div>
-    <div class="success-desc">Your profile has been published on ChessConnect. Students can now find and contact you directly.</div>
-    <a class="btn-view-profile" href="#profilePreviewSection" onclick="closeSuccessAndPreview()">View My Profile →</a>
+<!-- SUCCESS MODAL -->
+<div class="success-overlay" id="successOverlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+  <div class="success-modal">
+    <div class="success-icon" aria-hidden="true">🎉</div>
+    <h2 id="successTitle">You're Live!</h2>
+    <p>Your profile has been published on ChessConnect. Students can now find and contact you directly.</p>
+    <button class="btn-primary" onclick="closeSuccess()" aria-label="Close success message">Done</button>
   </div>
 </div>
 
-<!-- ===== SCRIPTS ===== -->
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
-/* ===== WHATSAPP OTP LOGIC ===== */
-let otpVerified = false;
-let resendInterval = null;
+  // ── Supabase init ──
+  const { createClient } = supabase;
+  const sb = createClient(
+    'https://ktoialhxgbskadheihlk.supabase.co',
+    'sb_publishable_W047QPQtYh0Fig6vzskQgw_IKVuBswe'
+  );
 
-function sendOtp() {
-  const mobile = document.getElementById('fmobile').value.trim();
-  if (!mobile) { alert('Please enter your WhatsApp number first.'); return; }
+  // ── State ──
+  let currentStep = 1;
+  let selectedMode = '';
+  let selectedLevels = [];
+  let selectedLanguages = [];
+  let isFide = false;
+  let photoFile = null;
 
-  const btn = document.getElementById('sendOtpBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending...';
-
-  // Simulate API call (replace with real WhatsApp API)
-  setTimeout(() => {
-    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Sent!';
-    btn.style.background = '#16A34A';
-    document.getElementById('otpBlock').style.display = 'block';
-    document.getElementById('otp1').focus();
-    startResendTimer();
-  }, 1500);
-}
-
-function startResendTimer() {
-  let seconds = 30;
-  const timerEl = document.getElementById('resendTimer');
-  const resendBtn = document.getElementById('resendBtn');
-  resendBtn.style.opacity = '0.4';
-  resendBtn.style.pointerEvents = 'none';
-  clearInterval(resendInterval);
-  resendInterval = setInterval(() => {
-    seconds--;
-    timerEl.textContent = ' in ' + seconds + 's';
-    if (seconds <= 0) {
-      clearInterval(resendInterval);
-      timerEl.textContent = '';
-      resendBtn.style.opacity = '1';
-      resendBtn.style.pointerEvents = 'auto';
-    }
-  }, 1000);
-}
-
-function resendOtp() {
-  const btn = document.getElementById('sendOtpBtn');
-  btn.disabled = false;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Send OTP';
-  btn.style.background = '#25D366';
-  sendOtp();
-}
-
-function otpMove(input, index) {
-  input.classList.toggle('filled', input.value.length > 0);
-  if (input.value.length === 1 && index < 6) {
-    document.getElementById('otp' + (index + 1)).focus();
-  }
-}
-
-function verifyOtp() {
-  const code = [1,2,3,4,5,6].map(i => document.getElementById('otp'+i).value).join('');
-  if (code.length < 6) { alert('Please enter the complete 6-digit OTP.'); return; }
-
-  const btn = document.getElementById('verifyOtpBtn');
-  btn.textContent = 'Verifying...';
-  btn.disabled = true;
-
-  // Simulate verification (replace with real API call)
-  setTimeout(() => {
-    otpVerified = true;
-    document.getElementById('otpBoxes').style.display = 'none';
-    btn.style.display = 'none';
-    const badge = document.getElementById('verifiedBadge');
-    badge.style.display = 'flex';
-  }, 1200);
-}
-
-/* ===== CSS for spin animation ===== */
-const spinStyle = document.createElement('style');
-spinStyle.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
-document.head.appendChild(spinStyle);
-/* ===== NAV SCROLL ===== */
-window.addEventListener('scroll',()=>{
-  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40);
-});
-
-/* ===== SCROLL ANIMATIONS ===== */
-const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});},{threshold:0.12});
-document.querySelectorAll('.animate-on-scroll').forEach(el=>observer.observe(el));
-
-/* ===== COACHES DATA ===== */
-const coaches=[
-  {name:'GM Arjun Mehta',city:'Mumbai',exp:'12 yrs',mode:'Online & Offline',rating:'2540',fide:true,bio:'FIDE Grandmaster with 12 years of coaching experience. Trained national-level players. Specializes in endgame technique and opening theory.',levels:['Advanced','Tournament Players'],langs:['English','Hindi'],fees:'₹5,000/mo',trial:true},
-];
-const grid=document.getElementById('coachesGrid');
-coaches.slice(0,1).forEach(c=>{
-  const card=document.createElement('div');
-  card.className='coach-card animate-on-scroll';
-  card.innerHTML=`
-    <div class="coach-card-header">
-      <div class="coach-photo">
-        <svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:white;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <div class="coach-info">
-        <div class="coach-name">${c.name}</div>
-        <div class="coach-city">
-          <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:#1E73E8;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          ${c.city} · ${c.exp}
-        </div>
-        <div class="coach-city" style="margin-top:4px">
-          <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:#1E73E8;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          ${c.mode}
-        </div>
-      </div>
-      ${c.fide?`<div class="coach-fide-badge">FIDE ${c.rating}</div>`:''}
-    </div>
-    <div class="coach-card-body">
-      <div class="coach-tags">${c.levels.map(l=>`<span class="coach-tag">${l}</span>`).join('')}${c.langs.map(l=>`<span class="coach-tag coach-tag-lang">${l}</span>`).join('')}</div>
-      <div class="coach-bio">${c.bio}</div>
-    </div>
-    <div class="coach-card-footer">
-      <div>
-        <div class="coach-rating-text">${c.fees?'From <span class="coach-rating-num">'+c.fees+'</span>':''} ${c.trial?'<span class="trial-badge">✓ Trial</span>':''}</div>
-      </div>
-      <div class="coach-contact-btns">
-        <button class="btn-contact btn-call">
-          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Call
-        </button>
-        <button class="btn-contact btn-wa">
-          <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.122 1.523 5.855L.057 23.882a.5.5 0 0 0 .611.61l6.101-1.456A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.058-1.374l-.36-.214-3.733.892.918-3.64-.235-.374A9.953 9.953 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-          WhatsApp
-        </button>
-      </div>
-    </div>`;
-  grid.appendChild(card);
-  observer.observe(card);
-});
-
-/* ===== STEP LOGIC ===== */
-let currentStep=1;
-const formData={mode:'Online',rated:false,trial:'Yes'};
-
-function goStep(n){
-  document.getElementById('step'+currentStep).classList.remove('active');
-  document.getElementById('step'+n).classList.add('active');
-  // Update progress
-  ['pStep1','pStep2','pStep3'].forEach((id,i)=>{
-    const el=document.getElementById(id);
-    el.classList.remove('active','done');
-    if(i+1<n)el.classList.add('done');
-    if(i+1===n)el.classList.add('active');
+  // ── Nav scroll ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
   });
-  const fills=[0,0,50,100];
-  document.getElementById('progressFill').style.width=fills[n]+'%';
-  currentStep=n;
-  document.getElementById('formCard').scrollIntoView({behavior:'smooth',block:'start'});
-}
 
-function selectMode(btn,val){
-  document.querySelectorAll('#modeToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');formData.mode=val;
-}
-function toggleChip(chip){chip.classList.toggle('selected');}
-function toggleRated(btn,isRated){
-  document.querySelectorAll('#ratedToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  formData.rated=isRated;
-  const ff=document.getElementById('fideFields');
-  if(isRated){ff.classList.add('show');}else{ff.classList.remove('show');}
-}
-function setToggle(btn,id,val){
-  const parent=document.getElementById(id+'Toggle');
-  if(parent){parent.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
-  formData[id]=val;
-}
-
-/* ===== COMPLETION BAR ===== */
-function updateCompletion(){
-  const bio=document.getElementById('fbio').value;
-  document.getElementById('bioCount').textContent=bio.length+' / 100 characters';
-  document.getElementById('bioCount').style.color=bio.length>=100?'#16A34A':'var(--gray-400)';
-  const fees=document.getElementById('ffees').value;
-  let pct=40;
-  if(bio.length>=100)pct+=40;
-  if(fees)pct+=20;
-  pct=Math.min(pct,100);
-  document.getElementById('completionFill').style.width=pct+'%';
-  document.getElementById('completionPct').textContent=pct+'%';
-}
-
-function handlePhoto(input){
-  if(input.files&&input.files[0]){
-    const wrap=input.previousElementSibling;
-    wrap.innerHTML='<div class="photo-upload-icon">✅</div><p>Photo uploaded: '+input.files[0].name+'</p>';
-    updateCompletion();
+  // ── Scroll to register ──
+  function scrollToRegister() {
+    document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
   }
-}
 
-/* ===== PUBLISH ===== */
-function publishProfile(){
-  const bio=document.getElementById('fbio').value;
-  if(bio.length<100){alert('Please write at least 100 characters in your bio.');return;}
-  // Populate preview
-  const name=document.getElementById('fname').value||'Coach';
-  const city=document.getElementById('fcity').value||'Your City';
-  const exp=document.getElementById('fexp').value||'—';
-  const fide=document.getElementById('ffide').value;
-  const fees=document.getElementById('ffees').value;
-  const levels=[...document.querySelectorAll('#levelsChips .chip.selected')].map(c=>c.textContent);
-  const langs=[...document.querySelectorAll('#langChips .chip.selected')].map(c=>c.textContent);
-  document.getElementById('ppName').textContent=name;
-  document.getElementById('ppExp').textContent=exp+' · '+city;
-  document.getElementById('ppBio').textContent=bio;
-  const meta=document.getElementById('ppMeta');
-  meta.innerHTML='';
-  const pills=[
-    {icon:'📍',text:city},{icon:'🌐',text:formData.mode},{icon:'🗣',text:langs.join(', ')||'—'}
-  ];
-  if(formData.rated&&fide){pills.push({icon:'🏆',text:'FIDE '+fide,cls:'fide-pill'});}
-  pills.forEach(p=>{const sp=document.createElement('div');sp.className='profile-meta-pill '+(p.cls||'');sp.textContent=p.icon+' '+p.text;meta.appendChild(sp);});
-  const details=document.getElementById('ppDetails');
-  const detailData=[
-    {label:'Levels Taught',val:levels.join(', ')||'All Levels'},
-    {label:'Fees',val:fees||'Contact for pricing'},
-    {label:'Trial Class',val:formData.trial||'Yes'},
-    {label:'Experience',val:exp},
-  ];
-  details.innerHTML=detailData.map(d=>`<div class="profile-detail"><div class="profile-detail-label">${d.label}</div><div class="profile-detail-val">${d.val}</div></div>`).join('');
-  // Show success
-  document.getElementById('successOverlay').classList.add('show');
-}
+  // ── Animate on scroll ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
-function closeSuccessAndPreview(){
-  document.getElementById('successOverlay').classList.remove('show');
-  document.getElementById('register').style.display='none';
-  document.getElementById('profilePreviewSection').style.display='block';
-  setTimeout(()=>{document.getElementById('profilePreviewSection').scrollIntoView({behavior:'smooth'});},100);
-}
+  // ── Toast ──
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (type === 'error' ? ' error' : '');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
 
-function scrollToRegister(){
-  document.getElementById('register').scrollIntoView({behavior:'smooth'});
-}
+  // ── Toggle (single select) ──
+  function selectToggle(btn) {
+    const group = btn.dataset.group;
+    document.querySelectorAll(`[data-group="${group}"]`).forEach(b => {
+      b.classList.remove('selected');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('selected');
+    btn.setAttribute('aria-pressed', 'true');
+    if (group === 'mode') selectedMode = btn.dataset.value;
+  }
+
+  // ── Toggle (multi select) ──
+  function toggleMulti(btn) {
+    const group = btn.dataset.group;
+    btn.classList.toggle('selected');
+    const isSelected = btn.classList.contains('selected');
+    btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+
+    const arr = group === 'levels' ? selectedLevels : selectedLanguages;
+    const val = btn.dataset.value;
+    const idx = arr.indexOf(val);
+    if (isSelected && idx === -1) arr.push(val);
+    if (!isSelected && idx !== -1) arr.splice(idx, 1);
+  }
+
+  // ── FIDE toggle ──
+  function toggleFide(show) {
+    isFide = show;
+    document.getElementById('fideFields').classList.toggle('show', show);
+  }
+
+  // ── Char count ──
+  function updateCharCount() {
+    const bio = document.getElementById('bio').value;
+    const len = bio.length;
+    const el = document.getElementById('charCount');
+    el.textContent = `${len} / 100 characters`;
+    el.className = 'char-count' + (len >= 100 ? ' ok' : '');
+  }
+
+  // ── Photo ──
+  function handlePhoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { showToast('Photo must be under 5MB', 'error'); return; }
+    photoFile = file;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('photoImg').src = ev.target.result;
+      document.getElementById('photoPreview').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Field error helpers ──
+  function showError(id, show) {
+    const err = document.getElementById(`err-${id}`);
+    const input = document.getElementById(id);
+    if (err) err.classList.toggle('show', show);
+    if (input) input.classList.toggle('error', show);
+  }
+
+  // ── Step navigation ──
+  function goToStep(n) {
+    document.getElementById(`step${currentStep}`).classList.remove('active');
+    currentStep = n;
+    document.getElementById(`step${currentStep}`).classList.add('active');
+    updateIndicator();
+    document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function updateIndicator() {
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById(`dot${i}`);
+      const lbl = document.getElementById(`lbl${i}`);
+      dot.className = 'step-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+      dot.setAttribute('aria-current', i === currentStep ? 'step' : 'false');
+      lbl.className = 'step-label' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+    }
+    for (let i = 1; i <= 2; i++) {
+      document.getElementById(`line${i}`).className = 'step-line' + (i < currentStep ? ' done' : '');
+    }
+    document.querySelector('.step-indicator').setAttribute('aria-valuenow', currentStep);
+  }
+
+  function nextStep(from) {
+    if (from === 1 && !validateStep1()) return;
+    if (from === 2 && !validateStep2()) return;
+    goToStep(from + 1);
+  }
+
+  function validateStep1() {
+    let ok = true;
+    const name = document.getElementById('fullName').value.trim();
+    if (!name) { showError('fullName', true); ok = false; } else showError('fullName', false);
+    const wa = document.getElementById('whatsapp').value.trim();
+    if (!/^\d{10}$/.test(wa)) { showError('whatsapp', true); ok = false; } else showError('whatsapp', false);
+    const city = document.getElementById('city').value.trim();
+    if (!city) { showError('city', true); ok = false; } else showError('city', false);
+    if (!selectedMode) { showError('mode', true); ok = false; } else showError('mode', false);
+    return ok;
+  }
+
+  function validateStep2() {
+    let ok = true;
+    const exp = document.getElementById('experience').value;
+    if (!exp) { showError('experience', true); ok = false; } else showError('experience', false);
+    if (selectedLevels.length === 0) { showError('levels', true); ok = false; } else showError('levels', false);
+    if (selectedLanguages.length === 0) { showError('languages', true); ok = false; } else showError('languages', false);
+    const fideVal = document.querySelector('input[name="fide"]:checked');
+    if (!fideVal) { showError('fide', true); ok = false; } else showError('fide', false);
+    if (isFide) {
+      const rating = document.getElementById('fideRating').value;
+      if (!rating) { showError('fideRating', true); ok = false; } else showError('fideRating', false);
+      const fid = document.getElementById('fideId').value.trim();
+      if (!fid) { showError('fideId', true); ok = false; } else showError('fideId', false);
+    }
+    return ok;
+  }
+
+  function validateStep3() {
+    let ok = true;
+    const bio = document.getElementById('bio').value.trim();
+    if (bio.length < 100) { showError('bio', true); ok = false; } else showError('bio', false);
+    const trial = document.querySelector('input[name="trial"]:checked');
+    if (!trial) { showError('trial', true); ok = false; } else showError('trial', false);
+    return ok;
+  }
+
+  // ── Publish (save to Supabase) ──
+  async function publishProfile() {
+    if (!validateStep3()) return;
+
+    const btn = document.getElementById('publishBtn');
+    const text = document.getElementById('publishText');
+    const spinner = document.getElementById('publishSpinner');
+
+    btn.disabled = true;
+    text.textContent = 'Saving...';
+    spinner.classList.add('show');
+
+    const trialEl = document.querySelector('input[name="trial"]:checked');
+
+    const profileData = {
+      full_name: document.getElementById('fullName').value.trim(),
+      whatsapp: document.getElementById('whatsapp').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      coaching_mode: selectedMode,
+      experience: document.getElementById('experience').value,
+      levels_taught: selectedLevels,
+      languages: selectedLanguages,
+      is_fide_rated: isFide,
+      fide_rating: isFide ? document.getElementById('fideRating').value : null,
+      fide_id: isFide ? document.getElementById('fideId').value.trim() : null,
+      bio: document.getElementById('bio').value.trim(),
+      fees: document.getElementById('fees').value.trim() || null,
+      trial_available: trialEl ? trialEl.value === 'yes' : false,
+      is_live: true
+    };
+
+    try {
+      const { data, error } = await sb.from('coaches').insert([profileData]).select();
+      if (error) throw error;
+
+      // Success!
+      document.getElementById('successOverlay').classList.add('show');
+      showToast('Profile published successfully! 🎉');
+
+    } catch (err) {
+      console.error('Supabase error:', err);
+      showToast('Something went wrong. Please try again.', 'error');
+      btn.disabled = false;
+      text.textContent = '🚀 Publish Profile';
+      spinner.classList.remove('show');
+    }
+  }
+
+  function closeSuccess() {
+    document.getElementById('successOverlay').classList.remove('show');
+  }
 </script>
 </body>
 </html>
