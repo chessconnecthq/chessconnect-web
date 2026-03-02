@@ -70,7 +70,7 @@
     .nav-logo-tagline {
       font-size: 0.65rem; font-weight: 500;
       color: var(--gray); letter-spacing: 0.04em;
-      margin-top: 1px;
+      margin-top: 2px; padding-left: 1px;
     }
     .chess { color: var(--navy); }
     .connect { color: var(--blue-logo); }
@@ -221,12 +221,20 @@
       transition: box-shadow 0.25s, transform 0.25s;
     }
     .step-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-    .step-num {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--blue); color: var(--white);
-      font-weight: 800; font-size: 1.1rem;
+    .step-card-top {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+    }
+    .step-icon-box {
+      width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+      background: rgba(30,115,232,0.07);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.25rem;
+    }
+    .step-icon-box svg { width: 24px; height: 24px; stroke: var(--blue); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: var(--blue); color: var(--white);
+      font-weight: 800; font-size: 0.8rem;
+      display: flex; align-items: center; justify-content: center;
     }
     .step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--navy); }
     .step-card p { font-size: 0.9rem; color: var(--gray); line-height: 1.65; }
@@ -562,10 +570,7 @@
       display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem;
       padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .footer-brand .nav-logo-text { margin-bottom: 0.5rem; }
-    .footer-brand .chess { color: rgba(255,255,255,0.9); }
-    .footer-brand .connect { color: var(--blue-logo); }
-    .footer-brand p { font-size: 0.85rem; max-width: 220px; }
+    .footer-brand { margin-bottom: 0.5rem; }
     .footer-links { display: flex; gap: 3rem; flex-wrap: wrap; }
     .footer-col h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.9); margin-bottom: 0.75rem; }
     .footer-col a { display: block; font-size: 0.875rem; color: rgba(255,255,255,0.6); text-decoration: none; margin-bottom: 0.4rem; transition: color 0.2s; }
@@ -803,17 +808,32 @@
     </div>
     <div class="steps-grid">
       <div class="step-card animate-on-scroll">
-        <div class="step-num" aria-hidden="true">1</div>
+        <div class="step-card-top">
+          <div class="step-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+          </div>
+          <div class="step-num" aria-hidden="true">1</div>
+        </div>
         <h3>Basic Info</h3>
         <p>Enter your name, city, WhatsApp number, and preferred coaching mode — Online, Offline, or Both.</p>
       </div>
       <div class="step-card animate-on-scroll">
-        <div class="step-num" aria-hidden="true">2</div>
+        <div class="step-card-top">
+          <div class="step-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><path d="M6 11.5V17c0 0 2 3 6 3s6-3 6-3v-5.5"/></svg>
+          </div>
+          <div class="step-num" aria-hidden="true">2</div>
+        </div>
         <h3>Expertise &amp; Credentials</h3>
         <p>Share your experience, levels taught, languages spoken, and FIDE rating if you're a rated player.</p>
       </div>
       <div class="step-card animate-on-scroll">
-        <div class="step-num" aria-hidden="true">3</div>
+        <div class="step-card-top">
+          <div class="step-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 000 11.4"/><path d="M17.7 6.3a8 8 0 010 11.4"/><path d="M3.5 3.5a14 14 0 000 17"/><path d="M20.5 3.5a14 14 0 010 17"/></svg>
+          </div>
+          <div class="step-num" aria-hidden="true">3</div>
+        </div>
         <h3>Publish &amp; Go Live</h3>
         <p>Add your bio, photo, and fees. Hit Publish — your profile is saved and goes live instantly.</p>
       </div>
@@ -1142,8 +1162,10 @@
 <footer aria-label="Site footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <a href="#" class="nav-logo-text" aria-label="ChessConnect home"><span class="chess">Chess</span><span class="connect">Connect</span></a>
-      <p>Connecting the Chess World</p>
+      <div class="nav-logo-wrap" style="cursor:default;">
+        <span class="nav-logo-text"><span class="chess" style="color:rgba(255,255,255,0.9);">Chess</span><span class="connect" style="color:var(--blue-logo);">Connect</span></span>
+        <span class="nav-logo-tagline" style="color:rgba(255,255,255,0.5);">Connecting the Chess World</span>
+      </div>
     </div>
     <div class="footer-links">
       <div class="footer-col">
