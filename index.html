@@ -366,6 +366,15 @@
     }
     .form-step { display: none; }
     .form-step.active { display: block; }
+    .form-step-header {
+      display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.5rem;
+    }
+    .form-step-icon {
+      width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0;
+      background: rgba(30,115,232,0.07);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .form-step-icon svg { width: 22px; height: 22px; }
     .form-step-title {
       font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800;
       color: var(--navy); margin-bottom: 0.3rem;
@@ -560,6 +569,189 @@
     .success-icon svg { width: 52px; height: 52px; stroke: var(--green); stroke-width: 1.5; }
     .btn-fide-verify .icon svg { width: 14px; height: 14px; stroke: #fff; }
 
+    /* ── REVIEW CARD ── */
+    .review-card { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.25rem; }
+    .review-section {
+      border: 1.5px solid var(--gray-light); border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .review-section-header {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--off-white); padding: 0.75rem 1rem;
+      font-size: 0.82rem; font-weight: 700; color: var(--navy);
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .review-edit-btn {
+      margin-left: auto; font-size: 0.78rem; font-weight: 700;
+      color: var(--blue); background: none; border: none;
+      cursor: pointer; padding: 0.2rem 0.5rem;
+      border-radius: 6px; transition: background 0.2s;
+    }
+    .review-edit-btn:hover { background: rgba(30,115,232,0.08); }
+    .review-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; padding: 0;
+    }
+    .review-item {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--gray-light);
+      border-right: 1px solid var(--gray-light);
+    }
+    .review-item:nth-child(even) { border-right: none; }
+    .review-item:last-child, .review-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+    .review-item.full-width { grid-column: 1 / -1; border-right: none; }
+    .review-label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+    .review-value { display: block; font-size: 0.88rem; font-weight: 500; color: var(--navy); line-height: 1.5; word-break: break-word; }
+    .review-note {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      background: rgba(30,115,232,0.05); border: 1.5px solid rgba(30,115,232,0.12);
+      border-radius: var(--radius); padding: 0.85rem 1rem;
+      font-size: 0.82rem; color: var(--navy); line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .review-note svg { flex-shrink: 0; margin-top: 2px; }
+
+    /* ── TOOLS SECTION ── */
+    .tools-section { background: var(--white); }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .tool-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-light);
+      padding: 2rem 1.75rem 1.75rem;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--blue);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(30,115,232,0.3);
+    }
+    .tool-card:hover::before { opacity: 1; }
+
+    /* Custom SVG icon area */
+    .tool-icon-wrap {
+      width: 56px; height: 56px;
+      background: var(--off-white);
+      border: 1.5px solid var(--gray-light);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+      transition: background 0.25s, border-color 0.25s;
+      flex-shrink: 0;
+    }
+    .tool-card:hover .tool-icon-wrap {
+      background: rgba(30,115,232,0.06);
+      border-color: rgba(30,115,232,0.2);
+    }
+    .tool-icon-wrap svg {
+      width: 28px; height: 28px;
+    }
+
+    .tool-free-tag {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--blue);
+      background: rgba(30,115,232,0.07);
+      border: 1px solid rgba(30,115,232,0.15);
+      border-radius: 100px;
+      padding: 0.18rem 0.55rem;
+    }
+    .tool-name {
+      font-family: var(--font-heading);
+      font-size: 1.1rem; font-weight: 800;
+      color: var(--navy); margin-bottom: 0.5rem; line-height: 1.25;
+    }
+    .tool-desc {
+      font-size: 0.83rem; color: var(--gray);
+      line-height: 1.65; margin-bottom: 1.25rem; flex: 1;
+    }
+    .tool-features {
+      display: flex; flex-direction: column; gap: 0.4rem;
+      margin-bottom: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-light);
+    }
+    .tool-feature {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.8rem; color: var(--navy); font-weight: 500;
+    }
+    .tool-feature svg {
+      width: 14px; height: 14px;
+      stroke: var(--blue); fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .tool-launch-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.68rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 0.855rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
+      border: 1.5px solid var(--blue);
+      background: var(--white); color: var(--blue);
+      cursor: pointer;
+    }
+    .tool-launch-btn:hover {
+      background: var(--blue); color: var(--white);
+    }
+    .tool-launch-btn svg {
+      width: 14px; height: 14px; stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+    .tool-launch-btn:hover svg { transform: translateX(2px); }
+
+    /* Coming soon strip */
+    .tools-cta-strip {
+      margin-top: 2rem;
+      background: var(--off-white);
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--radius);
+      padding: 1.4rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .tools-cta-text h3 {
+      font-size: 0.95rem; font-weight: 700;
+      color: var(--navy); margin-bottom: 0.25rem;
+    }
+    .tools-cta-text p { font-size: 0.8rem; color: var(--gray); }
+    .tools-cta-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--white); border: 1.5px solid var(--gray-light);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      font-size: 0.78rem; font-weight: 700; color: var(--blue);
+    }
+    .tools-cta-badge svg {
+      width: 13px; height: 13px; stroke: var(--blue); fill: none;
+      stroke-width: 2; stroke-linecap: round;
+    }
+    @media (max-width: 900px) {
+      .tools-grid { grid-template-columns: 1fr; max-width: 440px; margin-left: auto; margin-right: auto; }
+      .tools-cta-strip { flex-direction: column; text-align: center; }
+    }
+
     /* ── FOOTER ── */
     footer {
       background: var(--navy); color: rgba(255,255,255,0.7);
@@ -734,6 +926,7 @@
   <div class="nav-links" role="navigation">
     <a href="#how-it-works">How It Works</a>
     <a href="#why">Why Us</a>
+    <a href="#tools">Tools</a>
     <a href="#register">List Yourself</a>
   </div>
   <div class="nav-ctas">
@@ -760,6 +953,10 @@
       <a href="#why" onclick="closeMenu()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         Why Us
+      </a>
+      <a href="#tools" onclick="closeMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        Free Tools
       </a>
     </div>
     <div class="mobile-nav-divider"></div>
@@ -953,31 +1150,41 @@
     <div class="section-header center animate-on-scroll">
       <div class="section-label">Coach Registration</div>
       <h2 class="section-title">List Your Profile – It's Free</h2>
-      <p class="section-sub">Complete 3 quick steps and go live on ChessConnect.</p>
+      <p class="section-sub">Complete 4 quick steps and go live on ChessConnect.</p>
     </div>
 
     <div class="register-inner animate-on-scroll">
       <!-- Step indicator -->
-      <div class="step-indicator" role="progressbar" aria-label="Registration progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3">
+      <div class="step-indicator" role="progressbar" aria-label="Registration progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4">
         <div class="step-dot active" id="dot1" aria-label="Step 1: Basic Info">1</div>
         <div class="step-line" id="line1"></div>
         <div class="step-dot" id="dot2" aria-label="Step 2: Expertise">2</div>
         <div class="step-line" id="line2"></div>
         <div class="step-dot" id="dot3" aria-label="Step 3: Publish">3</div>
+        <div class="step-line" id="line3"></div>
+        <div class="step-dot" id="dot4" aria-label="Step 4: Review">4</div>
       </div>
       <div class="step-label-row" aria-hidden="true">
         <span class="step-label active" id="lbl1">Basic Info</span>
         <span class="step-label" id="lbl2">Expertise</span>
         <span class="step-label" id="lbl3">Publish</span>
+        <span class="step-label" id="lbl4">Review</span>
       </div>
 
       <div class="form-card" style="margin-top:1.5rem;">
 
         <!-- STEP 1 -->
         <div class="form-step active" id="step1">
-          <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
-          <div class="form-step-title">Basic Information</div>
-          <div class="form-step-sub">Step 1 of 3 — Let's start with the essentials</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+          <div class="form-step-header">
+            <div class="form-step-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+            </div>
+            <div>
+              <div class="form-step-title">Basic Information</div>
+              <div class="form-step-sub">Step 1 of 4 — Let's start with the essentials</div>
+            </div>
+          </div>
 
           <div class="form-group">
             <label class="form-label" for="fullName">Full Name <span aria-hidden="true">*</span></label>
@@ -1015,9 +1222,16 @@
 
         <!-- STEP 2 -->
         <div class="form-step" id="step2">
-          <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
-          <div class="form-step-title">Your Expertise</div>
-          <div class="form-step-sub">Step 2 of 3 — Tell students about your credentials</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+          <div class="form-step-header">
+            <div class="form-step-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><path d="M6 11.5V17c0 0 2 3 6 3s6-3 6-3v-5.5"/></svg>
+            </div>
+            <div>
+              <div class="form-step-title">Your Expertise</div>
+              <div class="form-step-sub">Step 2 of 4 — Tell students about your credentials</div>
+            </div>
+          </div>
 
           <div class="form-group">
             <label class="form-label" for="experience">Years of Experience <span aria-hidden="true">*</span></label>
@@ -1109,9 +1323,16 @@
 
         <!-- STEP 3 -->
         <div class="form-step" id="step3">
-          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-          <div class="form-step-title">Final Touches</div>
-          <div class="form-step-sub">Step 3 of 3 — Almost there! Complete your profile.</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+          <div class="form-step-header">
+            <div class="form-step-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 000 11.4"/><path d="M17.7 6.3a8 8 0 010 11.4"/><path d="M3.5 3.5a14 14 0 000 17"/><path d="M20.5 3.5a14 14 0 010 17"/></svg>
+            </div>
+            <div>
+              <div class="form-step-title">Final Touches</div>
+              <div class="form-step-sub">Step 3 of 4 — Almost there! Complete your profile.</div>
+            </div>
+          </div>
 
           <div class="form-group">
             <label class="form-label" for="bio">Short Bio <span aria-hidden="true">*</span> <small style="font-weight:400;color:var(--gray)">(min 100 characters)</small></label>
@@ -1146,8 +1367,74 @@
 
           <div class="form-nav">
             <button class="btn-back" onclick="goToStep(2)" aria-label="Go back to step 2">← Back</button>
-            <button class="btn-publish" id="publishBtn" onclick="publishProfile()" aria-label="Publish your coach profile">
-              <span id="publishText"><span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span> Submit Profile</span>
+            <button class="btn-next" onclick="nextStep(3)" aria-label="Proceed to review">Review Profile →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 — REVIEW -->
+        <div class="form-step" id="step4">
+          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          <div class="form-step-header">
+            <div class="form-step-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div>
+              <div class="form-step-title">Review Your Profile</div>
+              <div class="form-step-sub">Step 4 of 4 — Please confirm before submitting</div>
+            </div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-section">
+              <div class="review-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+                Basic Info
+                <button class="review-edit-btn" onclick="goToStep(1)" aria-label="Edit basic info">Edit</button>
+              </div>
+              <div class="review-grid">
+                <div class="review-item"><span class="review-label">Name</span><span class="review-value" id="rv-name">—</span></div>
+                <div class="review-item"><span class="review-label">WhatsApp</span><span class="review-value" id="rv-whatsapp">—</span></div>
+                <div class="review-item"><span class="review-label">City</span><span class="review-value" id="rv-city">—</span></div>
+                <div class="review-item"><span class="review-label">Mode</span><span class="review-value" id="rv-mode">—</span></div>
+              </div>
+            </div>
+            <div class="review-section">
+              <div class="review-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><path d="M6 11.5V17c0 0 2 3 6 3s6-3 6-3v-5.5"/></svg>
+                Expertise
+                <button class="review-edit-btn" onclick="goToStep(2)" aria-label="Edit expertise">Edit</button>
+              </div>
+              <div class="review-grid">
+                <div class="review-item"><span class="review-label">Experience</span><span class="review-value" id="rv-experience">—</span></div>
+                <div class="review-item"><span class="review-label">Levels</span><span class="review-value" id="rv-levels">—</span></div>
+                <div class="review-item"><span class="review-label">Languages</span><span class="review-value" id="rv-languages">—</span></div>
+                <div class="review-item"><span class="review-label">FIDE Rated</span><span class="review-value" id="rv-fide">—</span></div>
+                <div class="review-item" id="rv-fide-detail-row" style="display:none"><span class="review-label">FIDE ID / Rating</span><span class="review-value" id="rv-fide-detail">—</span></div>
+              </div>
+            </div>
+            <div class="review-section">
+              <div class="review-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 000 11.4"/><path d="M17.7 6.3a8 8 0 010 11.4"/><path d="M3.5 3.5a14 14 0 000 17"/><path d="M20.5 3.5a14 14 0 010 17"/></svg>
+                Final Touches
+                <button class="review-edit-btn" onclick="goToStep(3)" aria-label="Edit final touches">Edit</button>
+              </div>
+              <div class="review-grid">
+                <div class="review-item full-width"><span class="review-label">Bio</span><span class="review-value" id="rv-bio">—</span></div>
+                <div class="review-item"><span class="review-label">Fees</span><span class="review-value" id="rv-fees">—</span></div>
+                <div class="review-item"><span class="review-label">Trial Class</span><span class="review-value" id="rv-trial">—</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Your profile will be reviewed by our team before going live. We'll reach out on your WhatsApp to verify and activate it.
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-back" onclick="goToStep(3)" aria-label="Go back to step 3">← Back</button>
+            <button class="btn-publish" id="publishBtn" onclick="publishProfile()" aria-label="Confirm and submit profile">
+              <span id="publishText"><span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span> Confirm &amp; Submit</span>
               <div class="spinner" id="publishSpinner" aria-hidden="true"></div>
             </button>
           </div>
@@ -1155,6 +1442,207 @@
 
       </div>
     </div>
+  </div>
+</section>
+
+<!-- TOOLS SECTION -->
+<section id="tools" class="tools-section" aria-label="Free Chess Tools">
+  <div class="section-inner">
+    <div class="section-header center animate-on-scroll">
+      <div class="section-label">Free Tools</div>
+      <h2 class="section-title">Built for the Chess Community</h2>
+      <p class="section-sub">Free to use. No signup needed. For coaches, players and organisers across India.</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- ── BROCHURE MAKER ── -->
+      <a href="brochure-maker-v1.html" class="tool-card animate-on-scroll" target="_blank" rel="noopener" aria-label="Open Tournament Brochure Maker">
+        <div class="tool-free-tag">Free</div>
+
+        <!-- Custom SVG Icon: Tournament brochure / document with chess elements -->
+        <div class="tool-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Document body -->
+            <rect x="4" y="2" width="16" height="22" rx="2" stroke="#1E73E8" stroke-width="1.6" fill="#EFF6FF"/>
+            <!-- Fold corner -->
+            <path d="M16 2 L20 6 L16 6 Z" fill="#BFDBFE" stroke="#1E73E8" stroke-width="1.4" stroke-linejoin="round"/>
+            <!-- Header bar -->
+            <rect x="4" y="2" width="16" height="6" rx="2" fill="#1E73E8" opacity="0.15"/>
+            <!-- Trophy icon inside -->
+            <path d="M11 11 C11 11 9.5 11 9.5 9.5 L9.5 8.5 L14.5 8.5 L14.5 9.5 C14.5 11 13 11 13 11 L13 12.5 M10 13.5 L14 13.5" stroke="#1E73E8" stroke-width="1.4" stroke-linecap="round"/>
+            <!-- Text lines -->
+            <line x1="7" y1="16" x2="17" y2="16" stroke="#1E73E8" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/>
+            <line x1="7" y1="18.5" x2="15" y2="18.5" stroke="#1E73E8" stroke-width="1.3" stroke-linecap="round" opacity="0.35"/>
+            <line x1="7" y1="21" x2="13" y2="21" stroke="#1E73E8" stroke-width="1.3" stroke-linecap="round" opacity="0.25"/>
+            <!-- Star accent -->
+            <path d="M22 4 L22.6 5.8 L24.5 5.8 L23 6.9 L23.6 8.7 L22 7.6 L20.4 8.7 L21 6.9 L19.5 5.8 L21.4 5.8 Z" fill="#1E73E8" opacity="0.7"/>
+          </svg>
+        </div>
+
+        <div class="tool-name">Tournament Brochure Maker</div>
+        <div class="tool-desc">Generate professional FIDE-standard tournament brochures in minutes. Add prizes, schedule, contacts and download as A4 PDF or WhatsApp image.</div>
+
+        <div class="tool-features">
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            7-step guided builder
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            A4 print PDF + WhatsApp image
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            4 design templates
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            Auto-saves your progress
+          </div>
+        </div>
+
+        <div class="tool-launch-btn">
+          Open Brochure Maker
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <!-- ── CHESS CLOCK ── -->
+      <a href="chess-clock-demo.html" class="tool-card animate-on-scroll" target="_blank" rel="noopener" aria-label="Open 3D Chess Clock">
+        <div class="tool-free-tag">Free</div>
+
+        <!-- Custom SVG Icon: Chess clock with two buttons -->
+        <div class="tool-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Clock body -->
+            <rect x="2" y="8" width="24" height="17" rx="3" fill="#EFF6FF" stroke="#1E73E8" stroke-width="1.6"/>
+            <!-- Two buttons on top -->
+            <rect x="3" y="5" width="9" height="4" rx="1.5" fill="#1E73E8" opacity="0.2" stroke="#1E73E8" stroke-width="1.4"/>
+            <rect x="16" y="5" width="9" height="4" rx="1.5" fill="#1E73E8" stroke="#1E73E8" stroke-width="1.4"/>
+            <!-- Left display (dim) -->
+            <rect x="4" y="11" width="9" height="11" rx="1.5" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+            <text x="8.5" y="19.5" text-anchor="middle" font-size="4.5" font-weight="700" fill="#94A3B8" font-family="monospace">5:00</text>
+            <!-- Right display (active - bright) -->
+            <rect x="15" y="11" width="9" height="11" rx="1.5" fill="#1E3A5F" stroke="#1E73E8" stroke-width="1"/>
+            <text x="19.5" y="19.5" text-anchor="middle" font-size="4.5" font-weight="700" fill="#93C5FD" font-family="monospace">4:47</text>
+            <!-- Active indicator dot -->
+            <circle cx="19.5" cy="12.5" r="1" fill="#60A5FA"/>
+          </svg>
+        </div>
+
+        <div class="tool-name">3D Chess Clock</div>
+        <div class="tool-desc">A premium chess clock in your browser — no app needed. Feels like pressing a real DGT clock with haptic feedback, click sounds and a 3D button press effect.</div>
+
+        <div class="tool-features">
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            Realistic 3D press feel + haptics
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            All time controls — Bullet to Classical
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            5 premium themes
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            Works offline on any phone
+          </div>
+        </div>
+
+        <div class="tool-launch-btn">
+          Launch Chess Clock
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <!-- ── SCORESHEET GENERATOR ── -->
+      <a href="scoresheet-generator-v1.html" class="tool-card animate-on-scroll" target="_blank" rel="noopener" aria-label="Open Scoresheet Generator">
+        <div class="tool-free-tag">Free</div>
+
+        <!-- Custom SVG Icon: Scoresheet with chess move notation -->
+        <div class="tool-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Paper -->
+            <rect x="3" y="1.5" width="18" height="25" rx="2" fill="#EFF6FF" stroke="#1E73E8" stroke-width="1.6"/>
+            <!-- Header bar -->
+            <rect x="3" y="1.5" width="18" height="5.5" rx="2" fill="#1E73E8" opacity="0.12"/>
+            <!-- King icon in header -->
+            <path d="M12 3 L12 4.5 M10.5 3.5 L13.5 3.5" stroke="#1E73E8" stroke-width="1.3" stroke-linecap="round"/>
+            <rect x="10.5" y="4.5" width="3" height="2" rx="0.5" fill="#1E73E8" opacity="0.6"/>
+            <!-- Move rows -->
+            <line x1="6" y1="9.5" x2="19" y2="9.5" stroke="#BFDBFE" stroke-width="0.8"/>
+            <!-- Col headers -->
+            <text x="6.5" y="9" font-size="2.8" fill="#1E73E8" font-weight="700" font-family="sans-serif" opacity="0.7">#</text>
+            <text x="10" y="9" font-size="2.8" fill="#1E73E8" font-weight="700" font-family="sans-serif" opacity="0.7">White</text>
+            <text x="16" y="9" font-size="2.8" fill="#1E73E8" font-weight="700" font-family="sans-serif" opacity="0.7">Black</text>
+            <!-- Filled move rows -->
+            <text x="6.5" y="12.5" font-size="3" fill="#64748B" font-family="monospace">1.</text>
+            <text x="10" y="12.5" font-size="3" fill="#102C57" font-weight="600" font-family="monospace">e4</text>
+            <text x="16" y="12.5" font-size="3" fill="#1E293B" font-family="monospace">e5</text>
+            <line x1="6" y1="13.5" x2="19" y2="13.5" stroke="#E5E9F2" stroke-width="0.6"/>
+            <text x="6.5" y="16.5" font-size="3" fill="#64748B" font-family="monospace">2.</text>
+            <text x="10" y="16.5" font-size="3" fill="#102C57" font-weight="600" font-family="monospace">Nf3</text>
+            <text x="16" y="16.5" font-size="3" fill="#1E293B" font-family="monospace">Nc6</text>
+            <line x1="6" y1="17.5" x2="19" y2="17.5" stroke="#E5E9F2" stroke-width="0.6"/>
+            <text x="6.5" y="20.5" font-size="3" fill="#64748B" font-family="monospace">3.</text>
+            <text x="10" y="20.5" font-size="3" fill="#102C57" font-weight="600" font-family="monospace">Bb5</text>
+            <text x="16" y="20.5" font-size="3" fill="#1E293B" font-family="monospace">Nf6</text>
+            <!-- Empty rows fade out -->
+            <line x1="6" y1="21.5" x2="19" y2="21.5" stroke="#E5E9F2" stroke-width="0.6" opacity="0.6"/>
+            <line x1="6" y1="24.5" x2="19" y2="24.5" stroke="#E5E9F2" stroke-width="0.6" opacity="0.3"/>
+            <!-- Print icon accent -->
+            <rect x="22" y="18" width="5" height="7" rx="1" fill="#1E73E8" opacity="0.15" stroke="#1E73E8" stroke-width="1.2"/>
+            <path d="M23 18 L23 16 L26 16 L26 18" stroke="#1E73E8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <line x1="23" y1="21" x2="26" y2="21" stroke="#1E73E8" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+          </svg>
+        </div>
+
+        <div class="tool-name">Scoresheet Generator</div>
+        <div class="tool-desc">Print FIDE-standard scoresheets for your tournament or chess academy. Custom branding, 60-move rows, player info fields and signature lines — ready in seconds.</div>
+
+        <div class="tool-features">
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            Up to 50 sheets per download
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            FIDE-compliant 60-move format
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            4 design styles
+          </div>
+          <div class="tool-feature">
+            <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
+            2 sheets per A4 page
+          </div>
+        </div>
+
+        <div class="tool-launch-btn">
+          Generate Scoresheets
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Coming soon strip -->
+    <div class="tools-cta-strip animate-on-scroll">
+      <div class="tools-cta-text">
+        <h3>More tools coming soon</h3>
+        <p>Swiss Pairing Calculator · Rating Progress Tracker · Tournament Results Publisher</p>
+      </div>
+      <div class="tools-cta-badge">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        All tools 100% free
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1173,6 +1661,12 @@
         <a href="#how-it-works">How It Works</a>
         <a href="#why">Why Us</a>
         <a href="#register">List Yourself</a>
+      </div>
+      <div class="footer-col">
+        <h4>Free Tools</h4>
+        <a href="brochure-maker-v1.html" target="_blank">Brochure Maker</a>
+        <a href="chess-clock-demo.html" target="_blank">3D Chess Clock</a>
+        <a href="scoresheet-generator-v1.html" target="_blank">Scoresheet Generator</a>
       </div>
       <div class="footer-col">
         <h4>Info</h4>
@@ -1395,14 +1889,14 @@
   }
 
   function updateIndicator() {
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 4; i++) {
       const dot = document.getElementById(`dot${i}`);
       const lbl = document.getElementById(`lbl${i}`);
       dot.className = 'step-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
       dot.setAttribute('aria-current', i === currentStep ? 'step' : 'false');
       lbl.className = 'step-label' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
     }
-    for (let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 3; i++) {
       document.getElementById(`line${i}`).className = 'step-line' + (i < currentStep ? ' done' : '');
     }
     document.querySelector('.step-indicator').setAttribute('aria-valuenow', currentStep);
@@ -1411,7 +1905,35 @@
   function nextStep(from) {
     if (from === 1 && !validateStep1()) return;
     if (from === 2 && !validateStep2()) return;
+    if (from === 3 && !validateStep3()) return;
+    if (from === 3) populateReview();
     goToStep(from + 1);
+  }
+
+  function populateReview() {
+    // Basic Info
+    document.getElementById('rv-name').textContent = document.getElementById('fullName').value.trim() || '—';
+    document.getElementById('rv-whatsapp').textContent = document.getElementById('whatsapp').value.trim() || '—';
+    document.getElementById('rv-city').textContent = document.getElementById('city').value.trim() || '—';
+    document.getElementById('rv-mode').textContent = selectedMode || '—';
+    // Expertise
+    document.getElementById('rv-experience').textContent = document.getElementById('experience').value || '—';
+    document.getElementById('rv-levels').textContent = selectedLevels.length ? selectedLevels.join(', ') : '—';
+    document.getElementById('rv-languages').textContent = selectedLanguages.length ? selectedLanguages.join(', ') : '—';
+    document.getElementById('rv-fide').textContent = isFide ? 'Yes — FIDE Rated' : 'Not Rated';
+    if (isFide) {
+      document.getElementById('rv-fide-detail-row').style.display = '';
+      document.getElementById('rv-fide-detail').textContent =
+        `ID: ${document.getElementById('fideId').value.trim()} · Rating: ${document.getElementById('fideRating').value}`;
+    } else {
+      document.getElementById('rv-fide-detail-row').style.display = 'none';
+    }
+    // Final Touches
+    document.getElementById('rv-bio').textContent = document.getElementById('bio').value.trim() || '—';
+    const fees = document.getElementById('fees').value.trim();
+    document.getElementById('rv-fees').textContent = fees ? `₹${fees} / month` : 'Not specified';
+    const trial = document.querySelector('input[name="trial"]:checked');
+    document.getElementById('rv-trial').textContent = trial ? (trial.value === 'yes' ? 'Yes — available' : 'No') : '—';
   }
 
   function validateStep1() {
