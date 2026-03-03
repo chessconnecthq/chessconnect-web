@@ -465,6 +465,44 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .go-again:hover{opacity:0.85}
 .go-new{padding:0.55rem 1.3rem;border-radius:8px;border:1.5px solid #2a2a2a;background:transparent;color:#555;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s}
 .go-new:hover{border-color:#666;color:#aaa}
+/* ═══════════ PAUSE OVERLAY ═══════════ */
+.pause-overlay{
+  position:absolute;inset:0;border-radius:inherit;
+  background:rgba(0,0,0,0.72);backdrop-filter:blur(4px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;z-index:50;opacity:0;pointer-events:none;
+  transition:opacity 0.2s;
+}
+.pause-overlay.show{opacity:1;pointer-events:all}
+.po-icon{font-size:1.6rem;line-height:1}
+.po-text{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.18em;color:#fff}
+.po-sub{font-size:0.52rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4)}
+/* Theme tints */
+.heritage-clock .pause-overlay{background:rgba(10,5,2,0.78)}
+.heritage-clock .po-text{color:#E8C870}
+.pro-clock .pause-overlay{background:rgba(0,0,0,0.8)}
+.pro-clock .po-text{color:#ffffff}
+.chronos-clock .pause-overlay{background:rgba(0,0,20,0.82)}
+.chronos-clock .po-text{color:#00EFFF}
+
+/* ═══════════ FULLSCREEN TOAST ═══════════ */
+.fs-toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(30,30,30,0.95);border:1px solid #333;
+  border-radius:10px;padding:0.65rem 1.1rem;
+  font-size:0.72rem;font-weight:600;color:#ccc;
+  white-space:nowrap;z-index:9999;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.25s,transform 0.25s;
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;gap:0.5rem;
+}
+.fs-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.fs-toast-icon{font-size:0.9rem}
+/* Fullscreen active state */
+:fullscreen #rotateBtn{display:none}
+:-webkit-full-screen #rotateBtn{display:none}
+.s3-btn.fs-active{border-color:#C4873A;color:#C4873A}
 </style>
 </head>
 <body>
@@ -593,6 +631,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <button class="s3-btn" onclick="toggleSound()" id="soundBtn" title="Sound">
         <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
       </button>
+      <button class="s3-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="Fullscreen">
+        <svg id="fsIcon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+      </button>
       <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>
       </button>
@@ -606,7 +647,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-view heritage-clock" id="heritage-clock">
     <div class="hc-body">
       <div class="hc-corners"></div>
-      <!-- Knobs + controls -->
+      <div class="pause-overlay" id="po-heritage"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Knobs + controls -->
       <div class="hc-top">
         <div class="hc-knob-col">
           <div class="hc-knob inactive-k" id="hk1" onpointerdown="pressBtn(1,event,this)"></div>
@@ -675,7 +716,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <!-- ── PRO CLOCK ── -->
   <div class="clock-view pro-clock" id="pro-clock">
     <div class="pc-body">
-      <!-- Lever top -->
+      <div class="pause-overlay" id="po-pro"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Lever top -->
       <div class="pc-top">
         <div class="pc-lcol">
           <div class="pc-led-row"><div class="pc-led g" id="pc-led1"></div><div class="pc-llbl" id="pc-lbl1">Player 1</div></div>
@@ -742,7 +783,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <!-- ── CHRONOS CLOCK ── -->
   <div class="clock-view chronos-clock" id="chronos-clock">
     <div class="cc-body">
-      <!-- Circuit traces -->
+      <div class="pause-overlay" id="po-chronos"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Circuit traces -->
       <div class="cc-circuit">
         <svg viewBox="0 0 428 215" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <g stroke="rgba(0,200,255,0.28)" stroke-width="0.75" fill="none">
@@ -832,6 +873,12 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 </div><!-- /screen3 -->
 
+<!-- FULLSCREEN TOAST -->
+<div class="fs-toast" id="fsToast">
+  <span class="fs-toast-icon">📱</span>
+  <span id="fsToastMsg">Add to Home Screen for fullscreen on iOS</span>
+</div>
+
 <!-- GAME OVER -->
 <div class="gameover" id="goBanner">
   <div class="go-flag">🏳️</div>
@@ -854,6 +901,7 @@ let active = -1, paused = false, over = false;
 let ticker = null, lastTick = null;
 let warnDone = [false,false];
 let soundOn = true, ctx = null;
+let lastPress = 0; // debounce tracker
 
 /* Prefix map */
 const PFX = {heritage:'hc', pro:'pc', chronos:'cc'};
@@ -921,12 +969,13 @@ function launchClock() {
   baseTime = baseTime; // already set via pickTC or custom
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
   if (!selChip) {
-    const h=parseInt(document.getElementById('ctH').value)||0;
-    const m=parseInt(document.getElementById('ctM').value)||0;
-    const s=parseInt(document.getElementById('ctS').value)||0;
-    const i=parseInt(document.getElementById('ctI').value)||0;
+    const h=Math.max(0,Math.min(9,  parseInt(document.getElementById('ctH').value)||0));
+    const m=Math.max(0,Math.min(59, parseInt(document.getElementById('ctM').value)||0));
+    const s=Math.max(0,Math.min(59, parseInt(document.getElementById('ctS').value)||0));
+    const i=Math.max(0,Math.min(300,parseInt(document.getElementById('ctI').value)||0));
     const tot=h*3600+m*60+s;
     if(tot>0){baseTime=tot;inc=i;}
+    else { alert('Please set a valid time (at least 1 second).'); return; }
   }
   initClockView();
   show('screen3');
@@ -940,7 +989,7 @@ function initClockView() {
   document.getElementById(theme+'-clock').classList.add('show');
 
   if(ticker){clearInterval(ticker);ticker=null;}
-  active=-1; paused=false; over=false;
+  active=-1; paused=false; over=false; lastTickSecond=-1;
   times=[baseTime,baseTime]; moves=[0,0]; warnDone=[false,false];
   updateDisplays();
   resetBtnUI();
@@ -949,18 +998,20 @@ function initClockView() {
   stripShow(true);
   // Reset pause button
   setPauseIcon(false);
+  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
 }
 
 function restartClock() {
   // Same time, same theme — just reset
   if(ticker){clearInterval(ticker);ticker=null;}
-  active=-1; paused=false; over=false;
+  active=-1; paused=false; over=false; lastTickSecond=-1;
   times=[baseTime,baseTime]; moves=[0,0]; warnDone=[false,false];
   updateDisplays();
   resetBtnUI();
   document.getElementById('goBanner').classList.remove('show');
   stripShow(true);
   setPauseIcon(false);
+  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
 }
 
 function newGame() {
@@ -991,12 +1042,13 @@ function pickTC(secs, i, key, el) {
 function quickTC(secs, i) {
   baseTime=secs; inc=i;
   if(ticker){clearInterval(ticker);ticker=null;}
-  active=-1; paused=false; over=false;
+  active=-1; paused=false; over=false; lastTickSecond=-1;
   times=[secs,secs]; moves=[0,0]; warnDone=[false,false];
   updateDisplays(); resetBtnUI();
   document.getElementById('goBanner').classList.remove('show');
   stripShow(true);
   setPauseIcon(false);
+  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
 }
 
 /* ════════════════════════════════
@@ -1094,6 +1146,10 @@ function stripShow(show) {
 function pressBtn(player, e, el) {
   initAudio();
   if(over) return;
+  // Debounce — ignore presses within 200ms of last press
+  const now = Date.now();
+  if(now - lastPress < 200) return;
+  lastPress = now;
   const idx=player-1;
 
   if(active===-1){
@@ -1131,10 +1187,13 @@ function pressBtn(player, e, el) {
 /* ════════════════════════════════
    TICK
 ════════════════════════════════ */
+let lastTickSecond = -1; // tracks which whole second we last beeped at
+
 function tick() {
   if(active<0||paused||over) return;
   const now=performance.now();
   times[active]-=(now-lastTick)/1000;
+  times[active]=Math.max(0, times[active]); // clamp — never go negative
   lastTick=now;
 
   if(times[active]<=30&&!warnDone[active]){
@@ -1142,6 +1201,16 @@ function tick() {
     playWarning();
     document.getElementById(PFX[theme]+'-p'+(active+1)+'unit').classList.add('warning');
   }
+
+  // Tick sound — once per second when under 10s
+  if(times[active]<=10&&times[active]>0){
+    const wholeSecond=Math.ceil(times[active]);
+    if(wholeSecond!==lastTickSecond){
+      lastTickSecond=wholeSecond;
+      playTick();
+    }
+  }
+
   if(times[active]<=0){
     times[active]=0; updateDisplays(); flagPlayer(active); return;
   }
@@ -1169,13 +1238,17 @@ function flagPlayer(p) {
 function togglePause() {
   if(over||active===-1) return;
   paused=!paused;
-  const p=PFX[theme];
   // Sync all pause buttons
   ['hc-pause','pc-pause','cc-pause','pauseBtn'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.classList.toggle('on',paused);
   });
   setPauseIcon(paused);
+  // Show/hide pause overlay on active clock body
+  ['heritage','pro','chronos'].forEach(id=>{
+    const po=document.getElementById('po-'+id);
+    if(po) po.classList.toggle('show', paused);
+  });
   if(paused){
     setClockStatus('Paused');
     lastTick=null;
@@ -1246,6 +1319,17 @@ function playWarning() {
     o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.1);
   });
 }
+function playTick() {
+  if(!soundOn||!ctx) return;
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.type='sine';
+  o.frequency.setValueAtTime(1100,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(700,ctx.currentTime+0.025);
+  g.gain.setValueAtTime(0.11,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.03);
+  o.start();o.stop(ctx.currentTime+0.035);
+}
 function playFlag() {
   if(!soundOn||!ctx) return;
   const o=ctx.createOscillator(),g=ctx.createGain();
@@ -1267,6 +1351,95 @@ function toggleSound() {
     icon.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
     btn.style.color='#FF4444';
   }
+}
+
+
+/* ════════════════════════════════
+   FULLSCREEN
+════════════════════════════════ */
+let isFullscreen = false;
+let fsToastTimer = null;
+
+function toggleFullscreen() {
+  if (!isFullscreen) { enterFullscreen(); } else { exitFullscreen(); }
+}
+
+function enterFullscreen() {
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+  if (req) {
+    req.call(el).then(() => {
+      isFullscreen = true;
+      updateFsBtn(true);
+      lockLandscape();
+    }).catch(() => {
+      showFsToast('Fullscreen blocked. Try adding to Home Screen.');
+    });
+  } else {
+    showFsToast('Add to Home Screen for fullscreen on iOS');
+  }
+}
+
+function exitFullscreen() {
+  const exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+  if (exit) exit.call(document).catch(() => {});
+  unlockOrientation();
+  isFullscreen = false;
+  updateFsBtn(false);
+}
+
+function lockLandscape() {
+  try {
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(() => {});
+    }
+  } catch(e) {}
+}
+
+function unlockOrientation() {
+  try {
+    if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+  } catch(e) {}
+}
+
+function updateFsBtn(active) {
+  const btn = document.getElementById('fullscreenBtn');
+  const icon = document.getElementById('fsIcon');
+  if (!btn || !icon) return;
+  if (active) {
+    btn.classList.add('fs-active');
+    icon.innerHTML = '<path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/>';
+  } else {
+    btn.classList.remove('fs-active');
+    icon.innerHTML = '<path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>';
+  }
+}
+
+function showFsToast(msg) {
+  const toast = document.getElementById('fsToast');
+  const msgEl = document.getElementById('fsToastMsg');
+  if (!toast) return;
+  if (msgEl) msgEl.textContent = msg;
+  toast.classList.add('show');
+  if (fsToastTimer) clearTimeout(fsToastTimer);
+  fsToastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
+}
+
+document.addEventListener('fullscreenchange', onFsChange);
+document.addEventListener('webkitfullscreenchange', onFsChange);
+function onFsChange() {
+  const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  if (!isFull && isFullscreen) {
+    isFullscreen = false;
+    updateFsBtn(false);
+    unlockOrientation();
+  }
+}
+
+const _origNewGame = newGame;
+function newGame() {
+  if (isFullscreen) exitFullscreen();
+  _origNewGame();
 }
 
 // Init default preset selection
