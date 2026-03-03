@@ -158,9 +158,11 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 /* MOVES TABLE */
 .ss-moves{padding:7px 12px 4px;display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 .ss-moves-col{width:100%}
-.moves-tbl{width:100%;border-collapse:collapse}
-.moves-tbl th{font-size:6px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#6B7280;padding:2px 4px;text-align:left;border-bottom:1.5px solid #102C57}
-.moves-tbl td{font-size:7.5px;padding:0;border-bottom:1px solid #F1F5F9;height:14px;vertical-align:middle}
+.moves-tbl{width:100%;border:1.5px solid #CBD5E1;border-collapse:collapse}
+.moves-tbl th{font-size:6px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#6B7280;padding:2px 4px;text-align:left;border-bottom:1.5px solid #102C57;border-right:1px solid #CBD5E1;background:#F8FAFF}
+.moves-tbl th:last-child{border-right:none}
+.moves-tbl td{font-size:7.5px;padding:0;border-bottom:1px solid #CBD5E1;border-right:1px solid #CBD5E1;height:14px;vertical-align:middle}
+.moves-tbl td:last-child{border-right:none}
 .moves-tbl td.mn{width:22px;font-size:6.5px;font-weight:700;color:#94A3B8;padding:0 3px;font-family:'DM Mono',monospace;background:#FAFBFF}
 .moves-tbl td.mv{padding:0 4px;font-family:'DM Mono',monospace;min-width:65px}
 .moves-tbl td.mt{padding:0 3px;font-family:'DM Mono',monospace;width:28px}
@@ -443,13 +445,13 @@ function buildSheet(num) {
       <div class="ss-moves-col">
         <table class="moves-tbl">
           <thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
-          <tbody>${movesCol(1, 30)}</tbody>
+          <tbody>${movesCol(1, 25)}</tbody>
         </table>
       </div>
       <div class="ss-moves-col">
         <table class="moves-tbl">
           <thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
-          <tbody>${movesCol(31, 60)}</tbody>
+          <tbody>${movesCol(26, 50)}</tbody>
         </table>
       </div>
     </div>
