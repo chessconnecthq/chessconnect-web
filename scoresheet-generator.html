@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ChessConnect Scoresheet Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#1E73E8;--navy:#102C57;--navy2:#1a3d73;
+  --white:#fff;--off:#F8FAFF;--gray:#6B7280;--gl:#E5E9F2;
+  --green:#10B981;--gold:#F59E0B;
+  --font-h:'Playfair Display',serif;--font-b:'DM Sans',sans-serif;--font-m:'DM Mono',monospace;
+  --r:12px;--rs:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.nav{background:var(--white);border-bottom:1px solid var(--gl);padding:0 5%;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(16,44,87,0.06)}
+.nlogo{font-weight:800;font-size:1.25rem;letter-spacing:-1px;text-decoration:none}
+.chess{color:var(--navy)}.connect{color:#4285F4}
+.ntag{font-size:0.7rem;font-weight:700;color:var(--blue);background:rgba(30,115,232,0.08);border:1px solid rgba(30,115,232,0.18);padding:0.28rem 0.7rem;border-radius:100px;letter-spacing:0.04em}
+.nback{font-size:0.8rem;font-weight:600;color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:0.3rem;transition:color 0.2s}
+.nback:hover{color:var(--blue)}
+
+/* LAYOUT */
+.page{display:grid;grid-template-columns:360px 1fr;min-height:calc(100vh - 58px)}
+@media(max-width:900px){.page{grid-template-columns:1fr}.preview-col{display:none}}
+
+/* LEFT — FORM */
+.form-col{background:var(--white);border-right:1px solid var(--gl);overflow-y:auto;max-height:calc(100vh - 58px);position:sticky;top:58px}
+.form-inner{padding:1.5rem}
+
+.hero{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:var(--r);padding:1.2rem 1.4rem;margin-bottom:1.5rem;color:#fff}
+.hero-title{font-family:var(--font-h);font-size:1.15rem;font-weight:800;margin-bottom:0.3rem}
+.hero-sub{font-size:0.75rem;opacity:0.75;line-height:1.5}
+
+.section-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin:1.2rem 0 0.7rem;display:flex;align-items:center;gap:0.5rem}
+.section-title::after{content:'';flex:1;height:1px;background:var(--gl)}
+
+.fg{margin-bottom:0.9rem}
+.fl{display:block;font-size:0.72rem;font-weight:700;color:var(--navy);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.04em}
+.fl .opt{font-weight:400;text-transform:none;color:var(--gray);letter-spacing:0}
+.fi,.fs{width:100%;font-family:var(--font-b);font-size:0.855rem;color:var(--navy);background:var(--white);border:1.5px solid var(--gl);border-radius:var(--rs);padding:0.58rem 0.75rem;outline:none;transition:border-color 0.2s}
+.fi:focus,.fs:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,115,232,0.07)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem}
+
+/* Quantity selector */
+.qty-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem;margin-bottom:0.5rem}
+.qty-btn{padding:0.5rem;border-radius:var(--rs);border:1.5px solid var(--gl);background:var(--white);color:var(--gray);font-family:var(--font-b);font-size:0.8rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s}
+.qty-btn:hover{border-color:var(--blue);color:var(--blue)}
+.qty-btn.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* Style selector */
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem}
+.style-card{border:2px solid var(--gl);border-radius:var(--rs);padding:0.65rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.style-card:hover{border-color:var(--blue)}
+.style-card.sel{border-color:var(--blue);background:rgba(30,115,232,0.04)}
+.style-preview{height:50px;border-radius:5px;margin-bottom:0.4rem;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;letter-spacing:0.05em}
+.sp-classic{background:linear-gradient(135deg,#102C57,#1E73E8);color:rgba(255,255,255,0.9)}
+.sp-minimal{background:linear-gradient(135deg,#f5f5f5,#e8e8e8);color:#333;border:1px solid #ddd}
+.sp-academy{background:linear-gradient(135deg,#065F46,#34D399);color:rgba(255,255,255,0.9)}
+.sp-warm{background:linear-gradient(135deg,#7C2D12,#C4873A);color:rgba(255,255,255,0.9)}
+.style-name{font-size:0.72rem;font-weight:700;color:var(--navy)}
+
+/* Toggle */
+.trow{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0;border-bottom:1px solid var(--gl)}
+.trow:last-child{border-bottom:none}
+.tlbl{font-size:0.82rem;font-weight:500;color:var(--navy)}
+.tsub{font-size:0.68rem;color:var(--gray)}
+.tsw{position:relative;width:38px;height:21px;flex-shrink:0}
+.tsw input{opacity:0;width:0;height:0}
+.tsl{position:absolute;inset:0;background:var(--gl);border-radius:11px;cursor:pointer;transition:background 0.2s}
+.tsl::before{content:'';position:absolute;width:15px;height:15px;left:3px;top:3px;background:var(--white);border-radius:50%;transition:transform 0.2s}
+.tsw input:checked+.tsl{background:var(--blue)}
+.tsw input:checked+.tsl::before{transform:translateX(17px)}
+
+/* Generate button */
+.gen-btn{width:100%;padding:0.85rem;border:none;border-radius:var(--rs);background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;font-family:var(--font-b);font-size:0.95rem;font-weight:800;cursor:pointer;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1rem;letter-spacing:0.02em}
+.gen-btn:hover{opacity:0.9}
+.gen-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.print-btn{width:100%;padding:0.7rem;border:1.5px solid var(--gl);border-radius:var(--rs);background:var(--white);color:var(--navy);font-family:var(--font-b);font-size:0.855rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:0.5rem}
+.print-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* Tip box */
+.tip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:var(--rs);padding:0.75rem 0.9rem;margin-top:1rem;font-size:0.75rem;color:#1E40AF;line-height:1.6}
+.tip strong{font-weight:700}
+
+/* RIGHT — PREVIEW */
+.preview-col{background:#D1D9E6;overflow-y:auto;max-height:calc(100vh - 58px);position:sticky;top:58px}
+.preview-header{background:var(--white);border-bottom:1px solid var(--gl);padding:0.75rem 1.4rem;display:flex;align-items:center;justify-content:space-between}
+.preview-title{font-size:0.8rem;font-weight:700;color:var(--navy)}
+.preview-badge{font-size:0.68rem;font-weight:700;color:var(--green);background:#ECFDF5;border:1px solid #BBF7D0;padding:0.2rem 0.6rem;border-radius:100px}
+.preview-area{padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem;align-items:center}
+
+/* ══ SCORESHEET ══ */
+.scoresheet{
+  width:680px;background:#fff;
+  box-shadow:0 4px 24px rgba(0,0,0,0.12);
+  font-family:'DM Sans',sans-serif;
+  page-break-after:always;
+  position:relative;
+}
+
+/* CLASSIC style */
+.ss-classic .ss-header{background:linear-gradient(135deg,#102C57,#1E73E8);padding:14px 20px 12px;color:#fff}
+.ss-classic .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:5px}
+.ss-classic .ss-brand span{color:#4285F4}
+.ss-classic .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:3px}
+.ss-classic .ss-subline{font-size:7px;color:rgba(255,255,255,0.7);margin-bottom:8px;font-style:italic}
+.ss-classic .ss-meta-row{display:flex;gap:8px;flex-wrap:wrap}
+.ss-classic .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2.5px 6px;font-size:6.5px;font-weight:700;color:#fff}
+
+/* MINIMAL style */
+.ss-minimal .ss-header{background:#fff;padding:14px 20px 10px;border-bottom:2px solid #102C57}
+.ss-minimal .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:5px;color:#102C57}
+.ss-minimal .ss-brand span{color:#4285F4}
+.ss-minimal .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#102C57;margin-bottom:3px}
+.ss-minimal .ss-subline{font-size:7px;color:#6B7280;margin-bottom:8px;font-style:italic}
+.ss-minimal .ss-meta-row{display:flex;gap:8px;flex-wrap:wrap}
+.ss-minimal .ss-chip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;padding:2.5px 6px;font-size:6.5px;font-weight:700;color:#1E40AF}
+
+/* ACADEMY style */
+.ss-academy .ss-header{background:linear-gradient(135deg,#065F46,#059669);padding:14px 20px 12px;color:#fff}
+.ss-academy .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:5px}
+.ss-academy .ss-brand span{color:#6EE7B7}
+.ss-academy .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:3px}
+.ss-academy .ss-subline{font-size:7px;color:rgba(255,255,255,0.7);margin-bottom:8px;font-style:italic}
+.ss-academy .ss-meta-row{display:flex;gap:8px;flex-wrap:wrap}
+.ss-academy .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2.5px 6px;font-size:6.5px;font-weight:700;color:#fff}
+
+/* WARM style */
+.ss-warm .ss-header{background:linear-gradient(135deg,#7C2D12,#C2410C);padding:14px 20px 12px;color:#fff}
+.ss-warm .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:5px}
+.ss-warm .ss-brand span{color:#FCD34D}
+.ss-warm .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:3px}
+.ss-warm .ss-subline{font-size:7px;color:rgba(255,255,255,0.7);margin-bottom:8px;font-style:italic}
+.ss-warm .ss-meta-row{display:flex;gap:8px;flex-wrap:wrap}
+.ss-warm .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2.5px 6px;font-size:6.5px;font-weight:700;color:#fff}
+
+/* PLAYER INFO section */
+.ss-players{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #e5e9f2}
+.ss-player{padding:9px 16px;position:relative}
+.ss-player:first-child{border-right:1px solid #e5e9f2}
+.ss-player-color{font-size:6px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;margin-bottom:4px}
+.ss-player-name-row{display:flex;align-items:flex-end;gap:6px;margin-bottom:3px}
+.ss-player-label{font-size:6.5px;font-weight:600;color:#9CA3AF;width:34px;flex-shrink:0}
+.ss-player-line{flex:1;border-bottom:1px solid #CBD5E1;height:16px}
+.ss-player-info{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.ss-pi-row{display:flex;align-items:flex-end;gap:4px}
+.ss-pi-label{font-size:6px;font-weight:600;color:#9CA3AF;white-space:nowrap;flex-shrink:0}
+.ss-pi-line{flex:1;border-bottom:1px solid #CBD5E1;height:14px}
+
+/* GAME INFO bar */
+.ss-gameinfo{display:flex;gap:0;border-bottom:1px solid #e5e9f2;background:#F8FAFF}
+.ss-gi-item{flex:1;padding:6px 10px;border-right:1px solid #e5e9f2;font-size:6px}
+.ss-gi-item:last-child{border-right:none}
+.ss-gi-label{font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px}
+.ss-gi-line{border-bottom:1px solid #CBD5E1;height:16px}
+
+/* MOVES TABLE */
+.ss-moves{padding:8px 12px 4px;display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.ss-moves-col{width:100%}
+.moves-tbl{width:100%;border-collapse:collapse}
+.moves-tbl th{font-size:6px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#6B7280;padding:2px 4px;text-align:left;border-bottom:1.5px solid #102C57}
+.moves-tbl td{font-size:7.5px;padding:0;border-bottom:1px solid #F1F5F9;height:14px;vertical-align:middle}
+.moves-tbl td.mn{width:22px;font-size:6.5px;font-weight:700;color:#94A3B8;padding:0 3px;font-family:'DM Mono',monospace;background:#FAFBFF}
+.moves-tbl td.mv{padding:0 4px;font-family:'DM Mono',monospace;min-width:70px}
+.moves-tbl tr:nth-child(even) td{background:#F8FAFF}
+.moves-tbl tr:nth-child(even) td.mn{background:#F0F4FF}
+
+/* RESULT section */
+.ss-result{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid #102C57;margin:4px 12px 0}
+.ss-result-half{padding:7px 10px}
+.ss-result-half:first-child{border-right:1px solid #e5e9f2}
+.ss-result-label{font-size:6px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#6B7280;margin-bottom:6px}
+.ss-result-boxes{display:flex;gap:5px;margin-bottom:6px}
+.ss-rbox{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ss-rbox-sq{width:16px;height:16px;border:1.5px solid #CBD5E1;border-radius:2px}
+.ss-rbox-lbl{font-size:5.5px;font-weight:700;color:#6B7280}
+.ss-sign-row{display:flex;align-items:flex-end;gap:4px}
+.ss-sign-label{font-size:6px;font-weight:600;color:#9CA3AF;white-space:nowrap}
+.ss-sign-line{flex:1;border-bottom:1px solid #CBD5E1;height:18px}
+
+/* FOOTER */
+.ss-footer{background:#F8FAFF;border-top:1px solid #e5e9f2;padding:5px 16px;display:flex;align-items:center;justify-content:space-between}
+.ss-footer-left{font-size:5.5px;color:#9CA3AF}
+.ss-footer-brand{font-size:7px;font-weight:800;letter-spacing:-0.2px}
+.ss-footer-chess{color:#102C57}.ss-footer-connect{color:#4285F4}
+
+/* Watermark for non-print */
+.ss-sheet-num{position:absolute;top:10px;right:14px;font-size:6px;font-weight:700;color:rgba(255,255,255,0.6);letter-spacing:0.05em}
+.ss-minimal .ss-sheet-num{color:rgba(16,44,87,0.4)}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff}
+  .nav,.form-col,.preview-header{display:none!important}
+  .page{display:block}
+  .preview-col{max-height:none;position:static;background:#fff;overflow:visible;display:block!important}
+  .preview-area{padding:0;gap:0}
+  .scoresheet{box-shadow:none;width:100%;page-break-after:always}
+  .scoresheet:last-child{page-break-after:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nlogo"><span class="chess">Chess</span><span class="connect">Connect</span></a>
+  <span class="ntag">Scoresheet Generator</span>
+  <a href="index.html" class="nback">← Back to Home</a>
+</nav>
+
+<div class="page">
+
+<!-- ══ LEFT — FORM ══ -->
+<div class="form-col">
+<div class="form-inner">
+
+  <div class="hero">
+    <div class="hero-title">Scoresheet Generator</div>
+    <div class="hero-sub">Generate print-ready FIDE-standard scoresheets for your tournament. Custom branding, bulk printing, instant download.</div>
+  </div>
+
+  <div class="section-title">Tournament Details</div>
+  <div class="fg"><label class="fl">Tournament Name</label><input class="fi" id="f-name" placeholder="e.g. Pune Open FIDE Rated 2026" oninput="generate()"/></div>
+  <div class="frow">
+    <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="f-date" oninput="generate()"/></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Balewadi Complex" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Time Control</label>
+      <select class="fs" id="f-tc" onchange="generate()">
+        <option>30 min + 30 sec</option>
+        <option>15 min + 10 sec</option>
+        <option>90 min + 30 sec</option>
+        <option>25 min + 10 sec</option>
+        <option>10 min + 5 sec</option>
+        <option>Custom</option>
+      </select>
+    </div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label class="fl">Organised By</label><input class="fi" id="f-org" placeholder="e.g. Pune Chess Association" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Total Rounds</label>
+      <select class="fs" id="f-rounds" onchange="generate()">
+        <option>5</option><option>6</option><option>7</option><option>8</option>
+        <option selected>9</option><option>10</option><option>11</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section-title">Quantity</div>
+  <div class="qty-grid">
+    <div class="qty-btn" onclick="setQty(5,this)">5</div>
+    <div class="qty-btn" onclick="setQty(10,this)">10</div>
+    <div class="qty-btn sel" onclick="setQty(20,this)">20</div>
+    <div class="qty-btn" onclick="setQty(50,this)">50</div>
+  </div>
+  <p style="font-size:0.7rem;color:var(--gray)">Sheets generated: <strong id="qtyDisplay">20</strong> (2 per A4 page = <strong id="pageDisplay">10</strong> pages)</p>
+
+  <div class="section-title">Design Style</div>
+  <div class="style-grid">
+    <div class="style-card sel" id="sty-classic" onclick="setStyle('classic',this)"><div class="style-preview sp-classic">CLASSIC</div><div class="style-name">Classic</div></div>
+    <div class="style-card" id="sty-minimal" onclick="setStyle('minimal',this)"><div class="style-preview sp-minimal">MINIMAL</div><div class="style-name">Minimal</div></div>
+    <div class="style-card" id="sty-academy" onclick="setStyle('academy',this)"><div class="style-preview sp-academy">ACADEMY</div><div class="style-name">Academy</div></div>
+    <div class="style-card" id="sty-warm" onclick="setStyle('warm',this)"><div class="style-preview sp-warm">WARM</div><div class="style-name">Warm</div></div>
+  </div>
+
+  <div class="section-title">Options</div>
+  <div>
+    <div class="trow"><div><div class="tlbl">Show Move Number Column</div><div class="tsub">Numbered rows 1–60</div></div><label class="tsw"><input type="checkbox" id="opt-moves" checked onchange="generate()"/><span class="tsl"></span></label></div>
+    <div class="trow"><div><div class="tlbl">Show Time Column</div><div class="tsub">Clock time per move</div></div><label class="tsw"><input type="checkbox" id="opt-time" checked onchange="generate()"/><span class="tsl"></span></label></div>
+    <div class="trow"><div><div class="tlbl">Show FIDE Rating Fields</div><div class="tsub">Rating + FIDE ID fields</div></div><label class="tsw"><input type="checkbox" id="opt-rating" checked onchange="generate()"/><span class="tsl"></span></label></div>
+    <div class="trow"><div><div class="tlbl">Show Result Checkboxes</div><div class="tsub">1–0, 0–1, ½–½ boxes</div></div><label class="tsw"><input type="checkbox" id="opt-result" checked onchange="generate()"/><span class="tsl"></span></label></div>
+    <div class="trow"><div><div class="tlbl">Show Signature Line</div><div class="tsub">Both players sign</div></div><label class="tsw"><input type="checkbox" id="opt-sign" checked onchange="generate()"/><span class="tsl"></span></label></div>
+  </div>
+
+  <button class="gen-btn" onclick="printSheets()">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Print / Save as PDF
+  </button>
+
+  <div class="tip">
+    <strong>💡 Tip:</strong> In the print dialog, select <strong>"Save as PDF"</strong> and set paper size to <strong>A4</strong>. Each A4 page contains 2 scoresheets. For 20 sheets you will get a 10-page PDF — enough for one full round.
+  </div>
+
+</div>
+</div>
+
+<!-- ══ RIGHT — PREVIEW ══ -->
+<div class="preview-col">
+  <div class="preview-header">
+    <div class="preview-title">Live Preview — Scroll to see all sheets</div>
+    <div class="preview-badge" id="previewBadge">20 sheets ready</div>
+  </div>
+  <div class="preview-area" id="previewArea"></div>
+</div>
+
+</div>
+
+<script>
+let qty = 20;
+let style = 'classic';
+
+function setQty(n, btn) {
+  qty = n;
+  document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('qtyDisplay').textContent = n;
+  document.getElementById('pageDisplay').textContent = Math.ceil(n/2);
+  document.getElementById('previewBadge').textContent = n + ' sheets ready';
+  generate();
+}
+
+function setStyle(name, card) {
+  style = name;
+  document.querySelectorAll('.style-card').forEach(c => c.classList.remove('sel'));
+  card.classList.add('sel');
+  generate();
+}
+
+function v(id){ return document.getElementById(id)?.value || ''; }
+function chk(id){ return document.getElementById(id)?.checked; }
+
+function fmtDate(str){
+  if (!str) return '';
+  const d = new Date(str);
+  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function buildSheet(num) {
+  const name = v('f-name') || 'Tournament Name';
+  const aicf = v('f-aicf');
+  const date = fmtDate(v('f-date'));
+  const venue = v('f-venue');
+  const tc = v('f-tc') || '30 min + 30 sec';
+  const org = v('f-org') || 'Organiser';
+  const rounds = v('f-rounds') || '9';
+  const showMoves = chk('opt-moves');
+  const showTime = chk('opt-time');
+  const showRating = chk('opt-rating');
+  const showResult = chk('opt-result');
+  const showSign = chk('opt-sign');
+
+  // Build moves table - 60 moves split into two columns of 30
+  function movesCol(start, end) {
+    let rows = '';
+    for (let i = start; i <= end; i++) {
+      rows += `<tr>
+        <td class="mn">${i}.</td>
+        <td class="mv"></td>
+        <td class="mv"></td>
+        ${showTime ? '<td class="mv" style="width:28px"></td>' : ''}
+      </tr>`;
+    }
+    return rows;
+  }
+
+  const thTime = showTime ? '<th style="width:28px">Time</th>' : '';
+
+  return `
+  <div class="scoresheet ss-${style}">
+    <div class="ss-sheet-num">Sheet #${num}</div>
+
+    <!-- HEADER -->
+    <div class="ss-header">
+      <div class="ss-brand"><span>Chess</span><span>Connect</span></div>
+      <div class="ss-event">${name}</div>
+      <div class="ss-subline">Organised by ${org}${aicf ? ' · AICF: ' + aicf : ''}</div>
+      <div class="ss-meta-row">
+        ${date ? `<div class="ss-chip">📅 ${date}</div>` : ''}
+        ${venue ? `<div class="ss-chip">📍 ${venue}</div>` : ''}
+        <div class="ss-chip">⏱ ${tc}</div>
+        <div class="ss-chip">🔄 ${rounds} Rounds</div>
+      </div>
+    </div>
+
+    <!-- PLAYERS -->
+    <div class="ss-players">
+      <div class="ss-player">
+        <div class="ss-player-color">♔ White Player</div>
+        <div class="ss-player-name-row">
+          <span class="ss-player-label">Name</span>
+          <div class="ss-player-line"></div>
+        </div>
+        <div class="ss-player-info">
+          ${showRating ? `
+          <div class="ss-pi-row"><span class="ss-pi-label">FIDE Rating</span><div class="ss-pi-line"></div></div>
+          <div class="ss-pi-row"><span class="ss-pi-label">FIDE ID</span><div class="ss-pi-line"></div></div>
+          ` : ''}
+          <div class="ss-pi-row"><span class="ss-pi-label">Federation</span><div class="ss-pi-line"></div></div>
+          <div class="ss-pi-row"><span class="ss-pi-label">Title</span><div class="ss-pi-line"></div></div>
+        </div>
+      </div>
+      <div class="ss-player">
+        <div class="ss-player-color">♚ Black Player</div>
+        <div class="ss-player-name-row">
+          <span class="ss-player-label">Name</span>
+          <div class="ss-player-line"></div>
+        </div>
+        <div class="ss-player-info">
+          ${showRating ? `
+          <div class="ss-pi-row"><span class="ss-pi-label">FIDE Rating</span><div class="ss-pi-line"></div></div>
+          <div class="ss-pi-row"><span class="ss-pi-label">FIDE ID</span><div class="ss-pi-line"></div></div>
+          ` : ''}
+          <div class="ss-pi-row"><span class="ss-pi-label">Federation</span><div class="ss-pi-line"></div></div>
+          <div class="ss-pi-row"><span class="ss-pi-label">Title</span><div class="ss-pi-line"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME INFO -->
+    <div class="ss-gameinfo">
+      <div class="ss-gi-item"><div class="ss-gi-label">Round</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">Board No.</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">Date</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">Start Time</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">Opening</div><div class="ss-gi-line"></div></div>
+    </div>
+
+    <!-- MOVES -->
+    <div class="ss-moves">
+      <div class="ss-moves-col">
+        <table class="moves-tbl">
+          <thead><tr><th>#</th><th>White</th><th>Black</th>${thTime}</tr></thead>
+          <tbody>${movesCol(1, 30)}</tbody>
+        </table>
+      </div>
+      <div class="ss-moves-col">
+        <table class="moves-tbl">
+          <thead><tr><th>#</th><th>White</th><th>Black</th>${thTime}</tr></thead>
+          <tbody>${movesCol(31, 60)}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    ${showResult || showSign ? `
+    <div class="ss-result">
+      <div class="ss-result-half">
+        ${showResult ? `
+        <div class="ss-result-label">Result</div>
+        <div class="ss-result-boxes">
+          <div class="ss-rbox"><div class="ss-rbox-sq"></div><div class="ss-rbox-lbl">1–0</div></div>
+          <div class="ss-rbox"><div class="ss-rbox-sq"></div><div class="ss-rbox-lbl">0–1</div></div>
+          <div class="ss-rbox"><div class="ss-rbox-sq"></div><div class="ss-rbox-lbl">½–½</div></div>
+          <div class="ss-rbox"><div class="ss-rbox-sq"></div><div class="ss-rbox-lbl">Forfeit</div></div>
+        </div>` : ''}
+        ${showSign ? `<div class="ss-sign-row"><span class="ss-sign-label">White Signature</span><div class="ss-sign-line"></div></div>` : ''}
+      </div>
+      <div class="ss-result-half">
+        ${showResult ? `
+        <div class="ss-result-label">Arbiter Use Only</div>
+        <div class="ss-player-name-row" style="margin-bottom:4px">
+          <span class="ss-player-label" style="font-size:6px">Arbiter</span>
+          <div class="ss-player-line"></div>
+        </div>` : ''}
+        ${showSign ? `<div class="ss-sign-row"><span class="ss-sign-label">Black Signature</span><div class="ss-sign-line"></div></div>` : ''}
+      </div>
+    </div>
+    ` : ''}
+
+    <!-- FOOTER -->
+    <div class="ss-footer">
+      <div class="ss-footer-left">FIDE Standard Algebraic Notation · Scoresheets are property of the organiser · chessconnect.online</div>
+      <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span></div>
+    </div>
+
+  </div>`;
+}
+
+function generate() {
+  const area = document.getElementById('previewArea');
+  // Only show first 4 in preview for performance, print all
+  let html = '';
+  const previewCount = Math.min(qty, 4);
+  for (let i = 1; i <= previewCount; i++) {
+    html += buildSheet(i);
+  }
+  if (qty > 4) {
+    html += `<div style="background:rgba(30,115,232,0.08);border:1.5px dashed rgba(30,115,232,0.25);border-radius:12px;padding:2rem;text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;width:680px">+ ${qty - 4} more sheets (visible when printed)</div>`;
+  }
+  area.innerHTML = html;
+}
+
+function printSheets() {
+  // Build all sheets in a hidden div, then print
+  const area = document.getElementById('previewArea');
+  let html = '';
+  for (let i = 1; i <= qty; i++) html += buildSheet(i);
+  area.innerHTML = html;
+  setTimeout(() => window.print(), 300);
+}
+
+// Init
+generate();
+</script>
+</body>
+</html>

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>ChessConnect Clock</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  /* Wooden Walnut theme (default) */
+  --wood-dark:#2C1810;
+  --wood-mid:#5C3317;
+  --wood-light:#8B4513;
+  --wood-grain:#6B3410;
+  --wood-highlight:#A0522D;
+  --btn-top:#C4873A;
+  --btn-mid:#A0682A;
+  --btn-side:#7A4E1F;
+  --btn-shadow:#3D2008;
+  --display-bg:#0A0A0A;
+  --display-border:#1a1a1a;
+  --digit-active:#F0E68C;
+  --digit-glow:rgba(240,230,140,0.4);
+  --digit-inactive:#1C1C1C;
+  --accent:#C4873A;
+  --text-light:#F5DEB3;
+  --text-muted:#8B7355;
+  --active-glow:rgba(196,135,58,0.3);
+  --bg-top:#1a0f08;
+  --bg-bot:#0d0804;
+  --panel-bg:rgba(44,24,16,0.95);
+  --panel-border:rgba(196,135,58,0.2);
+}
+
+/* THEMES */
+body.theme-ebony {
+  --wood-dark:#0D0D0D;--wood-mid:#1A1A1A;--wood-light:#2D2D2D;
+  --wood-grain:#222222;--wood-highlight:#3D3D3D;
+  --btn-top:#2A2A2A;--btn-mid:#1F1F1F;--btn-side:#141414;--btn-shadow:#050505;
+  --digit-active:#00FF88;--digit-glow:rgba(0,255,136,0.35);--digit-inactive:#0A1A0F;
+  --accent:#00FF88;--text-light:#C0C0C0;--text-muted:#555;
+  --active-glow:rgba(0,255,136,0.2);--bg-top:#080808;--bg-bot:#030303;
+  --panel-bg:rgba(13,13,13,0.97);--panel-border:rgba(0,255,136,0.15);
+}
+body.theme-maple {
+  --wood-dark:#4A2C0A;--wood-mid:#8B5E2A;--wood-light:#C4873A;
+  --wood-grain:#7A4E1F;--wood-highlight:#D4944A;
+  --btn-top:#E8B86D;--btn-mid:#C4873A;--btn-side:#9A621A;--btn-shadow:#4A2C0A;
+  --digit-active:#FFF8E7;--digit-glow:rgba(255,248,231,0.5);--digit-inactive:#2A1A08;
+  --accent:#E8B86D;--text-light:#FFF8E7;--text-muted:#9A7A5A;
+  --active-glow:rgba(232,184,109,0.3);--bg-top:#3A1A05;--bg-bot:#200E02;
+  --panel-bg:rgba(74,44,10,0.97);--panel-border:rgba(232,184,109,0.25);
+}
+body.theme-slate {
+  --wood-dark:#1A2332;--wood-mid:#243447;--wood-light:#2E4560;
+  --wood-grain:#1E2D3F;--wood-highlight:#3A5575;
+  --btn-top:#3A5575;--btn-mid:#2A3F58;--btn-side:#1A2D3F;--btn-shadow:#0A1520;
+  --digit-active:#60AFFF;--digit-glow:rgba(96,175,255,0.4);--digit-inactive:#0A1520;
+  --accent:#60AFFF;--text-light:#C0D8F0;--text-muted:#4A6A8A;
+  --active-glow:rgba(96,175,255,0.2);--bg-top:#0F1820;--bg-bot:#070C12;
+  --panel-bg:rgba(26,35,50,0.97);--panel-border:rgba(96,175,255,0.2);
+}
+body.theme-crimson {
+  --wood-dark:#1A0808;--wood-mid:#3D1010;--wood-light:#6B1A1A;
+  --wood-grain:#500F0F;--wood-highlight:#8B2020;
+  --btn-top:#8B2020;--btn-mid:#6B1A1A;--btn-side:#4A1010;--btn-shadow:#1A0505;
+  --digit-active:#FF6B6B;--digit-glow:rgba(255,107,107,0.4);--digit-inactive:#1A0808;
+  --accent:#FF6B6B;--text-light:#FFD0D0;--text-muted:#8B5555;
+  --active-glow:rgba(255,107,107,0.2);--bg-top:#120505;--bg-bot:#080202;
+  --panel-bg:rgba(26,8,8,0.97);--panel-border:rgba(255,107,107,0.2);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;touch-action:none}
+body{background:radial-gradient(ellipse at 50% 30%,var(--bg-top),var(--bg-bot));display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;transition:background 0.5s}
+
+/* ── TOP BAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 1.2rem;z-index:50;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.06)}
+.brand{font-size:0.85rem;font-weight:700;letter-spacing:-0.3px;color:var(--text-light)}
+.brand span{color:var(--accent)}
+.topbar-actions{display:flex;gap:0.5rem}
+.icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--panel-border);background:var(--panel-bg);color:var(--text-light);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── CLOCK BODY ── */
+.clock-wrap{display:flex;flex-direction:column;align-items:center;gap:0;position:relative;margin-top:0}
+.clock-body{
+  width:min(92vw,400px);
+  background:
+    repeating-linear-gradient(92deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px),
+    linear-gradient(160deg,var(--wood-highlight) 0%,var(--wood-light) 20%,var(--wood-mid) 50%,var(--wood-dark) 80%,var(--wood-grain) 100%);
+  border-radius:20px;
+  padding:18px 18px 22px;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.7),
+    0 10px 30px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 -2px 0 rgba(0,0,0,0.3);
+  position:relative;
+  border:1px solid rgba(255,255,255,0.08);
+}
+/* Wood grain texture lines */
+.clock-body::before{
+  content:'';position:absolute;inset:0;border-radius:20px;
+  background:repeating-linear-gradient(175deg,transparent 0px,transparent 8px,rgba(0,0,0,0.04) 8px,rgba(0,0,0,0.04) 9px,transparent 9px,transparent 18px);
+  pointer-events:none;
+}
+.clock-body::after{
+  content:'';position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,transparent 40%,rgba(0,0,0,0.2) 100%);
+  pointer-events:none;
+}
+
+/* ── DISPLAYS ROW ── */
+.displays{display:flex;gap:12px;margin-bottom:14px;position:relative;z-index:2}
+
+.display-unit{flex:1;display:flex;flex-direction:column;gap:6px}
+.player-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);text-align:center;transition:color 0.3s}
+.display-unit.active .player-label{color:var(--accent)}
+
+.display{
+  background:var(--display-bg);
+  border-radius:10px;
+  border:2px solid var(--display-border);
+  padding:10px 8px 8px;
+  text-align:center;
+  position:relative;
+  box-shadow:
+    inset 0 4px 12px rgba(0,0,0,0.8),
+    inset 0 1px 3px rgba(0,0,0,0.9),
+    0 2px 4px rgba(0,0,0,0.4);
+  transition:border-color 0.3s,box-shadow 0.3s;
+  overflow:hidden;
+}
+.display::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.03) 0%,transparent 60%);
+  pointer-events:none;
+}
+.display-unit.active .display{
+  border-color:var(--accent);
+  box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),inset 0 1px 3px rgba(0,0,0,0.9),0 0 20px var(--active-glow),0 0 40px var(--active-glow);
+}
+.display-unit.flagged .display{
+  border-color:#FF4444;
+  box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),0 0 20px rgba(255,68,68,0.3),0 0 40px rgba(255,68,68,0.15);
+  animation:flagPulse 0.5s ease infinite alternate;
+}
+@keyframes flagPulse{from{box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),0 0 15px rgba(255,68,68,0.3)}to{box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),0 0 30px rgba(255,68,68,0.5)}}
+
+/* ── DIGITS ── */
+.time-display{
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:clamp(2.4rem,11vw,3.2rem);
+  letter-spacing:0.05em;
+  color:var(--digit-inactive);
+  line-height:1;
+  position:relative;
+  transition:color 0.3s,text-shadow 0.3s;
+  font-variant-numeric:tabular-nums;
+  user-select:none;
+}
+.display-unit.active .time-display{
+  color:var(--digit-active);
+  text-shadow:0 0 10px var(--digit-glow),0 0 20px var(--digit-glow),0 0 40px var(--digit-glow);
+}
+.display-unit.flagged .time-display{
+  color:#FF4444;
+  text-shadow:0 0 10px rgba(255,68,68,0.5),0 0 20px rgba(255,68,68,0.3);
+}
+.display-unit.warning .time-display{
+  color:#FF8C00;
+  text-shadow:0 0 10px rgba(255,140,0,0.5),0 0 20px rgba(255,140,0,0.3);
+  animation:warnPulse 1s ease infinite;
+}
+@keyframes warnPulse{0%,100%{opacity:1}50%{opacity:0.7}}
+
+.moves-count{font-size:0.6rem;font-weight:600;color:var(--text-muted);text-align:center;margin-top:3px;letter-spacing:0.08em;font-family:'DM Sans',sans-serif;transition:color 0.3s}
+.display-unit.active .moves-count{color:var(--accent);opacity:0.8}
+
+/* Increment badge */
+.inc-badge{position:absolute;bottom:5px;right:7px;font-size:0.5rem;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;opacity:0.6}
+
+/* ── CENTER DIVIDER ── */
+.center-div{width:2px;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.1),transparent);border-radius:1px;align-self:stretch;flex-shrink:0}
+
+/* ── BUTTONS ROW ── */
+.buttons-row{display:flex;gap:12px;position:relative;z-index:2}
+
+.press-btn{
+  flex:1;
+  height:64px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  position:relative;
+  outline:none;
+  transition:transform 0.08s ease,filter 0.08s ease;
+  -webkit-user-select:none;user-select:none;
+  /* 3D button construction */
+  background:linear-gradient(160deg,var(--btn-top) 0%,var(--btn-mid) 50%,var(--btn-side) 100%);
+  box-shadow:
+    0 8px 0 var(--btn-shadow),
+    0 10px 20px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.3),
+    inset 1px 0 0 rgba(255,255,255,0.1),
+    inset -1px 0 0 rgba(0,0,0,0.2);
+}
+/* Button top gloss */
+.press-btn::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:50%;border-radius:14px 14px 0 0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.03) 100%);
+  pointer-events:none;
+}
+/* Button press grooves */
+.press-btn::after{
+  content:'';position:absolute;inset:8px 12px;border-radius:8px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,0.4);
+  pointer-events:none;
+}
+
+.press-btn:active,
+.press-btn.pressing{
+  transform:translateY(6px) scale(0.99);
+  box-shadow:
+    0 2px 0 var(--btn-shadow),
+    0 4px 8px rgba(0,0,0,0.4),
+    inset 0 2px 6px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(0,0,0,0.2);
+  filter:brightness(0.88);
+}
+.press-btn.inactive-btn{
+  filter:brightness(0.55) saturate(0.5);
+  cursor:not-allowed;
+}
+.press-btn.active-btn{
+  filter:brightness(1.08);
+  animation:btnPulse 2s ease infinite;
+}
+@keyframes btnPulse{0%,100%{filter:brightness(1.08)}50%{filter:brightness(1.18)}}
+
+.btn-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.btn-icon svg{width:22px;height:22px;stroke:rgba(255,255,255,0.5);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.press-btn.active-btn .btn-icon svg{stroke:rgba(255,255,255,0.85)}
+
+/* ── PAUSE BUTTON (CENTER) ── */
+.pause-wrap{display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pause-btn{
+  width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(160deg,rgba(255,255,255,0.15),rgba(255,255,255,0.05));
+  border:1.5px solid rgba(255,255,255,0.12);
+  box-shadow:0 4px 0 rgba(0,0,0,0.4),0 6px 12px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+  color:var(--text-light);
+  position:relative;top:0;
+}
+.pause-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,0.4),0 2px 6px rgba(0,0,0,0.3)}
+.pause-btn svg{width:16px;height:16px;stroke:currentColor;fill:currentColor;stroke-width:0}
+.pause-btn.paused{border-color:var(--accent);color:var(--accent)}
+
+/* ── STATUS BAR ── */
+.status-bar{display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:10px;position:relative;z-index:2}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.6;animation:dotPulse 1.5s ease infinite}
+@keyframes dotPulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+.status-text{font-size:0.62rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em}
+
+/* ── OVERLAYS ── */
+.overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity 0.25s}
+.overlay.show{opacity:1;pointer-events:all}
+
+.panel{
+  width:min(100%,440px);background:var(--panel-bg);border-radius:24px 24px 0 0;
+  border:1px solid var(--panel-border);border-bottom:none;
+  padding:1.5rem 1.5rem 2rem;
+  transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  max-height:85vh;overflow-y:auto;
+}
+.overlay.show .panel{transform:translateY(0)}
+.panel-handle{width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 1.2rem}
+.panel-title{font-size:1rem;font-weight:700;color:var(--text-light);margin-bottom:1.2rem;text-align:center}
+
+/* Time control grid */
+.tc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:1.2rem}
+.tc-btn{
+  padding:0.65rem 0.4rem;border-radius:10px;border:1.5px solid var(--panel-border);
+  background:rgba(255,255,255,0.04);color:var(--text-muted);font-family:'DM Sans',sans-serif;
+  font-size:0.72rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s;line-height:1.3;
+}
+.tc-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.07)}
+.tc-btn.sel{border-color:var(--accent);color:var(--accent);background:var(--active-glow)}
+.tc-cat{font-size:0.6rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin:0.9rem 0 0.45rem;opacity:0.7}
+
+/* Custom time inputs */
+.custom-row{display:flex;gap:0.5rem;align-items:center;margin-top:0.75rem}
+.custom-input{flex:1;background:rgba(255,255,255,0.05);border:1.5px solid var(--panel-border);border-radius:8px;padding:0.55rem 0.75rem;color:var(--text-light);font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;text-align:center;outline:none;width:100%}
+.custom-input:focus{border-color:var(--accent)}
+.custom-label{font-size:0.65rem;color:var(--text-muted);font-weight:600;white-space:nowrap}
+.apply-btn{width:100%;padding:0.75rem;border-radius:10px;border:none;background:var(--accent);color:#000;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;margin-top:1rem;transition:opacity 0.2s;letter-spacing:0.02em}
+.apply-btn:hover{opacity:0.88}
+
+/* Theme panel */
+.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.65rem}
+.theme-card{border-radius:12px;border:2px solid transparent;cursor:pointer;overflow:hidden;transition:all 0.2s;position:relative}
+.theme-card.sel{border-color:var(--accent)}
+.theme-preview{height:60px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:0.05em}
+.theme-name{padding:0.4rem 0.6rem;font-size:0.72rem;font-weight:700;letter-spacing:0.05em;text-align:center}
+.theme-sel-dot{position:absolute;top:6px;right:6px;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:none}
+.theme-card.sel .theme-sel-dot{display:block;background:var(--accent);border-color:var(--accent)}
+
+/* Start screen overlay */
+.start-screen{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,var(--bg-top),var(--bg-bot));transition:opacity 0.5s,pointer-events 0s}
+.start-screen.hidden{opacity:0;pointer-events:none}
+.start-logo{font-size:1.5rem;font-weight:800;letter-spacing:-0.5px;color:var(--text-light);margin-bottom:0.25rem}
+.start-logo span{color:var(--accent)}
+.start-sub{font-size:0.72rem;color:var(--text-muted);margin-bottom:2.5rem;letter-spacing:0.06em}
+.start-clock-preview{
+  width:180px;height:120px;
+  background:linear-gradient(160deg,var(--wood-highlight),var(--wood-mid),var(--wood-dark));
+  border-radius:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:2rem;
+  position:relative;overflow:hidden;
+}
+.start-clock-preview::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(175deg,transparent 0px,transparent 8px,rgba(0,0,0,0.04) 8px,rgba(0,0,0,0.04) 9px)}
+.start-preview-time{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--digit-active);text-shadow:0 0 10px var(--digit-glow),0 0 20px var(--digit-glow);letter-spacing:0.05em}
+.start-btn{
+  padding:0.9rem 3rem;border-radius:100px;border:none;
+  background:linear-gradient(135deg,var(--btn-top),var(--btn-mid));
+  color:rgba(255,255,255,0.9);font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;
+  cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.2);
+  letter-spacing:0.04em;transition:all 0.2s;margin-bottom:0.75rem;
+}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,0.5)}
+.start-hint{font-size:0.68rem;color:var(--text-muted);letter-spacing:0.06em}
+
+/* Game over banner */
+.gameover-banner{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);
+  background:var(--panel-bg);border:1.5px solid var(--panel-border);border-radius:20px;
+  padding:2rem 2.5rem;text-align:center;z-index:400;
+  box-shadow:0 30px 80px rgba(0,0,0,0.7);
+  opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.gameover-banner.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
+.go-flag{font-size:2.5rem;margin-bottom:0.5rem}
+.go-title{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text-light);margin-bottom:0.25rem}
+.go-sub{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.2rem}
+.go-restart{padding:0.65rem 2rem;border-radius:10px;border:none;background:var(--accent);color:#000;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;letter-spacing:0.03em}
+
+/* Ripple */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.25);transform:scale(0);animation:rippleAnim 0.4s ease-out forwards;pointer-events:none}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+
+/* Sound toggle */
+.sound-indicator{font-size:0.6rem;font-weight:700;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:4px;border:1px solid rgba(255,255,255,0.06)}
+</style>
+</head>
+<body class="theme-walnut">
+
+<!-- ── START SCREEN ── -->
+<div class="start-screen" id="startScreen">
+  <div class="start-logo">Chess<span>Connect</span></div>
+  <div class="start-sub">Premium Chess Clock</div>
+  <div class="start-clock-preview">
+    <div class="start-preview-time" id="previewTime">10:00</div>
+  </div>
+  <button class="start-btn" onclick="startGame()">Start Game</button>
+  <div class="start-hint">Tap a player's button to begin</div>
+</div>
+
+<!-- ── TOP BAR ── */
+<div class="topbar">
+  <div class="brand">Chess<span>Connect</span> Clock</div>
+  <div class="topbar-actions">
+    <button class="icon-btn" onclick="toggleSound()" id="soundBtn" title="Toggle sound">
+      <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+    </button>
+    <button class="icon-btn" onclick="showThemes()" title="Themes">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+    </button>
+    <button class="icon-btn" onclick="showTimeControl()" title="Time control">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </button>
+    <button class="icon-btn" onclick="resetClock()" title="Reset">
+      <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ── CLOCK BODY ── -->
+<div class="clock-wrap">
+  <div class="clock-body">
+
+    <!-- Displays -->
+    <div class="displays">
+      <div class="display-unit" id="p1unit">
+        <div class="player-label">White</div>
+        <div class="display">
+          <div class="time-display" id="p1time">10:00</div>
+          <div class="moves-count" id="p1moves">0 moves</div>
+          <div class="inc-badge" id="p1inc">+30s</div>
+        </div>
+      </div>
+      <div class="center-div"></div>
+      <div class="display-unit" id="p2unit">
+        <div class="player-label">Black</div>
+        <div class="display">
+          <div class="time-display" id="p2time">10:00</div>
+          <div class="moves-count" id="p2moves">0 moves</div>
+          <div class="inc-badge" id="p2inc">+30s</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons-row">
+      <button class="press-btn inactive-btn" id="btn1" onpointerdown="pressBtn(1,event)" aria-label="White clock">
+        <div class="btn-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>
+        </div>
+      </button>
+      <div class="pause-wrap">
+        <button class="pause-btn" id="pauseBtn" onclick="togglePause()" aria-label="Pause">
+          <svg id="pauseIcon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+        </button>
+      </div>
+      <button class="press-btn inactive-btn" id="btn2" onpointerdown="pressBtn(2,event)" aria-label="Black clock">
+        <div class="btn-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>
+        </div>
+      </button>
+    </div>
+
+    <!-- Status -->
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot" style="display:none"></div>
+      <div class="status-text" id="statusText">Tap any button to start</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── TIME CONTROL PANEL ── -->
+<div class="overlay" id="tcOverlay" onclick="closePanelIf(event,'tcOverlay')">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <div class="panel-title">Time Control</div>
+
+    <div class="tc-cat">Bullet</div>
+    <div class="tc-grid">
+      <div class="tc-btn" onclick="setTC(60,0,'1+0')">1+0<br/><span style="font-size:0.6rem;opacity:0.6">Bullet</span></div>
+      <div class="tc-btn" onclick="setTC(60,1,'1+1')">1+1<br/><span style="font-size:0.6rem;opacity:0.6">Bullet</span></div>
+      <div class="tc-btn" onclick="setTC(120,1,'2+1')">2+1<br/><span style="font-size:0.6rem;opacity:0.6">Bullet</span></div>
+    </div>
+
+    <div class="tc-cat">Blitz</div>
+    <div class="tc-grid">
+      <div class="tc-btn" onclick="setTC(180,0,'3+0')">3+0<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
+      <div class="tc-btn" onclick="setTC(180,2,'3+2')">3+2<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
+      <div class="tc-btn" onclick="setTC(300,0,'5+0')">5+0<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
+      <div class="tc-btn" onclick="setTC(300,3,'5+3')">5+3<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
+      <div class="tc-btn" onclick="setTC(600,0,'10+0')">10+0<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
+      <div class="tc-btn sel" id="tc-default" onclick="setTC(600,5,'10+5')">10+5<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
+    </div>
+
+    <div class="tc-cat">Rapid</div>
+    <div class="tc-grid">
+      <div class="tc-btn" onclick="setTC(900,10,'15+10')">15+10<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
+      <div class="tc-btn" onclick="setTC(1800,0,'30+0')">30+0<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
+      <div class="tc-btn" onclick="setTC(1800,30,'30+30')">30+30<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
+    </div>
+
+    <div class="tc-cat">Classical</div>
+    <div class="tc-grid">
+      <div class="tc-btn" onclick="setTC(5400,30,'90+30')">90+30<br/><span style="font-size:0.6rem;opacity:0.6">Classical</span></div>
+      <div class="tc-btn" onclick="setTC(7200,30,'120+30')">120+30<br/><span style="font-size:0.6rem;opacity:0.6">Classical</span></div>
+    </div>
+
+    <div class="tc-cat">Custom</div>
+    <div class="custom-row">
+      <div style="flex:1"><div class="custom-label">Minutes</div><input class="custom-input" id="customMin" type="number" value="10" min="0" max="180"/></div>
+      <div style="color:var(--text-muted);font-size:1.2rem;padding-top:16px">+</div>
+      <div style="flex:1"><div class="custom-label">Increment (sec)</div><input class="custom-input" id="customInc" type="number" value="0" min="0" max="60"/></div>
+    </div>
+    <button class="apply-btn" onclick="applyCustom()">Apply Time Control</button>
+  </div>
+</div>
+
+<!-- ── THEMES PANEL ── -->
+<div class="overlay" id="themeOverlay" onclick="closePanelIf(event,'themeOverlay')">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <div class="panel-title">Choose Theme</div>
+    <div class="theme-grid">
+      <div class="theme-card sel" id="thm-walnut" onclick="setTheme('walnut',this)">
+        <div class="theme-preview" style="background:linear-gradient(135deg,#2C1810,#8B4513,#C4873A);color:#F0E68C;text-shadow:0 0 8px rgba(240,230,140,0.4)">10:00</div>
+        <div class="theme-name" style="background:#3D2008;color:#C4873A">🪵 Walnut</div>
+        <div class="theme-sel-dot"></div>
+      </div>
+      <div class="theme-card" id="thm-maple" onclick="setTheme('maple',this)">
+        <div class="theme-preview" style="background:linear-gradient(135deg,#4A2C0A,#C4873A,#E8B86D);color:#FFF8E7;text-shadow:0 0 8px rgba(255,248,231,0.5)">10:00</div>
+        <div class="theme-name" style="background:#5A3410;color:#E8B86D">🍁 Maple</div>
+        <div class="theme-sel-dot"></div>
+      </div>
+      <div class="theme-card" id="thm-ebony" onclick="setTheme('ebony',this)">
+        <div class="theme-preview" style="background:linear-gradient(135deg,#0D0D0D,#2D2D2D);color:#00FF88;text-shadow:0 0 8px rgba(0,255,136,0.4)">10:00</div>
+        <div class="theme-name" style="background:#1A1A1A;color:#00FF88">🖤 Ebony</div>
+        <div class="theme-sel-dot"></div>
+      </div>
+      <div class="theme-card" id="thm-slate" onclick="setTheme('slate',this)">
+        <div class="theme-preview" style="background:linear-gradient(135deg,#1A2332,#2E4560);color:#60AFFF;text-shadow:0 0 8px rgba(96,175,255,0.4)">10:00</div>
+        <div class="theme-name" style="background:#1A2332;color:#60AFFF">🔷 Slate</div>
+        <div class="theme-sel-dot"></div>
+      </div>
+      <div class="theme-card" id="thm-crimson" onclick="setTheme('crimson',this)">
+        <div class="theme-preview" style="background:linear-gradient(135deg,#1A0808,#6B1A1A,#8B2020);color:#FF6B6B;text-shadow:0 0 8px rgba(255,107,107,0.4)">10:00</div>
+        <div class="theme-name" style="background:#2A0808;color:#FF6B6B">❤️ Crimson</div>
+        <div class="theme-sel-dot"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── GAME OVER ── -->
+<div class="gameover-banner" id="gameoverBanner">
+  <div class="go-flag">🏳️</div>
+  <div class="go-title" id="goTitle">Time's Up!</div>
+  <div class="go-sub" id="goSub">White ran out of time</div>
+  <button class="go-restart" onclick="resetClock()">Play Again</button>
+</div>
+
+<!-- Audio context for click sound -->
+<script>
+// ── AUDIO ──
+let audioCtx = null;
+let soundOn = true;
+
+function initAudio(){
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+function playClick(){
+  if (!soundOn || !audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.06);
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.08);
+}
+function playWarning(){
+  if (!soundOn || !audioCtx) return;
+  [0, 0.15, 0.3].forEach(t => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.value = 440;
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime + t);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + t + 0.1);
+    osc.start(audioCtx.currentTime + t);
+    osc.stop(audioCtx.currentTime + t + 0.1);
+  });
+}
+function playFlag(){
+  if (!soundOn || !audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+  gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+  osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  const icon = document.getElementById('soundIcon');
+  if (soundOn) {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>';
+  } else {
+    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+  }
+}
+
+// ── STATE ──
+let times = [600, 600]; // seconds
+let increment = 5;
+let baseTime = 600;
+let active = -1; // -1 = not started, 0 = p1, 1 = p2
+let paused = false;
+let gameOver = false;
+let moves = [0, 0];
+let interval = null;
+let lastTick = null;
+let warningTriggered = [false, false];
+
+// ── TIME CONTROL ──
+let selectedTC = 'tc-default';
+function setTC(secs, inc, id) {
+  baseTime = secs;
+  increment = inc;
+  times = [secs, secs];
+  moves = [0, 0];
+  warningTriggered = [false, false];
+  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('sel'));
+  // find and highlight
+  event.target.closest('.tc-btn').classList.add('sel');
+  closePanel('tcOverlay');
+  resetToNewTC();
+}
+function applyCustom(){
+  const m = parseInt(document.getElementById('customMin').value) || 10;
+  const i = parseInt(document.getElementById('customInc').value) || 0;
+  baseTime = m * 60;
+  increment = i;
+  times = [baseTime, baseTime];
+  moves = [0, 0];
+  warningTriggered = [false, false];
+  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('sel'));
+  closePanel('tcOverlay');
+  resetToNewTC();
+}
+function resetToNewTC(){
+  clearInterval(interval);
+  interval = null;
+  active = -1;
+  paused = false;
+  gameOver = false;
+  updateDisplays();
+  document.getElementById('p1unit').className = 'display-unit';
+  document.getElementById('p2unit').className = 'display-unit';
+  document.getElementById('btn1').className = 'press-btn inactive-btn';
+  document.getElementById('btn2').className = 'press-btn inactive-btn';
+  document.getElementById('statusText').textContent = 'Tap any button to start';
+  document.getElementById('statusDot').style.display = 'none';
+  document.getElementById('pauseBtn').classList.remove('paused');
+  document.getElementById('pauseIcon').innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+}
+
+// ── FORMAT TIME ──
+function fmt(secs){
+  secs = Math.max(0, secs);
+  if (secs >= 3600) {
+    const h = Math.floor(secs/3600);
+    const m = Math.floor((secs%3600)/60);
+    const s = secs%60;
+    return h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  }
+  const m = Math.floor(secs/60);
+  const s = secs%60;
+  return m+':'+(s<10?'0':'')+s;
+}
+
+function updateDisplays(){
+  for (let i = 0; i < 2; i++){
+    const el = document.getElementById('p'+(i+1)+'time');
+    el.textContent = fmt(Math.ceil(times[i]));
+  }
+  document.getElementById('p1inc').textContent = increment > 0 ? '+'+increment+'s' : '';
+  document.getElementById('p2inc').textContent = increment > 0 ? '+'+increment+'s' : '';
+  document.getElementById('p1moves').textContent = moves[0] + (moves[0]===1?' move':' moves');
+  document.getElementById('p2moves').textContent = moves[1] + (moves[1]===1?' move':' moves');
+  // Preview time on start screen
+  document.getElementById('previewTime').textContent = fmt(baseTime);
+}
+
+// ── GAME TICK ──
+function tick(){
+  if (active < 0 || paused || gameOver) return;
+  const now = performance.now();
+  const elapsed = (now - lastTick) / 1000;
+  lastTick = now;
+  times[active] -= elapsed;
+
+  // Warning at 30s
+  if (times[active] <= 30 && !warningTriggered[active]){
+    warningTriggered[active] = true;
+    playWarning();
+    document.getElementById('p'+(active+1)+'unit').classList.add('warning');
+  }
+
+  if (times[active] <= 0){
+    times[active] = 0;
+    updateDisplays();
+    triggerFlag(active);
+    return;
+  }
+  updateDisplays();
+}
+
+function triggerFlag(player){
+  clearInterval(interval);
+  gameOver = true;
+  playFlag();
+  const unit = document.getElementById('p'+(player+1)+'unit');
+  unit.className = 'display-unit flagged';
+  document.getElementById('statusText').textContent = (player===0?'White':'Black') + ' flagged!';
+  document.getElementById('statusDot').style.display = 'none';
+  setTimeout(() => {
+    document.getElementById('goTitle').textContent = 'Time\'s Up!';
+    document.getElementById('goSub').textContent = (player===0?'White':'Black') + ' ran out of time';
+    document.getElementById('gameoverBanner').classList.add('show');
+  }, 600);
+}
+
+// ── PRESS BUTTON ──
+function pressBtn(player, e){
+  initAudio();
+  if (gameOver) return;
+
+  const idx = player - 1;
+  // First press — start game
+  if (active === -1){
+    active = idx === 0 ? 1 : 0; // opponent starts
+    lastTick = performance.now();
+    interval = setInterval(tick, 50);
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('statusDot').style.display = 'block';
+    updateActiveUI();
+    addRipple(e, player);
+    playClick();
+    if (navigator.vibrate) navigator.vibrate(30);
+    return;
+  }
+  if (paused) return;
+  if (active !== idx) return; // not your turn
+
+  // Add increment
+  times[idx] += increment;
+  moves[idx]++;
+
+  // Remove warning if time recovered
+  if (times[idx] > 30) {
+    document.getElementById('p'+(idx+1)+'unit').classList.remove('warning');
+    warningTriggered[idx] = false;
+  }
+
+  // Switch
+  active = 1 - idx;
+  lastTick = performance.now();
+  updateActiveUI();
+  updateDisplays();
+  addRipple(e, player);
+  playClick();
+  if (navigator.vibrate) navigator.vibrate(25);
+}
+
+function updateActiveUI(){
+  const p1 = document.getElementById('p1unit');
+  const p2 = document.getElementById('p2unit');
+  const b1 = document.getElementById('btn1');
+  const b2 = document.getElementById('btn2');
+  if (active === 0){
+    p1.classList.add('active'); p1.classList.remove('warning');
+    p2.classList.remove('active');
+    b1.className = 'press-btn active-btn';
+    b2.className = 'press-btn inactive-btn';
+    document.getElementById('statusText').textContent = 'White to move';
+  } else {
+    p2.classList.add('active'); p2.classList.remove('warning');
+    p1.classList.remove('active');
+    b2.className = 'press-btn active-btn';
+    b1.className = 'press-btn inactive-btn';
+    document.getElementById('statusText').textContent = 'Black to move';
+  }
+  // Re-apply warning if needed
+  for (let i = 0; i < 2; i++){
+    if (warningTriggered[i] && i !== active) {
+      document.getElementById('p'+(i+1)+'unit').classList.add('warning');
+    }
+  }
+}
+
+// ── PAUSE ──
+function togglePause(){
+  if (gameOver || active === -1) return;
+  paused = !paused;
+  const btn = document.getElementById('pauseBtn');
+  const icon = document.getElementById('pauseIcon');
+  if (paused){
+    btn.classList.add('paused');
+    icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+    document.getElementById('statusText').textContent = 'Game paused';
+    document.getElementById('statusDot').style.display = 'none';
+    lastTick = null;
+  } else {
+    btn.classList.remove('paused');
+    icon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+    lastTick = performance.now();
+    document.getElementById('statusDot').style.display = 'block';
+    updateActiveUI();
+  }
+}
+
+// ── RESET ──
+function resetClock(){
+  clearInterval(interval);
+  interval = null;
+  active = -1;
+  paused = false;
+  gameOver = false;
+  times = [baseTime, baseTime];
+  moves = [0, 0];
+  warningTriggered = [false, false];
+  document.getElementById('p1unit').className = 'display-unit';
+  document.getElementById('p2unit').className = 'display-unit';
+  document.getElementById('btn1').className = 'press-btn inactive-btn';
+  document.getElementById('btn2').className = 'press-btn inactive-btn';
+  document.getElementById('statusText').textContent = 'Tap any button to start';
+  document.getElementById('statusDot').style.display = 'none';
+  document.getElementById('pauseBtn').classList.remove('paused');
+  document.getElementById('pauseIcon').innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+  document.getElementById('gameoverBanner').classList.remove('show');
+  updateDisplays();
+}
+
+function startGame(){
+  document.getElementById('startScreen').classList.add('hidden');
+}
+
+// ── RIPPLE EFFECT ──
+function addRipple(e, player){
+  const btn = document.getElementById('btn'+player);
+  const ripple = document.createElement('div');
+  ripple.className = 'ripple';
+  const rect = btn.getBoundingClientRect();
+  const x = (e.clientX || e.touches?.[0]?.clientX || rect.width/2) - rect.left;
+  const y = (e.clientY || e.touches?.[0]?.clientY || rect.height/2) - rect.top;
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.cssText = `width:${size}px;height:${size}px;left:${x-size/2}px;top:${y-size/2}px`;
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 400);
+}
+
+// ── THEMES ──
+function setTheme(name, card){
+  document.body.className = 'theme-' + name;
+  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('sel'));
+  card.classList.add('sel');
+  closePanel('themeOverlay');
+}
+
+// ── PANELS ──
+function showTimeControl(){ document.getElementById('tcOverlay').classList.add('show'); }
+function showThemes(){ document.getElementById('themeOverlay').classList.add('show'); }
+function closePanel(id){ document.getElementById(id).classList.remove('show'); }
+function closePanelIf(e, id){ if(e.target.id === id) closePanel(id); }
+
+// ── INIT ──
+updateDisplays();
+</script>
+</body>
+</html>

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ChessConnect Brochure Maker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#1E73E8;--navy:#102C57;--navy2:#1a3d73;
+  --white:#fff;--off:#F8FAFF;--gray:#6B7280;--gl:#E5E9F2;
+  --green:#10B981;--red:#EF4444;--gold:#F59E0B;
+  --font-h:'Playfair Display',serif;--font-b:'DM Sans',sans-serif;
+  --r:12px;--rs:8px;--sh:0 2px 12px rgba(16,44,87,0.08);--shm:0 6px 24px rgba(16,44,87,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.tnav{background:var(--white);border-bottom:1px solid var(--gl);padding:0 4%;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.nlogo{font-weight:800;font-size:1.25rem;letter-spacing:-1px;text-decoration:none}
+.chess{color:var(--navy)}.connect{color:#4285F4}
+.ntag{font-size:0.7rem;font-weight:700;color:var(--blue);background:rgba(30,115,232,0.08);border:1px solid rgba(30,115,232,0.18);padding:0.28rem 0.7rem;border-radius:100px;letter-spacing:0.04em}
+.nback{font-size:0.8rem;font-weight:600;color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:0.3rem;transition:color 0.2s}
+.nback:hover{color:var(--blue)}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:390px 1fr;min-height:calc(100vh - 58px)}
+@media(max-width:1024px){.app{grid-template-columns:1fr}.rpanel{display:none!important}}
+
+/* LEFT PANEL */
+.lpanel{background:var(--white);border-right:1px solid var(--gl);overflow-y:auto;max-height:calc(100vh - 58px);position:sticky;top:58px}
+
+/* Progress */
+.sprg{padding:1.1rem 1.4rem;border-bottom:1px solid var(--gl);background:var(--off)}
+.sprg-lbl{font-size:0.7rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.6rem}
+.pills{display:flex;gap:0.3rem}
+.pill{width:30px;height:30px;border-radius:50%;border:2px solid var(--gl);background:var(--white);font-size:0.72rem;font-weight:700;color:var(--gray);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+.pill.active{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.pill.done{background:var(--green);border-color:var(--green);color:var(--white)}
+.pill:hover:not(.active,.done){border-color:var(--blue);color:var(--blue)}
+.pbar-wrap{margin-top:0.6rem;height:3px;background:var(--gl);border-radius:2px}
+.pbar-fill{height:100%;background:var(--blue);border-radius:2px;transition:width 0.4s ease}
+
+/* Steps */
+.fstep{display:none;padding:1.4rem}
+.fstep.active{display:block}
+.shdr{display:flex;align-items:center;gap:0.7rem;margin-bottom:1.4rem;padding-bottom:0.9rem;border-bottom:1px solid var(--gl)}
+.sico{width:38px;height:38px;border-radius:10px;background:rgba(30,115,232,0.07);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sico svg{width:19px;height:19px;stroke:var(--blue);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.stitle{font-family:var(--font-h);font-size:1.1rem;font-weight:800;color:var(--navy)}
+.ssub{font-size:0.75rem;color:var(--gray)}
+
+/* Form */
+.fg{margin-bottom:1rem}
+.fl{display:block;font-size:0.73rem;font-weight:700;color:var(--navy);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.04em}
+.fl .opt{font-weight:400;text-transform:none;color:var(--gray);letter-spacing:0}
+.fi,.fs,.fta{width:100%;font-family:var(--font-b);font-size:0.855rem;color:var(--navy);background:var(--white);border:1.5px solid var(--gl);border-radius:var(--rs);padding:0.6rem 0.8rem;outline:none;transition:border-color 0.2s}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,115,232,0.07)}
+.fta{resize:vertical;min-height:72px;line-height:1.6}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem}
+.fhint{font-size:0.7rem;color:var(--gray);margin-top:0.2rem}
+
+/* Toggle */
+.trow{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--gl)}
+.trow:last-child{border-bottom:none}
+.tlbl{font-size:0.83rem;font-weight:500;color:var(--navy)}
+.tsub{font-size:0.7rem;color:var(--gray)}
+.tsw{position:relative;width:38px;height:21px;flex-shrink:0}
+.tsw input{opacity:0;width:0;height:0}
+.tsl{position:absolute;inset:0;background:var(--gl);border-radius:11px;cursor:pointer;transition:background 0.2s}
+.tsl::before{content:'';position:absolute;width:15px;height:15px;left:3px;top:3px;background:var(--white);border-radius:50%;transition:transform 0.2s}
+.tsw input:checked+.tsl{background:var(--blue)}
+.tsw input:checked+.tsl::before{transform:translateX(17px)}
+
+/* Dynamic rows */
+.dr{display:grid;grid-template-columns:1fr 1fr auto;gap:0.45rem;margin-bottom:0.45rem;align-items:center}
+.dr3{grid-template-columns:1fr 1fr 1fr auto}
+.rbtn{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--gl);background:var(--white);color:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;transition:all 0.2s;line-height:1}
+.rbtn:hover{border-color:var(--red);color:var(--red);background:#FEF2F2}
+.abtn{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:700;color:var(--blue);background:rgba(30,115,232,0.05);border:1.5px dashed rgba(30,115,232,0.22);border-radius:var(--rs);padding:0.45rem 0.8rem;cursor:pointer;transition:all 0.2s;width:100%;margin-top:0.3rem}
+.abtn:hover{background:rgba(30,115,232,0.1);border-color:var(--blue)}
+
+/* Section divider */
+.sdiv{font-size:0.7rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;margin:1.1rem 0 0.65rem;display:flex;align-items:center;gap:0.5rem}
+.sdiv::after{content:'';flex:1;height:1px;background:var(--gl)}
+
+/* Rules */
+.ri{display:flex;align-items:flex-start;gap:0.55rem;padding:0.55rem;border:1.5px solid var(--gl);border-radius:var(--rs);margin-bottom:0.35rem;cursor:pointer;transition:all 0.2s}
+.ri:hover{border-color:var(--blue);background:rgba(30,115,232,0.02)}
+.ri.sel{border-color:var(--blue);background:rgba(30,115,232,0.05)}
+.ri input[type=checkbox]{margin-top:2px;accent-color:var(--blue);flex-shrink:0}
+.rname{font-size:0.8rem;font-weight:700;color:var(--navy)}
+.rval{font-size:0.72rem;color:var(--gray);margin-top:1px}
+.riw{margin-top:0.45rem;display:none}
+.ri.sel .riw{display:block}
+
+/* Templates */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem}
+.tcard{border:2px solid var(--gl);border-radius:var(--r);padding:0.65rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.tcard:hover{border-color:var(--blue)}
+.tcard.sel{border-color:var(--blue);background:rgba(30,115,232,0.04)}
+.tprev{height:64px;border-radius:6px;margin-bottom:0.45rem;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:rgba(255,255,255,0.9);letter-spacing:0.06em}
+.tc{background:linear-gradient(135deg,#102C57,#1E73E8)}
+.ts{background:linear-gradient(135deg,#1E73E8,#60A5FA)}
+.tp{background:linear-gradient(135deg,#1a1a2e,#D4AF37)}
+.tg{background:linear-gradient(135deg,#065F46,#34D399)}
+.tname{font-size:0.76rem;font-weight:700;color:var(--navy)}
+.tdesc{font-size:0.66rem;color:var(--gray)}
+
+/* File upload */
+.fup{border:2px dashed var(--gl);border-radius:var(--rs);padding:0.9rem;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--off)}
+.fup:hover{border-color:var(--blue);background:rgba(30,115,232,0.03)}
+.fup input{display:none}
+.fup-txt{font-size:0.75rem;color:var(--gray);margin-top:0.3rem}
+.fprev{max-height:55px;max-width:100%;border-radius:5px;margin-top:0.45rem}
+
+/* Nav buttons */
+.snav{display:flex;gap:0.65rem;margin-top:1.4rem;padding-top:0.9rem;border-top:1px solid var(--gl)}
+.bprev{flex:1;padding:0.65rem;border:1.5px solid var(--gl);border-radius:var(--rs);background:var(--white);color:var(--navy);font-family:var(--font-b);font-size:0.855rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.bprev:hover{border-color:var(--navy);background:var(--off)}
+.bnext{flex:2;padding:0.65rem;border:none;border-radius:var(--rs);background:var(--blue);color:var(--white);font-family:var(--font-b);font-size:0.855rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.bnext:hover{background:var(--navy2)}
+
+/* ── RIGHT PANEL ── */
+.rpanel{background:#E5EAF5;overflow-y:auto;max-height:calc(100vh - 58px);position:sticky;top:58px;display:flex;flex-direction:column}
+.phdr{background:var(--white);border-bottom:1px solid var(--gl);padding:0.75rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ptitle{font-size:0.8rem;font-weight:700;color:var(--navy)}
+.ptabs{display:flex;gap:0.35rem}
+.ptab{font-size:0.7rem;font-weight:700;padding:0.28rem 0.7rem;border-radius:100px;border:1.5px solid var(--gl);background:var(--white);color:var(--gray);cursor:pointer;transition:all 0.2s}
+.ptab.active{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.parea{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:1.4rem;overflow-y:auto}
+
+/* ── A4 BROCHURE ── */
+.ba4{width:570px;background:var(--white);box-shadow:0 8px 32px rgba(0,0,0,0.14);font-family:var(--font-b);font-size:8px}
+.bh{padding:24px 28px 18px}
+.bh-classic{background:linear-gradient(135deg,#102C57 0%,#1E73E8 100%)}
+.bh-school{background:linear-gradient(135deg,#1E73E8 0%,#60A5FA 100%)}
+.bh-premier{background:linear-gradient(135deg,#1a1a2e 0%,#2d2d5e 55%,#D4AF37 100%)}
+.bh-club{background:linear-gradient(135deg,#065F46 0%,#34D399 100%)}
+.baegis{font-size:6.5px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px}
+.blogor{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.borg-logo{max-height:36px;max-width:72px;object-fit:contain}
+.bcc{font-size:10px;font-weight:800;letter-spacing:-0.3px;color:rgba(255,255,255,0.9)}
+.bname{font-family:var(--font-h);font-size:17px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:3px}
+.btag{font-size:8.5px;color:rgba(255,255,255,0.72);font-style:italic;margin-bottom:9px}
+.bmeta{display:flex;gap:10px;flex-wrap:wrap}
+.bchip{background:rgba(255,255,255,0.14);border-radius:4px;padding:3px 7px;font-size:7.5px;font-weight:700;color:#fff}
+.bbody{padding:14px 28px}
+.bcol2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bsec{margin-bottom:12px}
+.bsectitle{font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:5px;padding-bottom:2px;border-bottom:1.5px solid var(--gl)}
+.bir{display:flex;justify-content:space-between;padding:2.5px 0;border-bottom:1px solid #f2f2f2;font-size:7.5px}
+.bil{color:var(--gray);font-weight:600}
+.biv{color:var(--navy);font-weight:700;text-align:right;max-width:58%}
+.prow{display:flex;align-items:center;padding:3px 5px;margin-bottom:2px;border-radius:3px;font-size:7.5px}
+.prow:nth-child(1){background:#FEF3C7}
+.prow:nth-child(2){background:#F1F5F9}
+.prow:nth-child(3){background:#FEF3C7;opacity:0.75}
+.prank{font-weight:800;color:var(--navy);width:20px}
+.pamt{font-weight:800;color:var(--blue);margin-left:auto}
+.pdesc{color:var(--gray);flex:1;font-size:7px}
+.rtbl{width:100%;border-collapse:collapse;font-size:7px}
+.rtbl th{background:var(--navy);color:#fff;padding:3.5px 5px;text-align:left;font-weight:700;font-size:6.5px;text-transform:uppercase;letter-spacing:0.05em}
+.rtbl td{padding:2.5px 5px;border-bottom:1px solid var(--gl);color:var(--navy)}
+.rtbl tr:nth-child(even) td{background:var(--off)}
+.rtxt{font-size:7px;color:#374151;line-height:1.55;padding:2.5px 0;border-bottom:1px solid #f5f5f5}
+.rtxt:last-child{border-bottom:none}
+.rtxt strong{color:var(--navy)}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.ccard{background:var(--off);border-radius:3px;padding:4px 5px}
+.crole{font-size:6px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.05em}
+.cname{font-size:7.5px;font-weight:700;color:var(--navy)}
+.cphone{font-size:6.5px;color:var(--gray)}
+.bft{background:var(--navy);padding:7px 28px;display:flex;align-items:center;justify-content:space-between}
+.bft-txt{font-size:6.5px;color:rgba(255,255,255,0.6)}
+.bft-brand{font-size:7.5px;font-weight:800;color:rgba(255,255,255,0.9);letter-spacing:-0.2px}
+.bft-brand span{color:#4285F4}
+
+/* WA preview */
+.wawrap{display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%}
+.walbl{font-size:0.7rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;text-align:center}
+
+/* Download bar */
+.dbar{background:var(--white);border-top:1px solid var(--gl);padding:0.85rem 1.4rem;display:flex;gap:0.6rem;flex-shrink:0}
+.dbtn{flex:1;padding:0.6rem;border-radius:var(--rs);font-family:var(--font-b);font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.35rem;border:none}
+.dpdf{background:var(--blue);color:#fff}.dpdf:hover{background:var(--navy2)}
+.dsq{background:var(--green);color:#fff}.dsq:hover{background:#059669}
+.dpt{background:var(--gold);color:#fff}.dpt:hover{background:#D97706}
+
+/* Print */
+@media print{
+  .tnav,.lpanel,.phdr,.dbar,.ptabs,.wawrap{display:none!important}
+  body{background:#fff}
+  .app{display:block}
+  .rpanel{max-height:none;position:static;background:#fff;overflow:visible}
+  .parea{padding:0;display:block}
+  .ba4{box-shadow:none;width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav class="tnav">
+  <a href="index.html" class="nlogo"><span class="chess">Chess</span><span class="connect">Connect</span></a>
+  <span class="ntag">Brochure Maker</span>
+  <a href="index.html" class="nback">← Back to Home</a>
+</nav>
+
+<div class="app">
+
+<!-- ══ LEFT PANEL ══ -->
+<div class="lpanel" id="lpanel">
+  <div class="sprg">
+    <div class="sprg-lbl">Progress — Step <span id="stepNum">1</span> of 7</div>
+    <div class="pills" id="pills"></div>
+    <div class="pbar-wrap"><div class="pbar-fill" id="pbarFill" style="width:14%"></div></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="fstep active" id="s1">
+    <div class="shdr">
+      <div class="sico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg></div>
+      <div><div class="stitle">Tournament Identity</div><div class="ssub">Step 1 of 7 — Basic details</div></div>
+    </div>
+    <div class="fg"><label class="fl">Tournament Name</label><input class="fi" id="f-name" placeholder="e.g. 3rd Open FIDE Rated Chess Tournament 2025" oninput="sv();up()"/></div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Edition <span class="opt">(optional)</span></label><input class="fi" id="f-edition" placeholder="e.g. 3rd" oninput="sv();up()"/></div>
+      <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="400017/DL/2025" oninput="sv();up()"/></div>
+    </div>
+    <div class="fg"><label class="fl">Organised By</label><input class="fi" id="f-org" placeholder="e.g. Pune Chess Association" oninput="sv();up()"/></div>
+    <div class="fg"><label class="fl">Under Aegis Of <span class="opt">(optional)</span></label><input class="fi" id="f-aegis" placeholder="e.g. All India Chess Federation" oninput="sv();up()"/></div>
+    <div class="fg"><label class="fl">Tournament Type</label>
+      <select class="fs" id="f-type" onchange="sv();up()">
+        <option value="">Select type</option>
+        <option>FIDE Rated Open</option><option>FIDE Rated Rapid</option><option>FIDE Rated Blitz</option>
+        <option>State Championship</option><option>District Championship</option>
+        <option>School Tournament</option><option>Club Tournament</option><option>Invitational</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Total Prize Fund</label><input class="fi" id="f-prizefund" placeholder="e.g. ₹1,00,000" oninput="sv();up()"/></div>
+    <div class="fg"><label class="fl">Upload Organisation Logo <span class="opt">(optional)</span></label>
+      <div class="fup" onclick="document.getElementById('logoIn').click()">
+        <input type="file" id="logoIn" accept="image/*" onchange="handleLogo(event)"/>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <div class="fup-txt">Click to upload — PNG or JPG</div>
+        <img id="logoPreview" class="fprev" style="display:none"/>
+      </div>
+    </div>
+    <div class="snav"><button class="bnext" onclick="go(2)">Dates & Schedule →</button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="fstep" id="s2">
+    <div class="shdr">
+      <div class="sico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div><div class="stitle">Dates, Venue & Schedule</div><div class="ssub">Step 2 of 7 — When and where</div></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Start Date</label><input class="fi" type="date" id="f-sd" oninput="sv();up()"/></div>
+      <div class="fg"><label class="fl">End Date</label><input class="fi" type="date" id="f-ed" oninput="sv();up()"/></div>
+    </div>
+    <div class="fg"><label class="fl">Venue Name</label><input class="fi" id="f-venue" placeholder="e.g. Thyagraj Stadium" oninput="sv();up()"/></div>
+    <div class="fg"><label class="fl">Full Address</label><textarea class="fta" id="f-addr" placeholder="Street, City, PIN" rows="2" oninput="sv();up()"></textarea></div>
+    <div class="fg"><label class="fl">How to Reach <span class="opt">(optional)</span></label><textarea class="fta" id="f-reach" placeholder="Nearest metro, railway..." rows="2" oninput="sv();up()"></textarea></div>
+    <div class="sdiv">Round Schedule</div>
+    <div id="roundsC"></div>
+    <button class="abtn" onclick="addRound()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Round</button>
+    <div class="sdiv">Key Timings</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Reporting Time</label><input class="fi" id="f-rep" placeholder="9:00 AM" oninput="sv();up()"/></div>
+      <div class="fg"><label class="fl">Technical Meeting</label><input class="fi" id="f-tech" placeholder="9:15 AM" oninput="sv();up()"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Inauguration</label><input class="fi" id="f-inaug" placeholder="9:30 AM" oninput="sv();up()"/></div>
+      <div class="fg"><label class="fl">Prize Distribution</label><input class="fi" id="f-pdist" placeholder="6:00 PM last day" oninput="sv();up()"/></div>
+    </div>
+    <div class="snav">
+      <button class="bprev" onclick="go(1)">← Back</button>
+      <button class="bnext" onclick="go(3)">Prize Structure →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="fstep" id="s3">
+    <div class="shdr">
+      <div class="sico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg></div>
+      <div><div class="stitle">Prize Structure</div><div class="ssub">Step 3 of 7 — Main, category & special prizes</div></div>
+    </div>
+    <div class="sdiv">Main Prizes</div>
+    <div id="mainPC"></div>
+    <button class="abtn" onclick="addMain()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Prize</button>
+    <div class="sdiv">Rating Category <span style="font-size:0.65rem;font-weight:400;text-transform:none">(optional)</span></div>
+    <div id="ratingPC"></div>
+    <button class="abtn" onclick="addRating()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Rating Category</button>
+    <div class="sdiv">Age Category <span style="font-size:0.65rem;font-weight:400;text-transform:none">(optional)</span></div>
+    <div id="agePC"></div>
+    <button class="abtn" onclick="addAge()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Age Category</button>
+    <div class="sdiv">Special Prizes <span style="font-size:0.65rem;font-weight:400;text-transform:none">(optional)</span></div>
+    <div id="specPC"></div>
+    <button class="abtn" onclick="addSpec()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Special Prize</button>
+    <div class="snav">
+      <button class="bprev" onclick="go(2)">← Back</button>
+      <button class="bnext" onclick="go(4)">Entry & Eligibility →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="fstep" id="s4">
+    <div class="shdr">
+      <div class="sico"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="8" cy="13" r="2.5"/><line x1="13" y1="11" x2="19" y2="11"/><line x1="13" y1="15" x2="17" y2="15"/></svg></div>
+      <div><div class="stitle">Eligibility & Entry Fees</div><div class="ssub">Step 4 of 7 — Who can play & how much</div></div>
+    </div>
+    <div class="fg"><label class="fl">Eligibility</label><textarea class="fta" id="f-elig" placeholder="Open for all players. AICF registration mandatory." rows="2" oninput="sv();up()"></textarea></div>
+    <div class="fg"><label class="fl">Rating Restriction <span class="opt">(optional)</span></label><input class="fi" id="f-rr" placeholder="e.g. Open / Below 1800 / Below 1500" oninput="sv();up()"/></div>
+    <div class="sdiv">Toggles</div>
+    <div>
+      <div class="trow"><div><div class="tlbl">AICF Registration Required</div><div class="tsub">Mandatory for Indian players</div></div><label class="tsw"><input type="checkbox" id="f-aicfreq" onchange="sv();up()" checked/><span class="tsl"></span></label></div>
+      <div class="trow"><div><div class="tlbl">Free Entry — GMs / IMs / WGMs / WIMs</div><div class="tsub">Titled players exempt</div></div><label class="tsw"><input type="checkbox" id="f-free" onchange="sv();up()" checked/><span class="tsl"></span></label></div>
+    </div>
+    <div class="sdiv">Entry Fee Tiers</div>
+    <div id="feeC"></div>
+    <button class="abtn" onclick="addFee()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Fee Tier</button>
+    <div class="fg" style="margin-top:0.9rem"><label class="fl">Last Date of Entry</label><input class="fi" type="date" id="f-ldate" oninput="sv();up()"/></div>
+    <div class="fg"><label class="fl">Important Notes <span class="opt">(optional)</span></label><textarea class="fta" id="f-fnotes" placeholder="e.g. Fees once paid will not be refunded..." rows="2" oninput="sv();up()"></textarea></div>
+    <div class="snav">
+      <button class="bprev" onclick="go(3)">← Back</button>
+      <button class="bnext" onclick="go(5)">Rules →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="fstep" id="s5">
+    <div class="shdr">
+      <div class="sico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <div><div class="stitle">Rules & Regulations</div><div class="ssub">Step 5 of 7 — Click to select & pre-fill</div></div>
+    </div>
+    <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.9rem">Click a rule to select it and pre-fill standard text. Edit freely after selecting.</p>
+    <div id="rulesC"></div>
+    <div class="snav">
+      <button class="bprev" onclick="go(4)">← Back</button>
+      <button class="bnext" onclick="go(6)">Organising Committee →</button>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="fstep" id="s6">
+    <div class="shdr">
+      <div class="sico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div><div class="stitle">Organising Committee</div><div class="ssub">Step 6 of 7 — Contacts & payment</div></div>
+    </div>
+    <div id="commC"></div>
+    <button class="abtn" onclick="addComm()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Member</button>
+    <div class="sdiv">Payment Details</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Bank Name</label><input class="fi" id="f-bank" placeholder="e.g. SBI" oninput="sv();up()"/></div>
+      <div class="fg"><label class="fl">Account No</label><input class="fi" id="f-accno" placeholder="Account number" oninput="sv();up()"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">IFSC Code</label><input class="fi" id="f-ifsc" placeholder="SBIN0001234" oninput="sv();up()"/></div>
+      <div class="fg"><label class="fl">UPI ID</label><input class="fi" id="f-upi" placeholder="chess@upi" oninput="sv();up()"/></div>
+    </div>
+    <div class="fg"><label class="fl">WhatsApp Group Link <span class="opt">(optional)</span></label><input class="fi" id="f-wa" placeholder="https://chat.whatsapp.com/..." oninput="sv();up()"/></div>
+    <div class="fg"><label class="fl">Registration QR Code <span class="opt">(optional)</span></label>
+      <div class="fup" onclick="document.getElementById('qrIn').click()">
+        <input type="file" id="qrIn" accept="image/*" onchange="handleQR(event)"/>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+        <div class="fup-txt">Click to upload QR code</div>
+        <img id="qrPreview" class="fprev" style="display:none"/>
+      </div>
+    </div>
+    <div class="snav">
+      <button class="bprev" onclick="go(5)">← Back</button>
+      <button class="bnext" onclick="go(7)">Template & Download →</button>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="fstep" id="s7">
+    <div class="shdr">
+      <div class="sico"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 12 11 14 15 10"/></svg></div>
+      <div><div class="stitle">Template & Download</div><div class="ssub">Step 7 of 7 — Choose design & export</div></div>
+    </div>
+    <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.9rem">Select a template. Live preview updates on the right.</p>
+    <div class="tgrid">
+      <div class="tcard sel" onclick="selTmpl('classic',this)"><div class="tprev tc">CLASSIC</div><div class="tname">Classic</div><div class="tdesc">Navy & Blue — FIDE Opens</div></div>
+      <div class="tcard" onclick="selTmpl('school',this)"><div class="tprev ts">SCHOOL</div><div class="tname">School</div><div class="tdesc">Sky Blue — Junior events</div></div>
+      <div class="tcard" onclick="selTmpl('premier',this)"><div class="tprev tp">PREMIER</div><div class="tname">Premier</div><div class="tdesc">Dark & Gold — National level</div></div>
+      <div class="tcard" onclick="selTmpl('club',this)"><div class="tprev tg">CLUB</div><div class="tname">Club</div><div class="tdesc">Green — Club events</div></div>
+    </div>
+    <div class="snav" style="flex-direction:column;gap:0.5rem">
+      <button class="dbtn dpdf" onclick="dlPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download A4 Print PDF</button>
+      <button class="dbtn dsq" onclick="dlSq()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Download WhatsApp Square (1080×1080)</button>
+      <button class="dbtn dpt" onclick="dlPt()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>Download WhatsApp Story (1080×1920)</button>
+    </div>
+  </div>
+
+</div><!-- /lpanel -->
+
+<!-- ══ RIGHT PANEL ══ -->
+<div class="rpanel" id="rpanel">
+  <div class="phdr">
+    <div class="ptitle">Live Preview</div>
+    <div class="ptabs">
+      <button class="ptab active" onclick="swPrev('a4',this)">A4 Print</button>
+      <button class="ptab" onclick="swPrev('wa',this)">WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- A4 -->
+  <div class="parea" id="a4Area">
+    <div class="ba4" id="bDoc">
+      <div class="bh bh-classic" id="bHdr">
+        <div class="baegis" id="bAegis">Under the aegis of All India Chess Federation</div>
+        <div class="blogor">
+          <img id="bLogo" style="display:none;max-height:36px;max-width:72px;object-fit:contain"/>
+          <div class="bcc"><span style="color:#fff">Chess</span><span style="color:#4285F4">Connect</span></div>
+        </div>
+        <div class="bname" id="bName">Tournament Name Will Appear Here</div>
+        <div class="btag" id="bTag">Organised by — Organisation Name</div>
+        <div class="bmeta">
+          <div class="bchip" id="bDateChip">📅 Dates TBD</div>
+          <div class="bchip" id="bVenChip">📍 Venue TBD</div>
+          <div class="bchip" id="bPrzChip">🏆 Prize TBD</div>
+        </div>
+      </div>
+      <div class="bbody">
+        <div class="bcol2">
+          <div>
+            <div class="bsec"><div class="bsectitle">Tournament Schedule</div>
+              <table class="rtbl"><thead><tr><th>Round</th><th>Date</th><th>Time</th></tr></thead>
+              <tbody id="bRounds"><tr><td colspan="3" style="color:#9CA3AF;font-size:6.5px;padding:3px">Add rounds in Step 2</td></tr></tbody></table>
+            </div>
+            <div class="bsec"><div class="bsectitle">Prize Structure</div><div id="bPrizes"><div style="color:#9CA3AF;font-size:7px">Add prizes in Step 3</div></div></div>
+            <div class="bsec"><div class="bsectitle">Rules & Regulations</div><div id="bRules"><div style="color:#9CA3AF;font-size:7px">Select rules in Step 5</div></div></div>
+          </div>
+          <div>
+            <div class="bsec"><div class="bsectitle">Entry Fees</div><div id="bFees"><div style="color:#9CA3AF;font-size:7px">Add fees in Step 4</div></div></div>
+            <div class="bsec"><div class="bsectitle">Venue Details</div><div id="bVenue"><div style="color:#9CA3AF;font-size:7px">Add venue in Step 2</div></div></div>
+            <div class="bsec"><div class="bsectitle">Organising Committee</div><div class="cgrid" id="bComm"><div style="color:#9CA3AF;font-size:7px">Add contacts in Step 6</div></div></div>
+            <div class="bsec"><div class="bsectitle">Payment Details</div><div id="bPay"><div style="color:#9CA3AF;font-size:7px">Add bank details in Step 6</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bft"><div class="bft-txt">Generated by ChessConnect Brochure Maker — chessconnect.online</div><div class="bft-brand"><span>Chess</span><span>Connect</span></div></div>
+    </div>
+  </div>
+
+  <!-- WA -->
+  <div class="parea" id="waArea" style="display:none">
+    <div class="wawrap">
+      <div class="walbl">Square Post — 1080 × 1080</div>
+      <canvas id="sqC" width="300" height="300" style="width:300px;height:300px;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,0.14)"></canvas>
+      <div class="walbl" style="margin-top:0.5rem">Story / Poster — 1080 × 1920</div>
+      <canvas id="ptC" width="175" height="311" style="width:175px;height:311px;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,0.14)"></canvas>
+    </div>
+  </div>
+
+</div><!-- /rpanel -->
+</div><!-- /app -->
+
+<script>
+// ── STATE ──
+let cur = 1;
+let tmpl = 'classic';
+let logoURL = null;
+let qrURL = null;
+
+const TC = {
+  classic:{a:'#102C57',b:'#1E73E8'},
+  school: {a:'#1E73E8',b:'#60A5FA'},
+  premier:{a:'#1a1a2e',b:'#D4AF37'},
+  club:   {a:'#065F46',b:'#34D399'},
+};
+
+const RULES = [
+  {n:'System of Play',       v:'The tournament will be played under FIDE Laws of Chess. Swiss System pairing via Swiss Manager.'},
+  {n:'Time Control',         v:'30 Minutes + 30 Seconds increment from the 1st move.'},
+  {n:'Default Time',         v:'Default time for arriving at the board is 15 minutes from the scheduled start of the round.'},
+  {n:'Draw Offer Rule',      v:'Players cannot make an agreed draw before the 30th move for Black.'},
+  {n:'Electronic Devices',   v:'All electronic devices, mobile phones, and wrist watches are strictly prohibited inside the playing hall.'},
+  {n:'Withdrawal',           v:'A player may withdraw at any stage after informing the Chief Arbiter in writing. Default time is 15 minutes.'},
+  {n:'Protest Procedure',    v:'Protest against any Chief Arbiter decision must be submitted in writing within 15 minutes with a protest fee.'},
+  {n:'Tie Break Order',      v:'1. Buchholz Cut 1   2. Buchholz   3. Sonneborn-Berger   4. Direct Encounter   5. Most wins including forfeits   6. Most wins with Black pieces'},
+  {n:'Accommodation',        v:'Participants must arrange their own accommodation. The organiser is not responsible for accommodation or transport.'},
+  {n:'Food',                 v:'Refreshments and food will be available at the venue on a payment basis for the convenience of participants.'},
+];
+
+// ── INIT ──
+window.onload = () => {
+  buildPills();
+  initRounds();
+  initPrizes();
+  initFees();
+  initComm();
+  initRules();
+  loadSaved();
+  up();
+};
+
+function buildPills() {
+  const c = document.getElementById('pills');
+  for (let i = 1; i <= 7; i++) {
+    const d = document.createElement('div');
+    d.className = 'pill' + (i === 1 ? ' active' : '');
+    d.textContent = i;
+    d.onclick = () => go(i);
+    c.appendChild(d);
+  }
+}
+
+// ── NAVIGATION ──
+function go(n) {
+  document.getElementById('s'+cur).classList.remove('active');
+  cur = n;
+  document.getElementById('s'+n).classList.add('active');
+  document.getElementById('stepNum').textContent = n;
+  document.getElementById('pbarFill').style.width = Math.round(n/7*100) + '%';
+  document.querySelectorAll('.pill').forEach((p,i) => {
+    p.classList.toggle('active', i+1 === n);
+    p.classList.toggle('done', i+1 < n);
+  });
+  document.getElementById('lpanel').scrollTop = 0;
+  up();
+}
+
+// ── DYNAMIC ROWS ──
+function row2(c, p1, p2, v1, v2) {
+  const d = document.createElement('div');
+  d.className = 'dr';
+  d.innerHTML = `<input class="fi" placeholder="${p1}" value="${v1||''}" oninput="sv();up()"/>
+    <input class="fi" placeholder="${p2}" value="${v2||''}" oninput="sv();up()"/>
+    <button class="rbtn" onclick="this.parentElement.remove();sv();up()">×</button>`;
+  document.getElementById(c).appendChild(d);
+}
+function row3(c, p1, p2, p3, v1, v2, v3) {
+  const d = document.createElement('div');
+  d.className = 'dr dr3';
+  d.innerHTML = `<input class="fi" placeholder="${p1}" value="${v1||''}" oninput="sv();up()"/>
+    <input class="fi" placeholder="${p2}" value="${v2||''}" oninput="sv();up()"/>
+    <input class="fi" placeholder="${p3}" value="${v3||''}" oninput="sv();up()"/>
+    <button class="rbtn" onclick="this.parentElement.remove();sv();up()">×</button>`;
+  document.getElementById(c).appendChild(d);
+}
+
+function initRounds() { for(let i=1;i<=3;i++) addRound(i); }
+function addRound(n) {
+  const c = document.getElementById('roundsC');
+  const num = n || c.children.length+1;
+  const d = document.createElement('div');
+  d.className = 'dr dr3';
+  d.innerHTML = `<input class="fi" placeholder="Round ${num}" oninput="sv();up()"/>
+    <input class="fi" type="date" oninput="sv();up()"/>
+    <input class="fi" placeholder="e.g. 9:00 AM" oninput="sv();up()"/>
+    <button class="rbtn" onclick="this.parentElement.remove();sv();up()">×</button>`;
+  c.appendChild(d);
+}
+
+function initPrizes() {
+  ['1st Prize','2nd Prize','3rd Prize'].forEach(p => addMain(p));
+}
+function addMain(lbl) { row2('mainPC', lbl||'Prize', 'Amount e.g. ₹10,000'); }
+function addRating()  { row2('ratingPC','Category e.g. 1500–1600','Prize e.g. ₹3,000'); }
+function addAge()     { row2('agePC','Category e.g. Under 12 Boys','Prize e.g. Trophy'); }
+function addSpec()    { row2('specPC','e.g. Best Female Player','Prize e.g. Trophy'); }
+
+function initFees() {
+  row2('feeC','Early Bird (till 31st Jan)','Amount','Early Bird (till 31st Jan)','₹2,500');
+  row2('feeC','Regular','Amount','Regular','₹3,000');
+  row2('feeC','Late Fee','Amount','Late Fee','₹3,500');
+}
+function addFee() { row2('feeC','Tier label','Amount'); }
+
+function initComm() {
+  ['Chief Arbiter','Tournament Director','Organising Secretary'].forEach(r => addComm(r));
+}
+function addComm(role) { row3('commC','Role','Name','Phone Number',role||''); }
+
+function initRules() {
+  const c = document.getElementById('rulesC');
+  RULES.forEach(rule => {
+    const d = document.createElement('div');
+    d.className = 'ri';
+    d.innerHTML = `<input type="checkbox" onchange="this.closest('.ri').classList.toggle('sel',this.checked);sv();up()"/>
+      <div style="flex:1">
+        <div class="rname">${rule.n}</div>
+        <div class="rval">${rule.v.substring(0,55)}…</div>
+        <div class="riw"><textarea class="fta" rows="2" oninput="sv();up()">${rule.v}</textarea></div>
+      </div>`;
+    c.appendChild(d);
+  });
+}
+
+// ── TEMPLATE ──
+function selTmpl(name, card) {
+  tmpl = name;
+  document.querySelectorAll('.tcard').forEach(c => c.classList.remove('sel'));
+  card.classList.add('sel');
+  sv(); up();
+}
+
+// ── FILE UPLOADS ──
+function handleLogo(e) {
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => { logoURL = ev.target.result; const i=document.getElementById('logoPreview'); i.src=logoURL; i.style.display='block'; sv(); up(); };
+  r.readAsDataURL(f);
+}
+function handleQR(e) {
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => { qrURL = ev.target.result; const i=document.getElementById('qrPreview'); i.src=qrURL; i.style.display='block'; sv(); up(); };
+  r.readAsDataURL(f);
+}
+
+// ── PREVIEW SWITCH ──
+function swPrev(tab, btn) {
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('a4Area').style.display = tab==='a4' ? 'flex' : 'none';
+  document.getElementById('waArea').style.display = tab==='wa' ? 'flex' : 'none';
+  if (tab==='wa') drawWA();
+}
+
+// ── UPDATE A4 PREVIEW ──
+function up() {
+  // Header theme
+  document.getElementById('bHdr').className = 'bh bh-'+tmpl;
+  // Logo
+  if (logoURL) { const l=document.getElementById('bLogo'); l.src=logoURL; l.style.display='block'; }
+  // Text fields
+  const n = v('f-name'); document.getElementById('bName').textContent = n || 'Tournament Name Will Appear Here';
+  const org = v('f-org'); document.getElementById('bTag').textContent = org ? 'Organised by '+org : 'Organised by — Organisation Name';
+  const aegis = v('f-aegis'); document.getElementById('bAegis').textContent = aegis || 'Under the aegis of All India Chess Federation';
+  // Meta chips
+  const sd=v('f-sd'), ed=v('f-ed');
+  document.getElementById('bDateChip').textContent = sd ? '📅 '+fd(sd)+(ed?' – '+fd(ed):'') : '📅 Dates TBD';
+  const ven=v('f-venue'); document.getElementById('bVenChip').textContent = ven ? '📍 '+ven : '📍 Venue TBD';
+  const pf=v('f-prizefund'); document.getElementById('bPrzChip').textContent = pf ? '🏆 '+pf : '🏆 Prize TBD';
+  // Rounds
+  let rH=''; document.querySelectorAll('#roundsC .dr').forEach(r=>{
+    const ins=r.querySelectorAll('input');
+    const rn=ins[0]?.value,dt=ins[1]?.value,tm=ins[2]?.value;
+    if(rn||dt||tm) rH+=`<tr><td>${rn||''}</td><td>${dt?fd(dt):''}</td><td>${tm||''}</td></tr>`;
+  });
+  document.getElementById('bRounds').innerHTML = rH || '<tr><td colspan="3" style="color:#9CA3AF;font-size:6.5px;padding:3px">Add rounds in Step 2</td></tr>';
+  // Prizes
+  let pH=''; document.querySelectorAll('#mainPC .dr').forEach((p,i)=>{
+    const ins=p.querySelectorAll('input');
+    const rk=ins[0]?.value,am=ins[1]?.value;
+    if(rk||am) pH+=`<div class="prow"><span class="prank">${i+1}.</span><span class="pdesc">${rk||''}</span><span class="pamt">${am||''}</span></div>`;
+  });
+  document.getElementById('bPrizes').innerHTML = pH || '<div style="color:#9CA3AF;font-size:7px">Add prizes in Step 3</div>';
+  // Fees
+  let fH=''; document.querySelectorAll('#feeC .dr').forEach(f=>{
+    const ins=f.querySelectorAll('input');
+    const t=ins[0]?.value,a=ins[1]?.value;
+    if(t||a) fH+=`<div class="bir"><span class="bil">${t||''}</span><span class="biv">${a||''}</span></div>`;
+  });
+  if(document.getElementById('f-free')?.checked) fH+=`<div class="bir"><span class="bil">GMs / IMs / WGMs / WIMs</span><span class="biv" style="color:#10B981">FREE</span></div>`;
+  document.getElementById('bFees').innerHTML = fH || '<div style="color:#9CA3AF;font-size:7px">Add fees in Step 4</div>';
+  // Venue
+  const addr=v('f-addr'), reach=v('f-reach');
+  let vH='';
+  if(ven) vH+=`<div class="bir"><span class="bil">Venue</span><span class="biv">${ven}</span></div>`;
+  if(addr) vH+=`<div class="bir"><span class="bil">Address</span><span class="biv">${addr}</span></div>`;
+  if(reach) vH+=`<div class="bir"><span class="bil">How to Reach</span><span class="biv">${reach}</span></div>`;
+  document.getElementById('bVenue').innerHTML = vH || '<div style="color:#9CA3AF;font-size:7px">Add venue in Step 2</div>';
+  // Rules
+  let ruleH=''; document.querySelectorAll('.ri.sel').forEach(r=>{
+    const nm=r.querySelector('.rname')?.textContent, val=r.querySelector('textarea')?.value;
+    if(val) ruleH+=`<div class="rtxt"><strong>${nm}:</strong> ${val}</div>`;
+  });
+  document.getElementById('bRules').innerHTML = ruleH || '<div style="color:#9CA3AF;font-size:7px">Select rules in Step 5</div>';
+  // Committee
+  let cH=''; document.querySelectorAll('#commC .dr').forEach(m=>{
+    const ins=m.querySelectorAll('input');
+    const rl=ins[0]?.value,nm=ins[1]?.value,ph=ins[2]?.value;
+    if(nm) cH+=`<div class="ccard"><div class="crole">${rl||''}</div><div class="cname">${nm}</div><div class="cphone">${ph||''}</div></div>`;
+  });
+  document.getElementById('bComm').innerHTML = cH || '<div style="color:#9CA3AF;font-size:7px">Add contacts in Step 6</div>';
+  // Payment
+  const bk=v('f-bank'),ac=v('f-accno'),ifs=v('f-ifsc'),upi=v('f-upi');
+  let pY='';
+  if(bk) pY+=`<div class="bir"><span class="bil">Bank</span><span class="biv">${bk}</span></div>`;
+  if(ac) pY+=`<div class="bir"><span class="bil">Account No</span><span class="biv">${ac}</span></div>`;
+  if(ifs) pY+=`<div class="bir"><span class="bil">IFSC</span><span class="biv">${ifs}</span></div>`;
+  if(upi) pY+=`<div class="bir"><span class="bil">UPI ID</span><span class="biv">${upi}</span></div>`;
+  document.getElementById('bPay').innerHTML = pY || '<div style="color:#9CA3AF;font-size:7px">Add bank details in Step 6</div>';
+}
+
+// ── WHATSAPP CANVAS ──
+function drawWA() {
+  draw('sqC',300,300);
+  draw('ptC',175,311);
+}
+
+function draw(id, w, h) {
+  const cv = document.getElementById(id);
+  const ctx = cv.getContext('2d');
+  const c = TC[tmpl];
+  const name = v('f-name') || 'Tournament Name';
+  const org  = v('f-org') || '';
+  const ven  = v('f-venue') || '';
+  const pf   = v('f-prizefund') || '';
+  const sd   = v('f-sd'), ed = v('f-ed');
+  const dates = sd ? fd(sd)+(ed?' – '+fd(ed):'') : 'Dates TBD';
+  // Gradient bg
+  const g = ctx.createLinearGradient(0,0,w,h);
+  g.addColorStop(0, c.a); g.addColorStop(1, c.b);
+  ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+  // Chess pattern
+  ctx.fillStyle='rgba(255,255,255,0.04)';
+  for(let i=0;i<w;i+=18) for(let j=0;j<h;j+=18) if((Math.floor(i/18)+Math.floor(j/18))%2===0) ctx.fillRect(i,j,18,18);
+  // White card
+  const pd=w*.07, cy=h*.2, ch=h*.65;
+  ctx.fillStyle='rgba(255,255,255,0.94)';
+  rrect(ctx,pd,cy,w-pd*2,ch,9); ctx.fill();
+  // Brand
+  ctx.font=`bold ${w*.04}px DM Sans,sans-serif`; ctx.fillStyle='rgba(255,255,255,0.88)'; ctx.textAlign='center';
+  ctx.fillText('ChessConnect',w/2,h*.13);
+  // Name
+  ctx.fillStyle='#102C57'; ctx.font=`bold ${w*.055}px Playfair Display,serif`; ctx.textAlign='center';
+  wrapTxt(ctx,name,w/2,cy+h*.09,w-pd*2-16,w*.063);
+  // Line
+  ctx.strokeStyle='#1E73E8'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(pd+16,cy+h*.2); ctx.lineTo(w-pd-16,cy+h*.2); ctx.stroke();
+  // Info items
+  const items=[{e:'📅',t:dates},{e:'📍',t:ven||'Venue TBD'},{e:'🏆',t:pf||'Prize TBD'}];
+  items.forEach((it,i)=>{
+    const iy=cy+h*.26+i*(h*.095);
+    ctx.fillStyle='rgba(30,115,232,0.07)'; rrect(ctx,pd+8,iy,w-pd*2-16,h*.077,5); ctx.fill();
+    ctx.font=`${w*.034}px DM Sans,sans-serif`; ctx.fillStyle='#102C57'; ctx.textAlign='left';
+    ctx.fillText(it.e+' '+it.t.substring(0,28)+(it.t.length>28?'…':''),pd+18,iy+h*.052);
+  });
+  // Org
+  if(org){ctx.font=`${w*.028}px DM Sans,sans-serif`;ctx.fillStyle='#6B7280';ctx.textAlign='center';ctx.fillText('Organised by: '+org,w/2,cy+ch-h*.025);}
+  // Footer
+  ctx.fillStyle='rgba(255,255,255,0.75)';ctx.font=`bold ${w*.028}px DM Sans,sans-serif`;ctx.textAlign='center';
+  ctx.fillText('chessconnect.online',w/2,h*.94);
+}
+
+function rrect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+function wrapTxt(ctx,txt,x,y,mw,lh){
+  const words=txt.split(' ');let line='',cy=y;
+  words.forEach(w=>{const t=line+w+' ';if(ctx.measureText(t).width>mw&&line){ctx.fillText(line,x,cy);line=w+' ';cy+=lh;}else line=t;});
+  ctx.fillText(line,x,cy);
+}
+
+// ── DOWNLOADS ──
+function dlPDF(){ up(); window.print(); }
+function dlSq(){
+  draw('sqC',300,300);
+  const big=document.createElement('canvas'); big.width=1080; big.height=1080;
+  big.getContext('2d').drawImage(document.getElementById('sqC'),0,0,1080,1080);
+  dl(big,'chess-tournament-whatsapp-square.png');
+}
+function dlPt(){
+  draw('ptC',175,311);
+  const big=document.createElement('canvas'); big.width=1080; big.height=1920;
+  big.getContext('2d').drawImage(document.getElementById('ptC'),0,0,1080,1920);
+  dl(big,'chess-tournament-whatsapp-story.png');
+}
+function dl(canvas,name){ const a=document.createElement('a'); a.download=name; a.href=canvas.toDataURL('image/png'); a.click(); }
+
+// ── STORAGE ──
+function sv(){
+  try {
+    const fs=['f-name','f-edition','f-aicf','f-org','f-aegis','f-type','f-prizefund','f-sd','f-ed','f-venue','f-addr','f-reach','f-rep','f-tech','f-inaug','f-pdist','f-elig','f-rr','f-fnotes','f-bank','f-accno','f-ifsc','f-upi','f-wa','f-ldate'];
+    const d={};
+    fs.forEach(f=>{ const el=document.getElementById(f); if(el) d[f]=el.value; });
+    d.aicfreq=document.getElementById('f-aicfreq')?.checked;
+    d.free=document.getElementById('f-free')?.checked;
+    d.tmpl=tmpl; d.logo=logoURL; d.qr=qrURL;
+    localStorage.setItem('ccbm',JSON.stringify(d));
+  } catch(e){}
+}
+function loadSaved(){
+  try {
+    const raw=localStorage.getItem('ccbm'); if(!raw) return;
+    const d=JSON.parse(raw);
+    Object.keys(d).forEach(k=>{ const el=document.getElementById(k); if(el&&typeof d[k]==='string') el.value=d[k]; });
+    if(d.aicfreq!==undefined) document.getElementById('f-aicfreq').checked=d.aicfreq;
+    if(d.free!==undefined) document.getElementById('f-free').checked=d.free;
+    if(d.tmpl){ tmpl=d.tmpl; document.querySelectorAll('.tcard').forEach((c,i)=>{ const names=['classic','school','premier','club']; c.classList.toggle('sel',names[i]===tmpl); }); }
+    if(d.logo){ logoURL=d.logo; const i=document.getElementById('logoPreview'); i.src=logoURL; i.style.display='block'; }
+    if(d.qr){ qrURL=d.qr; const i=document.getElementById('qrPreview'); i.src=qrURL; i.style.display='block'; }
+  } catch(e){}
+}
+
+// ── UTILS ──
+function v(id){ return document.getElementById(id)?.value||''; }
+function fd(s){ if(!s) return ''; const d=new Date(s); return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); }
+</script>
+</body>
+</html>
