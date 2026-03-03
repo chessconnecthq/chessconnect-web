@@ -357,6 +357,41 @@ body{background:radial-gradient(ellipse at 50% 30%,var(--bg-top),var(--bg-bot));
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.25);transform:scale(0);animation:rippleAnim 0.4s ease-out forwards;pointer-events:none}
 @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
 
+/* ── PRESET STRIP ── */
+.presets-strip{
+  display:flex;align-items:center;gap:5px;
+  margin-top:10px;padding:8px 12px;
+  background:rgba(0,0,0,0.25);
+  border-radius:12px;
+  flex-wrap:nowrap;overflow-x:auto;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  position:relative;z-index:2;
+}
+.presets-strip::-webkit-scrollbar{display:none}
+.preset-group-label{
+  font-size:0.52rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.1em;color:var(--text-muted);
+  white-space:nowrap;flex-shrink:0;opacity:0.7;
+}
+.preset-chip{
+  padding:4px 10px;border-radius:7px;
+  border:1.5px solid var(--panel-border);
+  background:rgba(255,255,255,0.04);
+  color:var(--text-muted);
+  font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:700;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:all 0.18s;
+}
+.preset-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.08)}
+.preset-chip.sel{border-color:var(--accent);color:var(--accent);background:var(--active-glow)}
+.preset-sep{width:1px;height:18px;background:rgba(255,255,255,0.1);flex-shrink:0;margin:0 2px}
+
+/* ── CUSTOM H/M/S row ── */
+.hms-row{display:grid;grid-template-columns:1fr 10px 1fr 10px 1fr;gap:0.35rem;align-items:end;margin-top:0.75rem}
+.hms-sep{font-size:1.1rem;color:var(--text-muted);text-align:center;padding-bottom:6px}
+.hms-block{display:flex;flex-direction:column;gap:4px}
+.hms-label{font-size:0.6rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;text-align:center}
+
 /* Sound toggle */
 .sound-indicator{font-size:0.6rem;font-weight:700;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:4px;border:1px solid rgba(255,255,255,0.06)}
 </style>
@@ -381,11 +416,8 @@ body{background:radial-gradient(ellipse at 50% 30%,var(--bg-top),var(--bg-bot));
     <button class="icon-btn" onclick="toggleSound()" id="soundBtn" title="Toggle sound">
       <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
     </button>
-    <button class="icon-btn" onclick="showThemes()" title="Themes">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-    </button>
-    <button class="icon-btn" onclick="showTimeControl()" title="Time control">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <button class="icon-btn" onclick="showSettings()" title="Settings">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
     </button>
     <button class="icon-btn" onclick="resetClock()" title="Reset">
       <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
@@ -443,60 +475,82 @@ body{background:radial-gradient(ellipse at 50% 30%,var(--bg-top),var(--bg-bot));
       <div class="status-text" id="statusText">Tap any button to start</div>
     </div>
 
+    <!-- Quick Presets Strip -->
+    <div class="presets-strip" id="presetsStrip">
+      <div class="preset-group-label">Bullet</div>
+      <div class="preset-chip sel" id="chip-1+1" onclick="quickPreset(60,1,'1+1',this)">1+1</div>
+      <div class="preset-chip" id="chip-2+1" onclick="quickPreset(120,1,'2+1',this)">2+1</div>
+      <div class="preset-sep"></div>
+      <div class="preset-group-label">Blitz</div>
+      <div class="preset-chip" id="chip-3+2" onclick="quickPreset(180,2,'3+2',this)">3+2</div>
+      <div class="preset-chip" id="chip-5+3" onclick="quickPreset(300,3,'5+3',this)">5+3</div>
+      <div class="preset-sep"></div>
+      <div class="preset-group-label">Rapid</div>
+      <div class="preset-chip" id="chip-10+5" onclick="quickPreset(600,5,'10+5',this)">10+5</div>
+      <div class="preset-chip" id="chip-15+10" onclick="quickPreset(900,10,'15+10',this)">15+10</div>
+    </div>
+
   </div>
 </div>
 
-<!-- ── TIME CONTROL PANEL ── -->
-<div class="overlay" id="tcOverlay" onclick="closePanelIf(event,'tcOverlay')">
+<!-- ── SETTINGS PANEL (presets + custom + themes) ── -->
+<div class="overlay" id="settingsOverlay" onclick="closePanelIf(event,'settingsOverlay')">
   <div class="panel">
     <div class="panel-handle"></div>
-    <div class="panel-title">Time Control</div>
+    <div class="panel-title">Settings</div>
 
     <div class="tc-cat">Bullet</div>
     <div class="tc-grid">
-      <div class="tc-btn" onclick="setTC(60,0,'1+0')">1+0<br/><span style="font-size:0.6rem;opacity:0.6">Bullet</span></div>
-      <div class="tc-btn" onclick="setTC(60,1,'1+1')">1+1<br/><span style="font-size:0.6rem;opacity:0.6">Bullet</span></div>
-      <div class="tc-btn" onclick="setTC(120,1,'2+1')">2+1<br/><span style="font-size:0.6rem;opacity:0.6">Bullet</span></div>
+      <div class="tc-btn" id="tcp-1+1" onclick="setTC(60,1,'1+1',this)">1+1<br/><span style="font-size:0.58rem;opacity:0.55">Bullet</span></div>
+      <div class="tc-btn" id="tcp-2+1" onclick="setTC(120,1,'2+1',this)">2+1<br/><span style="font-size:0.58rem;opacity:0.55">Bullet</span></div>
     </div>
 
     <div class="tc-cat">Blitz</div>
     <div class="tc-grid">
-      <div class="tc-btn" onclick="setTC(180,0,'3+0')">3+0<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
-      <div class="tc-btn" onclick="setTC(180,2,'3+2')">3+2<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
-      <div class="tc-btn" onclick="setTC(300,0,'5+0')">5+0<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
-      <div class="tc-btn" onclick="setTC(300,3,'5+3')">5+3<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
-      <div class="tc-btn" onclick="setTC(600,0,'10+0')">10+0<br/><span style="font-size:0.6rem;opacity:0.6">Blitz</span></div>
-      <div class="tc-btn sel" id="tc-default" onclick="setTC(600,5,'10+5')">10+5<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
+      <div class="tc-btn" id="tcp-3+2" onclick="setTC(180,2,'3+2',this)">3+2<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
+      <div class="tc-btn" id="tcp-5+3" onclick="setTC(300,3,'5+3',this)">5+3<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
+      <div class="tc-btn" id="tcp-3+0" onclick="setTC(180,0,'3+0',this)">3+0<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
+      <div class="tc-btn" id="tcp-5+0" onclick="setTC(300,0,'5+0',this)">5+0<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
     </div>
 
     <div class="tc-cat">Rapid</div>
     <div class="tc-grid">
-      <div class="tc-btn" onclick="setTC(900,10,'15+10')">15+10<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
-      <div class="tc-btn" onclick="setTC(1800,0,'30+0')">30+0<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
-      <div class="tc-btn" onclick="setTC(1800,30,'30+30')">30+30<br/><span style="font-size:0.6rem;opacity:0.6">Rapid</span></div>
+      <div class="tc-btn sel" id="tcp-10+5" onclick="setTC(600,5,'10+5',this)">10+5<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
+      <div class="tc-btn" id="tcp-15+10" onclick="setTC(900,10,'15+10',this)">15+10<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
+      <div class="tc-btn" id="tcp-10+0" onclick="setTC(600,0,'10+0',this)">10+0<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
+      <div class="tc-btn" id="tcp-30+0" onclick="setTC(1800,0,'30+0',this)">30+0<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
     </div>
 
     <div class="tc-cat">Classical</div>
     <div class="tc-grid">
-      <div class="tc-btn" onclick="setTC(5400,30,'90+30')">90+30<br/><span style="font-size:0.6rem;opacity:0.6">Classical</span></div>
-      <div class="tc-btn" onclick="setTC(7200,30,'120+30')">120+30<br/><span style="font-size:0.6rem;opacity:0.6">Classical</span></div>
+      <div class="tc-btn" id="tcp-90+30" onclick="setTC(5400,30,'90+30',this)">90+30<br/><span style="font-size:0.58rem;opacity:0.55">Classical</span></div>
+      <div class="tc-btn" id="tcp-120+30" onclick="setTC(7200,30,'120+30',this)">120+30<br/><span style="font-size:0.58rem;opacity:0.55">Classical</span></div>
     </div>
 
-    <div class="tc-cat">Custom</div>
-    <div class="custom-row">
-      <div style="flex:1"><div class="custom-label">Minutes</div><input class="custom-input" id="customMin" type="number" value="10" min="0" max="180"/></div>
-      <div style="color:var(--text-muted);font-size:1.2rem;padding-top:16px">+</div>
-      <div style="flex:1"><div class="custom-label">Increment (sec)</div><input class="custom-input" id="customInc" type="number" value="0" min="0" max="60"/></div>
+    <div class="tc-cat">Custom Time</div>
+    <div class="hms-row">
+      <div class="hms-block">
+        <div class="hms-label">Hours</div>
+        <input class="custom-input" id="customHrs" type="number" value="0" min="0" max="9" placeholder="0"/>
+      </div>
+      <div class="hms-sep">:</div>
+      <div class="hms-block">
+        <div class="hms-label">Minutes</div>
+        <input class="custom-input" id="customMin" type="number" value="10" min="0" max="59" placeholder="10"/>
+      </div>
+      <div class="hms-sep">:</div>
+      <div class="hms-block">
+        <div class="hms-label">Seconds</div>
+        <input class="custom-input" id="customSec" type="number" value="0" min="0" max="59" placeholder="0"/>
+      </div>
     </div>
-    <button class="apply-btn" onclick="applyCustom()">Apply Time Control</button>
-  </div>
-</div>
+    <div style="margin-top:0.6rem">
+      <div class="hms-label" style="margin-bottom:4px">Increment (seconds)</div>
+      <input class="custom-input" id="customInc" type="number" value="0" min="0" max="300" placeholder="0" style="max-width:120px"/>
+    </div>
+    <button class="apply-btn" onclick="applyCustom()">Apply Custom Time</button>
 
-<!-- ── THEMES PANEL ── -->
-<div class="overlay" id="themeOverlay" onclick="closePanelIf(event,'themeOverlay')">
-  <div class="panel">
-    <div class="panel-handle"></div>
-    <div class="panel-title">Choose Theme</div>
+    <div class="tc-cat" style="margin-top:1.1rem">Theme</div>
     <div class="theme-grid">
       <div class="theme-card sel" id="thm-walnut" onclick="setTheme('walnut',this)">
         <div class="theme-preview" style="background:linear-gradient(135deg,#2C1810,#8B4513,#C4873A);color:#F0E68C;text-shadow:0 0 8px rgba(240,230,140,0.4)">10:00</div>
@@ -602,29 +656,49 @@ let lastTick = null;
 let warningTriggered = [false, false];
 
 // ── TIME CONTROL ──
-let selectedTC = 'tc-default';
-function setTC(secs, inc, id) {
+let currentPresetId = 'tcp-10+5';
+
+function syncPresetUI(presetKey) {
+  // Sync panel buttons
+  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('sel'));
+  const panelBtn = document.getElementById('tcp-' + presetKey);
+  if (panelBtn) panelBtn.classList.add('sel');
+  // Sync strip chips
+  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('sel'));
+  const chip = document.getElementById('chip-' + presetKey);
+  if (chip) chip.classList.add('sel');
+  currentPresetId = presetKey;
+}
+
+function setTC(secs, inc, key, el) {
   baseTime = secs;
   increment = inc;
-  times = [secs, secs];
-  moves = [0, 0];
-  warningTriggered = [false, false];
-  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('sel'));
-  // find and highlight
-  event.target.closest('.tc-btn').classList.add('sel');
-  closePanel('tcOverlay');
+  syncPresetUI(key);
+  closePanel('settingsOverlay');
   resetToNewTC();
 }
+
+function quickPreset(secs, inc, key, el) {
+  baseTime = secs;
+  increment = inc;
+  syncPresetUI(key);
+  resetToNewTC();
+}
+
 function applyCustom(){
-  const m = parseInt(document.getElementById('customMin').value) || 10;
+  const h = parseInt(document.getElementById('customHrs').value) || 0;
+  const m = parseInt(document.getElementById('customMin').value) || 0;
+  const s = parseInt(document.getElementById('customSec').value) || 0;
   const i = parseInt(document.getElementById('customInc').value) || 0;
-  baseTime = m * 60;
+  const total = h*3600 + m*60 + s;
+  if (total <= 0) return;
+  baseTime = total;
   increment = i;
-  times = [baseTime, baseTime];
-  moves = [0, 0];
-  warningTriggered = [false, false];
+  // Deselect all presets — custom mode
   document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('sel'));
-  closePanel('tcOverlay');
+  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('sel'));
+  currentPresetId = '';
+  closePanel('settingsOverlay');
   resetToNewTC();
 }
 function resetToNewTC(){
@@ -633,6 +707,9 @@ function resetToNewTC(){
   active = -1;
   paused = false;
   gameOver = false;
+  times = [baseTime, baseTime];
+  moves = [0, 0];
+  warningTriggered = [false, false];
   updateDisplays();
   document.getElementById('p1unit').className = 'display-unit';
   document.getElementById('p2unit').className = 'display-unit';
@@ -642,6 +719,7 @@ function resetToNewTC(){
   document.getElementById('statusDot').style.display = 'none';
   document.getElementById('pauseBtn').classList.remove('paused');
   document.getElementById('pauseIcon').innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+  document.getElementById('presetsStrip').style.display = 'flex';
 }
 
 // ── FORMAT TIME ──
@@ -723,6 +801,7 @@ function pressBtn(player, e){
     interval = setInterval(tick, 50);
     document.getElementById('startScreen').classList.add('hidden');
     document.getElementById('statusDot').style.display = 'block';
+    document.getElementById('presetsStrip').style.display = 'none'; // hide during game
     updateActiveUI();
     addRipple(e, player);
     playClick();
@@ -818,6 +897,7 @@ function resetClock(){
   document.getElementById('pauseBtn').classList.remove('paused');
   document.getElementById('pauseIcon').innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
   document.getElementById('gameoverBanner').classList.remove('show');
+  document.getElementById('presetsStrip').style.display = 'flex';
   updateDisplays();
 }
 
@@ -844,16 +924,16 @@ function setTheme(name, card){
   document.body.className = 'theme-' + name;
   document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('sel'));
   card.classList.add('sel');
-  closePanel('themeOverlay');
+  // don't close panel — user might want to keep tweaking
 }
 
 // ── PANELS ──
-function showTimeControl(){ document.getElementById('tcOverlay').classList.add('show'); }
-function showThemes(){ document.getElementById('themeOverlay').classList.add('show'); }
+function showSettings(){ document.getElementById('settingsOverlay').classList.add('show'); }
 function closePanel(id){ document.getElementById(id).classList.remove('show'); }
 function closePanelIf(e, id){ if(e.target.id === id) closePanel(id); }
 
 // ── INIT ──
+syncPresetUI('10+5');
 updateDisplays();
 </script>
 </body>
