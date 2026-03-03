@@ -4,937 +4,1273 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <title>ChessConnect Clock</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  /* Wooden Walnut theme (default) */
-  --wood-dark:#2C1810;
-  --wood-mid:#5C3317;
-  --wood-light:#8B4513;
-  --wood-grain:#6B3410;
-  --wood-highlight:#A0522D;
-  --btn-top:#C4873A;
-  --btn-mid:#A0682A;
-  --btn-side:#7A4E1F;
-  --btn-shadow:#3D2008;
-  --display-bg:#0A0A0A;
-  --display-border:#1a1a1a;
-  --digit-active:#F0E68C;
-  --digit-glow:rgba(240,230,140,0.4);
-  --digit-inactive:#1C1C1C;
-  --accent:#C4873A;
-  --text-light:#F5DEB3;
-  --text-muted:#8B7355;
-  --active-glow:rgba(196,135,58,0.3);
-  --bg-top:#1a0f08;
-  --bg-bot:#0d0804;
-  --panel-bg:rgba(44,24,16,0.95);
-  --panel-border:rgba(196,135,58,0.2);
-}
-
-/* THEMES */
-body.theme-ebony {
-  --wood-dark:#0D0D0D;--wood-mid:#1A1A1A;--wood-light:#2D2D2D;
-  --wood-grain:#222222;--wood-highlight:#3D3D3D;
-  --btn-top:#2A2A2A;--btn-mid:#1F1F1F;--btn-side:#141414;--btn-shadow:#050505;
-  --digit-active:#00FF88;--digit-glow:rgba(0,255,136,0.35);--digit-inactive:#0A1A0F;
-  --accent:#00FF88;--text-light:#C0C0C0;--text-muted:#555;
-  --active-glow:rgba(0,255,136,0.2);--bg-top:#080808;--bg-bot:#030303;
-  --panel-bg:rgba(13,13,13,0.97);--panel-border:rgba(0,255,136,0.15);
-}
-body.theme-maple {
-  --wood-dark:#4A2C0A;--wood-mid:#8B5E2A;--wood-light:#C4873A;
-  --wood-grain:#7A4E1F;--wood-highlight:#D4944A;
-  --btn-top:#E8B86D;--btn-mid:#C4873A;--btn-side:#9A621A;--btn-shadow:#4A2C0A;
-  --digit-active:#FFF8E7;--digit-glow:rgba(255,248,231,0.5);--digit-inactive:#2A1A08;
-  --accent:#E8B86D;--text-light:#FFF8E7;--text-muted:#9A7A5A;
-  --active-glow:rgba(232,184,109,0.3);--bg-top:#3A1A05;--bg-bot:#200E02;
-  --panel-bg:rgba(74,44,10,0.97);--panel-border:rgba(232,184,109,0.25);
-}
-body.theme-slate {
-  --wood-dark:#1A2332;--wood-mid:#243447;--wood-light:#2E4560;
-  --wood-grain:#1E2D3F;--wood-highlight:#3A5575;
-  --btn-top:#3A5575;--btn-mid:#2A3F58;--btn-side:#1A2D3F;--btn-shadow:#0A1520;
-  --digit-active:#60AFFF;--digit-glow:rgba(96,175,255,0.4);--digit-inactive:#0A1520;
-  --accent:#60AFFF;--text-light:#C0D8F0;--text-muted:#4A6A8A;
-  --active-glow:rgba(96,175,255,0.2);--bg-top:#0F1820;--bg-bot:#070C12;
-  --panel-bg:rgba(26,35,50,0.97);--panel-border:rgba(96,175,255,0.2);
-}
-body.theme-crimson {
-  --wood-dark:#1A0808;--wood-mid:#3D1010;--wood-light:#6B1A1A;
-  --wood-grain:#500F0F;--wood-highlight:#8B2020;
-  --btn-top:#8B2020;--btn-mid:#6B1A1A;--btn-side:#4A1010;--btn-shadow:#1A0505;
-  --digit-active:#FF6B6B;--digit-glow:rgba(255,107,107,0.4);--digit-inactive:#1A0808;
-  --accent:#FF6B6B;--text-light:#FFD0D0;--text-muted:#8B5555;
-  --active-glow:rgba(255,107,107,0.2);--bg-top:#120505;--bg-bot:#080202;
-  --panel-bg:rgba(26,8,8,0.97);--panel-border:rgba(255,107,107,0.2);
-}
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;touch-action:none}
-body{background:radial-gradient(ellipse at 50% 30%,var(--bg-top),var(--bg-bot));display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;transition:background 0.5s}
+html,body{width:100%;height:100%;overflow:hidden;touch-action:none}
+body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
 
-/* ── TOP BAR ── */
-.topbar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 1.2rem;z-index:50;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.06)}
-.brand{font-size:0.85rem;font-weight:700;letter-spacing:-0.3px;color:var(--text-light)}
-.brand span{color:var(--accent)}
-.topbar-actions{display:flex;gap:0.5rem}
-.icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--panel-border);background:var(--panel-bg);color:var(--text-light);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
-.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
-.icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* ═══════════ SCREENS ═══════════ */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;transition:opacity 0.35s,transform 0.35s;z-index:10;overflow-y:auto}
+.screen.hidden{opacity:0;pointer-events:none;transform:translateY(16px)}
 
-/* ── CLOCK BODY ── */
-.clock-wrap{display:flex;flex-direction:column;align-items:center;gap:0;position:relative;margin-top:0}
-.clock-body{
-  width:min(92vw,400px);
+/* ═══════════ STEP BAR ═══════════ */
+.steps{display:flex;align-items:center;margin-bottom:1.6rem}
+.step{display:flex;flex-direction:column;align-items:center;gap:4px}
+.step-dot{width:26px;height:26px;border-radius:50%;border:2px solid #2a2a2a;background:#111;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;color:#444;transition:all 0.3s}
+.step-dot.active{border-color:#C4873A;background:#C4873A;color:#000}
+.step-dot.done{border-color:#C4873A;background:transparent;color:#C4873A}
+.step-label{font-size:0.52rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#333;transition:color 0.3s;white-space:nowrap}
+.step.active .step-label,.step.done .step-label{color:#C4873A}
+.step-line{width:44px;height:2px;background:#1a1a1a;margin-bottom:16px;position:relative;overflow:hidden}
+.step-line::after{content:'';position:absolute;inset-y:0;left:0;width:0;background:#C4873A;transition:width 0.5s}
+.step-line.filled::after{width:100%}
+
+/* ═══════════ SCREEN 1 — PICK CLOCK ═══════════ */
+.s-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:0.25rem;text-align:center}
+.s-sub{font-size:0.65rem;color:#444;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem;text-align:center}
+
+.clock-cards{display:flex;flex-direction:column;gap:0.75rem;width:100%;max-width:420px}
+.clock-card{border-radius:14px;border:2px solid transparent;cursor:pointer;overflow:hidden;transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1)}
+.clock-card:active{transform:scale(0.98)}
+.clock-card.selected{border-color:var(--ca)!important;box-shadow:0 0 0 1px var(--ca),0 16px 40px rgba(0,0,0,0.5)}
+.card-inner{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1rem}
+.card-preview{flex-shrink:0;width:82px;height:54px;border-radius:8px;position:relative;overflow:hidden}
+.card-info{flex:1}
+.card-name{font-size:0.95rem;font-weight:800;margin-bottom:2px}
+.card-desc{font-size:0.64rem;color:#555;line-height:1.4}
+.card-check{width:20px;height:20px;border-radius:50%;border:2px solid #2a2a2a;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.25s}
+.clock-card.selected .card-check{background:var(--ca);border-color:var(--ca)}
+.card-check svg{width:10px;height:10px;stroke:#000;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
+.clock-card.selected .card-check svg{opacity:1}
+
+/* card themes */
+.card-heritage{--ca:#C4873A;background:linear-gradient(135deg,#1c0e06,#110804)}
+.card-heritage .card-name{color:#C4873A}
+.card-pro{--ca:#999;background:linear-gradient(135deg,#111,#090909)}
+.card-pro .card-name{color:#ccc}
+.card-chronos{--ca:#00EFFF;background:linear-gradient(135deg,#04040f,#06061a)}
+.card-chronos .card-name{color:#00EFFF}
+
+/* card previews */
+.prev-heritage{background:linear-gradient(150deg,#9A4A25,#643010,#3A1608);display:flex;align-items:center;justify-content:center}
+.prev-heritage::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(174deg,transparent 0,transparent 8px,rgba(0,0,0,0.05) 8px,rgba(0,0,0,0.05) 9px)}
+.prev-heritage-d{font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;color:#E8C870;text-shadow:0 0 8px rgba(232,200,112,0.6);position:relative;z-index:1}
+.prev-pro{background:linear-gradient(150deg,#1c1c1c,#101010,#080808);display:flex;align-items:center;justify-content:center}
+.prev-pro-lg{position:absolute;width:7px;height:7px;border-radius:50%;background:#00E676;box-shadow:0 0 7px #00E676;top:7px;left:9px}
+.prev-pro-lr{position:absolute;width:7px;height:7px;border-radius:50%;background:#FF3A3A;box-shadow:0 0 7px #FF3A3A;top:7px;right:9px}
+.prev-pro-d{font-family:'Share Tech Mono',monospace;font-size:0.9rem;color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.7)}
+.prev-chronos{background:linear-gradient(150deg,rgba(6,4,30,0.98),rgba(3,2,18,0.99));display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,200,255,0.15)}
+.prev-chronos::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='82' height='54'%3E%3Cg stroke='rgba(0,200,255,0.22)' stroke-width='0.6' fill='none'%3E%3Cpath d='M0 14 L11 14 L11 7 L28 7'/%3E%3Cpath d='M82 14 L71 14 L71 7 L54 7'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;background-size:cover}
+.prev-chronos-d{display:flex;gap:1px;position:relative;z-index:1}
+.prev-c1{font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:700;color:#00EFFF;text-shadow:0 0 8px rgba(0,239,255,0.8)}
+.prev-c2{font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:700;color:#EE00FF;text-shadow:0 0 8px rgba(238,0,255,0.8)}
+
+.next-btn{width:100%;max-width:420px;padding:0.85rem;border-radius:11px;border:none;background:linear-gradient(135deg,#C4873A,#9A6020);color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;margin-top:1rem;letter-spacing:0.03em;box-shadow:0 6px 20px rgba(196,135,58,0.3);transition:all 0.2s;opacity:0.35;pointer-events:none}
+.next-btn.ready{opacity:1;pointer-events:all}
+.next-btn.ready:hover{transform:translateY(-2px)}
+
+/* ═══════════ SCREEN 2 — SET TIME ═══════════ */
+.s2-title{font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:0.2rem;text-align:center}
+.s2-sub{font-size:0.62rem;color:#444;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.3rem;text-align:center}
+
+/* Preset grid — 2 per row, 4 categories */
+.tc-wrap{width:100%;max-width:420px}
+.tc-cat-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#333;margin:0.8rem 0 0.4rem;display:flex;align-items:center;gap:6px}
+.tc-cat-label span{font-size:0.8rem}
+.tc-row{display:grid;grid-template-columns:1fr 1fr;gap:0.45rem}
+.tc-chip{
+  padding:0.7rem 0.5rem;border-radius:10px;
+  border:1.5px solid #1e1e1e;background:#0e0e0e;
+  color:#444;font-family:'DM Sans',sans-serif;
+  font-size:0.85rem;font-weight:800;cursor:pointer;
+  text-align:center;transition:all 0.18s;
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+}
+.tc-chip small{font-size:0.52rem;font-weight:600;opacity:0.45;letter-spacing:0.06em}
+.tc-chip:hover{border-color:#C4873A;color:#C4873A;background:#120d05}
+.tc-chip.sel{border-color:#C4873A;color:#C4873A;background:#120d05}
+
+/* Custom row */
+.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;max-width:420px;margin-top:0.7rem;background:#0c0c0c;border-radius:10px;padding:0.65rem 0.8rem;border:1.5px solid #1a1a1a}
+.custom-row label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#333;flex-shrink:0}
+.cust-t{display:flex;align-items:center;gap:3px;flex:1}
+.cust-inp{width:100%;background:transparent;border:none;outline:none;color:#fff;font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;text-align:center}
+.cust-sep{color:#2a2a2a;font-size:1rem;font-weight:700}
+.cust-inc{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
+.cust-inc label{font-size:0.5rem;color:#333;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+.cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #2a2a2a;outline:none;color:#ccc;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center}
+
+.s2-btns{display:flex;gap:0.55rem;width:100%;max-width:420px;margin-top:1rem}
+.back-btn{padding:0.85rem 1.2rem;border-radius:11px;border:1.5px solid #222;background:transparent;color:#555;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+.back-btn:hover{border-color:#666;color:#aaa}
+.launch-btn{flex:1;padding:0.85rem;border-radius:11px;border:none;background:linear-gradient(135deg,#C4873A,#9A6020);color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(196,135,58,0.28);transition:all 0.2s;letter-spacing:0.02em}
+.launch-btn:hover{transform:translateY(-2px)}
+
+/* ═══════════ SCREEN 3 — ACTIVE CLOCK ═══════════ */
+#screen3{padding:0;background:#0a0a0f;overflow:hidden}
+
+/* Topbar */
+.s3-bar{position:fixed;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 0.9rem;z-index:100;background:rgba(5,5,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05)}
+.s3-brand{font-size:0.75rem;font-weight:800;color:#fff;letter-spacing:-0.2px}
+.s3-brand em{color:#C4873A;font-style:normal}
+.s3-actions{display:flex;gap:5px}
+.s3-btn{width:30px;height:30px;border-radius:7px;border:1px solid #1e1e1e;background:transparent;color:#444;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.18s}
+.s3-btn:hover{border-color:#C4873A;color:#C4873A}
+.s3-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.s3-btn.active-ctrl{border-color:#C4873A;color:#C4873A}
+
+/* Clock containers */
+.clock-view{display:none;flex-direction:column;align-items:center;justify-content:center;position:fixed;inset:0;padding-top:46px}
+.clock-view.show{display:flex}
+
+/* ─── PRESET STRIP (inline in clock view) ─── */
+.preset-strip{
+  display:flex;align-items:center;gap:4px;
+  padding:5px 10px;background:rgba(255,255,255,0.03);
+  border-radius:8px;flex-wrap:nowrap;overflow-x:auto;
+  scrollbar-width:none;max-width:430px;width:min(96vw,430px);
+  margin-top:8px;flex-shrink:0;
+}
+.preset-strip::-webkit-scrollbar{display:none}
+.ps-lbl{font-size:0.48rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#2a2a2a;white-space:nowrap;flex-shrink:0}
+.ps-chip{padding:3px 8px;border-radius:5px;border:1.5px solid #1c1c1c;background:transparent;color:#383838;font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s}
+.ps-chip:hover{border-color:#C4873A;color:#C4873A}
+.ps-chip.sel{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.07)}
+.ps-sep{width:1px;height:14px;background:#1a1a1a;flex-shrink:0;margin:0 2px}
+
+/* Status */
+.clock-status{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;flex-shrink:0}
+.sdot{width:5px;height:5px;border-radius:50%;background:#C4873A;opacity:0;transition:opacity 0.3s}
+.sdot.on{animation:dotPulse 1.5s ease infinite}
+.stext{font-size:0.58rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.1em}
+
+@keyframes dotPulse{0%,100%{opacity:0.35;transform:scale(1)}50%{opacity:0.9;transform:scale(1.35)}}
+@keyframes flagPulse{from{opacity:0.7}to{opacity:1}}
+@keyframes warnBlink{0%,100%{opacity:1}50%{opacity:0.6}}
+
+/* ═══════════════════════════════════════
+   HERITAGE CLOCK
+═══════════════════════════════════════ */
+.heritage-clock{background:radial-gradient(ellipse at 50% 30%,#1e0d05,#080402)}
+.hc-body{
+  width:min(96vw,428px);flex-shrink:0;
   background:
-    repeating-linear-gradient(92deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px),
-    linear-gradient(160deg,var(--wood-highlight) 0%,var(--wood-light) 20%,var(--wood-mid) 50%,var(--wood-dark) 80%,var(--wood-grain) 100%);
-  border-radius:20px;
-  padding:18px 18px 22px;
-  box-shadow:
-    0 30px 80px rgba(0,0,0,0.7),
-    0 10px 30px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    inset 0 -2px 0 rgba(0,0,0,0.3);
-  position:relative;
-  border:1px solid rgba(255,255,255,0.08);
-}
-/* Wood grain texture lines */
-.clock-body::before{
-  content:'';position:absolute;inset:0;border-radius:20px;
-  background:repeating-linear-gradient(175deg,transparent 0px,transparent 8px,rgba(0,0,0,0.04) 8px,rgba(0,0,0,0.04) 9px,transparent 9px,transparent 18px);
-  pointer-events:none;
-}
-.clock-body::after{
-  content:'';position:absolute;inset:0;border-radius:20px;
-  background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,transparent 40%,rgba(0,0,0,0.2) 100%);
-  pointer-events:none;
-}
-
-/* ── DISPLAYS ROW ── */
-.displays{display:flex;gap:12px;margin-bottom:14px;position:relative;z-index:2}
-
-.display-unit{flex:1;display:flex;flex-direction:column;gap:6px}
-.player-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);text-align:center;transition:color 0.3s}
-.display-unit.active .player-label{color:var(--accent)}
-
-.display{
-  background:var(--display-bg);
-  border-radius:10px;
-  border:2px solid var(--display-border);
-  padding:10px 8px 8px;
-  text-align:center;
-  position:relative;
-  box-shadow:
-    inset 0 4px 12px rgba(0,0,0,0.8),
-    inset 0 1px 3px rgba(0,0,0,0.9),
-    0 2px 4px rgba(0,0,0,0.4);
-  transition:border-color 0.3s,box-shadow 0.3s;
-  overflow:hidden;
-}
-.display::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.03) 0%,transparent 60%);
-  pointer-events:none;
-}
-.display-unit.active .display{
-  border-color:var(--accent);
-  box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),inset 0 1px 3px rgba(0,0,0,0.9),0 0 20px var(--active-glow),0 0 40px var(--active-glow);
-}
-.display-unit.flagged .display{
-  border-color:#FF4444;
-  box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),0 0 20px rgba(255,68,68,0.3),0 0 40px rgba(255,68,68,0.15);
-  animation:flagPulse 0.5s ease infinite alternate;
-}
-@keyframes flagPulse{from{box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),0 0 15px rgba(255,68,68,0.3)}to{box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),0 0 30px rgba(255,68,68,0.5)}}
-
-/* ── DIGITS ── */
-.time-display{
-  font-family:'Rajdhani',sans-serif;
-  font-weight:700;
-  font-size:clamp(2.4rem,11vw,3.2rem);
-  letter-spacing:0.05em;
-  color:var(--digit-inactive);
-  line-height:1;
-  position:relative;
-  transition:color 0.3s,text-shadow 0.3s;
-  font-variant-numeric:tabular-nums;
-  user-select:none;
-}
-.display-unit.active .time-display{
-  color:var(--digit-active);
-  text-shadow:0 0 10px var(--digit-glow),0 0 20px var(--digit-glow),0 0 40px var(--digit-glow);
-}
-.display-unit.flagged .time-display{
-  color:#FF4444;
-  text-shadow:0 0 10px rgba(255,68,68,0.5),0 0 20px rgba(255,68,68,0.3);
-}
-.display-unit.warning .time-display{
-  color:#FF8C00;
-  text-shadow:0 0 10px rgba(255,140,0,0.5),0 0 20px rgba(255,140,0,0.3);
-  animation:warnPulse 1s ease infinite;
-}
-@keyframes warnPulse{0%,100%{opacity:1}50%{opacity:0.7}}
-
-.moves-count{font-size:0.6rem;font-weight:600;color:var(--text-muted);text-align:center;margin-top:3px;letter-spacing:0.08em;font-family:'DM Sans',sans-serif;transition:color 0.3s}
-.display-unit.active .moves-count{color:var(--accent);opacity:0.8}
-
-/* Increment badge */
-.inc-badge{position:absolute;bottom:5px;right:7px;font-size:0.5rem;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;opacity:0.6}
-
-/* ── CENTER DIVIDER ── */
-.center-div{width:2px;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.1),transparent);border-radius:1px;align-self:stretch;flex-shrink:0}
-
-/* ── BUTTONS ROW ── */
-.buttons-row{display:flex;gap:12px;position:relative;z-index:2}
-
-.press-btn{
-  flex:1;
-  height:64px;
-  border-radius:14px;
-  border:none;
-  cursor:pointer;
-  position:relative;
-  outline:none;
-  transition:transform 0.08s ease,filter 0.08s ease;
-  -webkit-user-select:none;user-select:none;
-  /* 3D button construction */
-  background:linear-gradient(160deg,var(--btn-top) 0%,var(--btn-mid) 50%,var(--btn-side) 100%);
-  box-shadow:
-    0 8px 0 var(--btn-shadow),
-    0 10px 20px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.25),
-    inset 0 -1px 0 rgba(0,0,0,0.3),
-    inset 1px 0 0 rgba(255,255,255,0.1),
-    inset -1px 0 0 rgba(0,0,0,0.2);
-}
-/* Button top gloss */
-.press-btn::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:50%;border-radius:14px 14px 0 0;
-  background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.03) 100%);
-  pointer-events:none;
-}
-/* Button press grooves */
-.press-btn::after{
-  content:'';position:absolute;inset:8px 12px;border-radius:8px;
-  border:1px solid rgba(255,255,255,0.08);
-  box-shadow:inset 0 1px 3px rgba(0,0,0,0.4);
-  pointer-events:none;
-}
-
-.press-btn:active,
-.press-btn.pressing{
-  transform:translateY(6px) scale(0.99);
-  box-shadow:
-    0 2px 0 var(--btn-shadow),
-    0 4px 8px rgba(0,0,0,0.4),
-    inset 0 2px 6px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(0,0,0,0.2);
-  filter:brightness(0.88);
-}
-.press-btn.inactive-btn{
-  filter:brightness(0.55) saturate(0.5);
-  cursor:not-allowed;
-}
-.press-btn.active-btn{
-  filter:brightness(1.08);
-  animation:btnPulse 2s ease infinite;
-}
-@keyframes btnPulse{0%,100%{filter:brightness(1.08)}50%{filter:brightness(1.18)}}
-
-.btn-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.btn-icon svg{width:22px;height:22px;stroke:rgba(255,255,255,0.5);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.press-btn.active-btn .btn-icon svg{stroke:rgba(255,255,255,0.85)}
-
-/* ── PAUSE BUTTON (CENTER) ── */
-.pause-wrap{display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pause-btn{
-  width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
-  background:linear-gradient(160deg,rgba(255,255,255,0.15),rgba(255,255,255,0.05));
-  border:1.5px solid rgba(255,255,255,0.12);
-  box-shadow:0 4px 0 rgba(0,0,0,0.4),0 6px 12px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.15);
-  display:flex;align-items:center;justify-content:center;
-  transition:all 0.15s;
-  color:var(--text-light);
-  position:relative;top:0;
-}
-.pause-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,0.4),0 2px 6px rgba(0,0,0,0.3)}
-.pause-btn svg{width:16px;height:16px;stroke:currentColor;fill:currentColor;stroke-width:0}
-.pause-btn.paused{border-color:var(--accent);color:var(--accent)}
-
-/* ── STATUS BAR ── */
-.status-bar{display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:10px;position:relative;z-index:2}
-.status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.6;animation:dotPulse 1.5s ease infinite}
-@keyframes dotPulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
-.status-text{font-size:0.62rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em}
-
-/* ── OVERLAYS ── */
-.overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity 0.25s}
-.overlay.show{opacity:1;pointer-events:all}
-
-.panel{
-  width:min(100%,440px);background:var(--panel-bg);border-radius:24px 24px 0 0;
-  border:1px solid var(--panel-border);border-bottom:none;
-  padding:1.5rem 1.5rem 2rem;
-  transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  max-height:85vh;overflow-y:auto;
-}
-.overlay.show .panel{transform:translateY(0)}
-.panel-handle{width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 1.2rem}
-.panel-title{font-size:1rem;font-weight:700;color:var(--text-light);margin-bottom:1.2rem;text-align:center}
-
-/* Time control grid */
-.tc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:1.2rem}
-.tc-btn{
-  padding:0.65rem 0.4rem;border-radius:10px;border:1.5px solid var(--panel-border);
-  background:rgba(255,255,255,0.04);color:var(--text-muted);font-family:'DM Sans',sans-serif;
-  font-size:0.72rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s;line-height:1.3;
-}
-.tc-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.07)}
-.tc-btn.sel{border-color:var(--accent);color:var(--accent);background:var(--active-glow)}
-.tc-cat{font-size:0.6rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin:0.9rem 0 0.45rem;opacity:0.7}
-
-/* Custom time inputs */
-.custom-row{display:flex;gap:0.5rem;align-items:center;margin-top:0.75rem}
-.custom-input{flex:1;background:rgba(255,255,255,0.05);border:1.5px solid var(--panel-border);border-radius:8px;padding:0.55rem 0.75rem;color:var(--text-light);font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;text-align:center;outline:none;width:100%}
-.custom-input:focus{border-color:var(--accent)}
-.custom-label{font-size:0.65rem;color:var(--text-muted);font-weight:600;white-space:nowrap}
-.apply-btn{width:100%;padding:0.75rem;border-radius:10px;border:none;background:var(--accent);color:#000;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;margin-top:1rem;transition:opacity 0.2s;letter-spacing:0.02em}
-.apply-btn:hover{opacity:0.88}
-
-/* Theme panel */
-.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.65rem}
-.theme-card{border-radius:12px;border:2px solid transparent;cursor:pointer;overflow:hidden;transition:all 0.2s;position:relative}
-.theme-card.sel{border-color:var(--accent)}
-.theme-preview{height:60px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:0.05em}
-.theme-name{padding:0.4rem 0.6rem;font-size:0.72rem;font-weight:700;letter-spacing:0.05em;text-align:center}
-.theme-sel-dot{position:absolute;top:6px;right:6px;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:none}
-.theme-card.sel .theme-sel-dot{display:block;background:var(--accent);border-color:var(--accent)}
-
-/* Start screen overlay */
-.start-screen{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,var(--bg-top),var(--bg-bot));transition:opacity 0.5s,pointer-events 0s}
-.start-screen.hidden{opacity:0;pointer-events:none}
-.start-logo{font-size:1.5rem;font-weight:800;letter-spacing:-0.5px;color:var(--text-light);margin-bottom:0.25rem}
-.start-logo span{color:var(--accent)}
-.start-sub{font-size:0.72rem;color:var(--text-muted);margin-bottom:2.5rem;letter-spacing:0.06em}
-.start-clock-preview{
-  width:180px;height:120px;
-  background:linear-gradient(160deg,var(--wood-highlight),var(--wood-mid),var(--wood-dark));
-  border-radius:16px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.1);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:2rem;
+    repeating-linear-gradient(173deg,transparent 0,transparent 9px,rgba(0,0,0,0.045) 9px,rgba(0,0,0,0.045) 10px),
+    linear-gradient(158deg,#A0522D 0%,#7A3A1C 18%,#5A2810 48%,#3C1A08 76%,#2A1206 100%);
+  border-radius:18px 18px 10px 10px;
+  box-shadow:0 35px 90px rgba(0,0,0,0.82),0 12px 32px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.13),inset 0 -3px 0 rgba(0,0,0,0.4);
+  border:1px solid rgba(160,90,35,0.22);
   position:relative;overflow:hidden;
 }
-.start-clock-preview::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(175deg,transparent 0px,transparent 8px,rgba(0,0,0,0.04) 8px,rgba(0,0,0,0.04) 9px)}
-.start-preview-time{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--digit-active);text-shadow:0 0 10px var(--digit-glow),0 0 20px var(--digit-glow);letter-spacing:0.05em}
-.start-btn{
-  padding:0.9rem 3rem;border-radius:100px;border:none;
-  background:linear-gradient(135deg,var(--btn-top),var(--btn-mid));
-  color:rgba(255,255,255,0.9);font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;
-  cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.2);
-  letter-spacing:0.04em;transition:all 0.2s;margin-bottom:0.75rem;
-}
-.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,0.5)}
-.start-hint{font-size:0.68rem;color:var(--text-muted);letter-spacing:0.06em}
+.hc-body::after{content:'';position:absolute;inset:0;border-radius:18px 18px 10px 10px;background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 28%,rgba(0,0,0,0.18) 100%);pointer-events:none}
+.hc-corners::before,.hc-corners::after{content:'✦';position:absolute;font-size:0.55rem;color:rgba(210,165,70,0.55);z-index:3}
+.hc-corners::before{top:10px;left:13px}
+.hc-corners::after{top:10px;right:13px}
 
-/* Game over banner */
-.gameover-banner{
-  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);
-  background:var(--panel-bg);border:1.5px solid var(--panel-border);border-radius:20px;
-  padding:2rem 2.5rem;text-align:center;z-index:400;
-  box-shadow:0 30px 80px rgba(0,0,0,0.7);
-  opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+/* Knobs row */
+.hc-top{display:flex;align-items:center;padding:11px 14px 9px;position:relative;z-index:2;gap:8px}
+.hc-knob-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.hc-knob{
+  width:54px;height:54px;border-radius:50%;
+  background:radial-gradient(ellipse at 38% 28%,#EAC855 0%,#C49035 30%,#9A6E1A 58%,#7A521008 78%,#5A3808 100%);
+  box-shadow:0 7px 0 #3C2408,0 10px 22px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,230,100,0.5),inset 0 -2px 4px rgba(0,0,0,0.45);
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform 0.07s,box-shadow 0.07s;border:1px solid rgba(100,60,10,0.4);
 }
-.gameover-banner.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
-.go-flag{font-size:2.5rem;margin-bottom:0.5rem}
-.go-title{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text-light);margin-bottom:0.25rem}
-.go-sub{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.2rem}
-.go-restart{padding:0.65rem 2rem;border-radius:10px;border:none;background:var(--accent);color:#000;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;letter-spacing:0.03em}
+.hc-knob::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 38% 28%,rgba(255,230,100,0.42) 0%,rgba(255,200,60,0.15) 40%,transparent 58%)}
+.hc-knob::after{content:'';position:absolute;inset:8px;border-radius:50%;border:1px solid rgba(255,200,60,0.1);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5)}
+.hc-knob:active,.hc-knob.pressing{transform:translateY(5px) scale(0.97);box-shadow:0 2px 0 #3C2408,0 3px 10px rgba(0,0,0,0.5),inset 0 3px 8px rgba(0,0,0,0.55)}
+.hc-knob.active-k{animation:knobGlow 2.2s ease infinite}
+@keyframes knobGlow{0%,100%{box-shadow:0 7px 0 #3C2408,0 10px 22px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,230,100,0.5),0 0 18px rgba(196,135,58,0.18)}50%{box-shadow:0 7px 0 #3C2408,0 10px 22px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,230,100,0.5),0 0 30px rgba(196,135,58,0.38)}}
+.hc-knob.inactive-k{filter:brightness(0.42) saturate(0.3);cursor:not-allowed}
+.hk-lbl{font-size:0.55rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:rgba(210,165,70,0.7);text-shadow:0 1px 3px rgba(0,0,0,0.6)}
+
+/* Center controls */
+.hc-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.hc-brand{font-family:'Playfair Display',serif;font-size:0.85rem;font-weight:700;color:rgba(220,175,90,0.92);letter-spacing:0.04em;text-shadow:0 1px 4px rgba(0,0,0,0.6)}
+.hc-ctrls{display:flex;gap:5px}
+.hc-cbtn{
+  padding:5px 11px;border-radius:5px;
+  border:1.5px solid rgba(196,135,58,0.55);
+  background:rgba(30,15,4,0.75);
+  color:rgba(220,175,80,0.95);
+  font-size:0.58rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;
+  box-shadow:0 2px 6px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,200,80,0.1);
+}
+.hc-cbtn:hover{border-color:rgba(220,175,80,0.85);color:#F0D070;background:rgba(60,30,5,0.85);box-shadow:0 2px 10px rgba(196,135,58,0.25),inset 0 1px 0 rgba(255,200,80,0.15)}
+.hc-cbtn:active{transform:translateY(1px)}
+.hc-cbtn.on{border-color:#E8C050;color:#F0D060;background:rgba(80,45,5,0.85);box-shadow:0 2px 10px rgba(196,135,58,0.35),inset 0 1px 0 rgba(255,200,80,0.2)}
+.hc-cstatus{font-size:0.62rem;color:rgba(220,175,80,0.85);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.7)}
+
+/* Displays */
+.hc-displays{display:flex;padding:0 12px;position:relative;z-index:2;gap:0}
+.hc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.hc-plbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(196,135,58,0.55);transition:color 0.3s;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+.hc-dunit.active .hc-plbl{color:rgba(230,185,80,0.95);text-shadow:0 0 8px rgba(196,135,58,0.3),0 1px 3px rgba(0,0,0,0.5)}
+.hc-disp{
+  width:100%;background:#070503;border-radius:7px;
+  border:1.5px solid rgba(120,75,25,0.55);
+  padding:9px 5px 7px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:inset 0 4px 14px rgba(0,0,0,0.88),inset 0 1px 4px rgba(0,0,0,0.94);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.hc-disp::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.022) 0%,transparent 60%);pointer-events:none}
+.hc-dunit.active .hc-disp{border-color:rgba(196,135,58,0.65);box-shadow:inset 0 4px 14px rgba(0,0,0,0.92),0 0 18px rgba(196,135,58,0.18),0 0 45px rgba(196,135,58,0.07)}
+.hc-dunit.flagged .hc-disp{border-color:#FF3A3A!important;animation:flagPulse 0.5s ease infinite alternate}
+.hc-time{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:clamp(2.2rem,10.5vw,3rem);letter-spacing:0.06em;color:#7A5520;line-height:1;transition:color 0.3s,text-shadow 0.3s;user-select:none;font-variant-numeric:tabular-nums}
+.hc-dunit.active .hc-time{color:#E8C870;text-shadow:0 0 10px rgba(232,200,112,0.55),0 0 28px rgba(232,200,112,0.28),0 0 52px rgba(232,200,112,0.1)}
+.hc-dunit.flagged .hc-time{color:#FF3A3A!important;text-shadow:0 0 12px rgba(255,58,58,0.6)!important}
+.hc-dunit.warning .hc-time{color:#FF8C00!important;text-shadow:0 0 10px rgba(255,140,0,0.55)!important;animation:warnBlink 1s ease infinite}
+.hc-moves{font-size:0.58rem;color:rgba(160,110,45,0.65);font-family:'DM Sans',sans-serif;transition:color 0.3s;font-weight:600}
+.hc-dunit.active .hc-moves{color:rgba(210,165,65,0.8)}
+.hc-inc{position:absolute;bottom:4px;right:6px;font-size:0.5rem;color:rgba(180,130,50,0.65);font-weight:700;letter-spacing:0.04em}
+.hc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(196,135,58,0.12),transparent);margin:4px 3px;flex-shrink:0}
+
+/* Bottom bar */
+.hc-bot{display:flex;justify-content:space-between;align-items:center;padding:6px 13px 10px;position:relative;z-index:2}
+.hc-roman{font-family:'Playfair Display',serif;font-size:0.6rem;color:rgba(160,105,38,0.5);font-weight:700}
+.hc-bname{font-family:'Playfair Display',serif;font-style:italic;font-size:0.65rem;color:rgba(180,125,50,0.65);letter-spacing:0.04em;text-align:center}
+.hc-edition{font-size:0.48rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(150,100,35,0.5);font-weight:700;text-align:center}
+
+/* ═══════════════════════════════════════
+   PRO CLOCK
+═══════════════════════════════════════ */
+.pro-clock{background:radial-gradient(ellipse at 50% 30%,#0c0c0c,#050505)}
+.pc-body{
+  width:min(96vw,428px);flex-shrink:0;
+  background:linear-gradient(158deg,#252525 0%,#1A1A1A 25%,#111 55%,#0B0B0B 100%);
+  border-radius:14px 14px 10px 10px;
+  box-shadow:0 32px 88px rgba(0,0,0,0.88),0 10px 28px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.08),inset 0 -2px 0 rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.06);
+  position:relative;overflow:hidden;
+}
+.pc-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);pointer-events:none;border-radius:14px}
+
+/* Lever buttons */
+.pc-top{display:flex;align-items:center;padding:10px 12px 9px;gap:7px;position:relative;z-index:2}
+.pc-lcol{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pc-led-row{display:flex;align-items:center;gap:3px;margin-bottom:1px}
+.pc-led{width:9px;height:9px;border-radius:50%;background:#111;border:1px solid #1e1e1e;transition:all 0.3s}
+.pc-led.g.on{background:#00E676;border-color:#00E676;box-shadow:0 0 8px rgba(0,230,118,0.85),0 0 20px rgba(0,230,118,0.3)}
+.pc-led.r.on{background:#FF3A3A;border-color:#FF3A3A;box-shadow:0 0 8px rgba(255,58,58,0.85),0 0 20px rgba(255,58,58,0.3)}
+.pc-lever{
+  width:78px;height:22px;border-radius:5px 5px 3px 3px;border:none;cursor:pointer;
+  background:linear-gradient(158deg,#2A2A2A,#1A1A1A,#0E0E0E);
+  box-shadow:0 5px 0 #060606,0 7px 15px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,255,255,0.1);
+  position:relative;overflow:hidden;
+  transition:transform 0.07s,box-shadow 0.07s;
+}
+.pc-lever::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.09) 0%,transparent 50%);border-radius:5px 5px 3px 3px}
+.pc-lever:active,.pc-lever.pressing{transform:translateY(4px);box-shadow:0 1px 0 #060606,0 2px 8px rgba(0,0,0,0.6),inset 0 2px 5px rgba(0,0,0,0.5)}
+.pc-lever.active-l{animation:leverPulse 2.2s ease infinite}
+@keyframes leverPulse{0%,100%{box-shadow:0 5px 0 #060606,0 7px 15px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,255,255,0.1)}50%{box-shadow:0 5px 0 #060606,0 7px 15px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,255,255,0.1),0 0 12px rgba(180,180,180,0.1)}}
+.pc-lever.inactive-l{filter:brightness(0.38);cursor:not-allowed}
+/* 1. Lever labels */
+.pc-llbl{font-size:0.55rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#666}
+
+/* 2. Center controls */
+.pc-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+/* 1. Brand */
+.pc-brand-t{font-size:0.85rem;font-weight:800;letter-spacing:0.06em;color:rgba(220,220,220,0.9);text-shadow:0 1px 4px rgba(0,0,0,0.7)}
+.pc-ctrls{display:flex;gap:5px}
+/* 2. Buttons */
+.pc-cbtn{
+  padding:5px 11px;border-radius:4px;
+  border:1.5px solid rgba(180,180,180,0.45);
+  background:rgba(20,20,20,0.85);
+  color:rgba(210,210,210,0.95);
+  font-size:0.58rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;
+  box-shadow:0 2px 6px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.pc-cbtn:hover{border-color:rgba(255,255,255,0.7);color:#fff;background:rgba(40,40,40,0.9)}
+.pc-cbtn:active{transform:translateY(1px)}
+.pc-cbtn.on{border-color:#ccc;color:#fff;background:rgba(60,60,60,0.9);box-shadow:0 2px 10px rgba(200,200,200,0.15),inset 0 1px 0 rgba(255,255,255,0.1)}
+/* 3. Status text */
+.pc-cstatus{font-size:0.62rem;color:rgba(200,200,200,0.82);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.7)}
+
+/* Displays */
+.pc-displays{display:flex;padding:0 11px;position:relative;z-index:2}
+.pc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+/* 4. Player labels */
+.pc-plbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#444;transition:color 0.3s;font-family:'Share Tech Mono',monospace}
+.pc-dunit.active .pc-plbl{color:rgba(220,220,220,0.95);text-shadow:0 0 8px rgba(255,255,255,0.2)}
+/* 8. Display border more visible */
+.pc-disp{width:100%;background:#040404;border-radius:5px;border:1.5px solid #2a2a2a;padding:9px 4px 7px;text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 4px 14px rgba(0,0,0,0.95),inset 0 1px 4px #000;transition:border-color 0.3s,box-shadow 0.3s}
+.pc-disp::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);pointer-events:none}
+.pc-dunit.active .pc-disp{border-color:#3a3a3a;box-shadow:inset 0 4px 14px rgba(0,0,0,0.95),0 0 16px rgba(255,255,255,0.05)}
+.pc-dunit.flagged .pc-disp{border-color:#FF2020!important;animation:flagPulse 0.5s ease infinite alternate}
+/* 7. Inactive timer readable mid-grey */
+.pc-time{font-family:'Share Tech Mono',monospace;font-size:clamp(2rem,10vw,2.85rem);letter-spacing:0.05em;color:#4a4a4a;line-height:1;transition:color 0.3s,text-shadow 0.3s;user-select:none;font-variant-numeric:tabular-nums}
+.pc-dunit.active .pc-time{color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.72),0 0 22px rgba(255,255,255,0.2)}
+.pc-dunit.flagged .pc-time{color:#FF2020!important;text-shadow:0 0 12px rgba(255,32,32,0.6)!important}
+.pc-dunit.warning .pc-time{color:#FF6B00!important;text-shadow:0 0 10px rgba(255,107,0,0.55)!important;animation:warnBlink 1s ease infinite}
+/* 9. Moves count */
+.pc-moves{font-size:0.58rem;color:#3a3a3a;font-family:'DM Sans',sans-serif;transition:color 0.3s;font-weight:600}
+.pc-dunit.active .pc-moves{color:#666}
+/* 10. Increment badge */
+.pc-inc{position:absolute;bottom:4px;right:6px;font-size:0.5rem;color:#3a3a3a;font-weight:700;letter-spacing:0.04em}
+.pc-divider{width:1px;background:linear-gradient(180deg,transparent,#2a2a2a,transparent);margin:4px 3px;flex-shrink:0}
+
+/* 6. Bottom bar */
+.pc-bot{display:flex;justify-content:space-between;align-items:center;padding:6px 12px 9px;position:relative;z-index:2}
+.pc-bname{font-size:0.55rem;font-weight:800;letter-spacing:0.06em;color:rgba(160,160,160,0.6)}
+.pc-tag{font-size:0.48rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(130,130,130,0.5);font-weight:700}
+.pc-bat{font-size:0.55rem;color:rgba(120,120,120,0.45)}
+
+/* ═══════════════════════════════════════
+   CHRONOS 2050
+═══════════════════════════════════════ */
+.chronos-clock{background:radial-gradient(ellipse at 50% 28%,#06061a,#020208)}
+.chronos-clock::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 18% 50%,rgba(0,100,255,0.055) 0%,transparent 55%),radial-gradient(ellipse at 82% 50%,rgba(200,0,255,0.055) 0%,transparent 55%);pointer-events:none;animation:nebulaB 7s ease infinite alternate}
+@keyframes nebulaB{from{opacity:0.6}to{opacity:1}}
+
+.cc-body{
+  width:min(96vw,428px);flex-shrink:0;
+  background:rgba(7,5,28,0.93);
+  border-radius:20px 20px 12px 12px;
+  box-shadow:0 28px 90px rgba(0,0,50,0.88),0 0 55px rgba(0,150,255,0.05),inset 0 1px 0 rgba(0,255,255,0.13),inset 0 -1px 0 rgba(200,0,255,0.08);
+  border:1px solid rgba(0,200,255,0.22);
+  position:relative;overflow:hidden;backdrop-filter:blur(10px);
+}
+.cc-body::after{content:'';position:absolute;inset:0;border-radius:20px 20px 12px 12px;background:linear-gradient(158deg,rgba(0,255,255,0.04) 0%,transparent 32%,rgba(200,0,255,0.03) 100%);pointer-events:none}
+
+/* Circuit SVG */
+.cc-circuit{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;opacity:0.55}
+.cc-circuit svg{width:100%;height:100%}
+
+/* Lever buttons */
+.cc-top{display:flex;align-items:center;padding:11px 13px 9px;gap:8px;position:relative;z-index:2}
+.cc-lcol{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cc-lever{width:80px;height:22px;border-radius:6px;border:none;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.07s,box-shadow 0.07s}
+.cc-lp1{background:linear-gradient(158deg,rgba(0,200,255,0.32),rgba(0,100,180,0.22),rgba(0,50,100,0.42));box-shadow:0 5px 0 rgba(0,80,150,0.58),0 7px 18px rgba(0,0,80,0.6),inset 0 1px 0 rgba(0,255,255,0.36),0 0 14px rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.3)}
+.cc-lp2{background:linear-gradient(158deg,rgba(200,0,255,0.32),rgba(130,0,180,0.22),rgba(80,0,120,0.42));box-shadow:0 5px 0 rgba(120,0,180,0.58),0 7px 18px rgba(50,0,80,0.6),inset 0 1px 0 rgba(238,0,255,0.36),0 0 14px rgba(200,0,255,0.1);border:1px solid rgba(200,0,255,0.3)}
+.cc-lever::before{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,0.14) 0%,transparent 52%)}
+.cc-lp1:active,.cc-lp1.pressing{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,80,150,0.6),inset 0 2px 6px rgba(0,0,0,0.65),0 0 22px rgba(0,200,255,0.22)}
+.cc-lp2:active,.cc-lp2.pressing{transform:translateY(4px);box-shadow:0 1px 0 rgba(120,0,180,0.6),inset 0 2px 6px rgba(0,0,0,0.65),0 0 22px rgba(200,0,255,0.22)}
+.cc-lp1.active-l{animation:cPulse1 2.2s ease infinite}
+.cc-lp2.active-l{animation:cPulse2 2.2s ease infinite}
+@keyframes cPulse1{0%,100%{box-shadow:0 5px 0 rgba(0,80,150,0.58),0 7px 18px rgba(0,0,80,0.6),inset 0 1px 0 rgba(0,255,255,0.36),0 0 14px rgba(0,200,255,0.12)}50%{box-shadow:0 5px 0 rgba(0,80,150,0.58),0 7px 18px rgba(0,0,80,0.6),inset 0 1px 0 rgba(0,255,255,0.36),0 0 28px rgba(0,200,255,0.32)}}
+@keyframes cPulse2{0%,100%{box-shadow:0 5px 0 rgba(120,0,180,0.58),0 7px 18px rgba(50,0,80,0.6),inset 0 1px 0 rgba(238,0,255,0.36),0 0 14px rgba(200,0,255,0.12)}50%{box-shadow:0 5px 0 rgba(120,0,180,0.58),0 7px 18px rgba(50,0,80,0.6),inset 0 1px 0 rgba(238,0,255,0.36),0 0 28px rgba(200,0,255,0.32)}}
+.cc-lever.inactive-l{filter:brightness(0.28) saturate(0.4);cursor:not-allowed}
+/* 5. Lever labels */
+.cc-llp1{font-size:0.55rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:rgba(0,220,255,0.7);font-family:'Orbitron',sans-serif;text-shadow:0 0 6px rgba(0,200,255,0.25)}
+.cc-llp2{font-size:0.55rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:rgba(220,0,255,0.7);font-family:'Orbitron',sans-serif;text-shadow:0 0 6px rgba(200,0,255,0.25)}
+
+/* Center controls */
+.cc-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+/* 1. Brand */
+.cc-brand{display:flex;font-family:'Orbitron',sans-serif;font-size:0.82rem;font-weight:700}
+.cc-b1{color:#00EFFF;text-shadow:0 0 10px rgba(0,239,255,0.65),0 1px 4px rgba(0,0,0,0.6)}
+.cc-b2{color:rgba(230,0,255,0.92);text-shadow:0 0 10px rgba(200,0,255,0.55),0 1px 4px rgba(0,0,0,0.6)}
+.cc-ctrls{display:flex;gap:5px}
+/* 2. Buttons */
+.cc-cbtn{
+  padding:5px 11px;border-radius:4px;
+  border:1.5px solid rgba(0,200,255,0.5);
+  background:rgba(0,10,30,0.75);
+  color:rgba(0,230,255,0.92);
+  font-size:0.58rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;font-family:'Orbitron',sans-serif;
+  box-shadow:0 2px 8px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,255,255,0.08),0 0 8px rgba(0,200,255,0.08);
+}
+.cc-cbtn:hover{border-color:rgba(0,239,255,0.85);color:#00EFFF;background:rgba(0,20,50,0.85);box-shadow:0 2px 12px rgba(0,200,255,0.2)}
+.cc-cbtn:active{transform:translateY(1px)}
+.cc-cbtn.on{border-color:#00EFFF;color:#00EFFF;background:rgba(0,40,70,0.85);box-shadow:0 2px 14px rgba(0,200,255,0.3),inset 0 1px 0 rgba(0,255,255,0.12)}
+/* 3. Status text */
+.cc-cstatus{font-size:0.6rem;color:rgba(0,220,255,0.82);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;font-family:'Orbitron',sans-serif;text-shadow:0 0 8px rgba(0,200,255,0.3)}
+
+/* Displays */
+.cc-displays{display:flex;padding:0 11px;position:relative;z-index:2}
+.cc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+/* 4. Player labels */
+.cc-plbl-1{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,200,255,0.45);font-family:'Orbitron',sans-serif;transition:color 0.3s}
+.cc-plbl-2{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(200,0,255,0.45);font-family:'Orbitron',sans-serif;transition:color 0.3s}
+#cc-p1unit.active .cc-plbl-1{color:rgba(0,239,255,0.95);text-shadow:0 0 8px rgba(0,200,255,0.4)}
+#cc-p2unit.active .cc-plbl-2{color:rgba(238,0,255,0.95);text-shadow:0 0 8px rgba(200,0,255,0.4)}
+/* 8. Display borders more visible */
+.cc-disp{width:100%;background:rgba(0,5,20,0.96);border-radius:9px;padding:9px 4px 7px;text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 4px 15px rgba(0,0,0,0.92);transition:border-color 0.3s,box-shadow 0.3s}
+.cc-disp::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 3px);pointer-events:none}
+.cc-disp-1{border:1.5px solid rgba(0,200,255,0.35)}
+.cc-disp-2{border:1.5px solid rgba(200,0,255,0.35)}
+#cc-p1unit.active .cc-disp-1{border-color:rgba(0,239,255,0.65);box-shadow:inset 0 4px 15px rgba(0,0,0,0.92),0 0 20px rgba(0,200,255,0.18),0 0 55px rgba(0,200,255,0.07)}
+#cc-p2unit.active .cc-disp-2{border-color:rgba(238,0,255,0.65);box-shadow:inset 0 4px 15px rgba(0,0,0,0.92),0 0 20px rgba(200,0,255,0.18),0 0 55px rgba(200,0,255,0.07)}
+.cc-dunit.flagged .cc-disp{border-color:#FF2020!important;animation:flagPulse 0.5s ease infinite alternate}
+/* 7. Inactive timers — dimmed but readable cyan/magenta */
+.cc-t1{font-family:'Orbitron',sans-serif;font-weight:700;font-size:clamp(1.75rem,8.5vw,2.6rem);letter-spacing:0.04em;color:rgba(0,120,150,0.65);line-height:1;transition:color 0.3s,text-shadow 0.3s;user-select:none;font-variant-numeric:tabular-nums}
+.cc-t2{font-family:'Orbitron',sans-serif;font-weight:700;font-size:clamp(1.75rem,8.5vw,2.6rem);letter-spacing:0.04em;color:rgba(150,0,170,0.65);line-height:1;transition:color 0.3s,text-shadow 0.3s;user-select:none;font-variant-numeric:tabular-nums}
+#cc-p1unit.active .cc-t1{color:#00EFFF;text-shadow:0 0 10px rgba(0,239,255,0.82),0 0 28px rgba(0,239,255,0.4),0 0 58px rgba(0,200,255,0.18)}
+#cc-p2unit.active .cc-t2{color:#EE00FF;text-shadow:0 0 10px rgba(238,0,255,0.82),0 0 28px rgba(238,0,255,0.4),0 0 58px rgba(200,0,255,0.18)}
+.cc-dunit.flagged .cc-t1,.cc-dunit.flagged .cc-t2{color:#FF2020!important;text-shadow:0 0 12px rgba(255,32,32,0.7)!important}
+.cc-dunit.warning .cc-t1,.cc-dunit.warning .cc-t2{color:#FFB300!important;text-shadow:0 0 10px rgba(255,179,0,0.6)!important;animation:warnBlink 1s ease infinite}
+/* 9. Moves count */
+.cc-moves{font-size:0.55rem;color:rgba(0,180,220,0.45);font-family:'Orbitron',sans-serif;transition:color 0.3s;font-weight:600}
+#cc-p1unit.active .cc-moves{color:rgba(0,220,255,0.7)}
+#cc-p2unit.active .cc-moves{color:rgba(220,0,255,0.7)}
+/* 10. Increment badge */
+.cc-inc{position:absolute;bottom:4px;right:6px;font-size:0.48rem;color:rgba(0,180,220,0.5);font-weight:700;letter-spacing:0.04em}
+.cc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(100,0,200,0.3),transparent);margin:4px 3px;flex-shrink:0}
+
+/* 6. Bottom bar */
+.cc-bot{display:flex;justify-content:space-between;align-items:center;padding:6px 12px 9px;position:relative;z-index:2}
+.cc-bname{display:flex;font-family:'Orbitron',sans-serif;font-size:0.52rem;font-weight:700;gap:0}
+.cc-bname span:first-child{color:rgba(0,200,255,0.6)}
+.cc-bname span:last-child{color:rgba(200,0,255,0.55)}
+.cc-tag{font-size:0.44rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(100,100,220,0.45);font-weight:700}
+.cc-icons{display:flex;gap:4px;align-items:center;font-size:0.58rem;color:rgba(0,200,255,0.35)}
 
 /* Ripple */
-.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.25);transform:scale(0);animation:rippleAnim 0.4s ease-out forwards;pointer-events:none}
-@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.22);transform:scale(0);animation:rippleA 0.45s ease-out forwards;pointer-events:none;z-index:50}
+@keyframes rippleA{to{transform:scale(4);opacity:0}}
 
-/* ── PRESET STRIP ── */
-.presets-strip{
-  display:flex;align-items:center;gap:5px;
-  margin-top:10px;padding:8px 12px;
-  background:rgba(0,0,0,0.25);
-  border-radius:12px;
-  flex-wrap:nowrap;overflow-x:auto;
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  position:relative;z-index:2;
+/* ═══════════ LANDSCAPE ROTATION ═══════════ */
+#screen3.landscape{
+  transform:rotate(90deg);
+  transform-origin:center center;
+  width:100vh;
+  height:100vw;
+  top:calc((100vh - 100vw) / 2);
+  left:calc((100vw - 100vh) / 2);
+  position:fixed;
+  overflow:hidden;
+  padding:0;
 }
-.presets-strip::-webkit-scrollbar{display:none}
-.preset-group-label{
-  font-size:0.52rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.1em;color:var(--text-muted);
-  white-space:nowrap;flex-shrink:0;opacity:0.7;
+#screen3.landscape .clock-view{
+  padding-top:46px;
+  justify-content:flex-start;
+  overflow-y:auto;
+  padding-bottom:10px;
 }
-.preset-chip{
-  padding:4px 10px;border-radius:7px;
-  border:1.5px solid var(--panel-border);
-  background:rgba(255,255,255,0.04);
-  color:var(--text-muted);
-  font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:700;
-  cursor:pointer;white-space:nowrap;flex-shrink:0;
-  transition:all 0.18s;
+#screen3.landscape .hc-body,
+#screen3.landscape .pc-body,
+#screen3.landscape .cc-body{
+  width:min(90vh,428px);
 }
-.preset-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.08)}
-.preset-chip.sel{border-color:var(--accent);color:var(--accent);background:var(--active-glow)}
-.preset-sep{width:1px;height:18px;background:rgba(255,255,255,0.1);flex-shrink:0;margin:0 2px}
+#screen3.landscape .preset-strip{
+  width:min(90vh,428px);
+  max-width:none;
+}
+.s3-btn.rotate-on{border-color:#C4873A;color:#C4873A;}
 
-/* ── CUSTOM H/M/S row ── */
-.hms-row{display:grid;grid-template-columns:1fr 10px 1fr 10px 1fr;gap:0.35rem;align-items:end;margin-top:0.75rem}
-.hms-sep{font-size:1.1rem;color:var(--text-muted);text-align:center;padding-bottom:6px}
-.hms-block{display:flex;flex-direction:column;gap:4px}
-.hms-label{font-size:0.6rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;text-align:center}
-
-/* Sound toggle */
-.sound-indicator{font-size:0.6rem;font-weight:700;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:4px;border:1px solid rgba(255,255,255,0.06)}
+/* ═══════════ GAME OVER BANNER ═══════════ */
+.gameover{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.82);background:#0c0c0c;border:1.5px solid #222;border-radius:18px;padding:1.8rem 2rem;text-align:center;z-index:500;box-shadow:0 28px 80px rgba(0,0,0,0.85);opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.gameover.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
+.go-flag{font-size:1.8rem;margin-bottom:0.35rem}
+.go-title{font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:0.18rem}
+.go-sub{font-size:0.72rem;color:#444;margin-bottom:1rem}
+.go-btns{display:flex;gap:0.55rem;justify-content:center}
+.go-again{padding:0.55rem 1.3rem;border-radius:8px;border:none;background:#C4873A;color:#000;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:opacity 0.2s}
+.go-again:hover{opacity:0.85}
+.go-new{padding:0.55rem 1.3rem;border-radius:8px;border:1.5px solid #2a2a2a;background:transparent;color:#555;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.go-new:hover{border-color:#666;color:#aaa}
 </style>
 </head>
-<body class="theme-walnut">
+<body>
 
-<!-- ── START SCREEN ── -->
-<div class="start-screen" id="startScreen">
-  <div class="start-logo">Chess<span>Connect</span></div>
-  <div class="start-sub">Premium Chess Clock</div>
-  <div class="start-clock-preview">
-    <div class="start-preview-time" id="previewTime">10:00</div>
+<!-- ═══════════════ SCREEN 1 — SELECT CLOCK ═══════════════ -->
+<div class="screen" id="screen1">
+  <div class="steps">
+    <div class="step active"><div class="step-dot active">1</div><div class="step-label">Clock</div></div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step"><div class="step-dot" id="dot2">2</div><div class="step-label">Time</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
   </div>
-  <button class="start-btn" onclick="startGame()">Start Game</button>
-  <div class="start-hint">Tap a player's button to begin</div>
-</div>
 
-<!-- ── TOP BAR ── */
-<div class="topbar">
-  <div class="brand">Chess<span>Connect</span> Clock</div>
-  <div class="topbar-actions">
-    <button class="icon-btn" onclick="toggleSound()" id="soundBtn" title="Toggle sound">
-      <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
-    </button>
-    <button class="icon-btn" onclick="showSettings()" title="Settings">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-    </button>
-    <button class="icon-btn" onclick="resetClock()" title="Reset">
-      <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-    </button>
-  </div>
-</div>
+  <div class="s-title">Choose Your Clock</div>
+  <div class="s-sub">Select a style to continue</div>
 
-<!-- ── CLOCK BODY ── -->
-<div class="clock-wrap">
-  <div class="clock-body">
-
-    <!-- Displays -->
-    <div class="displays">
-      <div class="display-unit" id="p1unit">
-        <div class="player-label">White</div>
-        <div class="display">
-          <div class="time-display" id="p1time">10:00</div>
-          <div class="moves-count" id="p1moves">0 moves</div>
-          <div class="inc-badge" id="p1inc">+30s</div>
+  <div class="clock-cards">
+    <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
+      <div class="card-inner">
+        <div class="card-preview prev-heritage"><div class="prev-heritage-d">10:00</div></div>
+        <div class="card-info">
+          <div class="card-name">Heritage</div>
+          <div class="card-desc">Walnut wood body · Brass dome knobs · Amber digits · Tournament Edition</div>
         </div>
-      </div>
-      <div class="center-div"></div>
-      <div class="display-unit" id="p2unit">
-        <div class="player-label">Black</div>
-        <div class="display">
-          <div class="time-display" id="p2time">10:00</div>
-          <div class="moves-count" id="p2moves">0 moves</div>
-          <div class="inc-badge" id="p2inc">+30s</div>
-        </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
     </div>
-
-    <!-- Buttons -->
-    <div class="buttons-row">
-      <button class="press-btn inactive-btn" id="btn1" onpointerdown="pressBtn(1,event)" aria-label="White clock">
-        <div class="btn-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>
+    <div class="clock-card card-pro" id="card-pro" onclick="selectClock('pro',this)">
+      <div class="card-inner">
+        <div class="card-preview prev-pro"><div class="prev-pro-lg"></div><div class="prev-pro-lr"></div><div class="prev-pro-d">10:00</div></div>
+        <div class="card-info">
+          <div class="card-name">Pro</div>
+          <div class="card-desc">Matte black · LED indicators · Crisp white digits · Professional Clock</div>
         </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
+    <div class="clock-card card-chronos" id="card-chronos" onclick="selectClock('chronos',this)">
+      <div class="card-inner">
+        <div class="card-preview prev-chronos"><div class="prev-chronos-d"><span class="prev-c1">10:</span><span class="prev-c2">00</span></div></div>
+        <div class="card-info">
+          <div class="card-name">Chronos 2050</div>
+          <div class="card-desc">Acrylic body · Neon circuits · Cyan &amp; Magenta · AI-Powered Chronos</div>
+        </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="next-btn" id="nextBtn" onclick="goToStep2()">Set Time →</button>
+</div>
+
+<!-- ═══════════════ SCREEN 2 — SET TIME ═══════════════ -->
+<div class="screen hidden" id="screen2">
+  <div class="steps">
+    <div class="step done"><div class="step-dot done">✓</div><div class="step-label">Clock</div></div>
+    <div class="step-line filled"></div>
+    <div class="step active"><div class="step-dot active">2</div><div class="step-label">Time</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
+  </div>
+
+  <div class="s2-title">Set Time Control</div>
+  <div class="s2-sub">Choose a preset or custom</div>
+
+  <div class="tc-wrap">
+    <div class="tc-cat-label"><span>⚡</span> Bullet</div>
+    <div class="tc-row">
+      <div class="tc-chip" id="tc-1+1" onclick="pickTC(60,1,'1+1',this)">1+1<small>1 min · 1s inc</small></div>
+      <div class="tc-chip" id="tc-2+1" onclick="pickTC(120,1,'2+1',this)">2+1<small>2 min · 1s inc</small></div>
+    </div>
+    <div class="tc-cat-label"><span>🔥</span> Blitz</div>
+    <div class="tc-row">
+      <div class="tc-chip" id="tc-3+2" onclick="pickTC(180,2,'3+2',this)">3+2<small>3 min · 2s inc</small></div>
+      <div class="tc-chip" id="tc-5+3" onclick="pickTC(300,3,'5+3',this)">5+3<small>5 min · 3s inc</small></div>
+    </div>
+    <div class="tc-cat-label"><span>⏱</span> Rapid</div>
+    <div class="tc-row">
+      <div class="tc-chip sel" id="tc-10+5" onclick="pickTC(600,5,'10+5',this)">10+5<small>10 min · 5s inc</small></div>
+      <div class="tc-chip" id="tc-15+10" onclick="pickTC(900,10,'15+10',this)">15+10<small>15 min · 10s inc</small></div>
+    </div>
+    <div class="tc-cat-label"><span>♟</span> Classical</div>
+    <div class="tc-row">
+      <div class="tc-chip" id="tc-60+30" onclick="pickTC(3600,30,'60+30',this)">60+30<small>60 min · 30s inc</small></div>
+      <div class="tc-chip" id="tc-90+30" onclick="pickTC(5400,30,'90+30',this)">90+30<small>90 min · 30s inc</small></div>
+    </div>
+  </div>
+
+  <div class="custom-row">
+    <label>Custom</label>
+    <div class="cust-t">
+      <input class="cust-inp" id="ctH" type="number" value="0" min="0" max="9" placeholder="0"/>
+      <span class="cust-sep">h</span>
+      <input class="cust-inp" id="ctM" type="number" value="10" min="0" max="59" placeholder="10"/>
+      <span class="cust-sep">m</span>
+      <input class="cust-inp" id="ctS" type="number" value="0" min="0" max="59" placeholder="0"/>
+      <span class="cust-sep">s</span>
+    </div>
+    <div class="cust-inc">
+      <label>+Inc</label>
+      <input id="ctI" type="number" value="5" min="0" max="300" placeholder="0"/>
+      <label style="font-size:0.48rem;color:#2a2a2a">sec</label>
+    </div>
+  </div>
+
+  <div class="s2-btns">
+    <button class="back-btn" onclick="goToStep1()">← Back</button>
+    <button class="launch-btn" onclick="launchClock()">Start Clock →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN 3 — CLOCK ═══════════════ -->
+<div class="screen hidden" id="screen3">
+
+  <!-- Topbar -->
+  <div class="s3-bar">
+    <div class="s3-brand">Chess<em>Connect</em></div>
+    <div class="s3-actions">
+      <button class="s3-btn" id="pauseBtn" onclick="togglePause()" title="Pause">
+        <svg id="pauseIcon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
       </button>
-      <div class="pause-wrap">
-        <button class="pause-btn" id="pauseBtn" onclick="togglePause()" aria-label="Pause">
-          <svg id="pauseIcon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-        </button>
-      </div>
-      <button class="press-btn inactive-btn" id="btn2" onpointerdown="pressBtn(2,event)" aria-label="Black clock">
-        <div class="btn-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>
-        </div>
+      <button class="s3-btn" onclick="restartClock()" title="Restart same time">
+        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+      </button>
+      <button class="s3-btn" onclick="toggleSound()" id="soundBtn" title="Sound">
+        <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+      </button>
+      <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>
+      </button>
+      <button class="s3-btn" onclick="newGame()" title="New game">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
     </div>
-
-    <!-- Status -->
-    <div class="status-bar">
-      <div class="status-dot" id="statusDot" style="display:none"></div>
-      <div class="status-text" id="statusText">Tap any button to start</div>
-    </div>
-
-    <!-- Quick Presets Strip -->
-    <div class="presets-strip" id="presetsStrip">
-      <div class="preset-group-label">Bullet</div>
-      <div class="preset-chip sel" id="chip-1+1" onclick="quickPreset(60,1,'1+1',this)">1+1</div>
-      <div class="preset-chip" id="chip-2+1" onclick="quickPreset(120,1,'2+1',this)">2+1</div>
-      <div class="preset-sep"></div>
-      <div class="preset-group-label">Blitz</div>
-      <div class="preset-chip" id="chip-3+2" onclick="quickPreset(180,2,'3+2',this)">3+2</div>
-      <div class="preset-chip" id="chip-5+3" onclick="quickPreset(300,3,'5+3',this)">5+3</div>
-      <div class="preset-sep"></div>
-      <div class="preset-group-label">Rapid</div>
-      <div class="preset-chip" id="chip-10+5" onclick="quickPreset(600,5,'10+5',this)">10+5</div>
-      <div class="preset-chip" id="chip-15+10" onclick="quickPreset(900,10,'15+10',this)">15+10</div>
-    </div>
-
   </div>
-</div>
 
-<!-- ── SETTINGS PANEL (presets + custom + themes) ── -->
-<div class="overlay" id="settingsOverlay" onclick="closePanelIf(event,'settingsOverlay')">
-  <div class="panel">
-    <div class="panel-handle"></div>
-    <div class="panel-title">Settings</div>
-
-    <div class="tc-cat">Bullet</div>
-    <div class="tc-grid">
-      <div class="tc-btn" id="tcp-1+1" onclick="setTC(60,1,'1+1',this)">1+1<br/><span style="font-size:0.58rem;opacity:0.55">Bullet</span></div>
-      <div class="tc-btn" id="tcp-2+1" onclick="setTC(120,1,'2+1',this)">2+1<br/><span style="font-size:0.58rem;opacity:0.55">Bullet</span></div>
-    </div>
-
-    <div class="tc-cat">Blitz</div>
-    <div class="tc-grid">
-      <div class="tc-btn" id="tcp-3+2" onclick="setTC(180,2,'3+2',this)">3+2<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
-      <div class="tc-btn" id="tcp-5+3" onclick="setTC(300,3,'5+3',this)">5+3<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
-      <div class="tc-btn" id="tcp-3+0" onclick="setTC(180,0,'3+0',this)">3+0<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
-      <div class="tc-btn" id="tcp-5+0" onclick="setTC(300,0,'5+0',this)">5+0<br/><span style="font-size:0.58rem;opacity:0.55">Blitz</span></div>
-    </div>
-
-    <div class="tc-cat">Rapid</div>
-    <div class="tc-grid">
-      <div class="tc-btn sel" id="tcp-10+5" onclick="setTC(600,5,'10+5',this)">10+5<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
-      <div class="tc-btn" id="tcp-15+10" onclick="setTC(900,10,'15+10',this)">15+10<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
-      <div class="tc-btn" id="tcp-10+0" onclick="setTC(600,0,'10+0',this)">10+0<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
-      <div class="tc-btn" id="tcp-30+0" onclick="setTC(1800,0,'30+0',this)">30+0<br/><span style="font-size:0.58rem;opacity:0.55">Rapid</span></div>
-    </div>
-
-    <div class="tc-cat">Classical</div>
-    <div class="tc-grid">
-      <div class="tc-btn" id="tcp-90+30" onclick="setTC(5400,30,'90+30',this)">90+30<br/><span style="font-size:0.58rem;opacity:0.55">Classical</span></div>
-      <div class="tc-btn" id="tcp-120+30" onclick="setTC(7200,30,'120+30',this)">120+30<br/><span style="font-size:0.58rem;opacity:0.55">Classical</span></div>
-    </div>
-
-    <div class="tc-cat">Custom Time</div>
-    <div class="hms-row">
-      <div class="hms-block">
-        <div class="hms-label">Hours</div>
-        <input class="custom-input" id="customHrs" type="number" value="0" min="0" max="9" placeholder="0"/>
+  <!-- ── HERITAGE CLOCK ── -->
+  <div class="clock-view heritage-clock" id="heritage-clock">
+    <div class="hc-body">
+      <div class="hc-corners"></div>
+      <!-- Knobs + controls -->
+      <div class="hc-top">
+        <div class="hc-knob-col">
+          <div class="hc-knob inactive-k" id="hk1" onpointerdown="pressBtn(1,event,this)"></div>
+          <div class="hk-lbl" id="hc-lbl1">Player 1</div>
+        </div>
+        <div class="hc-center">
+          <div class="hc-brand">ChessConnect</div>
+          <div class="hc-ctrls">
+            <button class="hc-cbtn" id="hc-pause" onclick="togglePause()">PAUSE</button>
+            <button class="hc-cbtn" onclick="restartClock()">RESTART</button>
+          </div>
+          <div class="hc-cstatus" id="hc-st">Tap a knob to start</div>
+        </div>
+        <div class="hc-knob-col">
+          <div class="hc-knob inactive-k" id="hk2" onpointerdown="pressBtn(2,event,this)"></div>
+          <div class="hk-lbl" id="hc-lbl2">Player 2</div>
+        </div>
       </div>
-      <div class="hms-sep">:</div>
-      <div class="hms-block">
-        <div class="hms-label">Minutes</div>
-        <input class="custom-input" id="customMin" type="number" value="10" min="0" max="59" placeholder="10"/>
+      <!-- Displays — BOTH always visible -->
+      <div class="hc-displays">
+        <div class="hc-dunit" id="hc-p1unit">
+          <div class="hc-plbl" id="hc-dlbl1">Player 1</div>
+          <div class="hc-disp">
+            <div class="hc-time" id="hc-t1">10:00</div>
+            <div class="hc-moves" id="hc-m1">0 moves</div>
+            <div class="hc-inc" id="hc-i1"></div>
+          </div>
+        </div>
+        <div class="hc-divider"></div>
+        <div class="hc-dunit" id="hc-p2unit">
+          <div class="hc-plbl" id="hc-dlbl2">Player 2</div>
+          <div class="hc-disp">
+            <div class="hc-time" id="hc-t2">10:00</div>
+            <div class="hc-moves" id="hc-m2">0 moves</div>
+            <div class="hc-inc" id="hc-i2"></div>
+          </div>
+        </div>
       </div>
-      <div class="hms-sep">:</div>
-      <div class="hms-block">
-        <div class="hms-label">Seconds</div>
-        <input class="custom-input" id="customSec" type="number" value="0" min="0" max="59" placeholder="0"/>
+      <!-- Bottom branding -->
+      <div class="hc-bot">
+        <div class="hc-roman">IX</div>
+        <div style="text-align:center"><div class="hc-bname">ChessConnect</div><div class="hc-edition">Tournament Edition · MODE</div></div>
+        <div class="hc-roman">III</div>
       </div>
     </div>
-    <div style="margin-top:0.6rem">
-      <div class="hms-label" style="margin-bottom:4px">Increment (seconds)</div>
-      <input class="custom-input" id="customInc" type="number" value="0" min="0" max="300" placeholder="0" style="max-width:120px"/>
-    </div>
-    <button class="apply-btn" onclick="applyCustom()">Apply Custom Time</button>
-
-    <div class="tc-cat" style="margin-top:1.1rem">Theme</div>
-    <div class="theme-grid">
-      <div class="theme-card sel" id="thm-walnut" onclick="setTheme('walnut',this)">
-        <div class="theme-preview" style="background:linear-gradient(135deg,#2C1810,#8B4513,#C4873A);color:#F0E68C;text-shadow:0 0 8px rgba(240,230,140,0.4)">10:00</div>
-        <div class="theme-name" style="background:#3D2008;color:#C4873A">🪵 Walnut</div>
-        <div class="theme-sel-dot"></div>
-      </div>
-      <div class="theme-card" id="thm-maple" onclick="setTheme('maple',this)">
-        <div class="theme-preview" style="background:linear-gradient(135deg,#4A2C0A,#C4873A,#E8B86D);color:#FFF8E7;text-shadow:0 0 8px rgba(255,248,231,0.5)">10:00</div>
-        <div class="theme-name" style="background:#5A3410;color:#E8B86D">🍁 Maple</div>
-        <div class="theme-sel-dot"></div>
-      </div>
-      <div class="theme-card" id="thm-ebony" onclick="setTheme('ebony',this)">
-        <div class="theme-preview" style="background:linear-gradient(135deg,#0D0D0D,#2D2D2D);color:#00FF88;text-shadow:0 0 8px rgba(0,255,136,0.4)">10:00</div>
-        <div class="theme-name" style="background:#1A1A1A;color:#00FF88">🖤 Ebony</div>
-        <div class="theme-sel-dot"></div>
-      </div>
-      <div class="theme-card" id="thm-slate" onclick="setTheme('slate',this)">
-        <div class="theme-preview" style="background:linear-gradient(135deg,#1A2332,#2E4560);color:#60AFFF;text-shadow:0 0 8px rgba(96,175,255,0.4)">10:00</div>
-        <div class="theme-name" style="background:#1A2332;color:#60AFFF">🔷 Slate</div>
-        <div class="theme-sel-dot"></div>
-      </div>
-      <div class="theme-card" id="thm-crimson" onclick="setTheme('crimson',this)">
-        <div class="theme-preview" style="background:linear-gradient(135deg,#1A0808,#6B1A1A,#8B2020);color:#FF6B6B;text-shadow:0 0 8px rgba(255,107,107,0.4)">10:00</div>
-        <div class="theme-name" style="background:#2A0808;color:#FF6B6B">❤️ Crimson</div>
-        <div class="theme-sel-dot"></div>
-      </div>
+    <!-- Quick preset strip BELOW clock body -->
+    <div class="preset-strip" id="hc-strip">
+      <div class="ps-lbl">Bullet</div>
+      <div class="ps-chip" onclick="quickTC(60,1)">1+1</div>
+      <div class="ps-chip" onclick="quickTC(120,1)">2+1</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Blitz</div>
+      <div class="ps-chip" onclick="quickTC(180,2)">3+2</div>
+      <div class="ps-chip" onclick="quickTC(300,3)">5+3</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Rapid</div>
+      <div class="ps-chip sel" id="hps-sel" onclick="quickTC(600,5)">10+5</div>
+      <div class="ps-chip" onclick="quickTC(900,10)">15+10</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Classical</div>
+      <div class="ps-chip" onclick="quickTC(3600,30)">60+30</div>
+      <div class="ps-chip" onclick="quickTC(5400,30)">90+30</div>
     </div>
   </div>
-</div>
 
-<!-- ── GAME OVER ── -->
-<div class="gameover-banner" id="gameoverBanner">
+  <!-- ── PRO CLOCK ── -->
+  <div class="clock-view pro-clock" id="pro-clock">
+    <div class="pc-body">
+      <!-- Lever top -->
+      <div class="pc-top">
+        <div class="pc-lcol">
+          <div class="pc-led-row"><div class="pc-led g" id="pc-led1"></div><div class="pc-llbl" id="pc-lbl1">Player 1</div></div>
+          <button class="pc-lever inactive-l" id="pl1" onpointerdown="pressBtn(1,event,this)"></button>
+        </div>
+        <div class="pc-center">
+          <div class="pc-brand-t">ChessConnect</div>
+          <div class="pc-ctrls">
+            <button class="pc-cbtn" id="pc-pause" onclick="togglePause()">PAUSE</button>
+            <button class="pc-cbtn" onclick="restartClock()">RESTART</button>
+          </div>
+          <div class="pc-cstatus" id="pc-st">Tap lever to start</div>
+        </div>
+        <div class="pc-lcol">
+          <div class="pc-led-row"><div class="pc-llbl" id="pc-lbl2">Player 2</div><div class="pc-led r" id="pc-led2"></div></div>
+          <button class="pc-lever inactive-l" id="pl2" onpointerdown="pressBtn(2,event,this)"></button>
+        </div>
+      </div>
+      <!-- Displays -->
+      <div class="pc-displays">
+        <div class="pc-dunit" id="pc-p1unit">
+          <div class="pc-plbl" id="pc-dlbl1">Player 1</div>
+          <div class="pc-disp">
+            <div class="pc-time" id="pc-t1">10:00</div>
+            <div class="pc-moves" id="pc-m1">0 moves</div>
+            <div class="pc-inc" id="pc-i1"></div>
+          </div>
+        </div>
+        <div class="pc-divider"></div>
+        <div class="pc-dunit" id="pc-p2unit">
+          <div class="pc-plbl" id="pc-dlbl2">Player 2</div>
+          <div class="pc-disp">
+            <div class="pc-time" id="pc-t2">10:00</div>
+            <div class="pc-moves" id="pc-m2">0 moves</div>
+            <div class="pc-inc" id="pc-i2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="pc-bot">
+        <div class="pc-bname">ChessConnect</div>
+        <div class="pc-tag">Professional Tournament Clock</div>
+        <div class="pc-bat">▬▬▬</div>
+      </div>
+    </div>
+    <div class="preset-strip" id="pc-strip">
+      <div class="ps-lbl">Bullet</div>
+      <div class="ps-chip" onclick="quickTC(60,1)">1+1</div>
+      <div class="ps-chip" onclick="quickTC(120,1)">2+1</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Blitz</div>
+      <div class="ps-chip" onclick="quickTC(180,2)">3+2</div>
+      <div class="ps-chip" onclick="quickTC(300,3)">5+3</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Rapid</div>
+      <div class="ps-chip sel" onclick="quickTC(600,5)">10+5</div>
+      <div class="ps-chip" onclick="quickTC(900,10)">15+10</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Classical</div>
+      <div class="ps-chip" onclick="quickTC(3600,30)">60+30</div>
+      <div class="ps-chip" onclick="quickTC(5400,30)">90+30</div>
+    </div>
+  </div>
+
+  <!-- ── CHRONOS CLOCK ── -->
+  <div class="clock-view chronos-clock" id="chronos-clock">
+    <div class="cc-body">
+      <!-- Circuit traces -->
+      <div class="cc-circuit">
+        <svg viewBox="0 0 428 215" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="rgba(0,200,255,0.28)" stroke-width="0.75" fill="none">
+            <path d="M0 52 L26 52 L26 33 L72 33"/><path d="M72 33 L72 16 L140 16"/>
+            <path d="M428 52 L402 52 L402 33 L356 33"/><path d="M356 33 L356 16 L288 16"/>
+            <path d="M0 163 L20 163 L20 185 L65 185"/>
+            <path d="M428 163 L408 163 L408 185 L363 185"/>
+            <path d="M182 0 L182 14"/><path d="M246 0 L246 14"/>
+          </g>
+          <g fill="rgba(0,200,255,0.48)">
+            <circle cx="72" cy="33" r="2.2"/><circle cx="356" cy="33" r="2.2"/>
+            <circle cx="65" cy="185" r="2.2"/><circle cx="363" cy="185" r="2.2"/>
+          </g>
+          <g stroke="rgba(200,0,255,0.2)" stroke-width="0.7" fill="none">
+            <path d="M305 200 L385 200 L385 168"/><path d="M255 212 L255 200 L305 200"/>
+          </g>
+          <circle cx="385" cy="168" r="2" fill="rgba(200,0,255,0.4)"/>
+          <g stroke="rgba(0,200,255,0.18)" fill="rgba(0,25,55,0.5)">
+            <rect x="17" y="44" width="20" height="13" rx="2"/>
+            <rect x="391" y="44" width="20" height="13" rx="2"/>
+          </g>
+        </svg>
+      </div>
+      <!-- Levers -->
+      <div class="cc-top">
+        <div class="cc-lcol">
+          <button class="cc-lever cc-lp1 inactive-l" id="cl1" onpointerdown="pressBtn(1,event,this)"></button>
+          <div class="cc-llp1" id="cc-lbl1">Player 1</div>
+        </div>
+        <div class="cc-center">
+          <div class="cc-brand"><span class="cc-b1">Chess</span><span class="cc-b2">Connect</span></div>
+          <div class="cc-ctrls">
+            <button class="cc-cbtn" id="cc-pause" onclick="togglePause()">PAUSE</button>
+            <button class="cc-cbtn" onclick="restartClock()">RESTART</button>
+          </div>
+          <div class="cc-cstatus" id="cc-st">Tap lever to start</div>
+        </div>
+        <div class="cc-lcol">
+          <button class="cc-lever cc-lp2 inactive-l" id="cl2" onpointerdown="pressBtn(2,event,this)"></button>
+          <div class="cc-llp2" id="cc-lbl2">Player 2</div>
+        </div>
+      </div>
+      <!-- Displays -->
+      <div class="cc-displays">
+        <div class="cc-dunit" id="cc-p1unit">
+          <div class="cc-plbl-1" id="cc-dlbl1">Player 1</div>
+          <div class="cc-disp cc-disp-1">
+            <div class="cc-t1" id="cc-t1">10:00</div>
+            <div class="cc-moves" id="cc-m1">0 moves</div>
+            <div class="cc-inc" id="cc-i1"></div>
+          </div>
+        </div>
+        <div class="cc-divider"></div>
+        <div class="cc-dunit" id="cc-p2unit">
+          <div class="cc-plbl-2" id="cc-dlbl2">Player 2</div>
+          <div class="cc-disp cc-disp-2">
+            <div class="cc-t2" id="cc-t2">10:00</div>
+            <div class="cc-moves" id="cc-m2">0 moves</div>
+            <div class="cc-inc" id="cc-i2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cc-bot">
+        <div class="cc-bname"><span>Chess</span><span>Connect</span></div>
+        <div class="cc-tag">AI-Powered 2050 Tournament Chronos</div>
+        <div class="cc-icons">⏰ 📡 ▬▬</div>
+      </div>
+    </div>
+    <div class="preset-strip" id="cc-strip">
+      <div class="ps-lbl">Bullet</div>
+      <div class="ps-chip" onclick="quickTC(60,1)">1+1</div>
+      <div class="ps-chip" onclick="quickTC(120,1)">2+1</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Blitz</div>
+      <div class="ps-chip" onclick="quickTC(180,2)">3+2</div>
+      <div class="ps-chip" onclick="quickTC(300,3)">5+3</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Rapid</div>
+      <div class="ps-chip sel" onclick="quickTC(600,5)">10+5</div>
+      <div class="ps-chip" onclick="quickTC(900,10)">15+10</div>
+      <div class="ps-sep"></div>
+      <div class="ps-lbl">Classical</div>
+      <div class="ps-chip" onclick="quickTC(3600,30)">60+30</div>
+      <div class="ps-chip" onclick="quickTC(5400,30)">90+30</div>
+    </div>
+  </div>
+
+</div><!-- /screen3 -->
+
+<!-- GAME OVER -->
+<div class="gameover" id="goBanner">
   <div class="go-flag">🏳️</div>
   <div class="go-title" id="goTitle">Time's Up!</div>
-  <div class="go-sub" id="goSub">White ran out of time</div>
-  <button class="go-restart" onclick="resetClock()">Play Again</button>
+  <div class="go-sub" id="goSub"></div>
+  <div class="go-btns">
+    <button class="go-again" onclick="restartClock()">Play Again</button>
+    <button class="go-new" onclick="newGame()">New Game</button>
+  </div>
 </div>
 
-<!-- Audio context for click sound -->
 <script>
-// ── AUDIO ──
-let audioCtx = null;
-let soundOn = true;
+/* ════════════════════════════════
+   STATE
+════════════════════════════════ */
+let theme = null;
+let baseTime = 600, inc = 5;
+let times = [600,600], moves = [0,0];
+let active = -1, paused = false, over = false;
+let ticker = null, lastTick = null;
+let warnDone = [false,false];
+let soundOn = true, ctx = null;
 
-function initAudio(){
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+/* Prefix map */
+const PFX = {heritage:'hc', pro:'pc', chronos:'cc'};
+/* Button IDs per theme */
+const BTNS = {
+  heritage: ['hk1','hk2'],
+  pro:      ['pl1','pl2'],
+  chronos:  ['cl1','cl2']
+};
+
+/* ════════════════════════════════
+   FLOW
+════════════════════════════════ */
+function selectClock(t, card) {
+  theme = t;
+  document.querySelectorAll('.clock-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('nextBtn').classList.add('ready');
 }
-function playClick(){
-  if (!soundOn || !audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.06);
-  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-  osc.start(audioCtx.currentTime);
-  osc.stop(audioCtx.currentTime + 0.08);
+/* ════════════════════════════════
+   ROTATE (landscape toggle)
+════════════════════════════════ */
+let isLandscape = false;
+function toggleRotate() {
+  isLandscape = !isLandscape;
+  document.getElementById('screen3').classList.toggle('landscape', isLandscape);
+  document.getElementById('rotateBtn').classList.toggle('rotate-on', isLandscape);
 }
-function playWarning(){
-  if (!soundOn || !audioCtx) return;
-  [0, 0.15, 0.3].forEach(t => {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.frequency.value = 440;
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime + t);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + t + 0.1);
-    osc.start(audioCtx.currentTime + t);
-    osc.stop(audioCtx.currentTime + t + 0.1);
+
+/* ════════════════════════════════
+   PLAYER LABEL HELPERS
+════════════════════════════════ */
+const LBLIDS = {
+  heritage: { b:['hc-lbl1','hc-lbl2'], d:['hc-dlbl1','hc-dlbl2'] },
+  pro:      { b:['pc-lbl1','pc-lbl2'], d:['pc-dlbl1','pc-dlbl2'] },
+  chronos:  { b:['cc-lbl1','cc-lbl2'], d:['cc-dlbl1','cc-dlbl2'] }
+};
+function setPlayerLabels(whiteIdx) {
+  if(!theme||!LBLIDS[theme]) return;
+  const ids=LBLIDS[theme];
+  const names=whiteIdx===0?['♔ White','♚ Black']:['♚ Black','♔ White'];
+  ids.b.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent=names[i];});
+  ids.d.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent=names[i];});
+}
+function resetPlayerLabels() {
+  if(!theme||!LBLIDS[theme]) return;
+  const ids=LBLIDS[theme];
+  ids.b.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent='Player '+(i+1);});
+  ids.d.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent='Player '+(i+1);});
+}
+
+function goToStep2() { if(theme) show('screen2'); }
+function goToStep1() { show('screen1'); }
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function launchClock() {
+  // Reset landscape on new game
+  isLandscape = false;
+  document.getElementById('screen3').classList.remove('landscape');
+  document.getElementById('rotateBtn').classList.remove('rotate-on');
+  // Apply values
+  baseTime = baseTime; // already set via pickTC or custom
+  const selChip = document.querySelector('#screen2 .tc-chip.sel');
+  if (!selChip) {
+    const h=parseInt(document.getElementById('ctH').value)||0;
+    const m=parseInt(document.getElementById('ctM').value)||0;
+    const s=parseInt(document.getElementById('ctS').value)||0;
+    const i=parseInt(document.getElementById('ctI').value)||0;
+    const tot=h*3600+m*60+s;
+    if(tot>0){baseTime=tot;inc=i;}
+  }
+  initClockView();
+  show('screen3');
+}
+
+function initClockView() {
+  // Show correct clock, hide others
+  ['heritage','pro','chronos'].forEach(t=>{
+    document.getElementById(t+'-clock').classList.remove('show');
   });
+  document.getElementById(theme+'-clock').classList.add('show');
+
+  if(ticker){clearInterval(ticker);ticker=null;}
+  active=-1; paused=false; over=false;
+  times=[baseTime,baseTime]; moves=[0,0]; warnDone=[false,false];
+  updateDisplays();
+  resetBtnUI();
+  document.getElementById('goBanner').classList.remove('show');
+  // Show preset strip
+  stripShow(true);
+  // Reset pause button
+  setPauseIcon(false);
 }
-function playFlag(){
-  if (!soundOn || !audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.frequency.setValueAtTime(220, audioCtx.currentTime);
-  gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-  osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+
+function restartClock() {
+  // Same time, same theme — just reset
+  if(ticker){clearInterval(ticker);ticker=null;}
+  active=-1; paused=false; over=false;
+  times=[baseTime,baseTime]; moves=[0,0]; warnDone=[false,false];
+  updateDisplays();
+  resetBtnUI();
+  document.getElementById('goBanner').classList.remove('show');
+  stripShow(true);
+  setPauseIcon(false);
 }
-function toggleSound(){
-  soundOn = !soundOn;
-  const icon = document.getElementById('soundIcon');
-  if (soundOn) {
-    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>';
+
+function newGame() {
+  if(ticker){clearInterval(ticker);ticker=null;}
+  document.getElementById('goBanner').classList.remove('show');
+  // Reset landscape
+  isLandscape=false;
+  document.getElementById('screen3').classList.remove('landscape');
+  document.getElementById('rotateBtn').classList.remove('rotate-on');
+  ['heritage','pro','chronos'].forEach(t=>{
+    document.getElementById(t+'-clock').classList.remove('show');
+  });
+  show('screen1');
+}
+
+/* ════════════════════════════════
+   PRESET PICK (screen 2)
+════════════════════════════════ */
+function pickTC(secs, i, key, el) {
+  baseTime=secs; inc=i;
+  document.querySelectorAll('.tc-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('ctH').value=Math.floor(secs/3600);
+  document.getElementById('ctM').value=Math.floor((secs%3600)/60);
+  document.getElementById('ctS').value=secs%60;
+  document.getElementById('ctI').value=i;
+}
+function quickTC(secs, i) {
+  baseTime=secs; inc=i;
+  if(ticker){clearInterval(ticker);ticker=null;}
+  active=-1; paused=false; over=false;
+  times=[secs,secs]; moves=[0,0]; warnDone=[false,false];
+  updateDisplays(); resetBtnUI();
+  document.getElementById('goBanner').classList.remove('show');
+  stripShow(true);
+  setPauseIcon(false);
+}
+
+/* ════════════════════════════════
+   FORMAT
+════════════════════════════════ */
+function fmt(s) {
+  s=Math.max(0,s);
+  if(s>=3600){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),r=s%60;return h+':'+(m<10?'0':'')+m+':'+(r<10?'0':'')+r;}
+  const m=Math.floor(s/60),r=s%60;
+  return m+':'+(r<10?'0':'')+r;
+}
+
+/* ════════════════════════════════
+   DISPLAY UPDATE — both sides always
+════════════════════════════════ */
+function updateDisplays() {
+  const p=PFX[theme]; if(!p) return;
+  for(let i=0;i<2;i++){
+    const el=document.getElementById(p+'-t'+(i+1));
+    if(el) el.textContent=fmt(Math.ceil(times[i]));
+    const me=document.getElementById(p+'-m'+(i+1));
+    if(me) me.textContent=moves[i]+(moves[i]===1?' move':' moves');
+    const ie=document.getElementById(p+'-i'+(i+1));
+    if(ie) ie.textContent=inc>0?'+'+inc+'s':'';
+  }
+}
+
+/* ════════════════════════════════
+   BUTTON STATES
+════════════════════════════════ */
+function resetBtnUI() {
+  const p=PFX[theme]; if(!p) return;
+  const u1=document.getElementById(p+'-p1unit');
+  const u2=document.getElementById(p+'-p2unit');
+  if(u1) u1.className=u1.className.replace(/\bactive\b|\bflagged\b|\bwarning\b/g,'').trim();
+  if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b/g,'').trim();
+  setBtnState(1,'inactive'); setBtnState(2,'inactive');
+  setClockStatus('Tap to start');
+  resetPlayerLabels();
+  // Reset LEDs
+  if(theme==='pro'){setLED(1,false);setLED(2,false);}
+}
+
+function setBtnState(n, state) {
+  if(!theme) return;
+  const id=BTNS[theme][n-1];
+  const el=document.getElementById(id); if(!el) return;
+  // Remove all state classes
+  el.className=el.className.replace(/\bactive-k\b|\binactive-k\b|\bactive-l\b|\binactive-l\b/g,'').trim();
+  if(theme==='heritage') el.classList.add(state==='active'?'active-k':'inactive-k');
+  else el.classList.add(state==='active'?'active-l':'inactive-l');
+}
+
+function setLED(n, on) {
+  const el=document.getElementById('pc-led'+n); if(!el) return;
+  el.className='pc-led '+(n===1?'g':'r')+(on?' on':'');
+}
+
+function setClockStatus(txt) {
+  const p=PFX[theme]; if(!p) return;
+  const el=document.getElementById(p+'-st'); if(el) el.textContent=txt;
+}
+
+function updateActiveUI() {
+  const p=PFX[theme]; if(!p) return;
+  const u1=document.getElementById(p+'-p1unit');
+  const u2=document.getElementById(p+'-p2unit');
+  u1.classList.remove('active'); u2.classList.remove('active');
+  if(active===0){
+    u1.classList.add('active');
+    setClockStatus('♔ White to move');
+    setBtnState(1,'active'); setBtnState(2,'inactive');
+    if(theme==='pro'){setLED(1,true);setLED(2,false);}
   } else {
-    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    u2.classList.add('active');
+    setClockStatus('♚ Black to move');
+    setBtnState(2,'active'); setBtnState(1,'inactive');
+    if(theme==='pro'){setLED(2,true);setLED(1,false);}
+  }
+  // Re-apply warnings
+  for(let i=0;i<2;i++){
+    if(warnDone[i]&&i!==active) document.getElementById(p+'-p'+(i+1)+'unit').classList.add('warning');
   }
 }
 
-// ── STATE ──
-let times = [600, 600]; // seconds
-let increment = 5;
-let baseTime = 600;
-let active = -1; // -1 = not started, 0 = p1, 1 = p2
-let paused = false;
-let gameOver = false;
-let moves = [0, 0];
-let interval = null;
-let lastTick = null;
-let warningTriggered = [false, false];
-
-// ── TIME CONTROL ──
-let currentPresetId = 'tcp-10+5';
-
-function syncPresetUI(presetKey) {
-  // Sync panel buttons
-  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('sel'));
-  const panelBtn = document.getElementById('tcp-' + presetKey);
-  if (panelBtn) panelBtn.classList.add('sel');
-  // Sync strip chips
-  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('sel'));
-  const chip = document.getElementById('chip-' + presetKey);
-  if (chip) chip.classList.add('sel');
-  currentPresetId = presetKey;
+function stripShow(show) {
+  const p=PFX[theme]; if(!p) return;
+  const el=document.getElementById(p+'-strip');
+  if(el) el.style.display=show?'flex':'none';
 }
 
-function setTC(secs, inc, key, el) {
-  baseTime = secs;
-  increment = inc;
-  syncPresetUI(key);
-  closePanel('settingsOverlay');
-  resetToNewTC();
-}
-
-function quickPreset(secs, inc, key, el) {
-  baseTime = secs;
-  increment = inc;
-  syncPresetUI(key);
-  resetToNewTC();
-}
-
-function applyCustom(){
-  const h = parseInt(document.getElementById('customHrs').value) || 0;
-  const m = parseInt(document.getElementById('customMin').value) || 0;
-  const s = parseInt(document.getElementById('customSec').value) || 0;
-  const i = parseInt(document.getElementById('customInc').value) || 0;
-  const total = h*3600 + m*60 + s;
-  if (total <= 0) return;
-  baseTime = total;
-  increment = i;
-  // Deselect all presets — custom mode
-  document.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('sel'));
-  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('sel'));
-  currentPresetId = '';
-  closePanel('settingsOverlay');
-  resetToNewTC();
-}
-function resetToNewTC(){
-  clearInterval(interval);
-  interval = null;
-  active = -1;
-  paused = false;
-  gameOver = false;
-  times = [baseTime, baseTime];
-  moves = [0, 0];
-  warningTriggered = [false, false];
-  updateDisplays();
-  document.getElementById('p1unit').className = 'display-unit';
-  document.getElementById('p2unit').className = 'display-unit';
-  document.getElementById('btn1').className = 'press-btn inactive-btn';
-  document.getElementById('btn2').className = 'press-btn inactive-btn';
-  document.getElementById('statusText').textContent = 'Tap any button to start';
-  document.getElementById('statusDot').style.display = 'none';
-  document.getElementById('pauseBtn').classList.remove('paused');
-  document.getElementById('pauseIcon').innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
-  document.getElementById('presetsStrip').style.display = 'flex';
-}
-
-// ── FORMAT TIME ──
-function fmt(secs){
-  secs = Math.max(0, secs);
-  if (secs >= 3600) {
-    const h = Math.floor(secs/3600);
-    const m = Math.floor((secs%3600)/60);
-    const s = secs%60;
-    return h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
-  }
-  const m = Math.floor(secs/60);
-  const s = secs%60;
-  return m+':'+(s<10?'0':'')+s;
-}
-
-function updateDisplays(){
-  for (let i = 0; i < 2; i++){
-    const el = document.getElementById('p'+(i+1)+'time');
-    el.textContent = fmt(Math.ceil(times[i]));
-  }
-  document.getElementById('p1inc').textContent = increment > 0 ? '+'+increment+'s' : '';
-  document.getElementById('p2inc').textContent = increment > 0 ? '+'+increment+'s' : '';
-  document.getElementById('p1moves').textContent = moves[0] + (moves[0]===1?' move':' moves');
-  document.getElementById('p2moves').textContent = moves[1] + (moves[1]===1?' move':' moves');
-  // Preview time on start screen
-  document.getElementById('previewTime').textContent = fmt(baseTime);
-}
-
-// ── GAME TICK ──
-function tick(){
-  if (active < 0 || paused || gameOver) return;
-  const now = performance.now();
-  const elapsed = (now - lastTick) / 1000;
-  lastTick = now;
-  times[active] -= elapsed;
-
-  // Warning at 30s
-  if (times[active] <= 30 && !warningTriggered[active]){
-    warningTriggered[active] = true;
-    playWarning();
-    document.getElementById('p'+(active+1)+'unit').classList.add('warning');
-  }
-
-  if (times[active] <= 0){
-    times[active] = 0;
-    updateDisplays();
-    triggerFlag(active);
-    return;
-  }
-  updateDisplays();
-}
-
-function triggerFlag(player){
-  clearInterval(interval);
-  gameOver = true;
-  playFlag();
-  const unit = document.getElementById('p'+(player+1)+'unit');
-  unit.className = 'display-unit flagged';
-  document.getElementById('statusText').textContent = (player===0?'White':'Black') + ' flagged!';
-  document.getElementById('statusDot').style.display = 'none';
-  setTimeout(() => {
-    document.getElementById('goTitle').textContent = 'Time\'s Up!';
-    document.getElementById('goSub').textContent = (player===0?'White':'Black') + ' ran out of time';
-    document.getElementById('gameoverBanner').classList.add('show');
-  }, 600);
-}
-
-// ── PRESS BUTTON ──
-function pressBtn(player, e){
+/* ════════════════════════════════
+   PRESS PLAYER BUTTON
+════════════════════════════════ */
+function pressBtn(player, e, el) {
   initAudio();
-  if (gameOver) return;
+  if(over) return;
+  const idx=player-1;
 
-  const idx = player - 1;
-  // First press — start game
-  if (active === -1){
-    active = idx === 0 ? 1 : 0; // opponent starts
-    lastTick = performance.now();
-    interval = setInterval(tick, 50);
-    document.getElementById('startScreen').classList.add('hidden');
-    document.getElementById('statusDot').style.display = 'block';
-    document.getElementById('presetsStrip').style.display = 'none'; // hide during game
+  if(active===-1){
+    // First press: presser = White (their opponent's clock starts)
+    setPlayerLabels(idx);      // presser is White
+    moves[idx]++;              // White's first move counts immediately
+    active=idx===0?1:0;
+    lastTick=performance.now();
+    ticker=setInterval(tick,50);
+    stripShow(false);
     updateActiveUI();
-    addRipple(e, player);
+    updateDisplays();
+    addRipple(e,el);
     playClick();
-    if (navigator.vibrate) navigator.vibrate(30);
+    if(navigator.vibrate) navigator.vibrate(35);
     return;
   }
-  if (paused) return;
-  if (active !== idx) return; // not your turn
+  if(paused||active!==idx) return;
 
-  // Add increment
-  times[idx] += increment;
+  times[idx]+=inc;
   moves[idx]++;
-
-  // Remove warning if time recovered
-  if (times[idx] > 30) {
-    document.getElementById('p'+(idx+1)+'unit').classList.remove('warning');
-    warningTriggered[idx] = false;
+  if(times[idx]>30){
+    document.getElementById(PFX[theme]+'-p'+(idx+1)+'unit').classList.remove('warning');
+    warnDone[idx]=false;
   }
-
-  // Switch
-  active = 1 - idx;
-  lastTick = performance.now();
+  active=1-idx;
+  lastTick=performance.now();
   updateActiveUI();
   updateDisplays();
-  addRipple(e, player);
+  addRipple(e,el);
   playClick();
-  if (navigator.vibrate) navigator.vibrate(25);
+  if(navigator.vibrate) navigator.vibrate(28);
 }
 
-function updateActiveUI(){
-  const p1 = document.getElementById('p1unit');
-  const p2 = document.getElementById('p2unit');
-  const b1 = document.getElementById('btn1');
-  const b2 = document.getElementById('btn2');
-  if (active === 0){
-    p1.classList.add('active'); p1.classList.remove('warning');
-    p2.classList.remove('active');
-    b1.className = 'press-btn active-btn';
-    b2.className = 'press-btn inactive-btn';
-    document.getElementById('statusText').textContent = 'White to move';
-  } else {
-    p2.classList.add('active'); p2.classList.remove('warning');
-    p1.classList.remove('active');
-    b2.className = 'press-btn active-btn';
-    b1.className = 'press-btn inactive-btn';
-    document.getElementById('statusText').textContent = 'Black to move';
-  }
-  // Re-apply warning if needed
-  for (let i = 0; i < 2; i++){
-    if (warningTriggered[i] && i !== active) {
-      document.getElementById('p'+(i+1)+'unit').classList.add('warning');
-    }
-  }
-}
+/* ════════════════════════════════
+   TICK
+════════════════════════════════ */
+function tick() {
+  if(active<0||paused||over) return;
+  const now=performance.now();
+  times[active]-=(now-lastTick)/1000;
+  lastTick=now;
 
-// ── PAUSE ──
-function togglePause(){
-  if (gameOver || active === -1) return;
-  paused = !paused;
-  const btn = document.getElementById('pauseBtn');
-  const icon = document.getElementById('pauseIcon');
-  if (paused){
-    btn.classList.add('paused');
-    icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
-    document.getElementById('statusText').textContent = 'Game paused';
-    document.getElementById('statusDot').style.display = 'none';
-    lastTick = null;
-  } else {
-    btn.classList.remove('paused');
-    icon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
-    lastTick = performance.now();
-    document.getElementById('statusDot').style.display = 'block';
-    updateActiveUI();
+  if(times[active]<=30&&!warnDone[active]){
+    warnDone[active]=true;
+    playWarning();
+    document.getElementById(PFX[theme]+'-p'+(active+1)+'unit').classList.add('warning');
   }
-}
-
-// ── RESET ──
-function resetClock(){
-  clearInterval(interval);
-  interval = null;
-  active = -1;
-  paused = false;
-  gameOver = false;
-  times = [baseTime, baseTime];
-  moves = [0, 0];
-  warningTriggered = [false, false];
-  document.getElementById('p1unit').className = 'display-unit';
-  document.getElementById('p2unit').className = 'display-unit';
-  document.getElementById('btn1').className = 'press-btn inactive-btn';
-  document.getElementById('btn2').className = 'press-btn inactive-btn';
-  document.getElementById('statusText').textContent = 'Tap any button to start';
-  document.getElementById('statusDot').style.display = 'none';
-  document.getElementById('pauseBtn').classList.remove('paused');
-  document.getElementById('pauseIcon').innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
-  document.getElementById('gameoverBanner').classList.remove('show');
-  document.getElementById('presetsStrip').style.display = 'flex';
+  if(times[active]<=0){
+    times[active]=0; updateDisplays(); flagPlayer(active); return;
+  }
   updateDisplays();
 }
 
-function startGame(){
-  document.getElementById('startScreen').classList.add('hidden');
+function flagPlayer(p) {
+  clearInterval(ticker); over=true;
+  playFlag();
+  const px=PFX[theme];
+  const u=document.getElementById(px+'-p'+(p+1)+'unit');
+  u.className=u.className.replace(/\bactive\b|\bwarning\b/g,'').trim()+' flagged';
+  setClockStatus((p===0?'♔ White':'♚ Black')+' flagged!');
+  if(theme==='pro'){setLED(1,false);setLED(2,false);}
+  setTimeout(()=>{
+    document.getElementById('goTitle').textContent="Time's Up!";
+    document.getElementById('goSub').textContent=(p===0?'♔ White':'♚ Black')+' ran out of time';
+    document.getElementById('goBanner').classList.add('show');
+  },700);
 }
 
-// ── RIPPLE EFFECT ──
-function addRipple(e, player){
-  const btn = document.getElementById('btn'+player);
-  const ripple = document.createElement('div');
-  ripple.className = 'ripple';
-  const rect = btn.getBoundingClientRect();
-  const x = (e.clientX || e.touches?.[0]?.clientX || rect.width/2) - rect.left;
-  const y = (e.clientY || e.touches?.[0]?.clientY || rect.height/2) - rect.top;
-  const size = Math.max(rect.width, rect.height);
-  ripple.style.cssText = `width:${size}px;height:${size}px;left:${x-size/2}px;top:${y-size/2}px`;
-  btn.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 400);
+/* ════════════════════════════════
+   PAUSE
+════════════════════════════════ */
+function togglePause() {
+  if(over||active===-1) return;
+  paused=!paused;
+  const p=PFX[theme];
+  // Sync all pause buttons
+  ['hc-pause','pc-pause','cc-pause','pauseBtn'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.toggle('on',paused);
+  });
+  setPauseIcon(paused);
+  if(paused){
+    setClockStatus('Paused');
+    lastTick=null;
+  } else {
+    lastTick=performance.now();
+    updateActiveUI();
+  }
+}
+function setPauseIcon(p) {
+  const icon=document.getElementById('pauseIcon');
+  if(!icon) return;
+  icon.innerHTML=p
+    ?'<polygon points="5 3 19 12 5 21 5 3"/>'
+    :'<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
 }
 
-// ── THEMES ──
-function setTheme(name, card){
-  document.body.className = 'theme-' + name;
-  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('sel'));
-  card.classList.add('sel');
-  // don't close panel — user might want to keep tweaking
+/* ════════════════════════════════
+   RIPPLE
+════════════════════════════════ */
+function addRipple(e, btnEl) {
+  if(!btnEl) return;
+  const r=document.createElement('div'); r.className='ripple';
+  const rect=btnEl.getBoundingClientRect();
+  const x=(e.clientX||e.touches?.[0]?.clientX||rect.width/2)-rect.left;
+  const y=(e.clientY||e.touches?.[0]?.clientY||rect.height/2)-rect.top;
+  const sz=Math.max(rect.width,rect.height);
+  r.style.cssText=`width:${sz}px;height:${sz}px;left:${x-sz/2}px;top:${y-sz/2}px`;
+  btnEl.appendChild(r);
+  setTimeout(()=>r.remove(),450);
 }
 
-// ── PANELS ──
-function showSettings(){ document.getElementById('settingsOverlay').classList.add('show'); }
-function closePanel(id){ document.getElementById(id).classList.remove('show'); }
-function closePanelIf(e, id){ if(e.target.id === id) closePanel(id); }
+/* ════════════════════════════════
+   AUDIO
+════════════════════════════════ */
+function initAudio() {
+  if(!ctx) ctx=new(window.AudioContext||window.webkitAudioContext)();
+  if(ctx.state==='suspended') ctx.resume();
+}
+function playClick() {
+  if(!soundOn||!ctx) return;
+  const pro={heritage:{f1:580,f2:130,d:0.07,v:0.28,t:'sawtooth'},pro:{f1:1400,f2:480,d:0.04,v:0.2,t:'square'},chronos:{f1:820,f2:260,d:0.09,v:0.16,t:'sine'}};
+  const p=pro[theme]||pro.heritage;
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.type=p.t;
+  o.frequency.setValueAtTime(p.f1,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(p.f2,ctx.currentTime+p.d);
+  g.gain.setValueAtTime(p.v,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+p.d+0.02);
+  o.start();o.stop(ctx.currentTime+p.d+0.03);
+  if(theme==='chronos'){
+    const o2=ctx.createOscillator(),g2=ctx.createGain();
+    o2.connect(g2);g2.connect(ctx.destination);
+    o2.type='sine';o2.frequency.value=1750;
+    g2.gain.setValueAtTime(0.05,ctx.currentTime+0.01);
+    g2.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.07);
+    o2.start(ctx.currentTime+0.01);o2.stop(ctx.currentTime+0.08);
+  }
+}
+function playWarning() {
+  if(!soundOn||!ctx) return;
+  [0,0.14,0.28].forEach(t=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.frequency.value=440;
+    g.gain.setValueAtTime(0.18,ctx.currentTime+t);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.09);
+    o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.1);
+  });
+}
+function playFlag() {
+  if(!soundOn||!ctx) return;
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.frequency.setValueAtTime(280,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(65,ctx.currentTime+0.62);
+  g.gain.setValueAtTime(0.34,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.65);
+  o.start();o.stop(ctx.currentTime+0.7);
+}
+function toggleSound() {
+  soundOn=!soundOn;
+  const icon=document.getElementById('soundIcon');
+  const btn=document.getElementById('soundBtn');
+  if(soundOn){
+    icon.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>';
+    btn.style.color='';
+  } else {
+    icon.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    btn.style.color='#FF4444';
+  }
+}
 
-// ── INIT ──
-syncPresetUI('10+5');
-updateDisplays();
+// Init default preset selection
+pickTC(600, 5, '10+5', document.getElementById('tc-10+5'));
 </script>
 </body>
 </html>
