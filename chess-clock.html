@@ -631,7 +631,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <button class="s3-btn" onclick="toggleSound()" id="soundBtn" title="Sound">
         <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
       </button>
-      <button class="s3-btn" id="fullscreenBtn" onclick="handleFsBtn()" title="Fullscreen">
+      <button class="s3-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="Fullscreen">
         <svg id="fsIcon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
       </button>
       <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape">
@@ -1354,36 +1354,57 @@ function toggleSound() {
 }
 
 
-/* FULLSCREEN */
+/* ════════════════════════════════
+   FULLSCREEN
+════════════════════════════════ */
 let isFullscreen = false;
 let fsToastTimer = null;
 
-function handleFsBtn() {
-  if (!isFullscreen) {
-    var el = document.documentElement;
-    var req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
-    if (!req) { showFsToast('Add to Home Screen for fullscreen on iOS'); return; }
-    req.call(el).then(function() {
+function toggleFullscreen() {
+  if (!isFullscreen) { enterFullscreen(); } else { exitFullscreen(); }
+}
+
+function enterFullscreen() {
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+  if (req) {
+    req.call(el).then(() => {
       isFullscreen = true;
       updateFsBtn(true);
-      try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function(){}); } catch(e) {}
-    }).catch(function(err) {
-      showFsToast('Could not enter fullscreen. Try: Add to Home Screen.');
+      lockLandscape();
+    }).catch(() => {
+      showFsToast('Fullscreen blocked. Try adding to Home Screen.');
     });
   } else {
-    var exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-    if (exit) exit.call(document).catch(function(){});
-    try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(e) {}
-    isFullscreen = false;
-    updateFsBtn(false);
+    showFsToast('Add to Home Screen for fullscreen on iOS');
   }
 }
 
-function toggleFullscreen() { handleFsBtn(); }
+function exitFullscreen() {
+  const exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+  if (exit) exit.call(document).catch(() => {});
+  unlockOrientation();
+  isFullscreen = false;
+  updateFsBtn(false);
+}
+
+function lockLandscape() {
+  try {
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(() => {});
+    }
+  } catch(e) {}
+}
+
+function unlockOrientation() {
+  try {
+    if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+  } catch(e) {}
+}
 
 function updateFsBtn(active) {
-  var btn = document.getElementById('fullscreenBtn');
-  var icon = document.getElementById('fsIcon');
+  const btn = document.getElementById('fullscreenBtn');
+  const icon = document.getElementById('fsIcon');
   if (!btn || !icon) return;
   if (active) {
     btn.classList.add('fs-active');
@@ -1395,33 +1416,33 @@ function updateFsBtn(active) {
 }
 
 function showFsToast(msg) {
-  var toast = document.getElementById('fsToast');
-  var msgEl = document.getElementById('fsToastMsg');
+  const toast = document.getElementById('fsToast');
+  const msgEl = document.getElementById('fsToastMsg');
   if (!toast) return;
   if (msgEl) msgEl.textContent = msg;
   toast.classList.add('show');
   if (fsToastTimer) clearTimeout(fsToastTimer);
-  fsToastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3800);
+  fsToastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
 }
 
 document.addEventListener('fullscreenchange', onFsChange);
 document.addEventListener('webkitfullscreenchange', onFsChange);
 function onFsChange() {
-  var isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
   if (!isFull && isFullscreen) {
     isFullscreen = false;
     updateFsBtn(false);
-    try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(e) {}
+    unlockOrientation();
   }
 }
 
-var _origNewGame = newGame;
+const _origNewGame = newGame;
 function newGame() {
-  if (isFullscreen) handleFsBtn();
+  if (isFullscreen) exitFullscreen();
   _origNewGame();
 }
 
-Init default preset selection
+// Init default preset selection
 pickTC(600, 5, '10+5', document.getElementById('tc-10+5'));
 </script>
 </body>
