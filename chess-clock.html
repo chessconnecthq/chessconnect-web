@@ -70,7 +70,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-card:active{transform:scale(0.985)}
 .clock-card.selected{border-color:#1E73E8!important;box-shadow:0 0 0 1px #1E73E8,0 4px 16px rgba(30,115,232,0.12)}
 .card-inner{display:flex;flex-direction:row;align-items:stretch;position:relative;overflow:hidden}
-.card-preview{flex-shrink:0;width:105px;height:84px;overflow:hidden;position:relative}
+.card-preview{flex-shrink:0;width:105px;height:100px;overflow:hidden;position:relative}
 .preview-scaler{width:428px;transform:scale(0.245);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
 .preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:343px}
 .card-info{flex:1;padding:0.65rem 0.7rem 0.65rem;display:flex;flex-direction:column;justify-content:center;min-width:0}
@@ -131,7 +131,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   .mob-title{font-size:1.65rem;margin-bottom:0.3rem}
   .mob-sub{margin-bottom:1.2rem}
   .clock-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;max-width:580px}
-  .card-preview{width:115px;height:100%;min-height:104px}
+  .card-preview{width:115px;height:100%;min-height:116px}
   .preview-scaler{transform:scale(0.268)}
   .next-btn{max-width:580px}
   .tc-wrap,.custom-row,.s2-btns{max-width:440px}
@@ -147,6 +147,12 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   .preview-scaler{transform:scale(0.292)}
   .next-btn{max-width:640px}
 }
+
+/* ── In-clock fullscreen icon buttons ── */
+.hc-fs-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.pc-fs-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.cc-fs-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.xc-fs-btn{padding:6px 14px!important;display:inline-flex;align-items:center;justify-content:center}
 
 /* ── HERITAGE MINI CLOCK ── */
 .prev-heritage{background:repeating-linear-gradient(173deg,transparent 0,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px),linear-gradient(158deg,#A0522D 0%,#6B3010 40%,#3C1A08 80%,#2A1206 100%);display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;border:1px solid rgba(160,90,35,0.25)}
@@ -307,7 +313,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:6px;
   transition:all 0.12s;
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden;touch-action:manipulation;
 }
 .xc-btn::after{
   content:'';position:absolute;inset:0;
@@ -391,7 +397,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .xc-edition{font-family:'DM Sans',sans-serif;font-size:0.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#9CA3AF}
 
 /* ═══════════ SCREEN 3 — ACTIVE CLOCK ═══════════ */
-#screen3{position:fixed;inset:0;padding:0;background:#0a0a0f;overflow:hidden;z-index:100;display:flex;flex-direction:column}
+#screen3{position:fixed;inset:0;padding:0;background:#0a0a0f;overflow:hidden;z-index:100;display:flex;flex-direction:column;touch-action:manipulation}
 
 /* Topbar */
 .s3-bar{position:fixed;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 0.9rem;z-index:100;background:rgba(5,5,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05)}
@@ -512,7 +518,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   background:radial-gradient(ellipse at 38% 28%,#EAC855 0%,#C49035 30%,#9A6E1A 58%,#7A521008 78%,#5A3808 100%);
   box-shadow:0 7px 0 #3C2408,0 10px 22px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,230,100,0.5),inset 0 -2px 4px rgba(0,0,0,0.45);
   cursor:pointer;position:relative;overflow:hidden;
-  transition:transform 0.07s,box-shadow 0.07s;border:1px solid rgba(100,60,10,0.4);
+  transition:transform 0.07s,box-shadow 0.07s;border:1px solid rgba(100,60,10,0.4);touch-action:manipulation;
 }
 .hc-knob::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 38% 28%,rgba(255,230,100,0.42) 0%,rgba(255,200,60,0.15) 40%,transparent 58%)}
 .hc-knob::after{content:'';position:absolute;inset:8px;border-radius:50%;border:1px solid rgba(255,200,60,0.1);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5)}
@@ -603,7 +609,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   background:linear-gradient(158deg,#2A2A2A,#1A1A1A,#0E0E0E);
   box-shadow:0 5px 0 #060606,0 7px 15px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,255,255,0.1);
   position:relative;overflow:hidden;
-  transition:transform 0.07s,box-shadow 0.07s;
+  transition:transform 0.07s,box-shadow 0.07s;touch-action:manipulation;
 }
 .pc-lever::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.09) 0%,transparent 50%);border-radius:5px 5px 3px 3px}
 .pc-lever:active,.pc-lever.pressing{transform:translateY(4px);box-shadow:0 1px 0 #060606,0 2px 8px rgba(0,0,0,0.6),inset 0 2px 5px rgba(0,0,0,0.5)}
@@ -878,27 +884,41 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#2A1206;border-radius:8px 0 0 8px"><div class="preview-scaler"><div class="hc-body" style="border-radius:18px 18px 10px 10px;">
-              <div class="hc-corners"></div>
-              <div class="hc-top">
-                <div class="hc-knob-col"><div class="hc-knob" style="cursor:default"></div></div>
-                <div class="hc-center">
-                  <div class="hc-brand">ChessConnect</div>
-                  <div class="hc-ctrls">
-                    <button class="hc-cbtn" style="pointer-events:none">PAUSE</button>
-                    <button class="hc-cbtn" style="pointer-events:none">RESTART</button>
-                  </div>
-                  <div class="hc-cstatus">Tap a knob to start</div>
-                </div>
-                <div class="hc-knob-col"><div class="hc-knob" style="cursor:default"></div></div>
+        <div class="card-preview" style="background:repeating-linear-gradient(170deg,transparent 0,transparent 8px,rgba(0,0,0,0.04) 8px,rgba(0,0,0,0.04) 9px),linear-gradient(155deg,#8B3A1A 0%,#5C2209 35%,#3A1506 65%,#251005 100%);border-radius:8px 0 0 8px;display:flex;flex-direction:column;overflow:hidden;position:relative;">
+          <!-- corner ornaments -->
+          <div style="position:absolute;top:5px;left:6px;color:rgba(210,165,70,0.6);font-size:6px;line-height:1">✦</div>
+          <div style="position:absolute;top:5px;right:6px;color:rgba(210,165,70,0.6);font-size:6px;line-height:1">✦</div>
+          <!-- top row: knob + brand + knob -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 8px 4px;position:relative;z-index:1">
+            <!-- left brass knob -->
+            <div style="width:22px;height:22px;border-radius:50%;background:radial-gradient(ellipse at 38% 28%,#EAC855 0%,#C49035 35%,#8A5C12 65%,#5A3808 100%);box-shadow:0 4px 0 #3C2408,0 5px 10px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,230,100,0.5);flex-shrink:0"></div>
+            <!-- center brand -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+              <div style="font-family:'Playfair Display',serif;font-size:5.5px;font-weight:700;color:rgba(220,175,90,0.95);letter-spacing:0.03em;text-shadow:0 1px 3px rgba(0,0,0,0.6)">ChessConnect</div>
+              <div style="display:flex;gap:2px">
+                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(196,135,58,0.55);background:rgba(20,8,2,0.75);color:rgba(220,175,80,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">PAUSE</span>
+                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(196,135,58,0.55);background:rgba(20,8,2,0.75);color:rgba(220,175,80,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">RESTART</span>
               </div>
-              <div class="hc-displays">
-                <div class="hc-dunit"><div class="hc-plbl">White</div><div class="hc-disp"><div class="hc-time">10:00</div><div class="hc-moves">0 moves</div></div></div>
-                <div class="hc-divider"></div>
-                <div class="hc-dunit"><div class="hc-plbl">Black</div><div class="hc-disp"><div class="hc-time">10:00</div><div class="hc-moves">0 moves</div></div></div>
-              </div>
-              <div class="hc-bot"><div style="text-align:center"><div class="hc-edition">Heritage Edition · Tournament</div></div></div>
             </div>
+            <!-- right brass knob -->
+            <div style="width:22px;height:22px;border-radius:50%;background:radial-gradient(ellipse at 38% 28%,#EAC855 0%,#C49035 35%,#8A5C12 65%,#5A3808 100%);box-shadow:0 4px 0 #3C2408,0 5px 10px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,230,100,0.5);flex-shrink:0"></div>
+          </div>
+          <!-- displays -->
+          <div style="display:flex;gap:4px;padding:0 7px;flex:1;align-items:center;position:relative;z-index:1">
+            <div style="flex:1;background:#070503;border-radius:4px;border:1px solid rgba(120,75,25,0.55);padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.9),0 0 8px rgba(196,135,58,0.12)">
+              <div style="font-size:3.5px;color:rgba(196,135,58,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'DM Sans',sans-serif">White</div>
+              <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:#E8C870;text-shadow:0 0 8px rgba(232,200,112,0.7),0 0 18px rgba(232,200,112,0.35);line-height:1.1;letter-spacing:0.04em">10:00</div>
+              <div style="font-size:3px;color:rgba(160,110,45,0.55);font-family:'DM Sans',sans-serif">0 moves</div>
+            </div>
+            <div style="flex:1;background:#070503;border-radius:4px;border:1px solid rgba(120,75,25,0.55);padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.9),0 0 8px rgba(196,135,58,0.12)">
+              <div style="font-size:3.5px;color:rgba(196,135,58,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'DM Sans',sans-serif">Black</div>
+              <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:#7A5520;text-shadow:none;line-height:1.1;letter-spacing:0.04em">10:00</div>
+              <div style="font-size:3px;color:rgba(160,110,45,0.55);font-family:'DM Sans',sans-serif">0 moves</div>
+            </div>
+          </div>
+          <!-- footer -->
+          <div style="text-align:center;padding:4px 3px 5px;position:relative;z-index:1;border-top:1px solid rgba(196,135,58,0.12)">
+            <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:4px;color:rgba(180,125,50,0.6);letter-spacing:0.04em">Heritage Edition · Tournament</div>
           </div>
         </div>
         <div class="card-info">
@@ -910,32 +930,52 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-pro" id="card-pro" onclick="selectClock('pro',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#0B0B0B;border-radius:8px 0 0 8px"><div class="preview-scaler"><div class="pc-body" style="border-radius:14px 14px 10px 10px;">
-              <div class="pc-top">
-                <div class="pc-lever-col">
-                  <div class="pc-led-row"><div class="pc-led g"></div></div>
-                  <div class="pc-lever" style="cursor:default"></div>
-                </div>
-                <div class="pc-center">
-                  <div class="pc-brand-t">ChessConnect</div>
-                  <div class="pc-ctrls">
-                    <button class="pc-cbtn" style="pointer-events:none">PAUSE</button>
-                    <button class="pc-cbtn" style="pointer-events:none">RESTART</button>
-                  </div>
-                  <div class="pc-cstatus">Tap lever to start</div>
-                </div>
-                <div class="pc-lever-col">
-                  <div class="pc-led-row"><div class="pc-led r"></div></div>
-                  <div class="pc-lever" style="cursor:default"></div>
-                </div>
+        <div class="card-preview" style="background:radial-gradient(ellipse at 50% 40%,#1a1a1a 0%,#0d0d0d 50%,#050505 100%);border-radius:8px 0 0 8px;display:flex;flex-direction:column;overflow:hidden;position:relative;">
+          <!-- carbon grid overlay -->
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(255,255,255,0.015) 3px,rgba(255,255,255,0.015) 4px);pointer-events:none"></div>
+          <!-- top row: lever + brand + lever -->
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;padding:8px 8px 4px;position:relative;z-index:1">
+            <!-- left lever + LED -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="display:flex;gap:2px;align-items:center">
+                <div style="width:6px;height:6px;border-radius:50%;background:#00E676;box-shadow:0 0 5px rgba(0,230,118,0.9),0 0 10px rgba(0,230,118,0.4)"></div>
               </div>
-              <div class="pc-displays">
-                <div class="pc-dunit"><div class="pc-plbl">White</div><div class="pc-disp"><div class="pc-time">10:00</div><div class="pc-moves">0 moves</div></div></div>
-                <div class="pc-divider"></div>
-                <div class="pc-dunit"><div class="pc-plbl">Black</div><div class="pc-disp"><div class="pc-time">10:00</div><div class="pc-moves">0 moves</div></div></div>
-              </div>
-              <div class="pc-bot"><div class="pc-tag">Pro Edition · Tournament</div></div>
+              <div style="width:30px;height:10px;border-radius:3px 3px 2px 2px;background:linear-gradient(158deg,#2a2a2a,#111);box-shadow:0 3px 0 #060606,0 4px 8px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.1)"></div>
             </div>
+            <!-- center brand -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+              <div style="font-size:5.5px;font-weight:800;color:rgba(210,210,210,0.9);letter-spacing:0.05em;font-family:'DM Sans',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.8)">ChessConnect</div>
+              <div style="display:flex;gap:2px">
+                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(180,180,180,0.4);background:rgba(15,15,15,0.85);color:rgba(200,200,200,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">PAUSE</span>
+                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(180,180,180,0.4);background:rgba(15,15,15,0.85);color:rgba(200,200,200,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">RESTART</span>
+              </div>
+            </div>
+            <!-- right lever + LED -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="display:flex;gap:2px;align-items:center">
+                <div style="width:6px;height:6px;border-radius:50%;background:#FF3A3A;box-shadow:0 0 5px rgba(255,58,58,0.9),0 0 10px rgba(255,58,58,0.4)"></div>
+              </div>
+              <div style="width:30px;height:10px;border-radius:3px 3px 2px 2px;background:linear-gradient(158deg,#2a2a2a,#111);box-shadow:0 3px 0 #060606,0 4px 8px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.1)"></div>
+            </div>
+          </div>
+          <!-- displays with scanline effect -->
+          <div style="display:flex;gap:4px;padding:0 7px;flex:1;align-items:center;position:relative;z-index:1">
+            <div style="flex:1;background:#040404;border-radius:4px;border:1px solid #2a2a2a;padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.98);position:relative;overflow:hidden">
+              <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 3px);pointer-events:none"></div>
+              <div style="font-size:3.5px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'Share Tech Mono',monospace">White</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:14px;color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.8),0 0 18px rgba(255,255,255,0.3);line-height:1.1;letter-spacing:0.04em">10:00</div>
+              <div style="font-size:3px;color:#444;font-family:'Share Tech Mono',monospace">0 moves</div>
+            </div>
+            <div style="flex:1;background:#040404;border-radius:4px;border:1px solid #2a2a2a;padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.98);position:relative;overflow:hidden">
+              <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 3px);pointer-events:none"></div>
+              <div style="font-size:3.5px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'Share Tech Mono',monospace">Black</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:14px;color:#4a4a4a;text-shadow:none;line-height:1.1;letter-spacing:0.04em">10:00</div>
+              <div style="font-size:3px;color:#444;font-family:'Share Tech Mono',monospace">0 moves</div>
+            </div>
+          </div>
+          <!-- footer -->
+          <div style="text-align:center;padding:4px 3px 5px;position:relative;z-index:1;border-top:1px solid #1a1a1a">
+            <div style="font-size:4px;font-weight:700;color:rgba(130,130,130,0.5);text-transform:uppercase;letter-spacing:0.1em;font-family:'DM Sans',sans-serif">Pro Edition · Tournament</div>
           </div>
         </div>
         <div class="card-info">
@@ -1000,45 +1040,51 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     <!-- ChessConnect Theme Card -->
     <div class="clock-card card-xconnect" id="card-xconnect" onclick="selectClock('xconnect',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#F5F5F7;border:1px solid #D1D5DB;overflow:hidden;position:relative;display:flex;flex-direction:column;">
+        <div class="card-preview" style="background:#F5F5F7;border-radius:8px 0 0 8px;overflow:hidden;position:relative;display:flex;flex-direction:column;">
           <div style="position:absolute;inset:0;background:linear-gradient(180deg,#fff 0%,#F5F5F7 100%)"></div>
           <!-- Top bar -->
           <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:5px 7px 4px;border-bottom:1px solid #E5E9F2;background:linear-gradient(180deg,#fff,#fafafa)">
             <div style="font-family:'DM Sans',sans-serif;font-size:5px;font-weight:800;letter-spacing:-0.2px"><span style="color:#102C57">Chess</span><span style="color:#4285F4">Connect</span></div>
-            <div style="display:flex;align-items:center;gap:5px">
-              <div style="width:6px;height:6px;border-radius:50%;background:#1E73E8;box-shadow:0 0 6px rgba(30,115,232,0.7)"></div>
-              <span style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9CA3AF">Live</span>
+            <div style="display:flex;align-items:center;gap:3px">
+              <div style="width:5px;height:5px;border-radius:50%;background:#1E73E8;box-shadow:0 0 5px rgba(30,115,232,0.7)"></div>
+              <span style="font-size:3.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9CA3AF">Live</span>
             </div>
+          </div>
+          <!-- Controls row -->
+          <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:3px;padding:3px 6px;border-bottom:1px solid #E5E9F2;background:#fafafa">
+            <span style="font-size:3.5px;font-weight:700;padding:1.5px 5px;border:0.5px solid #E5E9F2;background:#fff;color:#6B7280;font-family:'DM Sans',sans-serif;border-radius:2px">Pause</span>
+            <span style="font-size:3.5px;font-weight:700;padding:1.5px 5px;border:0.5px solid #1E73E8;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;border-radius:2px">Restart</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;padding:1.5px 4px;border:0.5px solid #E5E9F2;background:#fff;border-radius:2px"><svg viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:5px;height:5px"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></span>
           </div>
           <!-- Clock face -->
           <div style="position:relative;z-index:1;display:flex;flex:1;min-height:0">
             <!-- Left button -->
-            <div style="width:10px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-right:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
-              <div style="width:1px;height:14px;background:#D1D5DB;border-radius:1px"></div>
+            <div style="width:9px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-right:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
+              <div style="width:1px;height:12px;background:#D1D5DB;border-radius:1px"></div>
             </div>
             <!-- White panel (active) -->
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 3px;background:#fff;position:relative">
-              <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#1E73E8"></div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#1E73E8;margin-bottom:2px">White</div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;letter-spacing:-1px;color:#102C57;line-height:1">10:00</div>
-              <div style="font-size:3px;color:#9CA3AF;margin-top:2px;font-weight:600">0 moves</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3px 2px;background:#fff;position:relative">
+              <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#1E73E8"></div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#1E73E8;margin-bottom:2px">White</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:800;letter-spacing:-1px;color:#102C57;line-height:1">10:00</div>
+              <div style="font-size:3px;color:#9CA3AF;margin-top:1px;font-weight:600">0 moves</div>
             </div>
             <!-- Divider -->
-            <div style="width:1px;background:#E5E9F2;margin:6px 0"></div>
+            <div style="width:1px;background:#E5E9F2;margin:5px 0"></div>
             <!-- Black panel (inactive) -->
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 3px;background:#F8FAFF">
-              <div style="font-family:'DM Sans',sans-serif;font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#9CA3AF;margin-bottom:2px">Black</div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;letter-spacing:-1px;color:#D1D5DB;line-height:1">10:00</div>
-              <div style="font-size:3px;color:#D1D5DB;margin-top:2px;font-weight:600">0 moves</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3px 2px;background:#F8FAFF">
+              <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#9CA3AF;margin-bottom:2px">Black</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:800;letter-spacing:-1px;color:#D1D5DB;line-height:1">10:00</div>
+              <div style="font-size:3px;color:#D1D5DB;margin-top:1px;font-weight:600">0 moves</div>
             </div>
             <!-- Right button -->
-            <div style="width:10px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-left:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
-              <div style="width:1px;height:14px;background:#D1D5DB;border-radius:1px"></div>
+            <div style="width:9px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-left:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
+              <div style="width:1px;height:12px;background:#D1D5DB;border-radius:1px"></div>
             </div>
           </div>
           <!-- Footer -->
           <div style="position:relative;z-index:1;text-align:center;padding:3px;border-top:1px solid #E5E9F2;background:linear-gradient(180deg,#fafafa,#F5F5F7)">
-            <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#9CA3AF">ChessConnect · Professional Edition</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#9CA3AF">Professional Edition</div>
           </div>
         </div>
         <div class="card-info">
@@ -1156,6 +1202,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
           <div class="hc-ctrls">
             <button class="hc-cbtn" id="hc-pause" onclick="togglePause()">PAUSE</button>
             <button class="hc-cbtn" onclick="restartClock()">RESTART</button>
+            <button class="hc-cbtn hc-fs-btn" id="hc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+              <svg id="hc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+            </button>
           </div>
           <div class="hc-cstatus" id="hc-st">Tap a knob to start</div>
         </div>
@@ -1219,6 +1268,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
           <div class="pc-ctrls">
             <button class="pc-cbtn" id="pc-pause" onclick="togglePause()">PAUSE</button>
             <button class="pc-cbtn" onclick="restartClock()">RESTART</button>
+            <button class="pc-cbtn pc-fs-btn" id="pc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+              <svg id="pc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+            </button>
           </div>
           <div class="pc-cstatus" id="pc-st">Tap lever to start</div>
         </div>
@@ -1304,6 +1356,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
           <div class="cc-ctrls">
             <button class="cc-cbtn" id="cc-pause" onclick="togglePause()">PAUSE</button>
             <button class="cc-cbtn" onclick="restartClock()">RESTART</button>
+            <button class="cc-cbtn cc-fs-btn" id="cc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+              <svg id="cc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+            </button>
           </div>
           <div class="cc-cstatus" id="cc-st">Tap lever to start</div>
         </div>
@@ -1365,6 +1420,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="xc-controls">
           <button class="xc-cbtn" id="xc-pause" onclick="togglePause()">Pause</button>
           <button class="xc-cbtn primary" id="xc-restart" onclick="restartClock()">Restart</button>
+          <button class="xc-cbtn xc-fs-btn" id="xc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+            <svg id="xc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+          </button>
         </div>
         <!-- Clock face -->
         <div class="xc-face">
@@ -1448,6 +1506,39 @@ let soundOn = true, ctx = null;
 let lastPress = 0; // debounce tracker
 let whiteIdx = -1; // which player index is White (set on first press)
 
+/* ════════════════════════════════
+   NAVIGATION GUARD — prevent accidental swipe-back during active game
+════════════════════════════════ */
+window.addEventListener('beforeunload', function(e) {
+  if (active !== -1 && !over) {
+    e.preventDefault();
+    e.returnValue = 'A game is in progress. Are you sure you want to leave?';
+    return e.returnValue;
+  }
+});
+
+/* ════════════════════════════════
+   WAKE LOCK — keep screen on during active game
+════════════════════════════════ */
+let wakeLock = null;
+async function requestWakeLock() {
+  if (!('wakeLock' in navigator)) return; // not supported — fail silently
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+  } catch(e) {
+    // Permission denied or API unavailable — non-fatal
+  }
+}
+function releaseWakeLock() {
+  if (wakeLock) { wakeLock.release().catch(()=>{}); wakeLock = null; }
+}
+// Re-acquire if page becomes visible again (e.g. after phone call)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && active !== -1 && !paused && !over) {
+    requestWakeLock();
+  }
+});
+
 /* Prefix map */
 const PFX = {heritage:'hc', pro:'pc', chronos:'cc', xconnect:'xc'};
 /* Button IDs per theme */
@@ -1525,16 +1616,19 @@ function launchClock() {
   baseTime = baseTime; // already set via pickTC or custom
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
   if (!selChip) {
-    const h=Math.max(0,Math.min(9,  parseInt(document.getElementById('ctH').value)||0));
-    const m=Math.max(0,Math.min(59, parseInt(document.getElementById('ctM').value)||0));
-    const s=Math.max(0,Math.min(59, parseInt(document.getElementById('ctS').value)||0));
-    const i=Math.max(0,Math.min(300,parseInt(document.getElementById('ctI').value)||0));
+    // Sanitize: force integer, clamp to valid range, reject non-numeric
+    const h=Math.max(0,Math.min(9,  Math.floor(Math.abs(parseInt(document.getElementById('ctH').value)||0))));
+    const m=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctM').value)||0))));
+    const s=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctS').value)||0))));
+    const i=Math.max(0,Math.min(300,Math.floor(Math.abs(parseInt(document.getElementById('ctI').value)||0))));
     const tot=h*3600+m*60+s;
+    // Zero-second guard: must be at least 1 second total
     if(tot>0){baseTime=tot;inc=i;}
     else { alert('Please set a valid time (at least 1 second).'); return; }
   }
   initClockView();
   show('screen3');
+  requestWakeLock(); // Keep screen on during game
 }
 
 function initClockView() {
@@ -1573,6 +1667,7 @@ function restartClock() {
 function newGame() {
   if(ticker){clearInterval(ticker);ticker=null;}
   if(isFullscreen) exitFullscreen();
+  releaseWakeLock(); // Screen can sleep again
   document.getElementById('goBanner').classList.remove('show');
   // Reset landscape
   isLandscape=false;
@@ -1804,6 +1899,7 @@ function tick() {
 
 function flagPlayer(p) {
   clearInterval(ticker); over=true;
+  releaseWakeLock(); // Game over — screen can sleep
   playFlag();
   const px=PFX[theme];
   const u=document.getElementById(px+'-p'+(p+1)+'unit');
@@ -2011,16 +2107,31 @@ function unlockOrientation() {
 }
 
 function updateFsBtn(active) {
+  // Top bar button
   const btn = document.getElementById('fullscreenBtn');
   const icon = document.getElementById('fsIcon');
-  if (!btn || !icon) return;
-  if (active) {
-    btn.classList.add('fs-active');
-    icon.innerHTML = '<path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/>';
-  } else {
-    btn.classList.remove('fs-active');
-    icon.innerHTML = '<path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>';
+  if (btn && icon) {
+    if (active) {
+      btn.classList.add('fs-active');
+      icon.innerHTML = '<path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/>';
+    } else {
+      btn.classList.remove('fs-active');
+      icon.innerHTML = '<path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>';
+    }
   }
+  // In-clock icons — expand path when inactive, compress path when active
+  const expandPath = '<path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>';
+  const compressPath = '<path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/>';
+  const newPath = active ? compressPath : expandPath;
+  ['hc-fs-icon','pc-fs-icon','cc-fs-icon','xc-fs-icon'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = newPath;
+  });
+  // Highlight active state on in-clock buttons
+  ['hc-fs','pc-fs','cc-fs','xc-fs'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('on', active);
+  });
 }
 
 function showFsToast(msg) {
