@@ -130,6 +130,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .card-heritage{--ca:#1E73E8}
 .card-pro{--ca:#1E73E8}
 .card-chronos{--ca:#1E73E8}
+.card-xconnect{--ca:#1E73E8}
 
 /* Next / Set Time button */
 .next-btn{width:100%;max-width:420px;padding:0.85rem;border-radius:10px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:1rem;letter-spacing:0.02em;box-shadow:0 4px 14px rgba(30,115,232,0.3);transition:all 0.2s;opacity:0.35;pointer-events:none}
@@ -171,6 +172,149 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .back-btn:hover{border-color:#1E73E8;color:#1E73E8}
 .launch-btn{flex:1;padding:0.85rem;border-radius:10px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(30,115,232,0.3);transition:all 0.2s;letter-spacing:0.02em}
 .launch-btn:hover{background:#102C57;transform:translateY(-1px)}
+
+/* ═══════════ CHESSCONNECT THEME — APPLE PRECISION ═══════════ */
+.xc-body{
+  position:relative;
+  background:linear-gradient(180deg,#FFFFFF 0%,#F5F5F7 100%);
+  border-radius:16px;
+  border:1px solid #D1D5DB;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 2px 4px rgba(0,0,0,0.06),
+    0 8px 24px rgba(0,0,0,0.08),
+    0 24px 48px rgba(16,44,87,0.06);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  width:100%;
+}
+
+/* Top bar — logo + status */
+.xc-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px 12px;
+  border-bottom:1px solid #E5E9F2;
+  background:linear-gradient(180deg,#FFFFFF,#FAFAFA);
+}
+.xc-logo{font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:-0.3px}
+.xc-logo .chess{color:#102C57}
+.xc-logo .connect{color:#4285F4}
+.xc-status{display:flex;align-items:center;gap:6px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280}
+.xc-dot{width:6px;height:6px;border-radius:50%;background:#1E73E8;opacity:0}
+.xc-dot.active{opacity:1;animation:xc-pulse 1.4s ease-in-out infinite}
+@keyframes xc-pulse{0%,100%{box-shadow:0 0 0 0 rgba(30,115,232,0.5)}50%{box-shadow:0 0 0 4px rgba(30,115,232,0)}}
+
+/* Controls row */
+.xc-controls{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:10px 20px;
+  border-bottom:1px solid #E5E9F2;
+}
+.xc-cbtn{
+  padding:6px 18px;border-radius:7px;
+  font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+  border:1px solid #E5E9F2;background:#fff;color:#6B7280;
+  cursor:pointer;transition:all 0.15s;
+}
+.xc-cbtn:hover{border-color:#1E73E8;color:#1E73E8;background:#EEF4FF}
+.xc-cbtn.primary{background:#1E73E8;color:#fff;border-color:#1E73E8}
+.xc-cbtn.primary:hover{background:#102C57;border-color:#102C57}
+
+/* Main clock face — two player panels side by side */
+.xc-face{display:flex;position:relative}
+
+/* Player press button — flush side pads */
+.xc-btn{
+  width:52px;flex-shrink:0;
+  background:linear-gradient(180deg,#F5F5F7,#EBEBED);
+  border:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;
+  transition:all 0.12s;
+  position:relative;overflow:hidden;
+}
+.xc-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.6) 0%,transparent 100%);
+}
+.xc-btn:active{transform:scale(0.97);background:linear-gradient(180deg,#E8E8EA,#DFDFE1)}
+.xc-btn.xc-active{background:linear-gradient(180deg,#EEF4FF,#E0ECFF)}
+.xc-btn-label{font-family:'DM Sans',sans-serif;font-size:0.5rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#9CA3AF;writing-mode:vertical-rl;text-orientation:mixed;position:relative;z-index:1}
+.xc-btn.xc-active .xc-btn-label{color:#1E73E8}
+
+/* Player time panels */
+.xc-panels{flex:1;display:flex}
+.xc-panel{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:28px 16px 24px;
+  position:relative;
+  transition:background 0.2s;
+  cursor:pointer;
+}
+.xc-panel.xc-active{background:#fff}
+.xc-panel.xc-inactive{background:#F8FAFF}
+
+/* Blue accent bar on active panel */
+.xc-accent{
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:#1E73E8;
+  opacity:0;transition:opacity 0.2s;
+  border-radius:0;
+}
+.xc-panel.xc-active .xc-accent{opacity:1}
+
+/* Player label */
+.xc-plbl{
+  font-family:'DM Sans',sans-serif;font-size:0.55rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.14em;
+  color:#9CA3AF;margin-bottom:8px;
+  transition:color 0.2s;
+}
+.xc-panel.xc-active .xc-plbl{color:#1E73E8}
+
+/* Time display */
+.xc-time{
+  font-family:'DM Sans',sans-serif;
+  font-size:3.4rem;font-weight:800;letter-spacing:-2px;
+  line-height:1;
+  color:#D1D5DB;
+  transition:color 0.2s;
+}
+.xc-panel.xc-active .xc-time{color:#102C57}
+.xc-panel.xc-low .xc-time{color:#EF4444!important}
+
+/* Move count */
+.xc-moves{
+  font-family:'DM Sans',sans-serif;font-size:0.58rem;
+  font-weight:600;color:#D1D5DB;
+  margin-top:8px;letter-spacing:0.04em;
+  transition:color 0.2s;
+}
+.xc-panel.xc-active .xc-moves{color:#6B7280}
+
+/* Increment badge */
+.xc-inc{
+  position:absolute;bottom:10px;right:12px;
+  font-size:0.5rem;font-weight:700;color:#9CA3AF;
+  background:#F3F4F6;border-radius:4px;padding:2px 5px;
+  letter-spacing:0.04em;
+}
+.xc-panel.xc-active .xc-inc{background:#EEF4FF;color:#1E73E8}
+
+/* Vertical divider */
+.xc-divider{width:1px;background:#E5E9F2;align-self:stretch;margin:12px 0}
+
+/* Bottom footer */
+.xc-footer{
+  display:flex;align-items:center;justify-content:center;
+  padding:8px 20px;
+  border-top:1px solid #E5E9F2;
+  background:linear-gradient(180deg,#FAFAFA,#F5F5F7);
+}
+.xc-edition{font-family:'DM Sans',sans-serif;font-size:0.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#9CA3AF}
 
 /* ═══════════ SCREEN 3 — ACTIVE CLOCK ═══════════ */
 #screen3{padding:0;background:#0a0a0f;overflow:hidden}
@@ -781,6 +925,58 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
     </div>
+
+    <!-- ChessConnect Theme Card -->
+    <div class="clock-card card-xconnect" id="card-xconnect" onclick="selectClock('xconnect',this)">
+      <div class="card-inner">
+        <div class="card-preview" style="background:#F5F5F7;border:1px solid #D1D5DB;overflow:hidden;position:relative">
+          <!-- Brushed surface -->
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,#fff 0%,#F5F5F7 100%)"></div>
+          <!-- Top bar -->
+          <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:5px 7px 4px;border-bottom:1px solid #E5E9F2;background:linear-gradient(180deg,#fff,#fafafa)">
+            <div style="font-family:'DM Sans',sans-serif;font-size:5px;font-weight:800;letter-spacing:-0.2px"><span style="color:#102C57">Chess</span><span style="color:#4285F4">Connect</span></div>
+            <div style="display:flex;gap:2px">
+              <div style="width:3px;height:3px;border-radius:50%;background:#1E73E8;box-shadow:0 0 3px rgba(30,115,232,0.6)"></div>
+            </div>
+          </div>
+          <!-- Clock face -->
+          <div style="position:relative;z-index:1;display:flex;flex:1">
+            <!-- Left button -->
+            <div style="width:10px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-right:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
+              <div style="width:1px;height:14px;background:#D1D5DB;border-radius:1px"></div>
+            </div>
+            <!-- White panel -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 3px;background:#fff;position:relative">
+              <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#1E73E8;border-radius:0"></div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#1E73E8;margin-bottom:2px">White</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;letter-spacing:-1px;color:#102C57;line-height:1">10:00</div>
+              <div style="font-size:3px;color:#9CA3AF;margin-top:2px;font-weight:600">0 moves</div>
+            </div>
+            <!-- Divider -->
+            <div style="width:1px;background:#E5E9F2;margin:6px 0"></div>
+            <!-- Black panel -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 3px;background:#F8FAFF">
+              <div style="font-family:'DM Sans',sans-serif;font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#9CA3AF;margin-bottom:2px">Black</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;letter-spacing:-1px;color:#D1D5DB;line-height:1">10:00</div>
+              <div style="font-size:3px;color:#D1D5DB;margin-top:2px;font-weight:600">0 moves</div>
+            </div>
+            <!-- Right button -->
+            <div style="width:10px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-left:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
+              <div style="width:1px;height:14px;background:#D1D5DB;border-radius:1px"></div>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div style="position:relative;z-index:1;text-align:center;padding:3px;border-top:1px solid #E5E9F2;background:linear-gradient(180deg,#fafafa,#F5F5F7)">
+            <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#9CA3AF">ChessConnect · Professional Edition</div>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-name" style="color:#102C57">ChessConnect</div>
+          <div class="card-desc">Clean white body · Precision blue accents · Professional Edition</div>
+        </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
   </div>
 
   <button class="next-btn" id="nextBtn" onclick="goToStep2()">Set Time →</button>
@@ -1085,6 +1281,72 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div><!-- /clock-3d -->
   </div>
 
+  <!-- ── CHESSCONNECT CLOCK ── -->
+  <div class="clock-view xconnect-clock hidden" id="xconnect-clock">
+    <div class="clock-3d" style="width:100%;max-width:520px">
+      <div class="xc-body">
+        <!-- Top bar -->
+        <div class="xc-topbar">
+          <div class="xc-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+          <div class="xc-status">
+            <div class="xc-dot active" id="xc-dot"></div>
+            <span id="xc-st">Tap to begin</span>
+          </div>
+        </div>
+        <!-- Controls -->
+        <div class="xc-controls">
+          <button class="xc-cbtn" id="xc-pause" onclick="togglePause()">Pause</button>
+          <button class="xc-cbtn primary" id="xc-restart" onclick="restartClock()">Restart</button>
+        </div>
+        <!-- Clock face -->
+        <div class="xc-face">
+          <!-- Left press button -->
+          <button class="xc-btn" id="xc-p1btn" onclick="pressClock(0)">
+            <div class="xc-btn-label">Press</div>
+          </button>
+          <!-- Panels -->
+          <div class="xc-panels">
+            <div class="xc-panel xc-inactive" id="xc-p1unit" onclick="pressClock(0)">
+              <div class="xc-accent"></div>
+              <div class="xc-plbl" id="xc-dlbl1">White</div>
+              <div class="xc-time" id="xc-t1">10:00</div>
+              <div class="xc-moves" id="xc-m1">0 moves</div>
+              <div class="xc-inc" id="xc-i1"></div>
+            </div>
+            <div class="xc-divider"></div>
+            <div class="xc-panel xc-inactive" id="xc-p2unit" onclick="pressClock(1)">
+              <div class="xc-accent"></div>
+              <div class="xc-plbl" id="xc-dlbl2">Black</div>
+              <div class="xc-time" id="xc-t2">10:00</div>
+              <div class="xc-moves" id="xc-m2">0 moves</div>
+              <div class="xc-inc" id="xc-i2"></div>
+            </div>
+          </div>
+          <!-- Right press button -->
+          <button class="xc-btn" id="xc-p2btn" onclick="pressClock(1)">
+            <div class="xc-btn-label">Press</div>
+          </button>
+        </div>
+        <!-- Footer -->
+        <div class="xc-footer">
+          <div class="xc-edition">ChessConnect Professional · Tournament Edition</div>
+        </div>
+      </div>
+      <div class="clock-surface">
+        <div class="preset-strip" id="xc-strip">
+          <div class="ps-chip" onclick="quickTC(60,1)">1+1</div>
+          <div class="ps-chip" onclick="quickTC(120,1)">2+1</div>
+          <div class="ps-chip" onclick="quickTC(180,2)">3+2</div>
+          <div class="ps-chip" onclick="quickTC(300,3)">5+3</div>
+          <div class="ps-chip sel" onclick="quickTC(600,5)">10+5</div>
+          <div class="ps-chip" onclick="quickTC(900,10)">15+10</div>
+          <div class="ps-chip" onclick="quickTC(3600,30)">60+30</div>
+          <div class="ps-chip" onclick="quickTC(5400,30)">90+30</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /screen3 -->
 
 <!-- FULLSCREEN TOAST -->
@@ -1119,12 +1381,13 @@ let lastPress = 0; // debounce tracker
 let whiteIdx = -1; // which player index is White (set on first press)
 
 /* Prefix map */
-const PFX = {heritage:'hc', pro:'pc', chronos:'cc'};
+const PFX = {heritage:'hc', pro:'pc', chronos:'cc', xconnect:'xc'};
 /* Button IDs per theme */
 const BTNS = {
   heritage: ['hk1','hk2'],
   pro:      ['pl1','pl2'],
-  chronos:  ['cl1','cl2']
+  chronos:  ['cl1','cl2'],
+  xconnect: ['xc-p1btn','xc-p2btn']
 };
 
 /* ════════════════════════════════
@@ -1152,7 +1415,8 @@ function toggleRotate() {
 const LBLIDS = {
   heritage: { b:[], d:['hc-dlbl1','hc-dlbl2'] },
   pro:      { b:[], d:['pc-dlbl1','pc-dlbl2'] },
-  chronos:  { b:[], d:['cc-dlbl1','cc-dlbl2'] }
+  chronos:  { b:[], d:['cc-dlbl1','cc-dlbl2'] },
+  xconnect: { b:[], d:['xc-dlbl1','xc-dlbl2'] }
 };
 function setPlayerLabels(whiteIdx) {
   if(!theme||!LBLIDS[theme]) return;
@@ -1198,7 +1462,7 @@ function launchClock() {
 
 function initClockView() {
   // Show correct clock, hide others
-  ['heritage','pro','chronos'].forEach(t=>{
+  ['heritage','pro','chronos','xconnect'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
   document.getElementById(theme+'-clock').classList.add('show');
@@ -1226,7 +1490,7 @@ function restartClock() {
   document.getElementById('goBanner').classList.remove('show');
   stripShow(true);
   setPauseIcon(false);
-  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+  ['heritage','pro','chronos','xconnect'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
 }
 
 function newGame() {
@@ -1237,7 +1501,7 @@ function newGame() {
   isLandscape=false;
   document.getElementById('screen3').classList.remove('landscape');
   document.getElementById('rotateBtn').classList.remove('rotate-on');
-  ['heritage','pro','chronos'].forEach(t=>{
+  ['heritage','pro','chronos','xconnect'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
   show('screen1');
@@ -1264,7 +1528,7 @@ function quickTC(secs, i) {
   document.getElementById('goBanner').classList.remove('show');
   stripShow(true);
   setPauseIcon(false);
-  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+  ['heritage','pro','chronos','xconnect'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
 }
 
 /* ════════════════════════════════
@@ -1299,13 +1563,19 @@ function resetBtnUI() {
   const p=PFX[theme]; if(!p) return;
   const u1=document.getElementById(p+'-p1unit');
   const u2=document.getElementById(p+'-p2unit');
-  if(u1) u1.className=u1.className.replace(/\bactive\b|\bflagged\b|\bwarning\b/g,'').trim();
-  if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b/g,'').trim();
+  if(u1) u1.className=u1.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
+  if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
+  if(theme==='xconnect'){
+    if(u1) u1.classList.add('xc-inactive');
+    if(u2) u2.classList.add('xc-inactive');
+    const b1=document.getElementById('xc-p1btn'); if(b1) b1.classList.remove('xc-active');
+    const b2=document.getElementById('xc-p2btn'); if(b2) b2.classList.remove('xc-active');
+    const dot=document.getElementById('xc-dot'); if(dot) dot.classList.remove('active');
+  }
   setBtnState(1,'inactive'); setBtnState(2,'inactive');
   setClockStatus('Tap to start');
   whiteIdx = -1;
   resetPlayerLabels();
-  // Reset LEDs
   if(theme==='pro'){setLED(1,false);setLED(2,false);}
 }
 
@@ -1313,9 +1583,9 @@ function setBtnState(n, state) {
   if(!theme) return;
   const id=BTNS[theme][n-1];
   const el=document.getElementById(id); if(!el) return;
-  // Remove all state classes
-  el.className=el.className.replace(/\bactive-k\b|\binactive-k\b|\bactive-l\b|\binactive-l\b/g,'').trim();
+  el.className=el.className.replace(/\bactive-k\b|\binactive-k\b|\bactive-l\b|\binactive-l\b|\bxc-active\b/g,'').trim();
   if(theme==='heritage') el.classList.add(state==='active'?'active-k':'inactive-k');
+  else if(theme==='xconnect') { if(state==='active') el.classList.add('xc-active'); }
   else el.classList.add(state==='active'?'active-l':'inactive-l');
 }
 
@@ -1333,20 +1603,33 @@ function updateActiveUI() {
   const p=PFX[theme]; if(!p) return;
   const u1=document.getElementById(p+'-p1unit');
   const u2=document.getElementById(p+'-p2unit');
-  u1.classList.remove('active'); u2.classList.remove('active');
-  // active = index whose clock is ticking = who needs to move
   const isWhiteToMove = (active === whiteIdx);
-  if(active===0){
-    u1.classList.add('active');
-    setBtnState(1,'active'); setBtnState(2,'inactive');
-    if(theme==='pro'){setLED(1,true);setLED(2,false);}
+  if(theme==='xconnect'){
+    u1.classList.remove('xc-active','xc-inactive');
+    u2.classList.remove('xc-active','xc-inactive');
+    const dot=document.getElementById('xc-dot');
+    if(active===0){
+      u1.classList.add('xc-active'); u2.classList.add('xc-inactive');
+      setBtnState(1,'active'); setBtnState(2,'inactive');
+      if(dot){dot.style.left='auto';dot.classList.add('active');}
+    } else {
+      u2.classList.add('xc-active'); u1.classList.add('xc-inactive');
+      setBtnState(2,'active'); setBtnState(1,'inactive');
+      if(dot) dot.classList.add('active');
+    }
   } else {
-    u2.classList.add('active');
-    setBtnState(2,'active'); setBtnState(1,'inactive');
-    if(theme==='pro'){setLED(2,true);setLED(1,false);}
+    u1.classList.remove('active'); u2.classList.remove('active');
+    if(active===0){
+      u1.classList.add('active');
+      setBtnState(1,'active'); setBtnState(2,'inactive');
+      if(theme==='pro'){setLED(1,true);setLED(2,false);}
+    } else {
+      u2.classList.add('active');
+      setBtnState(2,'active'); setBtnState(1,'inactive');
+      if(theme==='pro'){setLED(2,true);setLED(1,false);}
+    }
   }
   setClockStatus(isWhiteToMove ? '♔ White to move' : '♚ Black to move');
-  // Re-apply warnings
   for(let i=0;i<2;i++){
     if(warnDone[i]&&i!==active) document.getElementById(p+'-p'+(i+1)+'unit').classList.add('warning');
   }
@@ -1361,6 +1644,11 @@ function stripShow(show) {
 /* ════════════════════════════════
    PRESS PLAYER BUTTON
 ════════════════════════════════ */
+function pressClock(idx) {
+  // xconnect panels call this directly with 0-based index
+  pressBtn(idx+1, {clientX:0,clientY:0}, document.getElementById('xc-p'+(idx+1)+'btn'));
+}
+
 function pressBtn(player, e, el) {
   initAudio();
   if(over) return;
@@ -1418,7 +1706,8 @@ function tick() {
   if(times[active]<=30&&!warnDone[active]){
     warnDone[active]=true;
     playWarning();
-    document.getElementById(PFX[theme]+'-p'+(active+1)+'unit').classList.add('warning');
+    const wUnit=document.getElementById(PFX[theme]+'-p'+(active+1)+'unit');
+    if(wUnit) wUnit.classList.add(theme==='xconnect'?'xc-low':'warning');
   }
 
   // Tick sound — once per second when under 10s
