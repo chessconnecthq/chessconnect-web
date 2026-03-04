@@ -986,6 +986,34 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 :fullscreen #rotateBtn{display:none}
 :-webkit-full-screen #rotateBtn{display:none}
 .s3-btn.fs-active{border-color:#C4873A;color:#C4873A}
+
+/* ── ChessConnect fullscreen fix — fill edge to edge, no floating card ── */
+:fullscreen #xconnect-clock,
+:fullscreen #xconnect-clock .clock-3d,
+:-webkit-full-screen #xconnect-clock,
+:-webkit-full-screen #xconnect-clock .clock-3d{
+  width:100%!important;max-width:100%!important;
+  height:100%!important;filter:none!important;transform:none!important;
+}
+:fullscreen #xconnect-clock .xc-body,
+:-webkit-full-screen #xconnect-clock .xc-body{
+  border-radius:0!important;border:none!important;
+  box-shadow:none!important;height:100%!important;
+  min-height:100svh!important;background:#fff!important;
+  display:flex!important;flex-direction:column!important;
+}
+:fullscreen #xconnect-clock .xc-face,
+:-webkit-full-screen #xconnect-clock .xc-face{flex:1!important}
+:fullscreen #xconnect-clock .xc-panels,
+:-webkit-full-screen #xconnect-clock .xc-panels{flex:1!important}
+:fullscreen #xconnect-clock .xc-panel,
+:-webkit-full-screen #xconnect-clock .xc-panel{
+  justify-content:center!important;padding:20px 10px!important;
+}
+:fullscreen #xconnect-clock .xc-btn,
+:-webkit-full-screen #xconnect-clock .xc-btn{
+  min-width:44px!important;
+}
 </style>
 </head>
 <body>
