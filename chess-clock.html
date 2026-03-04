@@ -15,7 +15,7 @@
   %22orientation%22:%22portrait%22,
   %22background_color%22:%22%230a0a0f%22,
   %22theme_color%22:%221E73E8%22,
-  %22icons%22:[{%22src%22:%22https://chessconnecthq.github.io/chessconnect-web/favicon.ico%22,%22sizes%22:%22192x192%22,%22type%22:%22image/x-icon%22}]
+  %22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%231E73E8'/%3E%3Ctext x='96' y='118' font-family='Arial' font-weight='bold' font-size='80' text-anchor='middle' fill='white'%3EC%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]
 }"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -32,6 +32,23 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* ═══════════ SCREENS ═══════════ */
 .screen{display:flex;flex-direction:column;min-height:100dvh;transition:opacity 0.35s,transform 0.35s}
 .screen.hidden{display:none!important}
+
+/* ═══════════ REDUCED MOTION — older/low-end devices ═══════════ */
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+  .hc-knob.active-k,.pc-lever.active-l,.cc-lever-active{animation:none!important}
+  @keyframes knobGlow{0%,100%{box-shadow:0 7px 0 #3C2408,0 10px 22px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,230,100,0.5),0 0 18px rgba(196,135,58,0.28)}}
+  @keyframes leverPulse{0%,100%{box-shadow:0 5px 0 #060606,0 7px 15px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,255,255,0.1)}}
+  @keyframes nebulaB{from{opacity:0.8}to{opacity:0.8}}
+  .clock-3d{filter:drop-shadow(0 8px 16px rgba(0,0,0,0.5))}
+}
+/* Backdrop-filter fallback for browsers that don't support it */
+@supports not (backdrop-filter:blur(1px)){
+  .s3-bar{background:rgba(5,5,10,0.97)!important}
+  .rotate-toast-inner{background:rgba(20,20,30,0.99)!important}
+  .pause-overlay{background:rgba(0,0,0,0.92)!important}
+  .cc-body{background:rgba(7,5,28,0.99)!important}
+}
 
 /* ═══════════ SCREENS 1 & 2 — MOBILE-FIRST ═══════════ */
 #screen1,#screen2{
@@ -194,11 +211,16 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   .next-btn{max-width:640px}
 }
 
-/* ── In-clock fullscreen icon buttons ── */
-.hc-fs-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
-.pc-fs-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
-.cc-fs-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
-.xc-fs-btn{padding:6px 14px!important;display:inline-flex;align-items:center;justify-content:center}
+/* ── In-clock fullscreen + sound icon buttons ── */
+.hc-fs-btn,.hc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.pc-fs-btn,.pc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.cc-fs-btn,.cc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.xc-fs-btn,.xc-snd-btn{padding:6px 14px!important;display:inline-flex;align-items:center;justify-content:center}
+/* Muted state — red tint on sound button */
+.hc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
+.pc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
+.cc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
+.xc-snd-btn.muted{border-color:rgba(255,68,68,0.6)!important;color:#FF4444!important}
 
 /* ── HERITAGE MINI CLOCK ── */
 .prev-heritage{background:repeating-linear-gradient(173deg,transparent 0,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px),linear-gradient(158deg,#A0522D 0%,#6B3010 40%,#3C1A08 80%,#2A1206 100%);display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;border:1px solid rgba(160,90,35,0.25)}
@@ -1232,16 +1254,13 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="s3-bar">
     <div class="s3-brand"><span class="chess">Chess</span><span class="connect">Connect</span></div>
     <div class="s3-actions">
-      <button class="s3-btn" onclick="toggleSound()" id="soundBtn" title="Sound">
-        <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
-      </button>
-      <button class="s3-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="Fullscreen">
+      <button class="s3-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
         <svg id="fsIcon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
       </button>
-      <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape">
+      <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>
       </button>
-      <button class="s3-btn" onclick="newGame()" title="Back to clock selection">
+      <button class="s3-btn" onclick="newGame()" title="Back to clock selection" aria-label="Back to clock selection">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
     </div>
@@ -1256,21 +1275,24 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="pause-overlay" id="po-heritage"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Knobs + controls -->
       <div class="hc-top">
         <div class="hc-knob-col">
-          <div class="hc-knob inactive-k" id="hk1" onpointerdown="pressBtn(1,event,this)"></div>
+          <div class="hc-knob inactive-k" id="hk1" onpointerdown="pressBtn(1,event,this)" role="button" aria-label="Player 1 clock button"></div>
         </div>
         <div class="hc-center">
           <div class="hc-brand">ChessConnect</div>
           <div class="hc-ctrls">
-            <button class="hc-cbtn" id="hc-pause" onclick="togglePause()">PAUSE</button>
-            <button class="hc-cbtn" onclick="restartClock()">RESTART</button>
-            <button class="hc-cbtn hc-fs-btn" id="hc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+            <button class="hc-cbtn" id="hc-pause" onclick="togglePause()" aria-label="Pause game">PAUSE</button>
+            <button class="hc-cbtn" onclick="restartClock()" aria-label="Restart game">RESTART</button>
+            <button class="hc-cbtn hc-snd-btn" id="hc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+              <svg id="hc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            </button>
+            <button class="hc-cbtn hc-fs-btn" id="hc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
               <svg id="hc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
             </button>
           </div>
           <div class="hc-cstatus" id="hc-st">Tap a knob to start</div>
         </div>
         <div class="hc-knob-col">
-          <div class="hc-knob inactive-k" id="hk2" onpointerdown="pressBtn(2,event,this)"></div>
+          <div class="hc-knob inactive-k" id="hk2" onpointerdown="pressBtn(2,event,this)" role="button" aria-label="Player 2 clock button"></div>
         </div>
       </div>
       <!-- Displays — BOTH always visible -->
@@ -1278,7 +1300,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="hc-dunit" id="hc-p1unit">
           <div class="hc-plbl" id="hc-dlbl1">Player 1</div>
           <div class="hc-disp">
-            <div class="hc-time" id="hc-t1">10:00</div>
+            <div class="hc-time" id="hc-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
             <div class="hc-moves" id="hc-m1">0 moves</div>
             <div class="hc-inc" id="hc-i1"></div>
           </div>
@@ -1287,7 +1309,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="hc-dunit" id="hc-p2unit">
           <div class="hc-plbl" id="hc-dlbl2">Player 2</div>
           <div class="hc-disp">
-            <div class="hc-time" id="hc-t2">10:00</div>
+            <div class="hc-time" id="hc-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
             <div class="hc-moves" id="hc-m2">0 moves</div>
             <div class="hc-inc" id="hc-i2"></div>
           </div>
@@ -1322,14 +1344,17 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="pc-top">
         <div class="pc-lcol">
           <div class="pc-led-row"><div class="pc-led g" id="pc-led1"></div></div>
-          <button class="pc-lever inactive-l" id="pl1" onpointerdown="pressBtn(1,event,this)"></button>
+          <button class="pc-lever inactive-l" id="pl1" onpointerdown="pressBtn(1,event,this)" aria-label="Player 1 clock button"></button>
         </div>
         <div class="pc-center">
           <div class="pc-brand-t">ChessConnect</div>
           <div class="pc-ctrls">
-            <button class="pc-cbtn" id="pc-pause" onclick="togglePause()">PAUSE</button>
-            <button class="pc-cbtn" onclick="restartClock()">RESTART</button>
-            <button class="pc-cbtn pc-fs-btn" id="pc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+            <button class="pc-cbtn" id="pc-pause" onclick="togglePause()" aria-label="Pause game">PAUSE</button>
+            <button class="pc-cbtn" onclick="restartClock()" aria-label="Restart game">RESTART</button>
+            <button class="pc-cbtn pc-snd-btn" id="pc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+              <svg id="pc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            </button>
+            <button class="pc-cbtn pc-fs-btn" id="pc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
               <svg id="pc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
             </button>
           </div>
@@ -1337,7 +1362,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         </div>
         <div class="pc-lcol">
           <div class="pc-led-row"><div class="pc-led r" id="pc-led2"></div></div>
-          <button class="pc-lever inactive-l" id="pl2" onpointerdown="pressBtn(2,event,this)"></button>
+          <button class="pc-lever inactive-l" id="pl2" onpointerdown="pressBtn(2,event,this)" aria-label="Player 2 clock button"></button>
         </div>
       </div>
       <!-- Displays -->
@@ -1345,7 +1370,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="pc-dunit" id="pc-p1unit">
           <div class="pc-plbl" id="pc-dlbl1">Player 1</div>
           <div class="pc-disp">
-            <div class="pc-time" id="pc-t1">10:00</div>
+            <div class="pc-time" id="pc-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
             <div class="pc-moves" id="pc-m1">0 moves</div>
             <div class="pc-inc" id="pc-i1"></div>
           </div>
@@ -1354,7 +1379,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="pc-dunit" id="pc-p2unit">
           <div class="pc-plbl" id="pc-dlbl2">Player 2</div>
           <div class="pc-disp">
-            <div class="pc-time" id="pc-t2">10:00</div>
+            <div class="pc-time" id="pc-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
             <div class="pc-moves" id="pc-m2">0 moves</div>
             <div class="pc-inc" id="pc-i2"></div>
           </div>
@@ -1410,21 +1435,24 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <!-- Levers -->
       <div class="cc-top">
         <div class="cc-lcol">
-          <button class="cc-lever cc-lp1 inactive-l" id="cl1" onpointerdown="pressBtn(1,event,this)"></button>
+          <button class="cc-lever cc-lp1 inactive-l" id="cl1" onpointerdown="pressBtn(1,event,this)" aria-label="Player 1 clock button"></button>
         </div>
         <div class="cc-center">
           <div class="cc-brand"><span class="cc-b1">Chess</span><span class="cc-b2">Connect</span></div>
           <div class="cc-ctrls">
-            <button class="cc-cbtn" id="cc-pause" onclick="togglePause()">PAUSE</button>
-            <button class="cc-cbtn" onclick="restartClock()">RESTART</button>
-            <button class="cc-cbtn cc-fs-btn" id="cc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+            <button class="cc-cbtn" id="cc-pause" onclick="togglePause()" aria-label="Pause game">PAUSE</button>
+            <button class="cc-cbtn" onclick="restartClock()" aria-label="Restart game">RESTART</button>
+            <button class="cc-cbtn cc-snd-btn" id="cc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+              <svg id="cc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            </button>
+            <button class="cc-cbtn cc-fs-btn" id="cc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
               <svg id="cc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
             </button>
           </div>
           <div class="cc-cstatus" id="cc-st">Tap lever to start</div>
         </div>
         <div class="cc-lcol">
-          <button class="cc-lever cc-lp2 inactive-l" id="cl2" onpointerdown="pressBtn(2,event,this)"></button>
+          <button class="cc-lever cc-lp2 inactive-l" id="cl2" onpointerdown="pressBtn(2,event,this)" aria-label="Player 2 clock button"></button>
         </div>
       </div>
       <!-- Displays -->
@@ -1432,7 +1460,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="cc-dunit" id="cc-p1unit">
           <div class="cc-plbl-1" id="cc-dlbl1">Player 1</div>
           <div class="cc-disp cc-disp-1">
-            <div class="cc-t1" id="cc-t1">10:00</div>
+            <div class="cc-t1" id="cc-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
             <div class="cc-moves" id="cc-m1">0 moves</div>
             <div class="cc-inc" id="cc-i1"></div>
           </div>
@@ -1441,7 +1469,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="cc-dunit" id="cc-p2unit">
           <div class="cc-plbl-2" id="cc-dlbl2">Player 2</div>
           <div class="cc-disp cc-disp-2">
-            <div class="cc-t2" id="cc-t2">10:00</div>
+            <div class="cc-t2" id="cc-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
             <div class="cc-moves" id="cc-m2">0 moves</div>
             <div class="cc-inc" id="cc-i2"></div>
           </div>
@@ -1479,16 +1507,19 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         </div>
         <!-- Controls -->
         <div class="xc-controls">
-          <button class="xc-cbtn" id="xc-pause" onclick="togglePause()">Pause</button>
-          <button class="xc-cbtn primary" id="xc-restart" onclick="restartClock()">Restart</button>
-          <button class="xc-cbtn xc-fs-btn" id="xc-fs" onclick="toggleFullscreen()" title="Fullscreen">
+          <button class="xc-cbtn" id="xc-pause" onclick="togglePause()" aria-label="Pause game">Pause</button>
+          <button class="xc-cbtn primary" id="xc-restart" onclick="restartClock()" aria-label="Restart game">Restart</button>
+          <button class="xc-cbtn xc-snd-btn" id="xc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+            <svg id="xc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+          </button>
+          <button class="xc-cbtn xc-fs-btn" id="xc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
             <svg id="xc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
           </button>
         </div>
         <!-- Clock face -->
         <div class="xc-face">
           <!-- Left press button -->
-          <button class="xc-btn" id="xc-p1btn" onclick="pressClock(0)">
+          <button class="xc-btn" id="xc-p1btn" onclick="pressClock(0)" aria-label="Player 1 clock button">
             <div class="xc-btn-label">Press</div>
           </button>
           <!-- Panels -->
@@ -1496,7 +1527,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
             <div class="xc-panel xc-inactive" id="xc-p1unit" onclick="pressClock(0)">
               <div class="xc-accent"></div>
               <div class="xc-plbl" id="xc-dlbl1">White</div>
-              <div class="xc-time" id="xc-t1">10:00</div>
+              <div class="xc-time" id="xc-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
               <div class="xc-moves" id="xc-m1">0 moves</div>
               <div class="xc-inc" id="xc-i1"></div>
             </div>
@@ -1504,13 +1535,13 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
             <div class="xc-panel xc-inactive" id="xc-p2unit" onclick="pressClock(1)">
               <div class="xc-accent"></div>
               <div class="xc-plbl" id="xc-dlbl2">Black</div>
-              <div class="xc-time" id="xc-t2">10:00</div>
+              <div class="xc-time" id="xc-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
               <div class="xc-moves" id="xc-m2">0 moves</div>
               <div class="xc-inc" id="xc-i2"></div>
             </div>
           </div>
           <!-- Right press button -->
-          <button class="xc-btn" id="xc-p2btn" onclick="pressClock(1)">
+          <button class="xc-btn" id="xc-p2btn" onclick="pressClock(1)" aria-label="Player 2 clock button">
             <div class="xc-btn-label">Press</div>
           </button>
         </div>
@@ -2291,16 +2322,20 @@ function playFlag() {
   o.start();o.stop(ctx.currentTime+0.7);
 }
 function toggleSound() {
-  soundOn=!soundOn;
-  const icon=document.getElementById('soundIcon');
-  const btn=document.getElementById('soundBtn');
-  if(soundOn){
-    icon.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>';
-    btn.style.color='';
-  } else {
-    icon.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
-    btn.style.color='#FF4444';
-  }
+  soundOn = !soundOn;
+  const onPath  = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>';
+  const offPath = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+  const newPath = soundOn ? onPath : offPath;
+  // Update all 4 in-clock sound icons
+  ['hc-snd-icon','pc-snd-icon','cc-snd-icon','xc-snd-icon'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = newPath;
+  });
+  // Toggle muted class on all 4 sound buttons
+  ['hc-snd','pc-snd','cc-snd','xc-snd'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('muted', !soundOn);
+  });
 }
 
 
