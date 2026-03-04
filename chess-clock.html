@@ -29,8 +29,8 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .s1-left .s-title{font-size:1.8rem;text-align:left;margin-bottom:0.4rem;line-height:1.2}
 .s1-left .s-sub{text-align:left;margin-bottom:1.5rem}
 .s1-tagline{font-size:0.85rem;color:#6B7280;line-height:1.7;border-top:1px solid #E5E9F2;padding-top:1.5rem;margin-top:auto}
-.s1-right .clock-cards{width:100%;max-width:460px}
-.s1-right .next-btn{max-width:460px;width:100%}
+.s1-right .clock-cards{width:100%;max-width:660px}
+.s1-right .next-btn{max-width:660px;width:100%}
 .s1-right .tc-wrap{width:100%;max-width:460px}
 .s1-right .custom-row{width:100%;max-width:460px}
 .s1-right .s2-btns{width:100%;max-width:460px}
@@ -56,15 +56,15 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .s-sub{font-size:0.65rem;color:#6B7280;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem;text-align:center}
 
 /* Clock cards */
-.clock-cards{display:flex;flex-direction:column;gap:0.75rem;width:100%;max-width:420px}
+.clock-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;width:100%;max-width:660px}
 .clock-card{border-radius:14px;border:2px solid #E5E9F2;background:#fff;cursor:pointer;overflow:hidden;transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1);box-shadow:0 2px 8px rgba(16,44,87,0.06)}
 .clock-card:hover{box-shadow:0 4px 16px rgba(16,44,87,0.1);transform:translateY(-1px)}
 .clock-card:active{transform:scale(0.98)}
 .clock-card.selected{border-color:#1E73E8!important;box-shadow:0 0 0 1px #1E73E8,0 8px 24px rgba(30,115,232,0.15)}
-.card-inner{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1rem}
-.card-preview{flex-shrink:0;width:110px;height:77px;border-radius:8px;overflow:hidden;position:relative;box-shadow:0 2px 12px rgba(0,0,0,0.25)}
-.preview-scaler{width:428px;transform:scale(0.257);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
-.preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:300px}
+.card-inner{display:flex;flex-direction:row;align-items:stretch;gap:0;padding:0;position:relative;overflow:hidden}
+.card-preview{flex-shrink:0;width:130px;height:100%;min-height:110px;border-radius:8px 0 0 8px;overflow:hidden;position:relative;box-shadow:none}
+.preview-scaler{width:428px;transform:scale(0.304);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
+.preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:362px}
 
 /* ── HERITAGE MINI CLOCK ── */
 .prev-heritage{background:repeating-linear-gradient(173deg,transparent 0,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px),linear-gradient(158deg,#A0522D 0%,#6B3010 40%,#3C1A08 80%,#2A1206 100%);display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;border:1px solid rgba(160,90,35,0.25)}
@@ -120,10 +120,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc2-lbl1{font-size:0.2rem;color:rgba(0,200,255,0.4);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;line-height:1}
 .pc2-lbl2{font-size:0.2rem;color:rgba(200,0,255,0.4);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;line-height:1}
 .pc2-bot{font-family:'Orbitron',sans-serif;font-size:0.22rem;color:rgba(80,80,180,0.45);text-align:center;line-height:1;position:relative;z-index:1}
-.card-info{flex:1}
-.card-name{font-size:0.95rem;font-weight:800;color:#102C57;margin-bottom:2px}
-.card-desc{font-size:0.64rem;color:#6B7280;line-height:1.4}
-.card-check{width:22px;height:22px;border-radius:50%;border:2px solid #E5E9F2;background:#F8FAFF;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.25s}
+.card-info{flex:1;padding:0.75rem 0.8rem;display:flex;flex-direction:column;justify-content:center}
+.card-name{font-size:0.9rem;font-weight:800;color:#102C57;margin-bottom:3px}
+.card-desc{font-size:0.62rem;color:#6B7280;line-height:1.4}
+.card-check{width:20px;height:20px;border-radius:50%;border:2px solid #E5E9F2;background:#F8FAFF;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.25s;position:absolute;top:0.6rem;right:0.6rem;z-index:10}
 .clock-card.selected .card-check{background:#1E73E8;border-color:#1E73E8}
 .card-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
 .clock-card.selected .card-check svg{opacity:1}
@@ -799,7 +799,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="s-title">Choose Your Clock</div>
     <div class="s-sub">Select a style to continue</div>
-    <div class="s1-tagline">Three premium themes.<br>One perfect game.</div>
+    <div class="s1-tagline">Four premium themes.<br>One perfect game.</div>
   </div>
 
   <!-- RIGHT PANEL -->
@@ -807,7 +807,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#2A1206"><div class="preview-scaler"><div class="hc-body" style="border-radius:18px 18px 10px 10px;">
+        <div class="card-preview" style="background:#2A1206;border-radius:8px 0 0 8px"><div class="preview-scaler"><div class="hc-body" style="border-radius:18px 18px 10px 10px;">
               <div class="hc-corners"></div>
               <div class="hc-top">
                 <div class="hc-knob-col"><div class="hc-knob" style="cursor:default"></div></div>
@@ -839,7 +839,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-pro" id="card-pro" onclick="selectClock('pro',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#0B0B0B"><div class="preview-scaler"><div class="pc-body" style="border-radius:14px 14px 10px 10px;">
+        <div class="card-preview" style="background:#0B0B0B;border-radius:8px 0 0 8px"><div class="preview-scaler"><div class="pc-body" style="border-radius:14px 14px 10px 10px;">
               <div class="pc-top">
                 <div class="pc-lever-col">
                   <div class="pc-led-row"><div class="pc-led g"></div></div>
@@ -876,18 +876,18 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-chronos" id="card-chronos" onclick="selectClock('chronos',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#04020E;border:1px solid rgba(0,200,255,0.3);position:relative;overflow:hidden">
+        <div class="card-preview" style="background:#04020E;border:1px solid rgba(0,200,255,0.3);position:relative;overflow:hidden;display:flex;flex-direction:column;">
           <!-- circuit traces -->
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.25" viewBox="0 0 110 77" fill="none">
-            <path d="M0 20 L12 20 L12 10 L30 10" stroke="#00EFFF" stroke-width="0.6"/>
-            <path d="M110 20 L98 20 L98 10 L80 10" stroke="#EE00FF" stroke-width="0.6"/>
-            <path d="M0 57 L12 57 L12 67 L30 67" stroke="#00EFFF" stroke-width="0.6"/>
-            <path d="M110 57 L98 57 L98 67 L80 67" stroke="#EE00FF" stroke-width="0.6"/>
-            <circle cx="12" cy="20" r="1.5" fill="#00EFFF"/>
-            <circle cx="98" cy="20" r="1.5" fill="#EE00FF"/>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.25" viewBox="0 0 300 160" fill="none">
+            <path d="M0 30 L20 30 L20 15 L60 15" stroke="#00EFFF" stroke-width="1.2"/>
+            <path d="M300 30 L280 30 L280 15 L240 15" stroke="#EE00FF" stroke-width="1.2"/>
+            <path d="M0 130 L20 130 L20 145 L60 145" stroke="#00EFFF" stroke-width="1.2"/>
+            <path d="M300 130 L280 130 L280 145 L240 145" stroke="#EE00FF" stroke-width="1.2"/>
+            <circle cx="20" cy="30" r="3" fill="#00EFFF"/>
+            <circle cx="280" cy="30" r="3" fill="#EE00FF"/>
           </svg>
           <!-- top levers -->
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 7px 2px;position:relative;z-index:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 7px 3px;position:relative;z-index:1">
             <div style="display:flex;flex-direction:column;gap:2px;align-items:center">
               <div style="width:18px;height:5px;border-radius:2px;background:linear-gradient(180deg,rgba(0,200,255,0.5),rgba(0,80,160,0.6));box-shadow:0 0 6px rgba(0,200,255,0.6);border:0.5px solid rgba(0,200,255,0.5)"></div>
             </div>
@@ -903,7 +903,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
             </div>
           </div>
           <!-- dual displays -->
-          <div style="display:flex;gap:3px;padding:0 6px;position:relative;z-index:1">
+          <div style="display:flex;gap:3px;padding:0 5px;flex:1;position:relative;z-index:1;align-items:center">
             <div style="flex:1;background:rgba(0,4,18,0.95);border:1px solid rgba(0,200,255,0.4);border-radius:3px;padding:3px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 8px rgba(0,200,255,0.15)">
               <div style="font-size:3.5px;color:rgba(0,200,255,0.5);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:0.1em">White</div>
               <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#00EFFF;text-shadow:0 0 8px rgba(0,239,255,0.9),0 0 16px rgba(0,239,255,0.5);line-height:1.1">10:00</div>
@@ -916,7 +916,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
             </div>
           </div>
           <!-- bottom label -->
-          <div style="text-align:center;padding:3px;font-family:'Orbitron',sans-serif;font-size:3.5px;color:rgba(80,80,200,0.6);letter-spacing:0.08em;position:relative;z-index:1">CHRONOS 2050 EDITION · TOURNAMENT</div>
+          <div style="text-align:center;padding:3px;font-family:'Orbitron',sans-serif;font-size:3.5px;color:rgba(80,80,200,0.6);letter-spacing:0.08em;position:relative;z-index:1;border-top:1px solid rgba(0,200,255,0.15)">CHRONOS 2050 EDITION · TOURNAMENT</div>
         </div>
         <div class="card-info">
           <div class="card-name">Chronos 2050</div>
@@ -929,32 +929,32 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     <!-- ChessConnect Theme Card -->
     <div class="clock-card card-xconnect" id="card-xconnect" onclick="selectClock('xconnect',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#F5F5F7;border:1px solid #D1D5DB;overflow:hidden;position:relative">
-          <!-- Brushed surface -->
+        <div class="card-preview" style="background:#F5F5F7;border:1px solid #D1D5DB;overflow:hidden;position:relative;display:flex;flex-direction:column;">
           <div style="position:absolute;inset:0;background:linear-gradient(180deg,#fff 0%,#F5F5F7 100%)"></div>
           <!-- Top bar -->
           <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:5px 7px 4px;border-bottom:1px solid #E5E9F2;background:linear-gradient(180deg,#fff,#fafafa)">
             <div style="font-family:'DM Sans',sans-serif;font-size:5px;font-weight:800;letter-spacing:-0.2px"><span style="color:#102C57">Chess</span><span style="color:#4285F4">Connect</span></div>
-            <div style="display:flex;gap:2px">
-              <div style="width:3px;height:3px;border-radius:50%;background:#1E73E8;box-shadow:0 0 3px rgba(30,115,232,0.6)"></div>
+            <div style="display:flex;align-items:center;gap:5px">
+              <div style="width:6px;height:6px;border-radius:50%;background:#1E73E8;box-shadow:0 0 6px rgba(30,115,232,0.7)"></div>
+              <span style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9CA3AF">Live</span>
             </div>
           </div>
           <!-- Clock face -->
-          <div style="position:relative;z-index:1;display:flex;flex:1">
+          <div style="position:relative;z-index:1;display:flex;flex:1;min-height:0">
             <!-- Left button -->
             <div style="width:10px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-right:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
               <div style="width:1px;height:14px;background:#D1D5DB;border-radius:1px"></div>
             </div>
-            <!-- White panel -->
+            <!-- White panel (active) -->
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 3px;background:#fff;position:relative">
-              <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#1E73E8;border-radius:0"></div>
+              <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#1E73E8"></div>
               <div style="font-family:'DM Sans',sans-serif;font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#1E73E8;margin-bottom:2px">White</div>
               <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;letter-spacing:-1px;color:#102C57;line-height:1">10:00</div>
               <div style="font-size:3px;color:#9CA3AF;margin-top:2px;font-weight:600">0 moves</div>
             </div>
             <!-- Divider -->
             <div style="width:1px;background:#E5E9F2;margin:6px 0"></div>
-            <!-- Black panel -->
+            <!-- Black panel (inactive) -->
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 3px;background:#F8FAFF">
               <div style="font-family:'DM Sans',sans-serif;font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#9CA3AF;margin-bottom:2px">Black</div>
               <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;letter-spacing:-1px;color:#D1D5DB;line-height:1">10:00</div>
