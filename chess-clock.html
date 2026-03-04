@@ -35,7 +35,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-card:active{transform:scale(0.98)}
 .clock-card.selected{border-color:var(--ca)!important;box-shadow:0 0 0 1px var(--ca),0 16px 40px rgba(0,0,0,0.5)}
 .card-inner{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1rem}
-.card-preview{flex-shrink:0;width:82px;height:54px;border-radius:8px;position:relative;overflow:hidden}
+.card-preview{flex-shrink:0;width:96px;height:68px;border-radius:8px;position:relative;overflow:hidden}
 .card-info{flex:1}
 .card-name{font-size:0.95rem;font-weight:800;margin-bottom:2px}
 .card-desc{font-size:0.64rem;color:#555;line-height:1.4}
@@ -52,19 +52,87 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .card-chronos{--ca:#00EFFF;background:linear-gradient(135deg,#04040f,#06061a)}
 .card-chronos .card-name{color:#00EFFF}
 
-/* card previews */
-.prev-heritage{background:linear-gradient(150deg,#9A4A25,#643010,#3A1608);display:flex;align-items:center;justify-content:center}
-.prev-heritage::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(174deg,transparent 0,transparent 8px,rgba(0,0,0,0.05) 8px,rgba(0,0,0,0.05) 9px)}
-.prev-heritage-d{font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;color:#E8C870;text-shadow:0 0 8px rgba(232,200,112,0.6);position:relative;z-index:1}
-.prev-pro{background:linear-gradient(150deg,#1c1c1c,#101010,#080808);display:flex;align-items:center;justify-content:center}
-.prev-pro-lg{position:absolute;width:7px;height:7px;border-radius:50%;background:#00E676;box-shadow:0 0 7px #00E676;top:7px;left:9px}
-.prev-pro-lr{position:absolute;width:7px;height:7px;border-radius:50%;background:#FF3A3A;box-shadow:0 0 7px #FF3A3A;top:7px;right:9px}
-.prev-pro-d{font-family:'Share Tech Mono',monospace;font-size:0.9rem;color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.7)}
-.prev-chronos{background:linear-gradient(150deg,rgba(6,4,30,0.98),rgba(3,2,18,0.99));display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,200,255,0.15)}
-.prev-chronos::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='82' height='54'%3E%3Cg stroke='rgba(0,200,255,0.22)' stroke-width='0.6' fill='none'%3E%3Cpath d='M0 14 L11 14 L11 7 L28 7'/%3E%3Cpath d='M82 14 L71 14 L71 7 L54 7'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;background-size:cover}
-.prev-chronos-d{display:flex;gap:1px;position:relative;z-index:1}
-.prev-c1{font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:700;color:#00EFFF;text-shadow:0 0 8px rgba(0,239,255,0.8)}
-.prev-c2{font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:700;color:#EE00FF;text-shadow:0 0 8px rgba(238,0,255,0.8)}
+/* ── MINI CLOCK PREVIEWS ── */
+/* shared preview shell */
+.card-preview{display:flex;flex-direction:column;overflow:hidden}
+
+/* ── HERITAGE MINI CLOCK ── */
+.prev-heritage{
+  background:
+    repeating-linear-gradient(173deg,transparent 0,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px),
+    linear-gradient(158deg,#A0522D 0%,#6B3010 40%,#3C1A08 80%,#2A1206 100%);
+  display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;
+  border:1px solid rgba(160,90,35,0.25);
+}
+/* top row: knob + center + knob */
+.ph-top{display:flex;align-items:center;gap:3px;justify-content:space-between}
+.ph-knob{width:13px;height:13px;border-radius:50%;
+  background:radial-gradient(ellipse at 38% 28%,#EAC855,#C49035 40%,#7A5208 100%);
+  box-shadow:0 2px 0 #3C2408,inset 0 1px 0 rgba(255,230,100,0.5);flex-shrink:0}
+.ph-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px}
+.ph-brand{font-family:'Playfair Display',serif;font-size:0.28rem;color:rgba(220,175,90,0.75);letter-spacing:0.02em;line-height:1}
+.ph-btns{display:flex;gap:2px}
+.ph-btn{padding:0 3px;border-radius:1px;border:0.5px solid rgba(196,135,58,0.5);background:rgba(20,8,2,0.7);color:rgba(220,175,80,0.9);font-size:0.22rem;font-weight:800;letter-spacing:0.04em;line-height:1.4}
+/* dual displays */
+.ph-displays{display:flex;gap:2px}
+.ph-disp{flex:1;background:#060402;border-radius:2px;border:0.8px solid rgba(120,75,25,0.5);padding:2px 2px 1px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9)}
+.ph-time{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.72rem;color:#E8C870;text-shadow:0 0 5px rgba(232,200,112,0.55);letter-spacing:0.03em;line-height:1}
+.ph-lbl{font-size:0.22rem;color:rgba(196,135,58,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;line-height:1}
+/* bottom strip */
+.ph-bot{font-family:'Playfair Display',serif;font-style:italic;font-size:0.26rem;color:rgba(180,125,50,0.5);text-align:center;line-height:1}
+
+/* ── PRO MINI CLOCK ── */
+.prev-pro{
+  background:linear-gradient(158deg,#232323,#141414,#090909);
+  display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;
+  border:1px solid rgba(255,255,255,0.05);
+  position:relative;
+}
+.prev-pro::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px);pointer-events:none}
+.pp-top{display:flex;align-items:flex-end;gap:3px;justify-content:space-between;position:relative;z-index:1}
+.pp-lcol{display:flex;flex-direction:column;align-items:center;gap:1px}
+.pp-led{width:5px;height:5px;border-radius:50%}
+.pp-led.g{background:#00E676;box-shadow:0 0 4px rgba(0,230,118,0.9)}
+.pp-led.r{background:#FF3A3A;box-shadow:0 0 4px rgba(255,58,58,0.9)}
+.pp-lever{width:20px;height:5px;border-radius:1px 1px 0 0;background:linear-gradient(180deg,#2a2a2a,#111);box-shadow:0 2px 0 #060606,inset 0 1px 0 rgba(255,255,255,0.1)}
+.pp-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px}
+.pp-brand{font-size:0.28rem;font-weight:800;color:rgba(200,200,200,0.7);letter-spacing:0.04em;line-height:1}
+.pp-btns{display:flex;gap:2px}
+.pp-btn{padding:0 3px;border-radius:1px;border:0.5px solid rgba(180,180,180,0.4);background:rgba(15,15,15,0.85);color:rgba(200,200,200,0.9);font-size:0.22rem;font-weight:800;letter-spacing:0.04em;line-height:1.4}
+.pp-displays{display:flex;gap:2px;position:relative;z-index:1}
+.pp-disp{flex:1;background:#030303;border-radius:2px;border:0.8px solid #242424;padding:2px 2px 1px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.98)}
+.pp-time{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.7);letter-spacing:0.02em;line-height:1}
+.pp-lbl{font-size:0.22rem;color:#333;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;line-height:1;font-family:'Share Tech Mono',monospace}
+.pp-bot{font-size:0.26rem;font-weight:700;color:rgba(120,120,120,0.5);text-align:center;letter-spacing:0.04em;line-height:1;position:relative;z-index:1}
+
+/* ── CHRONOS MINI CLOCK ── */
+.prev-chronos{
+  background:rgba(6,4,28,0.97);
+  display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;
+  border:1px solid rgba(0,200,255,0.22);
+  position:relative;overflow:hidden;
+}
+.prev-chronos::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='82' height='54'%3E%3Cg stroke='rgba(0,200,255,0.2)' stroke-width='0.6' fill='none'%3E%3Cpath d='M0 12 L8 12 L8 6 L22 6'/%3E%3Cpath d='M82 12 L74 12 L74 6 L60 6'/%3E%3Cpath d='M0 42 L8 42 L8 48 L22 48'/%3E%3Cpath d='M82 42 L74 42 L74 48 L60 48'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;background-size:cover;pointer-events:none}
+.pc2-top{display:flex;align-items:flex-end;gap:3px;justify-content:space-between;position:relative;z-index:1}
+.pc2-lcol{display:flex;flex-direction:column;align-items:center;gap:1px}
+.pc2-lv1{width:20px;height:5px;border-radius:2px;background:linear-gradient(158deg,rgba(0,200,255,0.4),rgba(0,80,140,0.5));box-shadow:0 2px 0 rgba(0,80,150,0.6),0 0 5px rgba(0,200,255,0.12);border:0.5px solid rgba(0,200,255,0.3)}
+.pc2-lv2{width:20px;height:5px;border-radius:2px;background:linear-gradient(158deg,rgba(200,0,255,0.4),rgba(100,0,160,0.5));box-shadow:0 2px 0 rgba(120,0,180,0.6),0 0 5px rgba(200,0,255,0.12);border:0.5px solid rgba(200,0,255,0.3)}
+.pc2-llbl1{font-size:0.2rem;font-weight:800;color:rgba(0,200,255,0.6);font-family:'Orbitron',sans-serif;text-transform:uppercase;line-height:1}
+.pc2-llbl2{font-size:0.2rem;font-weight:800;color:rgba(200,0,255,0.6);font-family:'Orbitron',sans-serif;text-transform:uppercase;line-height:1}
+.pc2-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px}
+.pc2-brand{display:flex;font-family:'Orbitron',sans-serif;font-size:0.26rem;font-weight:700;line-height:1}
+.pc2-b1{color:#00EFFF;text-shadow:0 0 4px rgba(0,239,255,0.6)}
+.pc2-b2{color:rgba(230,0,255,0.9);text-shadow:0 0 4px rgba(200,0,255,0.5)}
+.pc2-btns{display:flex;gap:2px}
+.pc2-btn{padding:0 3px;border-radius:1px;border:0.5px solid rgba(0,200,255,0.45);background:rgba(0,8,25,0.8);color:rgba(0,220,255,0.9);font-size:0.22rem;font-weight:800;letter-spacing:0.04em;line-height:1.4;font-family:'Orbitron',sans-serif}
+.pc2-displays{display:flex;gap:2px;position:relative;z-index:1}
+.pc2-disp1{flex:1;background:rgba(0,4,18,0.97);border-radius:2px;border:0.8px solid rgba(0,200,255,0.32);padding:2px 2px 1px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.95),0 0 5px rgba(0,200,255,0.08)}
+.pc2-disp2{flex:1;background:rgba(0,4,18,0.97);border-radius:2px;border:0.8px solid rgba(200,0,255,0.32);padding:2px 2px 1px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.95),0 0 5px rgba(200,0,255,0.08)}
+.pc2-t1{font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.62rem;color:#00EFFF;text-shadow:0 0 5px rgba(0,239,255,0.75);letter-spacing:0.02em;line-height:1}
+.pc2-t2{font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.62rem;color:#EE00FF;text-shadow:0 0 5px rgba(238,0,255,0.75);letter-spacing:0.02em;line-height:1}
+.pc2-lbl1{font-size:0.2rem;color:rgba(0,200,255,0.4);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;line-height:1}
+.pc2-lbl2{font-size:0.2rem;color:rgba(200,0,255,0.4);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;line-height:1}
+.pc2-bot{font-family:'Orbitron',sans-serif;font-size:0.22rem;color:rgba(80,80,180,0.45);text-align:center;line-height:1;position:relative;z-index:1}
 
 .next-btn{width:100%;max-width:420px;padding:0.85rem;border-radius:11px;border:none;background:linear-gradient(135deg,#C4873A,#9A6020);color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;margin-top:1rem;letter-spacing:0.03em;box-shadow:0 6px 20px rgba(196,135,58,0.3);transition:all 0.2s;opacity:0.35;pointer-events:none}
 .next-btn.ready{opacity:1;pointer-events:all}
@@ -76,24 +144,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 /* Preset grid — 2 per row, 4 categories */
 .tc-wrap{width:100%;max-width:420px}
-.tc-cat-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#333;margin:0.8rem 0 0.4rem;display:flex;align-items:center;gap:6px}
+.tc-cat-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#555;margin:0.8rem 0 0.4rem;display:flex;align-items:center;gap:6px}
 .tc-cat-label span{font-size:0.8rem}
 .tc-row{display:grid;grid-template-columns:1fr 1fr;gap:0.45rem}
 .tc-chip{
   padding:0.7rem 0.5rem;border-radius:10px;
-  border:1.5px solid #1e1e1e;background:#0e0e0e;
-  color:#444;font-family:'DM Sans',sans-serif;
-  font-size:0.85rem;font-weight:800;cursor:pointer;
+  border:1.5px solid #383838;background:#0e0e0e;
+  color:#888;font-family:'DM Sans',sans-serif;
+  font-size:0.95rem;font-weight:800;cursor:pointer;
   text-align:center;transition:all 0.18s;
-  display:flex;flex-direction:column;align-items:center;gap:1px;
 }
-.tc-chip small{font-size:0.52rem;font-weight:600;opacity:0.45;letter-spacing:0.06em}
 .tc-chip:hover{border-color:#C4873A;color:#C4873A;background:#120d05}
 .tc-chip.sel{border-color:#C4873A;color:#C4873A;background:#120d05}
 
 /* Custom row */
-.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;max-width:420px;margin-top:0.7rem;background:#0c0c0c;border-radius:10px;padding:0.65rem 0.8rem;border:1.5px solid #1a1a1a}
-.custom-row label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#333;flex-shrink:0}
+.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;max-width:420px;margin-top:0.7rem;background:#0c0c0c;border-radius:10px;padding:0.65rem 0.8rem;border:1.5px solid #333}
+.custom-row label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#555;flex-shrink:0}
 .cust-t{display:flex;align-items:center;gap:3px;flex:1}
 .cust-inp{width:100%;background:transparent;border:none;outline:none;color:#fff;font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;text-align:center}
 .cust-sep{color:#2a2a2a;font-size:1rem;font-weight:700}
@@ -133,8 +199,8 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   margin-top:8px;flex-shrink:0;
 }
 .preset-strip::-webkit-scrollbar{display:none}
-.ps-lbl{font-size:0.48rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#2a2a2a;white-space:nowrap;flex-shrink:0}
-.ps-chip{padding:3px 8px;border-radius:5px;border:1.5px solid #1c1c1c;background:transparent;color:#383838;font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s}
+.ps-lbl{font-size:0.48rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;white-space:nowrap;flex-shrink:0}
+.ps-chip{padding:3px 8px;border-radius:5px;border:1.5px solid #333;background:transparent;color:#666;font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s}
 .ps-chip:hover{border-color:#C4873A;color:#C4873A}
 .ps-chip.sel{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.07)}
 .ps-sep{width:1px;height:14px;background:#1a1a1a;flex-shrink:0;margin:0 2px}
@@ -523,7 +589,21 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
-        <div class="card-preview prev-heritage"><div class="prev-heritage-d">10:00</div></div>
+        <div class="card-preview prev-heritage">
+          <div class="ph-top">
+            <div class="ph-knob"></div>
+            <div class="ph-center">
+              <div class="ph-brand">ChessConnect</div>
+              <div class="ph-btns"><span class="ph-btn">PAUSE</span><span class="ph-btn">RESTART</span></div>
+            </div>
+            <div class="ph-knob"></div>
+          </div>
+          <div class="ph-displays">
+            <div class="ph-disp"><div class="ph-lbl">White</div><div class="ph-time">10:00</div></div>
+            <div class="ph-disp"><div class="ph-lbl">Black</div><div class="ph-time">10:00</div></div>
+          </div>
+          <div class="ph-bot">ChessConnect · Tournament Edition</div>
+        </div>
         <div class="card-info">
           <div class="card-name">Heritage</div>
           <div class="card-desc">Walnut wood body · Brass dome knobs · Amber digits · Tournament Edition</div>
@@ -533,7 +613,27 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-pro" id="card-pro" onclick="selectClock('pro',this)">
       <div class="card-inner">
-        <div class="card-preview prev-pro"><div class="prev-pro-lg"></div><div class="prev-pro-lr"></div><div class="prev-pro-d">10:00</div></div>
+        <div class="card-preview prev-pro">
+          <div class="pp-top">
+            <div class="pp-lcol">
+              <div class="pp-led g"></div>
+              <div class="pp-lever"></div>
+            </div>
+            <div class="pp-center">
+              <div class="pp-brand">ChessConnect</div>
+              <div class="pp-btns"><span class="pp-btn">PAUSE</span><span class="pp-btn">RESTART</span></div>
+            </div>
+            <div class="pp-lcol">
+              <div class="pp-led r"></div>
+              <div class="pp-lever"></div>
+            </div>
+          </div>
+          <div class="pp-displays">
+            <div class="pp-disp"><div class="pp-lbl">White</div><div class="pp-time">10:00</div></div>
+            <div class="pp-disp"><div class="pp-lbl">Black</div><div class="pp-time">10:00</div></div>
+          </div>
+          <div class="pp-bot">Professional Tournament Clock</div>
+        </div>
         <div class="card-info">
           <div class="card-name">Pro</div>
           <div class="card-desc">Matte black · LED indicators · Crisp white digits · Professional Clock</div>
@@ -543,7 +643,27 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-chronos" id="card-chronos" onclick="selectClock('chronos',this)">
       <div class="card-inner">
-        <div class="card-preview prev-chronos"><div class="prev-chronos-d"><span class="prev-c1">10:</span><span class="prev-c2">00</span></div></div>
+        <div class="card-preview prev-chronos">
+          <div class="pc2-top">
+            <div class="pc2-lcol">
+              <div class="pc2-lv1"></div>
+              <div class="pc2-llbl1">P1</div>
+            </div>
+            <div class="pc2-center">
+              <div class="pc2-brand"><span class="pc2-b1">Chess</span><span class="pc2-b2">Connect</span></div>
+              <div class="pc2-btns"><span class="pc2-btn">PAUSE</span><span class="pc2-btn">RESTART</span></div>
+            </div>
+            <div class="pc2-lcol">
+              <div class="pc2-lv2"></div>
+              <div class="pc2-llbl2">P2</div>
+            </div>
+          </div>
+          <div class="pc2-displays">
+            <div class="pc2-disp1"><div class="pc2-lbl1">White</div><div class="pc2-t1">10:00</div></div>
+            <div class="pc2-disp2"><div class="pc2-lbl2">Black</div><div class="pc2-t2">10:00</div></div>
+          </div>
+          <div class="pc2-bot">AI-Powered 2050 Chronos</div>
+        </div>
         <div class="card-info">
           <div class="card-name">Chronos 2050</div>
           <div class="card-desc">Acrylic body · Neon circuits · Cyan &amp; Magenta · AI-Powered Chronos</div>
@@ -572,23 +692,23 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="tc-wrap">
     <div class="tc-cat-label"><span>⚡</span> Bullet</div>
     <div class="tc-row">
-      <div class="tc-chip" id="tc-1+1" onclick="pickTC(60,1,'1+1',this)">1+1<small>1 min · 1s inc</small></div>
-      <div class="tc-chip" id="tc-2+1" onclick="pickTC(120,1,'2+1',this)">2+1<small>2 min · 1s inc</small></div>
+      <div class="tc-chip" id="tc-1+1" onclick="pickTC(60,1,'1+1',this)">1+1</div>
+      <div class="tc-chip" id="tc-2+1" onclick="pickTC(120,1,'2+1',this)">2+1</div>
     </div>
     <div class="tc-cat-label"><span>🔥</span> Blitz</div>
     <div class="tc-row">
-      <div class="tc-chip" id="tc-3+2" onclick="pickTC(180,2,'3+2',this)">3+2<small>3 min · 2s inc</small></div>
-      <div class="tc-chip" id="tc-5+3" onclick="pickTC(300,3,'5+3',this)">5+3<small>5 min · 3s inc</small></div>
+      <div class="tc-chip" id="tc-3+2" onclick="pickTC(180,2,'3+2',this)">3+2</div>
+      <div class="tc-chip" id="tc-5+3" onclick="pickTC(300,3,'5+3',this)">5+3</div>
     </div>
     <div class="tc-cat-label"><span>⏱</span> Rapid</div>
     <div class="tc-row">
-      <div class="tc-chip sel" id="tc-10+5" onclick="pickTC(600,5,'10+5',this)">10+5<small>10 min · 5s inc</small></div>
-      <div class="tc-chip" id="tc-15+10" onclick="pickTC(900,10,'15+10',this)">15+10<small>15 min · 10s inc</small></div>
+      <div class="tc-chip sel" id="tc-10+5" onclick="pickTC(600,5,'10+5',this)">10+5</div>
+      <div class="tc-chip" id="tc-15+10" onclick="pickTC(900,10,'15+10',this)">15+10</div>
     </div>
     <div class="tc-cat-label"><span>♟</span> Classical</div>
     <div class="tc-row">
-      <div class="tc-chip" id="tc-60+30" onclick="pickTC(3600,30,'60+30',this)">60+30<small>60 min · 30s inc</small></div>
-      <div class="tc-chip" id="tc-90+30" onclick="pickTC(5400,30,'90+30',this)">90+30<small>90 min · 30s inc</small></div>
+      <div class="tc-chip" id="tc-60+30" onclick="pickTC(3600,30,'60+30',this)">60+30</div>
+      <div class="tc-chip" id="tc-90+30" onclick="pickTC(5400,30,'90+30',this)">90+30</div>
     </div>
   </div>
 
