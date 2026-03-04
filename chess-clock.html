@@ -7,64 +7,146 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;height:100%;overflow:hidden;touch-action:none}
+html,body{width:100%;min-height:100%;overflow-x:hidden}
 body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
 
 /* ═══════════ SCREENS ═══════════ */
-.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;transition:opacity 0.35s,transform 0.35s;z-index:10;overflow-y:auto}
-.screen.hidden{opacity:0;pointer-events:none;transform:translateY(16px)}
+.screen{display:flex;flex-direction:column;min-height:100dvh;transition:opacity 0.35s,transform 0.35s}
+.screen.hidden{display:none!important}
 
-/* ═══════════ SCREEN 1 TWO-COLUMN LAYOUT ═══════════ */
-#screen1,#screen2{flex-direction:row!important;align-items:stretch;justify-content:center;padding:0!important;max-width:100%;min-height:100vh;background:#F8FAFF}
-.s1-left{flex:0 0 300px;display:flex;flex-direction:column;justify-content:center;padding:3rem 2.5rem;background:#fff;border-right:1px solid #E5E9F2}
-.s1-right{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 2rem;background:#F8FAFF;overflow-y:auto}
-.s1-left .screen-logo{text-align:left;margin-bottom:2rem}
-.s1-left .steps{flex-direction:column;align-items:flex-start;gap:0;margin-bottom:2rem}
-.s1-left .step{flex-direction:row;gap:0.75rem;padding:0.5rem 0}
-.s1-left .step-line{width:2px;height:28px;margin:0 0 0 13px;background:#E5E9F2;position:relative;overflow:hidden}
-.s1-left .step-line::after{width:100%!important;height:0;top:0;left:0}
-.s1-left .step-line::after{content:'';position:absolute;top:0;left:0;width:100%;height:0;background:#1E73E8;transition:height 0.5s}
-.s1-left .step-line.filled::after{height:100%}
-.s1-left .step-label{text-align:left;white-space:normal;font-size:0.6rem}
-.s1-left .s-title{font-size:1.8rem;text-align:left;margin-bottom:0.4rem;line-height:1.2}
-.s1-left .s-sub{text-align:left;margin-bottom:1.5rem}
-.s1-tagline{font-size:0.85rem;color:#6B7280;line-height:1.7;border-top:1px solid #E5E9F2;padding-top:1.5rem;margin-top:auto}
-.s1-right .clock-cards{width:100%;max-width:660px}
-.s1-right .next-btn{max-width:660px;width:100%}
-.s1-right .tc-wrap{width:100%;max-width:460px}
-.s1-right .custom-row{width:100%;max-width:460px}
-.s1-right .s2-btns{width:100%;max-width:460px}
-#screen1,#screen2{background:#F8FAFF}
+/* ═══════════ SCREENS 1 & 2 — MOBILE-FIRST ═══════════ */
+#screen1,#screen2{
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+  padding:0;
+  min-height:100dvh;
+  background:#F8FAFF;
+}
 
-/* Step bar */
-.steps{display:flex;align-items:center;margin-bottom:1.6rem}
-.step{display:flex;flex-direction:column;align-items:center;gap:4px}
-.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid #E5E9F2;background:#fff;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;color:#6B7280;transition:all 0.3s;box-shadow:0 1px 4px rgba(16,44,87,0.08)}
-.step-dot.active{border-color:#1E73E8;background:#1E73E8;color:#fff;box-shadow:0 2px 8px rgba(30,115,232,0.35)}
-.step-dot.done{border-color:#1E73E8;background:#EEF4FF;color:#1E73E8}
-.step-label{font-size:0.52rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;transition:color 0.3s;white-space:normal;text-align:center;line-height:1.3}
-.step.active .step-label,.step.done .step-label{color:#1E73E8}
-.step-line{width:44px;height:2px;background:#E5E9F2;margin-bottom:16px;position:relative;overflow:hidden}
-.step-line::after{content:'';position:absolute;inset-y:0;left:0;width:0;background:#1E73E8;transition:width 0.5s}
-.step-line.filled::after{width:100%}
+/* ── Sticky header ── */
+.mob-header{
+  background:#fff;
+  border-bottom:1px solid #E5E9F2;
+  padding:0.9rem 1.1rem 0.75rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  position:sticky;top:0;z-index:20;
+}
+.mob-logo{font-family:'DM Sans',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:-0.3px;white-space:nowrap}
+.mob-logo .chess{color:#102C57}
+.mob-logo .connect{color:#4285F4}
 
-/* Screen 1 & 2 titles */
-.screen-logo{font-size:1.5rem;font-weight:800;letter-spacing:-0.3px;font-family:'DM Sans',sans-serif;text-align:center;margin-bottom:1.2rem}
-.screen-logo .chess{color:#102C57}
-.screen-logo .connect{color:#4285F4}
-.s-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#102C57;margin-bottom:0.25rem;text-align:center}
-.s-sub{font-size:0.65rem;color:#6B7280;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem;text-align:center}
+/* ── Step bar (compact horizontal) ── */
+.mob-steps{display:flex;align-items:center;gap:0;flex-shrink:0}
+.mob-step{display:flex;flex-direction:column;align-items:center;gap:3px}
+.mob-dot{width:24px;height:24px;border-radius:50%;border:2px solid #E5E9F2;background:#fff;display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:800;color:#9CA3AF;transition:all 0.3s}
+.mob-dot.active{border-color:#1E73E8;background:#1E73E8;color:#fff;box-shadow:0 2px 8px rgba(30,115,232,0.3)}
+.mob-dot.done{border-color:#1E73E8;background:#EEF4FF;color:#1E73E8;font-size:0.7rem}
+.mob-slbl{font-size:0.42rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9CA3AF;line-height:1}
+.mob-step.active .mob-slbl,.mob-step.done .mob-slbl{color:#1E73E8}
+.mob-line{width:28px;height:2px;background:#E5E9F2;margin-bottom:14px;position:relative;overflow:hidden;flex-shrink:0}
+.mob-line::after{content:'';position:absolute;inset-y:0;left:0;width:0;background:#1E73E8;transition:width 0.5s}
+.mob-line.filled::after{width:100%}
 
-/* Clock cards */
-.clock-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;width:100%;max-width:660px}
-.clock-card{border-radius:14px;border:2px solid #E5E9F2;background:#fff;cursor:pointer;overflow:hidden;transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1);box-shadow:0 2px 8px rgba(16,44,87,0.06)}
-.clock-card:hover{box-shadow:0 4px 16px rgba(16,44,87,0.1);transform:translateY(-1px)}
-.clock-card:active{transform:scale(0.98)}
-.clock-card.selected{border-color:#1E73E8!important;box-shadow:0 0 0 1px #1E73E8,0 8px 24px rgba(30,115,232,0.15)}
-.card-inner{display:flex;flex-direction:row;align-items:stretch;gap:0;padding:0;position:relative;overflow:hidden}
-.card-preview{flex-shrink:0;width:130px;height:100%;min-height:110px;border-radius:8px 0 0 8px;overflow:hidden;position:relative;box-shadow:none}
-.preview-scaler{width:428px;transform:scale(0.304);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
-.preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:362px}
+/* ── Scrollable content area ── */
+.mob-content{
+  flex:1;
+  padding:1.1rem 1rem 2rem;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+}
+.mob-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#102C57;margin-bottom:0.2rem;line-height:1.25}
+.mob-sub{font-size:0.6rem;color:#9CA3AF;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem}
+
+/* ── Clock cards — vertical list on mobile ── */
+.clock-cards{display:flex;flex-direction:column;gap:0.6rem;width:100%}
+.clock-card{border-radius:12px;border:2px solid #E5E9F2;background:#fff;cursor:pointer;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;box-shadow:0 1px 6px rgba(16,44,87,0.06);-webkit-tap-highlight-color:transparent;user-select:none}
+.clock-card:active{transform:scale(0.985)}
+.clock-card.selected{border-color:#1E73E8!important;box-shadow:0 0 0 1px #1E73E8,0 4px 16px rgba(30,115,232,0.12)}
+.card-inner{display:flex;flex-direction:row;align-items:stretch;position:relative;overflow:hidden}
+.card-preview{flex-shrink:0;width:105px;height:84px;overflow:hidden;position:relative}
+.preview-scaler{width:428px;transform:scale(0.245);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
+.preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:343px}
+.card-info{flex:1;padding:0.65rem 0.7rem 0.65rem;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.card-name{font-size:0.88rem;font-weight:800;color:#102C57;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-desc{font-size:0.59rem;color:#6B7280;line-height:1.45}
+.card-check{width:20px;height:20px;border-radius:50%;border:2px solid #E5E9F2;background:#F8FAFF;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;position:absolute;top:0.5rem;right:0.5rem;z-index:5}
+.clock-card.selected .card-check{background:#1E73E8;border-color:#1E73E8}
+.card-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
+.clock-card.selected .card-check svg{opacity:1}
+.card-heritage,.card-pro,.card-chronos,.card-xconnect{--ca:#1E73E8}
+
+/* ── Next button ── */
+.next-btn{width:100%;padding:0.95rem;border-radius:12px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:0.9rem;letter-spacing:0.02em;box-shadow:0 4px 14px rgba(30,115,232,0.28);transition:all 0.2s;opacity:0.35;pointer-events:none}
+.next-btn.ready{opacity:1;pointer-events:all}
+.next-btn.ready:active{background:#102C57;transform:scale(0.98)}
+
+/* ═══════════ SCREEN 2 — TIME CONTROL ═══════════ */
+.tc-wrap{width:100%}
+.tc-cat-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#6B7280;margin:0.85rem 0 0.4rem;display:flex;align-items:center;gap:6px}
+.tc-cat-label:first-child{margin-top:0}
+.tc-cat-label svg{width:14px;height:14px;stroke:#1E73E8;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.tc-row{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.tc-chip{padding:0.85rem 0.5rem;border-radius:10px;border:1.5px solid #E5E9F2;background:#fff;color:#102C57;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;text-align:center;transition:all 0.15s;box-shadow:0 1px 4px rgba(16,44,87,0.06);-webkit-tap-highlight-color:transparent}
+.tc-chip:active{transform:scale(0.96)}
+.tc-chip.sel{border-color:#1E73E8;color:#fff;background:#1E73E8;box-shadow:0 4px 12px rgba(30,115,232,0.28)}
+.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;margin-top:0.7rem;background:#fff;border-radius:10px;padding:0.8rem 0.9rem;border:1.5px solid #E5E9F2;box-shadow:0 1px 4px rgba(16,44,87,0.06)}
+.custom-row label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;flex-shrink:0}
+.cust-t{display:flex;align-items:center;gap:3px;flex:1}
+.cust-inp{width:100%;background:transparent;border:none;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;text-align:center}
+.cust-sep{color:#D1D5DB;font-size:1rem;font-weight:700}
+.cust-inc{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
+.cust-inc label{font-size:0.5rem;color:#6B7280;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+.cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #E5E9F2;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center}
+.s2-btns{display:flex;gap:0.55rem;width:100%;margin-top:1rem}
+.back-btn{padding:0.9rem 1.1rem;border-radius:10px;border:1.5px solid #E5E9F2;background:#fff;color:#6B7280;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.back-btn:active{background:#F8FAFF}
+.launch-btn{flex:1;padding:0.9rem;border-radius:10px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(30,115,232,0.28);letter-spacing:0.02em;-webkit-tap-highlight-color:transparent}
+.launch-btn:active{background:#102C57;transform:scale(0.98)}
+
+/* ═══════════ DESKTOP UPGRADE (≥700px) ═══════════ */
+@media(min-width:700px){
+  #screen1,#screen2{flex-direction:row!important;min-height:100vh}
+  .mob-header{
+    flex-direction:column;align-items:flex-start;justify-content:flex-start;
+    width:260px;flex-shrink:0;
+    min-height:100vh;position:sticky;
+    border-bottom:none;border-right:1px solid #E5E9F2;
+    padding:2.5rem 2rem;gap:0;
+  }
+  .mob-logo{font-size:1.4rem;margin-bottom:2rem}
+  .mob-steps{flex-direction:column;align-items:flex-start;gap:0;margin-bottom:2rem}
+  .mob-step{flex-direction:row;align-items:center;gap:0.7rem;padding:0.35rem 0}
+  .mob-line{width:2px;height:22px;margin:0 0 0 11px;flex-shrink:0}
+  .mob-line::after{inset:0 auto 0 0;width:100%;height:0;transition:height 0.5s}
+  .mob-line.filled::after{height:100%}
+  .mob-slbl{font-size:0.55rem;text-align:left}
+  .mob-content{padding:2rem 1.75rem;flex:1;justify-content:center}
+  .mob-title{font-size:1.65rem;margin-bottom:0.3rem}
+  .mob-sub{margin-bottom:1.2rem}
+  .clock-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;max-width:580px}
+  .card-preview{width:115px;height:100%;min-height:104px}
+  .preview-scaler{transform:scale(0.268)}
+  .next-btn{max-width:580px}
+  .tc-wrap,.custom-row,.s2-btns{max-width:440px}
+}
+
+@media(min-width:1024px){
+  .mob-header{width:300px;padding:3rem 2.5rem}
+  .mob-logo{font-size:1.55rem}
+  .mob-content{padding:2.5rem 2.5rem}
+  .mob-title{font-size:1.9rem}
+  .clock-cards{max-width:640px}
+  .card-preview{width:125px}
+  .preview-scaler{transform:scale(0.292)}
+  .next-btn{max-width:640px}
+}
 
 /* ── HERITAGE MINI CLOCK ── */
 .prev-heritage{background:repeating-linear-gradient(173deg,transparent 0,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px),linear-gradient(158deg,#A0522D 0%,#6B3010 40%,#3C1A08 80%,#2A1206 100%);display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;border:1px solid rgba(160,90,35,0.25)}
@@ -123,14 +205,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .card-info{flex:1;padding:0.75rem 0.8rem;display:flex;flex-direction:column;justify-content:center}
 .card-name{font-size:0.9rem;font-weight:800;color:#102C57;margin-bottom:3px}
 .card-desc{font-size:0.62rem;color:#6B7280;line-height:1.4}
-.card-check{width:20px;height:20px;border-radius:50%;border:2px solid #E5E9F2;background:#F8FAFF;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.25s;position:absolute;top:0.6rem;right:0.6rem;z-index:10}
-.clock-card.selected .card-check{background:#1E73E8;border-color:#1E73E8}
-.card-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
-.clock-card.selected .card-check svg{opacity:1}
-.card-heritage{--ca:#1E73E8}
-.card-pro{--ca:#1E73E8}
-.card-chronos{--ca:#1E73E8}
-.card-xconnect{--ca:#1E73E8}
 
 /* Next / Set Time button */
 .next-btn{width:100%;max-width:420px;padding:0.85rem;border-radius:10px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:1rem;letter-spacing:0.02em;box-shadow:0 4px 14px rgba(30,115,232,0.3);transition:all 0.2s;opacity:0.35;pointer-events:none}
@@ -317,7 +391,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .xc-edition{font-family:'DM Sans',sans-serif;font-size:0.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#9CA3AF}
 
 /* ═══════════ SCREEN 3 — ACTIVE CLOCK ═══════════ */
-#screen3{padding:0;background:#0a0a0f;overflow:hidden}
+#screen3{position:fixed;inset:0;padding:0;background:#0a0a0f;overflow:hidden;z-index:100;display:flex;flex-direction:column}
 
 /* Topbar */
 .s3-bar{position:fixed;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 0.9rem;z-index:100;background:rgba(5,5,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05)}
@@ -785,25 +859,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 <body>
 
 <!-- ═══════════════ SCREEN 1 — SELECT CLOCK ═══════════════ -->
-<div class="screen" id="screen1" style="flex-direction:row;align-items:stretch;justify-content:center;gap:0;padding:0;max-width:100%;overflow:hidden">
-
-  <!-- LEFT PANEL -->
-  <div class="s1-left">
-    <div class="screen-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
-    <div class="steps">
-      <div class="step active"><div class="step-dot active">1</div><div class="step-label">Choose<br>Clock</div></div>
-      <div class="step-line" id="sl1"></div>
-      <div class="step"><div class="step-dot" id="dot2">2</div><div class="step-label">Set<br>Time</div></div>
-      <div class="step-line"></div>
-      <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
+<div class="screen" id="screen1">
+  <!-- HEADER -->
+  <div class="mob-header">
+    <div class="mob-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="mob-steps">
+      <div class="mob-step active"><div class="mob-dot active">1</div><div class="mob-slbl">Choose</div></div>
+      <div class="mob-line" id="sl1"></div>
+      <div class="mob-step"><div class="mob-dot" id="dot2">2</div><div class="mob-slbl">Time</div></div>
+      <div class="mob-line"></div>
+      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Play</div></div>
     </div>
-    <div class="s-title">Choose Your Clock</div>
-    <div class="s-sub">Select a style to continue</div>
-    <div class="s1-tagline">Four premium themes.<br>One perfect game.</div>
   </div>
-
-  <!-- RIGHT PANEL -->
-  <div class="s1-right">
+  <!-- CONTENT -->
+  <div class="mob-content">
+    <div class="mob-title">Choose Your Clock</div>
+    <div class="mob-sub">Select a style to continue</div>
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
@@ -980,29 +1051,26 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   </div>
 
   <button class="next-btn" id="nextBtn" onclick="goToStep2()">Set Time →</button>
-  </div><!-- /s1-right -->
+  </div><!-- /mob-content -->
 </div>
 
 <!-- ═══════════════ SCREEN 2 — SET TIME ═══════════════ -->
-<div class="screen hidden" id="screen2" style="flex-direction:row;align-items:stretch;justify-content:center;padding:0;max-width:100%;min-height:100vh">
-
-  <!-- LEFT PANEL -->
-  <div class="s1-left">
-    <div class="screen-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
-    <div class="steps">
-      <div class="step done"><div class="step-dot done">✓</div><div class="step-label">Choose<br>Clock</div></div>
-      <div class="step-line filled"></div>
-      <div class="step active"><div class="step-dot active">2</div><div class="step-label">Set<br>Time</div></div>
-      <div class="step-line"></div>
-      <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
+<div class="screen hidden" id="screen2">
+  <!-- HEADER -->
+  <div class="mob-header">
+    <div class="mob-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="mob-steps">
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Choose</div></div>
+      <div class="mob-line filled"></div>
+      <div class="mob-step active"><div class="mob-dot active">2</div><div class="mob-slbl">Time</div></div>
+      <div class="mob-line"></div>
+      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Play</div></div>
     </div>
-    <div class="s-title" style="font-size:1.8rem;text-align:left;margin-bottom:0.4rem;line-height:1.2;color:#102C57">Set Time Control</div>
-    <div class="s-sub" style="text-align:left;margin-bottom:1.5rem">Choose a preset or custom</div>
-    <div class="s1-tagline">Pick a time control that suits your game. Bullet for speed, Classical for depth.</div>
   </div>
-
-  <!-- RIGHT PANEL -->
-  <div class="s1-right">
+  <!-- CONTENT -->
+  <div class="mob-content">
+    <div class="mob-title">Set Time Control</div>
+    <div class="mob-sub">Choose a preset or set custom time</div>
   <div class="tc-wrap">
     <div class="tc-cat-label"><svg viewBox="0 0 24 24"><path d="M12 2C12 2 16 6 16 12L14 14H10L8 12C8 6 12 2 12 2Z"/><path d="M10 14L9 18H15L14 14"/><path d="M9 18L7 20M15 18L17 20"/><circle cx="12" cy="9" r="1.5" fill="#1E73E8" stroke="none"/></svg> Bullet</div>
     <div class="tc-row">
@@ -1047,7 +1115,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     <button class="back-btn" onclick="goToStep1()">← Back</button>
     <button class="launch-btn" onclick="launchClock()">Start Clock →</button>
   </div>
-  </div><!-- /s1-right -->
+  </div><!-- /mob-content -->
 </div>
 
 <!-- ═══════════════ SCREEN 3 — CLOCK ═══════════════ -->
@@ -1437,6 +1505,15 @@ function goToStep1() { show('screen1'); }
 function show(id) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'instant'});
+  // Lock body scroll only for screen3 (the active clock)
+  if(id==='screen3'){
+    document.body.style.overflow='hidden';
+    document.body.style.touchAction='none';
+  } else {
+    document.body.style.overflow='';
+    document.body.style.touchAction='';
+  }
 }
 
 function launchClock() {
