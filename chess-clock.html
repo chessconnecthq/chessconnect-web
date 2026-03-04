@@ -28,7 +28,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 /* ═══════════ SCREEN 1 — PICK CLOCK ═══════════ */
 .s-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:0.25rem;text-align:center}
-.s-sub{font-size:0.65rem;color:#444;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem;text-align:center}
+.s-sub{font-size:0.65rem;color:#666;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem;text-align:center}
 
 .clock-cards{display:flex;flex-direction:column;gap:0.75rem;width:100%;max-width:420px}
 .clock-card{border-radius:14px;border:2px solid transparent;cursor:pointer;overflow:hidden;transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1)}
@@ -187,8 +187,39 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .s3-btn.active-ctrl{border-color:#C4873A;color:#C4873A}
 
 /* Clock containers */
-.clock-view{display:none;flex-direction:column;align-items:center;justify-content:center;position:fixed;inset:0;padding-top:46px}
+.clock-view{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  position:fixed;inset:0;padding-top:46px;
+  perspective:1100px;
+  perspective-origin:50% 38%;
+}
 .clock-view.show{display:flex}
+
+/* 3D tilt wrapper — tilts clock + strip together toward viewer */
+.clock-3d{
+  display:flex;flex-direction:column;align-items:center;
+  transform:rotateX(5deg);
+  transform-style:preserve-3d;
+}
+
+/* Surface glow beneath clock — simulates table ambient reflection */
+.clock-surface{position:relative;}
+.clock-surface::after{
+  content:'';position:absolute;
+  bottom:-16px;left:6%;right:6%;
+  height:24px;border-radius:50%;
+  filter:blur(16px);pointer-events:none;opacity:0.6;
+}
+.heritage-clock .clock-surface::after{
+  background:radial-gradient(ellipse,rgba(196,135,58,0.5),transparent 70%);
+}
+.pro-clock .clock-surface::after{
+  background:radial-gradient(ellipse,rgba(180,180,180,0.2),transparent 70%);
+}
+.chronos-clock .clock-surface::after{
+  background:radial-gradient(ellipse at 35%,rgba(0,200,255,0.3),transparent 55%),
+             radial-gradient(ellipse at 65%,rgba(200,0,255,0.25),transparent 55%);
+}
 
 /* ─── PRESET STRIP (inline in clock view) ─── */
 .preset-strip{
@@ -218,15 +249,24 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* ═══════════════════════════════════════
    HERITAGE CLOCK
 ═══════════════════════════════════════ */
-.heritage-clock{background:radial-gradient(ellipse at 50% 30%,#1e0d05,#080402)}
+.heritage-clock{background:radial-gradient(ellipse at 50% 30%,#1e0d05,#080402),radial-gradient(ellipse at 50% 75%,rgba(100,50,10,0.18) 0%,transparent 60%)}
 .hc-body{
   width:min(96vw,428px);flex-shrink:0;
   background:
     repeating-linear-gradient(173deg,transparent 0,transparent 9px,rgba(0,0,0,0.045) 9px,rgba(0,0,0,0.045) 10px),
     linear-gradient(158deg,#A0522D 0%,#7A3A1C 18%,#5A2810 48%,#3C1A08 76%,#2A1206 100%);
   border-radius:18px 18px 10px 10px;
-  box-shadow:0 35px 90px rgba(0,0,0,0.82),0 12px 32px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.13),inset 0 -3px 0 rgba(0,0,0,0.4);
+  box-shadow:
+    0 2px 0 rgba(0,0,0,0.9),
+    0 6px 0 rgba(0,0,0,0.7),
+    0 12px 0 rgba(0,0,0,0.45),
+    0 20px 0 rgba(0,0,0,0.22),
+    0 28px 60px rgba(0,0,0,0.88),
+    0 50px 100px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.13),
+    inset 0 -3px 0 rgba(0,0,0,0.5);
   border:1px solid rgba(160,90,35,0.22);
+  border-bottom:3px solid rgba(30,12,3,0.95);
   position:relative;overflow:hidden;
 }
 .hc-body::after{content:'';position:absolute;inset:0;border-radius:18px 18px 10px 10px;background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 28%,rgba(0,0,0,0.18) 100%);pointer-events:none}
@@ -295,7 +335,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(196,135,58,0.12),transparent);margin:4px 3px;flex-shrink:0}
 
 /* Bottom bar */
-.hc-bot{display:flex;justify-content:space-between;align-items:center;padding:6px 13px 10px;position:relative;z-index:2}
+.hc-bot{display:flex;justify-content:center;align-items:center;padding:6px 13px 10px;position:relative;z-index:2}
 .hc-roman{font-family:'Playfair Display',serif;font-size:0.6rem;color:rgba(160,105,38,0.5);font-weight:700}
 .hc-bname{font-family:'Playfair Display',serif;font-style:italic;font-size:0.65rem;color:rgba(180,125,50,0.65);letter-spacing:0.04em;text-align:center}
 .hc-edition{font-size:0.48rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(150,100,35,0.5);font-weight:700;text-align:center}
@@ -303,13 +343,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* ═══════════════════════════════════════
    PRO CLOCK
 ═══════════════════════════════════════ */
-.pro-clock{background:radial-gradient(ellipse at 50% 30%,#0c0c0c,#050505)}
+.pro-clock{background:radial-gradient(ellipse at 50% 30%,#0c0c0c,#050505),radial-gradient(ellipse at 50% 75%,rgba(80,80,80,0.08) 0%,transparent 60%)}
 .pc-body{
   width:min(96vw,428px);flex-shrink:0;
   background:linear-gradient(158deg,#252525 0%,#1A1A1A 25%,#111 55%,#0B0B0B 100%);
   border-radius:14px 14px 10px 10px;
-  box-shadow:0 32px 88px rgba(0,0,0,0.88),0 10px 28px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.08),inset 0 -2px 0 rgba(0,0,0,0.5);
+  box-shadow:
+    0 2px 0 rgba(0,0,0,0.95),
+    0 6px 0 rgba(0,0,0,0.75),
+    0 12px 0 rgba(0,0,0,0.5),
+    0 20px 0 rgba(0,0,0,0.28),
+    0 28px 60px rgba(0,0,0,0.9),
+    0 50px 100px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -2px 0 rgba(0,0,0,0.6);
   border:1px solid rgba(255,255,255,0.06);
+  border-bottom:3px solid rgba(0,0,0,0.98);
   position:relative;overflow:hidden;
 }
 .pc-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);pointer-events:none;border-radius:14px}
@@ -381,7 +430,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-divider{width:1px;background:linear-gradient(180deg,transparent,#2a2a2a,transparent);margin:4px 3px;flex-shrink:0}
 
 /* 6. Bottom bar */
-.pc-bot{display:flex;justify-content:space-between;align-items:center;padding:6px 12px 9px;position:relative;z-index:2}
+.pc-bot{display:flex;justify-content:center;align-items:center;padding:6px 12px 9px;position:relative;z-index:2}
 .pc-bname{font-size:0.55rem;font-weight:800;letter-spacing:0.06em;color:rgba(160,160,160,0.6)}
 .pc-tag{font-size:0.48rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(130,130,130,0.5);font-weight:700}
 .pc-bat{font-size:0.55rem;color:rgba(120,120,120,0.45)}
@@ -397,8 +446,18 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   width:min(96vw,428px);flex-shrink:0;
   background:rgba(7,5,28,0.93);
   border-radius:20px 20px 12px 12px;
-  box-shadow:0 28px 90px rgba(0,0,50,0.88),0 0 55px rgba(0,150,255,0.05),inset 0 1px 0 rgba(0,255,255,0.13),inset 0 -1px 0 rgba(200,0,255,0.08);
+  box-shadow:
+    0 2px 0 rgba(0,0,40,0.98),
+    0 6px 0 rgba(0,0,30,0.8),
+    0 12px 0 rgba(0,0,20,0.55),
+    0 20px 0 rgba(0,0,10,0.3),
+    0 28px 60px rgba(0,0,50,0.9),
+    0 50px 100px rgba(0,0,0,0.7),
+    0 0 55px rgba(0,150,255,0.05),
+    inset 0 1px 0 rgba(0,255,255,0.13),
+    inset 0 -1px 0 rgba(200,0,255,0.08);
   border:1px solid rgba(0,200,255,0.22);
+  border-bottom:3px solid rgba(0,0,40,0.98);
   position:relative;overflow:hidden;backdrop-filter:blur(10px);
 }
 .cc-body::after{content:'';position:absolute;inset:0;border-radius:20px 20px 12px 12px;background:linear-gradient(158deg,rgba(0,255,255,0.04) 0%,transparent 32%,rgba(200,0,255,0.03) 100%);pointer-events:none}
@@ -480,7 +539,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(100,0,200,0.3),transparent);margin:4px 3px;flex-shrink:0}
 
 /* 6. Bottom bar */
-.cc-bot{display:flex;justify-content:space-between;align-items:center;padding:6px 12px 9px;position:relative;z-index:2}
+.cc-bot{display:flex;justify-content:center;align-items:center;padding:6px 12px 9px;position:relative;z-index:2}
 .cc-bname{display:flex;font-family:'Orbitron',sans-serif;font-size:0.52rem;font-weight:700;gap:0}
 .cc-bname span:first-child{color:rgba(0,200,255,0.6)}
 .cc-bname span:last-child{color:rgba(200,0,255,0.55)}
@@ -742,12 +801,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="s3-bar">
     <div class="s3-brand">Chess<em>Connect</em></div>
     <div class="s3-actions">
-      <button class="s3-btn" id="pauseBtn" onclick="togglePause()" title="Pause">
-        <svg id="pauseIcon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-      </button>
-      <button class="s3-btn" onclick="restartClock()" title="Restart same time">
-        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-      </button>
       <button class="s3-btn" onclick="toggleSound()" id="soundBtn" title="Sound">
         <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
       </button>
@@ -757,14 +810,16 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>
       </button>
-      <button class="s3-btn" onclick="newGame()" title="New game">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <button class="s3-btn" onclick="newGame()" title="Back to clock selection">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
     </div>
   </div>
 
   <!-- ── HERITAGE CLOCK ── -->
   <div class="clock-view heritage-clock" id="heritage-clock">
+    <div class="clock-3d">
+    <div class="clock-surface">
     <div class="hc-body">
       <div class="hc-corners"></div>
       <div class="pause-overlay" id="po-heritage"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Knobs + controls -->
@@ -808,33 +863,28 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       </div>
       <!-- Bottom branding -->
       <div class="hc-bot">
-        <div class="hc-roman">IX</div>
-        <div style="text-align:center"><div class="hc-bname">ChessConnect</div><div class="hc-edition">Tournament Edition · MODE</div></div>
-        <div class="hc-roman">III</div>
+        <div style="text-align:center"><div class="hc-edition">Heritage Edition · Tournament</div></div>
       </div>
     </div>
+    </div><!-- /clock-surface -->
     <!-- Quick preset strip BELOW clock body -->
     <div class="preset-strip" id="hc-strip">
-      <div class="ps-lbl">Bullet</div>
       <div class="ps-chip" onclick="quickTC(60,1)">1+1</div>
       <div class="ps-chip" onclick="quickTC(120,1)">2+1</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Blitz</div>
       <div class="ps-chip" onclick="quickTC(180,2)">3+2</div>
       <div class="ps-chip" onclick="quickTC(300,3)">5+3</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Rapid</div>
       <div class="ps-chip sel" id="hps-sel" onclick="quickTC(600,5)">10+5</div>
       <div class="ps-chip" onclick="quickTC(900,10)">15+10</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Classical</div>
       <div class="ps-chip" onclick="quickTC(3600,30)">60+30</div>
       <div class="ps-chip" onclick="quickTC(5400,30)">90+30</div>
     </div>
+    </div><!-- /clock-3d -->
   </div>
 
   <!-- ── PRO CLOCK ── -->
   <div class="clock-view pro-clock" id="pro-clock">
+    <div class="clock-3d">
+    <div class="clock-surface">
     <div class="pc-body">
       <div class="pause-overlay" id="po-pro"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Lever top -->
       <div class="pc-top">
@@ -876,32 +926,27 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         </div>
       </div>
       <div class="pc-bot">
-        <div class="pc-bname">ChessConnect</div>
-        <div class="pc-tag">Professional Tournament Clock</div>
-        <div class="pc-bat">▬▬▬</div>
+        <div class="pc-tag">Pro Edition · Tournament</div>
       </div>
     </div>
+    </div><!-- /clock-surface -->
     <div class="preset-strip" id="pc-strip">
-      <div class="ps-lbl">Bullet</div>
       <div class="ps-chip" onclick="quickTC(60,1)">1+1</div>
       <div class="ps-chip" onclick="quickTC(120,1)">2+1</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Blitz</div>
       <div class="ps-chip" onclick="quickTC(180,2)">3+2</div>
       <div class="ps-chip" onclick="quickTC(300,3)">5+3</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Rapid</div>
       <div class="ps-chip sel" onclick="quickTC(600,5)">10+5</div>
       <div class="ps-chip" onclick="quickTC(900,10)">15+10</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Classical</div>
       <div class="ps-chip" onclick="quickTC(3600,30)">60+30</div>
       <div class="ps-chip" onclick="quickTC(5400,30)">90+30</div>
     </div>
+    </div><!-- /clock-3d -->
   </div>
 
   <!-- ── CHRONOS CLOCK ── -->
   <div class="clock-view chronos-clock" id="chronos-clock">
+    <div class="clock-3d">
+    <div class="clock-surface">
     <div class="cc-body">
       <div class="pause-overlay" id="po-chronos"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Circuit traces -->
       <div class="cc-circuit">
@@ -967,28 +1012,21 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         </div>
       </div>
       <div class="cc-bot">
-        <div class="cc-bname"><span>Chess</span><span>Connect</span></div>
-        <div class="cc-tag">AI-Powered 2050 Tournament Chronos</div>
-        <div class="cc-icons">⏰ 📡 ▬▬</div>
+        <div class="cc-tag">Chronos 2050 Edition · Tournament</div>
       </div>
     </div>
+    </div><!-- /clock-surface -->
     <div class="preset-strip" id="cc-strip">
-      <div class="ps-lbl">Bullet</div>
       <div class="ps-chip" onclick="quickTC(60,1)">1+1</div>
       <div class="ps-chip" onclick="quickTC(120,1)">2+1</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Blitz</div>
       <div class="ps-chip" onclick="quickTC(180,2)">3+2</div>
       <div class="ps-chip" onclick="quickTC(300,3)">5+3</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Rapid</div>
       <div class="ps-chip sel" onclick="quickTC(600,5)">10+5</div>
       <div class="ps-chip" onclick="quickTC(900,10)">15+10</div>
-      <div class="ps-sep"></div>
-      <div class="ps-lbl">Classical</div>
       <div class="ps-chip" onclick="quickTC(3600,30)">60+30</div>
       <div class="ps-chip" onclick="quickTC(5400,30)">90+30</div>
     </div>
+    </div><!-- /clock-3d -->
   </div>
 
 </div><!-- /screen3 -->
@@ -1022,6 +1060,7 @@ let ticker = null, lastTick = null;
 let warnDone = [false,false];
 let soundOn = true, ctx = null;
 let lastPress = 0; // debounce tracker
+let whiteIdx = -1; // which player index is White (set on first press)
 
 /* Prefix map */
 const PFX = {heritage:'hc', pro:'pc', chronos:'cc'};
@@ -1136,6 +1175,7 @@ function restartClock() {
 
 function newGame() {
   if(ticker){clearInterval(ticker);ticker=null;}
+  if(isFullscreen) exitFullscreen();
   document.getElementById('goBanner').classList.remove('show');
   // Reset landscape
   isLandscape=false;
@@ -1207,6 +1247,7 @@ function resetBtnUI() {
   if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b/g,'').trim();
   setBtnState(1,'inactive'); setBtnState(2,'inactive');
   setClockStatus('Tap to start');
+  whiteIdx = -1;
   resetPlayerLabels();
   // Reset LEDs
   if(theme==='pro'){setLED(1,false);setLED(2,false);}
@@ -1237,17 +1278,18 @@ function updateActiveUI() {
   const u1=document.getElementById(p+'-p1unit');
   const u2=document.getElementById(p+'-p2unit');
   u1.classList.remove('active'); u2.classList.remove('active');
+  // active = index whose clock is ticking = who needs to move
+  const isWhiteToMove = (active === whiteIdx);
   if(active===0){
     u1.classList.add('active');
-    setClockStatus('♔ White to move');
     setBtnState(1,'active'); setBtnState(2,'inactive');
     if(theme==='pro'){setLED(1,true);setLED(2,false);}
   } else {
     u2.classList.add('active');
-    setClockStatus('♚ Black to move');
     setBtnState(2,'active'); setBtnState(1,'inactive');
     if(theme==='pro'){setLED(2,true);setLED(1,false);}
   }
+  setClockStatus(isWhiteToMove ? '♔ White to move' : '♚ Black to move');
   // Re-apply warnings
   for(let i=0;i<2;i++){
     if(warnDone[i]&&i!==active) document.getElementById(p+'-p'+(i+1)+'unit').classList.add('warning');
@@ -1274,6 +1316,7 @@ function pressBtn(player, e, el) {
 
   if(active===-1){
     // First press: presser = White (their opponent's clock starts)
+    whiteIdx = idx;
     setPlayerLabels(idx);      // presser is White
     moves[idx]++;              // White's first move counts immediately
     active=idx===0?1:0;
@@ -1343,11 +1386,11 @@ function flagPlayer(p) {
   const px=PFX[theme];
   const u=document.getElementById(px+'-p'+(p+1)+'unit');
   u.className=u.className.replace(/\bactive\b|\bwarning\b/g,'').trim()+' flagged';
-  setClockStatus((p===0?'♔ White':'♚ Black')+' flagged!');
+  setClockStatus((p===whiteIdx?'♔ White':'♚ Black')+' flagged!');
   if(theme==='pro'){setLED(1,false);setLED(2,false);}
   setTimeout(()=>{
     document.getElementById('goTitle').textContent="Time's Up!";
-    document.getElementById('goSub').textContent=(p===0?'♔ White':'♚ Black')+' ran out of time';
+    document.getElementById('goSub').textContent=(p===whiteIdx?'♔ White':'♚ Black')+' ran out of time';
     document.getElementById('goBanner').classList.add('show');
   },700);
 }
@@ -1358,8 +1401,8 @@ function flagPlayer(p) {
 function togglePause() {
   if(over||active===-1) return;
   paused=!paused;
-  // Sync all pause buttons
-  ['hc-pause','pc-pause','cc-pause','pauseBtn'].forEach(id=>{
+  // Sync clock-face pause buttons
+  ['hc-pause','pc-pause','cc-pause'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.classList.toggle('on',paused);
   });
@@ -1409,24 +1452,47 @@ function initAudio() {
 }
 function playClick() {
   if(!soundOn||!ctx) return;
-  const pro={heritage:{f1:580,f2:130,d:0.07,v:0.28,t:'sawtooth'},pro:{f1:1400,f2:480,d:0.04,v:0.2,t:'square'},chronos:{f1:820,f2:260,d:0.09,v:0.16,t:'sine'}};
-  const p=pro[theme]||pro.heritage;
-  const o=ctx.createOscillator(),g=ctx.createGain();
-  o.connect(g);g.connect(ctx.destination);
-  o.type=p.t;
-  o.frequency.setValueAtTime(p.f1,ctx.currentTime);
-  o.frequency.exponentialRampToValueAtTime(p.f2,ctx.currentTime+p.d);
-  g.gain.setValueAtTime(p.v,ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+p.d+0.02);
-  o.start();o.stop(ctx.currentTime+p.d+0.03);
-  if(theme==='chronos'){
-    const o2=ctx.createOscillator(),g2=ctx.createGain();
-    o2.connect(g2);g2.connect(ctx.destination);
-    o2.type='sine';o2.frequency.value=1750;
-    g2.gain.setValueAtTime(0.05,ctx.currentTime+0.01);
-    g2.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.07);
-    o2.start(ctx.currentTime+0.01);o2.stop(ctx.currentTime+0.08);
+
+  const t = ctx.currentTime;
+
+  // Woody noise body
+  const buf = ctx.createBuffer(1, ctx.sampleRate * 0.14, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  for(let i = 0; i < data.length; i++){
+    const decay = Math.exp(-i / (ctx.sampleRate * 0.025));
+    data[i] = (Math.random() * 2 - 1) * decay * 0.85;
   }
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  const bpf = ctx.createBiquadFilter();
+  bpf.type = 'bandpass'; bpf.frequency.value = 400; bpf.Q.value = 1.2;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.6, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+  src.connect(bpf); bpf.connect(g); g.connect(ctx.destination);
+  src.start(t);
+
+  // Hollow wood resonance
+  const o = ctx.createOscillator();
+  const og = ctx.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(320, t);
+  o.frequency.exponentialRampToValueAtTime(180, t + 0.06);
+  og.gain.setValueAtTime(0.28, t);
+  og.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+  o.connect(og); og.connect(ctx.destination);
+  o.start(t); o.stop(t + 0.1);
+
+  // Second harmonic knock
+  const o2 = ctx.createOscillator();
+  const og2 = ctx.createGain();
+  o2.type = 'sine';
+  o2.frequency.setValueAtTime(620, t);
+  o2.frequency.exponentialRampToValueAtTime(300, t + 0.04);
+  og2.gain.setValueAtTime(0.1, t);
+  og2.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+  o2.connect(og2); og2.connect(ctx.destination);
+  o2.start(t); o2.stop(t + 0.055);
 }
 function playWarning() {
   if(!soundOn||!ctx) return;
@@ -1554,12 +1620,6 @@ function onFsChange() {
     updateFsBtn(false);
     unlockOrientation();
   }
-}
-
-const _origNewGame = newGame;
-function newGame() {
-  if (isFullscreen) exitFullscreen();
-  _origNewGame();
 }
 
 // Init default preset selection
