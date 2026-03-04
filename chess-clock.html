@@ -14,7 +14,26 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;transition:opacity 0.35s,transform 0.35s;z-index:10;overflow-y:auto}
 .screen.hidden{opacity:0;pointer-events:none;transform:translateY(16px)}
 
-/* ═══════════ SCREEN 1 & 2 — WHITE/BLUE WEBSITE THEME ═══════════ */
+/* ═══════════ SCREEN 1 TWO-COLUMN LAYOUT ═══════════ */
+#screen1,#screen2{flex-direction:row!important;align-items:stretch;justify-content:center;padding:0!important;max-width:100%;min-height:100vh;background:#F8FAFF}
+.s1-left{flex:0 0 300px;display:flex;flex-direction:column;justify-content:center;padding:3rem 2.5rem;background:#fff;border-right:1px solid #E5E9F2}
+.s1-right{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 2rem;background:#F8FAFF;overflow-y:auto}
+.s1-left .screen-logo{text-align:left;margin-bottom:2rem}
+.s1-left .steps{flex-direction:column;align-items:flex-start;gap:0;margin-bottom:2rem}
+.s1-left .step{flex-direction:row;gap:0.75rem;padding:0.5rem 0}
+.s1-left .step-line{width:2px;height:28px;margin:0 0 0 13px;background:#E5E9F2;position:relative;overflow:hidden}
+.s1-left .step-line::after{width:100%!important;height:0;top:0;left:0}
+.s1-left .step-line::after{content:'';position:absolute;top:0;left:0;width:100%;height:0;background:#1E73E8;transition:height 0.5s}
+.s1-left .step-line.filled::after{height:100%}
+.s1-left .step-label{text-align:left;white-space:normal;font-size:0.6rem}
+.s1-left .s-title{font-size:1.8rem;text-align:left;margin-bottom:0.4rem;line-height:1.2}
+.s1-left .s-sub{text-align:left;margin-bottom:1.5rem}
+.s1-tagline{font-size:0.85rem;color:#6B7280;line-height:1.7;border-top:1px solid #E5E9F2;padding-top:1.5rem;margin-top:auto}
+.s1-right .clock-cards{width:100%;max-width:460px}
+.s1-right .next-btn{max-width:460px;width:100%}
+.s1-right .tc-wrap{width:100%;max-width:460px}
+.s1-right .custom-row{width:100%;max-width:460px}
+.s1-right .s2-btns{width:100%;max-width:460px}
 #screen1,#screen2{background:#F8FAFF}
 
 /* Step bar */
@@ -622,19 +641,25 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 <body>
 
 <!-- ═══════════════ SCREEN 1 — SELECT CLOCK ═══════════════ -->
-<div class="screen" id="screen1">
-  <div class="screen-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
-  <div class="steps">
-    <div class="step active"><div class="step-dot active">1</div><div class="step-label">Choose<br>Clock</div></div>
-    <div class="step-line" id="sl1"></div>
-    <div class="step"><div class="step-dot" id="dot2">2</div><div class="step-label">Set<br>Time</div></div>
-    <div class="step-line"></div>
-    <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
+<div class="screen" id="screen1" style="flex-direction:row;align-items:stretch;justify-content:center;gap:0;padding:0;max-width:100%;overflow:hidden">
+
+  <!-- LEFT PANEL -->
+  <div class="s1-left">
+    <div class="screen-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="steps">
+      <div class="step active"><div class="step-dot active">1</div><div class="step-label">Choose<br>Clock</div></div>
+      <div class="step-line" id="sl1"></div>
+      <div class="step"><div class="step-dot" id="dot2">2</div><div class="step-label">Set<br>Time</div></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
+    </div>
+    <div class="s-title">Choose Your Clock</div>
+    <div class="s-sub">Select a style to continue</div>
+    <div class="s1-tagline">Three premium themes.<br>One perfect game.</div>
   </div>
 
-  <div class="s-title">Choose Your Clock</div>
-  <div class="s-sub">Select a style to continue</div>
-
+  <!-- RIGHT PANEL -->
+  <div class="s1-right">
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
@@ -707,31 +732,47 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-chronos" id="card-chronos" onclick="selectClock('chronos',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#07051C"><div class="preview-scaler"><div class="cc-body" style="border-radius:20px 20px 12px 12px;">
-              <div class="cc-top">
-                <div class="cc-lcol">
-                  <div class="cc-lv1" style="cursor:default"></div>
-                </div>
-                <div class="cc-center">
-                  <div class="cc-brand"><span class="cc-b1">Chess</span><span class="cc-b2">Connect</span></div>
-                  <div class="cc-ctrls">
-                    <button class="cc-cbtn" style="pointer-events:none">PAUSE</button>
-                    <button class="cc-cbtn" style="pointer-events:none">RESTART</button>
-                  </div>
-                  <div class="cc-cstatus">Tap lever to start</div>
-                </div>
-                <div class="cc-lcol">
-                  <div class="cc-lv2" style="cursor:default"></div>
-                </div>
+        <div class="card-preview" style="background:#04020E;border:1px solid rgba(0,200,255,0.3);position:relative;overflow:hidden">
+          <!-- circuit traces -->
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.25" viewBox="0 0 110 77" fill="none">
+            <path d="M0 20 L12 20 L12 10 L30 10" stroke="#00EFFF" stroke-width="0.6"/>
+            <path d="M110 20 L98 20 L98 10 L80 10" stroke="#EE00FF" stroke-width="0.6"/>
+            <path d="M0 57 L12 57 L12 67 L30 67" stroke="#00EFFF" stroke-width="0.6"/>
+            <path d="M110 57 L98 57 L98 67 L80 67" stroke="#EE00FF" stroke-width="0.6"/>
+            <circle cx="12" cy="20" r="1.5" fill="#00EFFF"/>
+            <circle cx="98" cy="20" r="1.5" fill="#EE00FF"/>
+          </svg>
+          <!-- top levers -->
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 7px 2px;position:relative;z-index:1">
+            <div style="display:flex;flex-direction:column;gap:2px;align-items:center">
+              <div style="width:18px;height:5px;border-radius:2px;background:linear-gradient(180deg,rgba(0,200,255,0.5),rgba(0,80,160,0.6));box-shadow:0 0 6px rgba(0,200,255,0.6);border:0.5px solid rgba(0,200,255,0.5)"></div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:'Orbitron',sans-serif;font-size:5px;font-weight:700;background:linear-gradient(90deg,#00EFFF,#EE00FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.05em">ChessConnect</div>
+              <div style="display:flex;gap:2px;justify-content:center;margin-top:2px">
+                <span style="font-size:3.5px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.5);color:rgba(0,220,255,0.9);font-family:'Orbitron',sans-serif;border-radius:1px">PAUSE</span>
+                <span style="font-size:3.5px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.5);color:rgba(0,220,255,0.9);font-family:'Orbitron',sans-serif;border-radius:1px">RESTART</span>
               </div>
-              <div class="cc-displays">
-                <div class="cc-dunit" id=""><div class="cc-plbl">White</div><div class="cc-disp1"><div class="cc-time1">10:00</div><div class="cc-moves1">0 moves</div></div></div>
-                <div class="cc-divider"></div>
-                <div class="cc-dunit" id=""><div class="cc-plbl">Black</div><div class="cc-disp2"><div class="cc-time2">10:00</div><div class="cc-moves2">0 moves</div></div></div>
-              </div>
-              <div class="cc-bot"><div class="cc-tag">Chronos 2050 Edition · Tournament</div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;align-items:center">
+              <div style="width:18px;height:5px;border-radius:2px;background:linear-gradient(180deg,rgba(200,0,255,0.5),rgba(120,0,160,0.6));box-shadow:0 0 6px rgba(200,0,255,0.6);border:0.5px solid rgba(200,0,255,0.5)"></div>
             </div>
           </div>
+          <!-- dual displays -->
+          <div style="display:flex;gap:3px;padding:0 6px;position:relative;z-index:1">
+            <div style="flex:1;background:rgba(0,4,18,0.95);border:1px solid rgba(0,200,255,0.4);border-radius:3px;padding:3px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 8px rgba(0,200,255,0.15)">
+              <div style="font-size:3.5px;color:rgba(0,200,255,0.5);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:0.1em">White</div>
+              <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#00EFFF;text-shadow:0 0 8px rgba(0,239,255,0.9),0 0 16px rgba(0,239,255,0.5);line-height:1.1">10:00</div>
+              <div style="font-size:3px;color:rgba(0,200,255,0.4);font-family:'Orbitron',sans-serif">0 moves</div>
+            </div>
+            <div style="flex:1;background:rgba(0,4,18,0.95);border:1px solid rgba(200,0,255,0.4);border-radius:3px;padding:3px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 8px rgba(200,0,255,0.15)">
+              <div style="font-size:3.5px;color:rgba(200,0,255,0.5);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:0.1em">Black</div>
+              <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#EE00FF;text-shadow:0 0 8px rgba(238,0,255,0.9),0 0 16px rgba(238,0,255,0.5);line-height:1.1">10:00</div>
+              <div style="font-size:3px;color:rgba(200,0,255,0.4);font-family:'Orbitron',sans-serif">0 moves</div>
+            </div>
+          </div>
+          <!-- bottom label -->
+          <div style="text-align:center;padding:3px;font-family:'Orbitron',sans-serif;font-size:3.5px;color:rgba(80,80,200,0.6);letter-spacing:0.08em;position:relative;z-index:1">CHRONOS 2050 EDITION · TOURNAMENT</div>
         </div>
         <div class="card-info">
           <div class="card-name">Chronos 2050</div>
@@ -743,24 +784,31 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   </div>
 
   <button class="next-btn" id="nextBtn" onclick="goToStep2()">Set Time →</button>
+  </div><!-- /s1-right -->
 </div>
 
 <!-- ═══════════════ SCREEN 2 — SET TIME ═══════════════ -->
-<div class="screen hidden" id="screen2">
-  <div class="screen-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
-  <div class="steps">
-    <div class="step done"><div class="step-dot done">✓</div><div class="step-label">Choose<br>Clock</div></div>
-    <div class="step-line filled"></div>
-    <div class="step active"><div class="step-dot active">2</div><div class="step-label">Set<br>Time</div></div>
-    <div class="step-line"></div>
-    <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
+<div class="screen hidden" id="screen2" style="flex-direction:row;align-items:stretch;justify-content:center;padding:0;max-width:100%;min-height:100vh">
+
+  <!-- LEFT PANEL -->
+  <div class="s1-left">
+    <div class="screen-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="steps">
+      <div class="step done"><div class="step-dot done">✓</div><div class="step-label">Choose<br>Clock</div></div>
+      <div class="step-line filled"></div>
+      <div class="step active"><div class="step-dot active">2</div><div class="step-label">Set<br>Time</div></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">3</div><div class="step-label">Play</div></div>
+    </div>
+    <div class="s-title" style="font-size:1.8rem;text-align:left;margin-bottom:0.4rem;line-height:1.2;color:#102C57">Set Time Control</div>
+    <div class="s-sub" style="text-align:left;margin-bottom:1.5rem">Choose a preset or custom</div>
+    <div class="s1-tagline">Pick a time control that suits your game. Bullet for speed, Classical for depth.</div>
   </div>
 
-  <div class="s2-title">Set Time Control</div>
-  <div class="s2-sub">Choose a preset or custom</div>
-
+  <!-- RIGHT PANEL -->
+  <div class="s1-right">
   <div class="tc-wrap">
-    <div class="tc-cat-label"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="4" ry="7" transform="rotate(-45 12 12)"/><path d="M15.5 8.5 L18 4 L20 6 L15.5 8.5"/></svg> Bullet</div>
+    <div class="tc-cat-label"><svg viewBox="0 0 24 24"><path d="M12 2C12 2 16 6 16 12L14 14H10L8 12C8 6 12 2 12 2Z"/><path d="M10 14L9 18H15L14 14"/><path d="M9 18L7 20M15 18L17 20"/><circle cx="12" cy="9" r="1.5" fill="#1E73E8" stroke="none"/></svg> Bullet</div>
     <div class="tc-row">
       <div class="tc-chip" id="tc-1+1" onclick="pickTC(60,1,'1+1',this)">1+1</div>
       <div class="tc-chip" id="tc-2+1" onclick="pickTC(120,1,'2+1',this)">2+1</div>
@@ -803,6 +851,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     <button class="back-btn" onclick="goToStep1()">← Back</button>
     <button class="launch-btn" onclick="launchClock()">Start Clock →</button>
   </div>
+  </div><!-- /s1-right -->
 </div>
 
 <!-- ═══════════════ SCREEN 3 — CLOCK ═══════════════ -->
