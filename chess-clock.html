@@ -1608,40 +1608,14 @@ let lastPress = 0; // debounce tracker
 let whiteIdx = -1; // which player index is White (set on first press)
 
 /* ════════════════════════════════
-   SERVICE WORKER — inline Blob registration
+   SERVICE WORKER — registered from real URL
    Enables Android install prompt + offline support
 ════════════════════════════════ */
-const SW_CODE = `
-const CACHE = 'chessconnect-clock-v36';
-const ASSETS = [self.location.href];
-
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS))
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
-  );
-});
-`;
-
 if ('serviceWorker' in navigator) {
-  const blob = new Blob([SW_CODE], {type: 'application/javascript'});
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl, {scope: './'}).catch(() => {});
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/chessconnect-web/sw.js', {scope: '/chessconnect-web/'})
+      .catch(() => {}); // fail silently — non-critical
+  });
 }
 
 /* ════════════════════════════════
