@@ -223,7 +223,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 /* ─── PRESET STRIP (inline in clock view) ─── */
 .preset-strip{
-  display:flex;align-items:center;gap:4px;
+  display:flex;align-items:center;justify-content:center;gap:4px;
   padding:5px 10px;background:rgba(255,255,255,0.03);
   border-radius:8px;flex-wrap:nowrap;overflow-x:auto;
   scrollbar-width:none;max-width:430px;width:min(96vw,430px);
@@ -231,7 +231,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 .preset-strip::-webkit-scrollbar{display:none}
 .ps-lbl{font-size:0.48rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;white-space:nowrap;flex-shrink:0}
-.ps-chip{padding:3px 8px;border-radius:5px;border:1.5px solid #333;background:transparent;color:#666;font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s}
+.ps-chip{padding:3px 8px;border-radius:5px;border:1.5px solid #444;background:transparent;color:#888;font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s}
 .ps-chip:hover{border-color:#C4873A;color:#C4873A}
 .ps-chip.sel{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.07)}
 .ps-sep{width:1px;height:14px;background:#1a1a1a;flex-shrink:0;margin:0 2px}
@@ -826,7 +826,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="hc-top">
         <div class="hc-knob-col">
           <div class="hc-knob inactive-k" id="hk1" onpointerdown="pressBtn(1,event,this)"></div>
-          <div class="hk-lbl" id="hc-lbl1">Player 1</div>
         </div>
         <div class="hc-center">
           <div class="hc-brand">ChessConnect</div>
@@ -838,7 +837,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         </div>
         <div class="hc-knob-col">
           <div class="hc-knob inactive-k" id="hk2" onpointerdown="pressBtn(2,event,this)"></div>
-          <div class="hk-lbl" id="hc-lbl2">Player 2</div>
         </div>
       </div>
       <!-- Displays — BOTH always visible -->
@@ -889,7 +887,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="pause-overlay" id="po-pro"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div><!-- Lever top -->
       <div class="pc-top">
         <div class="pc-lcol">
-          <div class="pc-led-row"><div class="pc-led g" id="pc-led1"></div><div class="pc-llbl" id="pc-lbl1">Player 1</div></div>
+          <div class="pc-led-row"><div class="pc-led g" id="pc-led1"></div></div>
           <button class="pc-lever inactive-l" id="pl1" onpointerdown="pressBtn(1,event,this)"></button>
         </div>
         <div class="pc-center">
@@ -901,7 +899,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
           <div class="pc-cstatus" id="pc-st">Tap lever to start</div>
         </div>
         <div class="pc-lcol">
-          <div class="pc-led-row"><div class="pc-llbl" id="pc-lbl2">Player 2</div><div class="pc-led r" id="pc-led2"></div></div>
+          <div class="pc-led-row"><div class="pc-led r" id="pc-led2"></div></div>
           <button class="pc-lever inactive-l" id="pl2" onpointerdown="pressBtn(2,event,this)"></button>
         </div>
       </div>
@@ -976,7 +974,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="cc-top">
         <div class="cc-lcol">
           <button class="cc-lever cc-lp1 inactive-l" id="cl1" onpointerdown="pressBtn(1,event,this)"></button>
-          <div class="cc-llp1" id="cc-lbl1">Player 1</div>
         </div>
         <div class="cc-center">
           <div class="cc-brand"><span class="cc-b1">Chess</span><span class="cc-b2">Connect</span></div>
@@ -988,7 +985,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         </div>
         <div class="cc-lcol">
           <button class="cc-lever cc-lp2 inactive-l" id="cl2" onpointerdown="pressBtn(2,event,this)"></button>
-          <div class="cc-llp2" id="cc-lbl2">Player 2</div>
         </div>
       </div>
       <!-- Displays -->
@@ -1094,9 +1090,9 @@ function toggleRotate() {
    PLAYER LABEL HELPERS
 ════════════════════════════════ */
 const LBLIDS = {
-  heritage: { b:['hc-lbl1','hc-lbl2'], d:['hc-dlbl1','hc-dlbl2'] },
-  pro:      { b:['pc-lbl1','pc-lbl2'], d:['pc-dlbl1','pc-dlbl2'] },
-  chronos:  { b:['cc-lbl1','cc-lbl2'], d:['cc-dlbl1','cc-dlbl2'] }
+  heritage: { b:[], d:['hc-dlbl1','hc-dlbl2'] },
+  pro:      { b:[], d:['pc-dlbl1','pc-dlbl2'] },
+  chronos:  { b:[], d:['cc-dlbl1','cc-dlbl2'] }
 };
 function setPlayerLabels(whiteIdx) {
   if(!theme||!LBLIDS[theme]) return;
