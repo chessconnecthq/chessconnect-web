@@ -4,6 +4,25 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <title>ChessConnect Clock</title>
+
+<!-- ═══ PWA MANIFEST (inline) ═══ -->
+<link rel="manifest" href="data:application/manifest+json,{
+  %22name%22:%22ChessConnect%20Clock%22,
+  %22short_name%22:%22CC%20Clock%22,
+  %22description%22:%22Professional%20chess%20clock%20by%20ChessConnect%22,
+  %22start_url%22:%22.%22,
+  %22display%22:%22standalone%22,
+  %22orientation%22:%22portrait%22,
+  %22background_color%22:%22%230a0a0f%22,
+  %22theme_color%22:%221E73E8%22,
+  %22icons%22:[{%22src%22:%22https://chessconnecthq.github.io/chessconnect-web/favicon.ico%22,%22sizes%22:%22192x192%22,%22type%22:%22image/x-icon%22}]
+}"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="CC Clock"/>
+<meta name="theme-color" content="#1E73E8"/>
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -81,6 +100,33 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .card-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
 .clock-card.selected .card-check svg{opacity:1}
 .card-heritage,.card-pro,.card-chronos,.card-xconnect{--ca:#1E73E8}
+
+/* ── Install App button ── */
+.install-wrap{width:100%;margin-top:0.6rem;display:none}
+.install-wrap.visible{display:block}
+.install-btn{
+  width:100%;padding:0.75rem;border-radius:12px;
+  border:1.5px solid #1E73E8;background:#fff;
+  color:#1E73E8;font-family:'DM Sans',sans-serif;
+  font-size:0.88rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  gap:0.5rem;letter-spacing:0.01em;
+  transition:all 0.2s;box-shadow:0 2px 8px rgba(30,115,232,0.1);
+  -webkit-tap-highlight-color:transparent;
+}
+.install-btn:active{background:#EEF4FF;transform:scale(0.98)}
+.install-btn svg{width:16px;height:16px;stroke:#1E73E8;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+/* iOS instruction panel */
+.ios-install-hint{
+  margin-top:0.5rem;padding:0.75rem 0.9rem;
+  border-radius:10px;background:#EEF4FF;
+  border:1px solid rgba(30,115,232,0.2);
+  font-family:'DM Sans',sans-serif;font-size:0.75rem;
+  color:#102C57;line-height:1.5;display:none;
+}
+.ios-install-hint.show{display:block}
+.ios-install-hint strong{color:#1E73E8}
+.ios-install-hint .share-icon{display:inline-block;vertical-align:middle;width:14px;height:14px;margin:0 2px}
 
 /* ── Next button ── */
 .next-btn{width:100%;padding:0.95rem;border-radius:12px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:0.9rem;letter-spacing:0.02em;box-shadow:0 4px 14px rgba(30,115,232,0.28);transition:all 0.2s;opacity:0.35;pointer-events:none}
@@ -783,35 +829,33 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 @keyframes rippleA{to{transform:scale(4);opacity:0}}
 
 /* ═══════════ LANDSCAPE ROTATION ═══════════ */
-#screen3.landscape{
-  transform:rotate(90deg);
-  transform-origin:center center;
-  width:100vh;
-  height:100vw;
-  top:calc((100vh - 100vw) / 2);
-  left:calc((100vw - 100vh) / 2);
-  position:fixed;
-  overflow:hidden;
-  padding:0;
-}
-#screen3.landscape .clock-view{
-  padding-top:46px;
-  justify-content:flex-start;
-  overflow-y:auto;
-  padding-bottom:10px;
-}
-#screen3.landscape .hc-body,
-#screen3.landscape .pc-body,
-#screen3.landscape .cc-body{
-  width:min(90vh,428px);
-}
-#screen3.landscape .preset-strip{
-  width:min(90vh,428px);
-  max-width:none;
-}
 .s3-btn.rotate-on{border-color:#C4873A;color:#C4873A;}
 
-/* ═══════════ GAME OVER BANNER ═══════════ */
+/* ── Rotate guidance toast ── */
+.rotate-toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  z-index:600;opacity:0;pointer-events:none;
+  transition:opacity 0.3s,transform 0.3s;
+  width:min(90vw,340px);
+}
+.rotate-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+.rotate-toast-inner{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(20,20,30,0.96);
+  border:1px solid rgba(196,135,58,0.4);
+  border-radius:12px;padding:12px 14px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.7);
+  backdrop-filter:blur(12px);
+}
+.rotate-toast-icon{font-size:1.2rem;flex-shrink:0}
+#rotateToastMsg{font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:#e0e0e0;flex:1;line-height:1.35}
+.rotate-toast-close{
+  flex-shrink:0;background:none;border:none;color:#666;
+  font-size:0.8rem;cursor:pointer;padding:2px 4px;
+  font-family:'DM Sans',sans-serif;line-height:1;
+  transition:color 0.15s;
+}
+.rotate-toast-close:hover{color:#ccc}
 .gameover{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.82);background:#0c0c0c;border:1.5px solid #222;border-radius:18px;padding:1.8rem 2rem;text-align:center;z-index:500;box-shadow:0 28px 80px rgba(0,0,0,0.85);opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
 .gameover.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
 .go-flag{font-size:1.8rem;margin-bottom:0.35rem}
@@ -1097,6 +1141,23 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   </div>
 
   <button class="next-btn" id="nextBtn" onclick="goToStep2()">Set Time →</button>
+
+  <!-- Install App button — shown only if not already installed -->
+  <div class="install-wrap" id="installWrap">
+    <button class="install-btn" id="installBtn" onclick="handleInstall()">
+      <svg viewBox="0 0 24 24"><path d="M12 2v13m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+      📲 Install App — Save to Home Screen
+    </button>
+    <!-- iOS step-by-step hint (shown on tap for iPhone users) -->
+    <div class="ios-install-hint" id="iosHint">
+      <strong>iPhone:</strong> Tap the
+      <svg class="share-icon" viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      <strong>Share</strong> button in Safari, then tap <strong>"Add to Home Screen"</strong> → Done ✓
+      <div style="margin-top:0.5rem;text-align:right">
+        <button onclick="dismissInstallForever()" style="background:none;border:none;color:#1E73E8;font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;padding:0;text-decoration:underline">Don't show again</button>
+      </div>
+    </div>
+  </div>
   </div><!-- /mob-content -->
 </div>
 
@@ -1481,6 +1542,15 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <span id="fsToastMsg">Add to Home Screen for fullscreen on iOS</span>
 </div>
 
+<!-- ROTATE GUIDANCE TOAST (iOS / manual rotation) -->
+<div class="rotate-toast" id="rotateToast">
+  <div class="rotate-toast-inner">
+    <span class="rotate-toast-icon">📱↻</span>
+    <span id="rotateToastMsg">Rotate your phone sideways for landscape</span>
+    <button class="rotate-toast-close" onclick="dismissRotateToast()" aria-label="Dismiss">✕</button>
+  </div>
+</div>
+
 <!-- GAME OVER -->
 <div class="gameover" id="goBanner">
   <div class="go-flag">🏳️</div>
@@ -1507,8 +1577,112 @@ let lastPress = 0; // debounce tracker
 let whiteIdx = -1; // which player index is White (set on first press)
 
 /* ════════════════════════════════
-   NAVIGATION GUARD — prevent accidental swipe-back during active game
+   SERVICE WORKER — inline Blob registration
+   Enables Android install prompt + offline support
 ════════════════════════════════ */
+const SW_CODE = `
+const CACHE = 'chessconnect-clock-v36';
+const ASSETS = [self.location.href];
+
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll(ASSETS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(cached => cached || fetch(e.request))
+  );
+});
+`;
+
+if ('serviceWorker' in navigator) {
+  const blob = new Blob([SW_CODE], {type: 'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl, {scope: './'}).catch(() => {});
+}
+
+/* ════════════════════════════════
+   PWA INSTALL
+════════════════════════════════ */
+let deferredInstallPrompt = null;
+let isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+let isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
+                      || window.navigator.standalone === true;
+const INSTALL_DISMISSED_KEY = 'cc_install_dismissed';
+
+function initInstallButton() {
+  // Already installed as PWA — never show
+  if (isInStandaloneMode) return;
+
+  const wrap = document.getElementById('installWrap');
+  if (!wrap) return;
+
+  if (isIOS) {
+    // iPhone: only show if user hasn't permanently dismissed
+    const dismissed = localStorage.getItem(INSTALL_DISMISSED_KEY);
+    if (!dismissed) wrap.classList.add('visible');
+  }
+  // Android: wait for beforeinstallprompt (handled below)
+}
+
+// Android Chrome fires this when app is installable
+// Requires service worker — now registered above
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // suppress automatic mini-infobar
+  deferredInstallPrompt = e;
+  const wrap = document.getElementById('installWrap');
+  if (wrap && !isInStandaloneMode) wrap.classList.add('visible');
+});
+
+// User taps Install button
+function handleInstall() {
+  if (isIOS) {
+    // Show step-by-step hint
+    const hint = document.getElementById('iosHint');
+    if (hint) hint.classList.toggle('show');
+    return;
+  }
+  if (deferredInstallPrompt) {
+    // Android: trigger native install dialog
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then((result) => {
+      if (result.outcome === 'accepted') {
+        const wrap = document.getElementById('installWrap');
+        if (wrap) wrap.classList.remove('visible');
+      }
+      deferredInstallPrompt = null;
+    });
+  }
+}
+
+// iPhone "Don't show again" — saves to localStorage, hides forever on this device
+function dismissInstallForever() {
+  try { localStorage.setItem(INSTALL_DISMISSED_KEY, '1'); } catch(e) {}
+  const wrap = document.getElementById('installWrap');
+  if (wrap) wrap.classList.remove('visible');
+}
+
+// Hide once actually installed (Android)
+window.addEventListener('appinstalled', () => {
+  const wrap = document.getElementById('installWrap');
+  if (wrap) wrap.classList.remove('visible');
+  deferredInstallPrompt = null;
+});
+
+// Initialise
+initInstallButton();
 window.addEventListener('beforeunload', function(e) {
   if (active !== -1 && !over) {
     e.preventDefault();
@@ -1559,14 +1733,83 @@ function selectClock(t, card) {
   document.getElementById('nextBtn').classList.add('ready');
 }
 /* ════════════════════════════════
-   ROTATE (landscape toggle)
+   LANDSCAPE / ROTATE — Option B
+   Android: native orientation lock
+   iOS: toast guidance + auto-adapt on physical rotation
 ════════════════════════════════ */
 let isLandscape = false;
+let rotatToastTimer = null;
+
 function toggleRotate() {
-  isLandscape = !isLandscape;
-  document.getElementById('screen3').classList.toggle('landscape', isLandscape);
-  document.getElementById('rotateBtn').classList.toggle('rotate-on', isLandscape);
+  if (!isLandscape) {
+    // — Try native lock (works on Android Chrome, Android Firefox) —
+    const canLock = !!(screen.orientation && screen.orientation.lock);
+    if (canLock) {
+      screen.orientation.lock('landscape').then(() => {
+        isLandscape = true;
+        document.getElementById('rotateBtn').classList.add('rotate-on');
+      }).catch(() => {
+        // Lock failed (iOS Safari, desktop) — fall back to guidance toast
+        isLandscape = true;
+        document.getElementById('rotateBtn').classList.add('rotate-on');
+        showRotateToast('Rotate your phone sideways for landscape ↻');
+      });
+    } else {
+      // No lock API at all (iOS Safari) — show guidance
+      isLandscape = true;
+      document.getElementById('rotateBtn').classList.add('rotate-on');
+      showRotateToast('Rotate your phone sideways for landscape ↻');
+    }
+  } else {
+    // — Unlock / go back to portrait —
+    isLandscape = false;
+    document.getElementById('rotateBtn').classList.remove('rotate-on');
+    unlockOrientation();
+    // On iOS where we only showed a toast, guide back
+    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+    if (!isPortrait) {
+      showRotateToast('Rotate your phone upright to return to portrait ↺');
+    }
+    dismissRotateToast();
+  }
 }
+
+function showRotateToast(msg) {
+  const toast = document.getElementById('rotateToast');
+  const msgEl = document.getElementById('rotateToastMsg');
+  if (!toast) return;
+  if (msgEl) msgEl.textContent = msg;
+  toast.classList.add('show');
+  // Auto-dismiss after 5s
+  if (rotatToastTimer) clearTimeout(rotatToastTimer);
+  rotatToastTimer = setTimeout(() => dismissRotateToast(), 5000);
+}
+
+function dismissRotateToast() {
+  const toast = document.getElementById('rotateToast');
+  if (toast) toast.classList.remove('show');
+  if (rotatToastTimer) { clearTimeout(rotatToastTimer); rotatToastTimer = null; }
+}
+
+// Auto-dismiss rotate toast when phone actually reaches landscape
+screen.orientation
+  ? screen.orientation.addEventListener('change', () => {
+      const type = screen.orientation.type;
+      if (type.includes('landscape') && isLandscape) {
+        dismissRotateToast();
+      }
+      if (type.includes('portrait') && !isLandscape) {
+        dismissRotateToast();
+      }
+    })
+  : window.addEventListener('orientationchange', () => {
+      // Legacy fallback (older iOS)
+      setTimeout(() => {
+        const angle = window.orientation;
+        if ((angle === 90 || angle === -90) && isLandscape) dismissRotateToast();
+        if (angle === 0 && !isLandscape) dismissRotateToast();
+      }, 300);
+    });
 
 /* ════════════════════════════════
    PLAYER LABEL HELPERS
@@ -1612,6 +1855,8 @@ function launchClock() {
   isLandscape = false;
   document.getElementById('screen3').classList.remove('landscape');
   document.getElementById('rotateBtn').classList.remove('rotate-on');
+  dismissRotateToast();
+  unlockOrientation();
   // Apply values
   baseTime = baseTime; // already set via pickTC or custom
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
@@ -1673,6 +1918,7 @@ function newGame() {
   isLandscape=false;
   document.getElementById('screen3').classList.remove('landscape');
   document.getElementById('rotateBtn').classList.remove('rotate-on');
+  dismissRotateToast();
   ['heritage','pro','chronos','xconnect'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
