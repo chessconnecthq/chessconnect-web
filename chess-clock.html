@@ -43,7 +43,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-card:active{transform:scale(0.98)}
 .clock-card.selected{border-color:#1E73E8!important;box-shadow:0 0 0 1px #1E73E8,0 8px 24px rgba(30,115,232,0.15)}
 .card-inner{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1rem}
-.card-preview{flex-shrink:0;width:96px;height:68px;border-radius:8px;position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,0.25)}
+.card-preview{flex-shrink:0;width:110px;height:77px;border-radius:8px;overflow:hidden;position:relative;box-shadow:0 2px 12px rgba(0,0,0,0.25)}
+.preview-scaler{width:428px;transform:scale(0.257);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
+.preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:300px}
 
 /* ── HERITAGE MINI CLOCK ── */
 .prev-heritage{background:repeating-linear-gradient(173deg,transparent 0,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px),linear-gradient(158deg,#A0522D 0%,#6B3010 40%,#3C1A08 80%,#2A1206 100%);display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;border:1px solid rgba(160,90,35,0.25)}
@@ -636,20 +638,28 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
-        <div class="card-preview prev-heritage">
-          <div class="ph-top">
-            <div class="ph-knob"></div>
-            <div class="ph-center">
-              <div class="ph-brand">ChessConnect</div>
-              <div class="ph-btns"><span class="ph-btn">PAUSE</span><span class="ph-btn">RESTART</span></div>
+        <div class="card-preview" style="background:#2A1206"><div class="preview-scaler"><div class="hc-body" style="border-radius:18px 18px 10px 10px;">
+              <div class="hc-corners"></div>
+              <div class="hc-top">
+                <div class="hc-knob-col"><div class="hc-knob" style="cursor:default"></div></div>
+                <div class="hc-center">
+                  <div class="hc-brand">ChessConnect</div>
+                  <div class="hc-ctrls">
+                    <button class="hc-cbtn" style="pointer-events:none">PAUSE</button>
+                    <button class="hc-cbtn" style="pointer-events:none">RESTART</button>
+                  </div>
+                  <div class="hc-cstatus">Tap a knob to start</div>
+                </div>
+                <div class="hc-knob-col"><div class="hc-knob" style="cursor:default"></div></div>
+              </div>
+              <div class="hc-displays">
+                <div class="hc-dunit"><div class="hc-plbl">White</div><div class="hc-disp"><div class="hc-time">10:00</div><div class="hc-moves">0 moves</div></div></div>
+                <div class="hc-divider"></div>
+                <div class="hc-dunit"><div class="hc-plbl">Black</div><div class="hc-disp"><div class="hc-time">10:00</div><div class="hc-moves">0 moves</div></div></div>
+              </div>
+              <div class="hc-bot"><div style="text-align:center"><div class="hc-edition">Heritage Edition · Tournament</div></div></div>
             </div>
-            <div class="ph-knob"></div>
           </div>
-          <div class="ph-displays">
-            <div class="ph-disp"><div class="ph-lbl">White</div><div class="ph-time">10:00</div></div>
-            <div class="ph-disp"><div class="ph-lbl">Black</div><div class="ph-time">10:00</div></div>
-          </div>
-          <div class="ph-bot">ChessConnect · Tournament Edition</div>
         </div>
         <div class="card-info">
           <div class="card-name">Heritage</div>
@@ -660,26 +670,33 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-pro" id="card-pro" onclick="selectClock('pro',this)">
       <div class="card-inner">
-        <div class="card-preview prev-pro">
-          <div class="pp-top">
-            <div class="pp-lcol">
-              <div class="pp-led g"></div>
-              <div class="pp-lever"></div>
-            </div>
-            <div class="pp-center">
-              <div class="pp-brand">ChessConnect</div>
-              <div class="pp-btns"><span class="pp-btn">PAUSE</span><span class="pp-btn">RESTART</span></div>
-            </div>
-            <div class="pp-lcol">
-              <div class="pp-led r"></div>
-              <div class="pp-lever"></div>
+        <div class="card-preview" style="background:#0B0B0B"><div class="preview-scaler"><div class="pc-body" style="border-radius:14px 14px 10px 10px;">
+              <div class="pc-top">
+                <div class="pc-lever-col">
+                  <div class="pc-led-row"><div class="pc-led g"></div></div>
+                  <div class="pc-lever" style="cursor:default"></div>
+                </div>
+                <div class="pc-center">
+                  <div class="pc-brand-t">ChessConnect</div>
+                  <div class="pc-ctrls">
+                    <button class="pc-cbtn" style="pointer-events:none">PAUSE</button>
+                    <button class="pc-cbtn" style="pointer-events:none">RESTART</button>
+                  </div>
+                  <div class="pc-cstatus">Tap lever to start</div>
+                </div>
+                <div class="pc-lever-col">
+                  <div class="pc-led-row"><div class="pc-led r"></div></div>
+                  <div class="pc-lever" style="cursor:default"></div>
+                </div>
+              </div>
+              <div class="pc-displays">
+                <div class="pc-dunit"><div class="pc-plbl">White</div><div class="pc-disp"><div class="pc-time">10:00</div><div class="pc-moves">0 moves</div></div></div>
+                <div class="pc-divider"></div>
+                <div class="pc-dunit"><div class="pc-plbl">Black</div><div class="pc-disp"><div class="pc-time">10:00</div><div class="pc-moves">0 moves</div></div></div>
+              </div>
+              <div class="pc-bot"><div class="pc-tag">Pro Edition · Tournament</div></div>
             </div>
           </div>
-          <div class="pp-displays">
-            <div class="pp-disp"><div class="pp-lbl">White</div><div class="pp-time">10:00</div></div>
-            <div class="pp-disp"><div class="pp-lbl">Black</div><div class="pp-time">10:00</div></div>
-          </div>
-          <div class="pp-bot">Professional Tournament Clock</div>
         </div>
         <div class="card-info">
           <div class="card-name">Pro</div>
@@ -690,26 +707,31 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-chronos" id="card-chronos" onclick="selectClock('chronos',this)">
       <div class="card-inner">
-        <div class="card-preview prev-chronos">
-          <div class="pc2-top">
-            <div class="pc2-lcol">
-              <div class="pc2-lv1"></div>
-              <div class="pc2-llbl1">P1</div>
-            </div>
-            <div class="pc2-center">
-              <div class="pc2-brand"><span class="pc2-b1">Chess</span><span class="pc2-b2">Connect</span></div>
-              <div class="pc2-btns"><span class="pc2-btn">PAUSE</span><span class="pc2-btn">RESTART</span></div>
-            </div>
-            <div class="pc2-lcol">
-              <div class="pc2-lv2"></div>
-              <div class="pc2-llbl2">P2</div>
+        <div class="card-preview" style="background:#07051C"><div class="preview-scaler"><div class="cc-body" style="border-radius:20px 20px 12px 12px;">
+              <div class="cc-top">
+                <div class="cc-lcol">
+                  <div class="cc-lv1" style="cursor:default"></div>
+                </div>
+                <div class="cc-center">
+                  <div class="cc-brand"><span class="cc-b1">Chess</span><span class="cc-b2">Connect</span></div>
+                  <div class="cc-ctrls">
+                    <button class="cc-cbtn" style="pointer-events:none">PAUSE</button>
+                    <button class="cc-cbtn" style="pointer-events:none">RESTART</button>
+                  </div>
+                  <div class="cc-cstatus">Tap lever to start</div>
+                </div>
+                <div class="cc-lcol">
+                  <div class="cc-lv2" style="cursor:default"></div>
+                </div>
+              </div>
+              <div class="cc-displays">
+                <div class="cc-dunit" id=""><div class="cc-plbl">White</div><div class="cc-disp1"><div class="cc-time1">10:00</div><div class="cc-moves1">0 moves</div></div></div>
+                <div class="cc-divider"></div>
+                <div class="cc-dunit" id=""><div class="cc-plbl">Black</div><div class="cc-disp2"><div class="cc-time2">10:00</div><div class="cc-moves2">0 moves</div></div></div>
+              </div>
+              <div class="cc-bot"><div class="cc-tag">Chronos 2050 Edition · Tournament</div></div>
             </div>
           </div>
-          <div class="pc2-displays">
-            <div class="pc2-disp1"><div class="pc2-lbl1">White</div><div class="pc2-t1">10:00</div></div>
-            <div class="pc2-disp2"><div class="pc2-lbl2">Black</div><div class="pc2-t2">10:00</div></div>
-          </div>
-          <div class="pc2-bot">AI-Powered 2050 Chronos</div>
         </div>
         <div class="card-info">
           <div class="card-name">Chronos 2050</div>
