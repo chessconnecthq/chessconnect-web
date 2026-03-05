@@ -434,7 +434,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
   </div>
   <div class="frow f-tournament">
-    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Shree Shiv Chhatrapati Sports Complex, Balewadi, Pune" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Balewadi Sports Hall, Pune" oninput="generate()"/></div>
     <div class="fg"><label class="fl">Time Control</label>
       <select class="fs" id="f-tc" onchange="onTcChange('f-tc','tc-custom-wrap')">
         <option selected>15 min + 10 sec</option>
@@ -487,8 +487,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <textarea class="fi fta" id="f-acad-address" rows="2" placeholder="e.g. 12, Tilak Road, Sadashiv Peth&#10;Pune, Maharashtra 411030" oninput="generate()"></textarea>
   </div>
 
-  <div class="frow f-academy">
-    <div class="fg">
+  <div class="fg f-academy">
       <label class="fl">Session Date</label>
       <input class="fi" type="date" id="f-acad-date" oninput="generate()"/>
       <div class="date-end-row" id="a-date-end-row">
@@ -496,19 +495,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
         <button class="remove-end-date" onclick="removeEndDate('a')" title="Remove end date">✕</button>
       </div>
       <button class="add-end-date" id="a-add-end" onclick="addEndDate('a')">+ Add end date</button>
-    </div>
-    <div class="fg"><label class="fl">Time Control</label>
-      <select class="fs" id="f-acad-tc" onchange="onTcChange('f-acad-tc','acad-tc-custom-wrap')">
-        <option selected>15 min + 10 sec</option>
-        <option>10 min + 5 sec</option>
-        <option>25 min + 10 sec</option>
-        <option>30 min + 30 sec</option>
-        <option>Custom</option>
-      </select>
-      <div class="custom-tc-wrap" id="acad-tc-custom-wrap">
-        <input class="fi" id="f-acad-tc-custom" placeholder="e.g. 20 min flat" oninput="generate()" style="margin-top:0.4rem"/>
-      </div>
-    </div>
   </div>
 
   <!-- PAPER SIZE -->
@@ -548,26 +534,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
   <!-- SHEET OPTIONS -->
   <div class="section-title">Sheet Options</div>
-  <div class="trow">
-    <div><div class="tlbl">Show Time Column</div><div class="tsub">Adds a clock column for time recording</div></div>
-    <label class="tsw"><input type="checkbox" id="opt-time" onchange="generate()"/><span class="tsl"></span></label>
-  </div>
-  <div class="trow">
-    <div><div class="tlbl">Show Move Numbers</div><div class="tsub">Sr. No. column in moves table</div></div>
-    <label class="tsw"><input type="checkbox" id="opt-moves" checked onchange="generate()"/><span class="tsl"></span></label>
-  </div>
-  <div class="trow">
-    <div><div class="tlbl" id="lbl-rating">Show FIDE Rating</div><div class="tsub" id="sub-rating">Rating field under player name</div></div>
-    <label class="tsw"><input type="checkbox" id="opt-rating" checked onchange="generate()"/><span class="tsl"></span></label>
-  </div>
-  <div class="trow">
-    <div><div class="tlbl">Show Result Boxes</div><div class="tsub">1–0 / 0–1 / ½–½ tick boxes</div></div>
-    <label class="tsw"><input type="checkbox" id="opt-result" checked onchange="generate()"/><span class="tsl"></span></label>
-  </div>
-  <div class="trow">
-    <div><div class="tlbl">Show Signature Lines</div><div class="tsub">Players + coach/arbiter sign</div></div>
-    <label class="tsw"><input type="checkbox" id="opt-sign" checked onchange="generate()"/><span class="tsl"></span></label>
-  </div>
   <div class="trow">
     <div>
       <div class="tlbl">Print Back Side</div>
@@ -663,8 +629,6 @@ function setMode(m) {
   document.getElementById('mode-academy').className    = 'mode-card' + (m==='academy'    ? ' sel-academy'    : '');
   document.getElementById('formInner').className = m === 'academy' ? 'form-inner mode-academy' : 'form-inner';
   document.getElementById('hero').className = m === 'academy' ? 'hero hero-academy' : 'hero hero-tournament';
-  document.getElementById('lbl-rating').textContent = 'Show FIDE Rating';
-  document.getElementById('sub-rating').textContent  = 'Rating field under player name';
   const mb = document.getElementById('modeBadge');
   mb.textContent = m === 'academy' ? 'Academy' : 'Tournament';
   mb.className   = 'preview-mode-badge ' + m;
@@ -804,28 +768,28 @@ function buildFront(num) {
   const venue   = isT ? v('f-venue') : '';
 
   // Time control — use custom text when "Custom" is selected
-  const tcSelect  = isT ? v('f-tc')        : v('f-acad-tc');
-  const tcCustom  = isT ? v('f-tc-custom') : v('f-acad-tc-custom');
+  const tcSelect  = v('f-tc');
+  const tcCustom  = v('f-tc-custom');
   const tc        = tcSelect === 'Custom' ? (tcCustom || 'Custom Time Control') : tcSelect;
 
-  const chip3   = isT ? `<div class="ss-chip">🔄 ${v('f-rounds')||'9'} Rounds</div>` : '';
+  const tcChip  = isT ? `<div class="ss-chip">⏱ ${tc}</div>` : '';
 
   // Academy logo
   const logoDataUrl = (!isT && window._acadLogoDataUrl) ? window._acadLogoDataUrl : null;
-  const gi1     = isT ? 'Round No.'             : 'Session No.';
-  const gi2     = isT ? 'Board No. / Table No.' : 'Board No.';
-  const p1Label = isT ? '♔ White Player'        : '♔ Player 1 (White)';
-  const p2Label = isT ? '♚ Black Player'        : '♚ Player 2 (Black)';
-  const rLbl    = isT ? 'FIDE Rating'            : 'Level / Grade';
-  const arbLbl  = isT ? 'Arbiter Use Only'       : 'Coach Use Only';
-  const arbName = isT ? 'Name'                   : 'Coach Name';
+  const gi1     = 'Round No.';
+  const gi2     = 'Board No. / Table No.';
+  const p1Label = '♔ White Player';
+  const p2Label = '♚ Black Player';
+  const rLbl    = 'FIDE Rating';
+  const arbLbl  = 'Arbiter Use Only';
+  const arbName = 'Name';
   const footerNote = v('f-footer') || '';
 
-  const showMoves  = chk('opt-moves');
-  const showTime   = chk('opt-time');
-  const showRating = chk('opt-rating');
-  const showResult = chk('opt-result');
-  const showSign   = chk('opt-sign');
+  const showMoves  = true;
+  const showTime   = false;
+  const showRating = true;
+  const showResult = true;
+  const showSign   = true;
 
   function movesCol(s, e) {
     let rows = '';
@@ -855,7 +819,7 @@ function buildFront(num) {
           <div class="ss-meta-row">
             ${date  ? `<div class="ss-chip">📅 ${date}</div>` : ''}
             ${venue ? `<div class="ss-chip">📍 ${venue}</div>` : ''}
-            <div class="ss-chip">⏱ ${tc}</div>${chip3}
+            ${tcChip}${isT ? `<div class="ss-chip">🔄 ${v('f-rounds')||'9'} Rounds</div>` : ''}
           </div>
         </div>
       </div>
