@@ -210,40 +210,30 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 /* ── THEME HEADERS ── */
 .ss-classic .ss-header{background:linear-gradient(135deg,#102C57,#1E73E8);padding:13px 20px 11px;color:#fff}
-.ss-classic .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px}
-.ss-classic .ss-brand span{color:#4285F4}
 .ss-classic .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:2px}
 .ss-classic .ss-subline{font-size:7px;color:rgba(255,255,255,0.7);margin-bottom:7px;font-style:italic}
 .ss-classic .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-classic .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#fff}
 
 .ss-minimal .ss-header{background:#fff;padding:13px 20px 9px;border-bottom:2px solid #102C57}
-.ss-minimal .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px;color:#102C57}
-.ss-minimal .ss-brand span{color:#4285F4}
 .ss-minimal .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#102C57;margin-bottom:2px}
 .ss-minimal .ss-subline{font-size:7px;color:#6B7280;margin-bottom:7px;font-style:italic}
 .ss-minimal .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-minimal .ss-chip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#1E40AF}
 
 .ss-academy .ss-header{background:linear-gradient(135deg,#065F46,#059669);padding:13px 20px 11px;color:#fff}
-.ss-academy .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px}
-.ss-academy .ss-brand span{color:#6EE7B7}
 .ss-academy .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:2px}
 .ss-academy .ss-subline{font-size:7px;color:rgba(255,255,255,0.7);margin-bottom:7px;font-style:italic}
 .ss-academy .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-academy .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#fff}
 
 .ss-warm .ss-header{background:linear-gradient(135deg,#7C2D12,#C2410C);padding:13px 20px 11px;color:#fff}
-.ss-warm .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px}
-.ss-warm .ss-brand span{color:#FCD34D}
 .ss-warm .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:2px}
 .ss-warm .ss-subline{font-size:7px;color:rgba(255,255,255,0.7);margin-bottom:7px;font-style:italic}
 .ss-warm .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-warm .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#fff}
 
 .ss-bw .ss-header{background:#fff;padding:13px 20px 9px;border-bottom:2.5px solid #111}
-.ss-bw .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px;color:#111}
-.ss-bw .ss-brand span{color:#111}
 .ss-bw .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#111;margin-bottom:2px}
 .ss-bw .ss-subline{font-size:7px;color:#555;margin-bottom:7px;font-style:italic}
 .ss-bw .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
@@ -791,7 +781,6 @@ function buildFront(num) {
           : `<div class="ss-logo-placeholder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>`)
           : ''}
         <div class="ss-header-text">
-          <div class="ss-brand"><span>Chess</span><span>Connect</span></div>
           <div class="ss-event">${name}</div>
           ${!isT && !v('f-acad-address')
             ? `<div class="ss-subline ss-address-placeholder">Academy address will appear here</div>`
