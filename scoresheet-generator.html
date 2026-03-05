@@ -68,7 +68,12 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .logo-remove{background:none;border:none;font-size:0.65rem;font-weight:600;color:#EF4444;cursor:pointer;padding:0.1rem 0.3rem;font-family:var(--font-b);margin-top:0.1rem}
 .logo-remove:hover{opacity:0.75}
 
-/* ── SCORESHEET LOGO ── */
+/* ── SCORESHEET LOGO PLACEHOLDER ── */
+.ss-logo-placeholder{width:40px;height:40px;border:1.5px dashed rgba(255,255,255,0.35);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ss-logo-placeholder svg{opacity:0.35}
+.ss-minimal .ss-logo-placeholder,.ss-bw .ss-logo-placeholder{border-color:rgba(16,44,87,0.2)}
+.ss-minimal .ss-logo-placeholder svg,.ss-bw .ss-logo-placeholder svg{opacity:0.2}
+.ss-address-placeholder{font-size:7px;font-style:italic;opacity:0.4;margin-bottom:4px}
 .ss-header-inner{display:flex;align-items:center;gap:10px}
 .ss-logo-img{width:40px;height:40px;object-fit:contain;flex-shrink:0;border-radius:3px}
 .ss-header-text{flex:1;min-width:0}
@@ -487,16 +492,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <textarea class="fi fta" id="f-acad-address" rows="2" placeholder="e.g. 12, Tilak Road, Sadashiv Peth&#10;Pune, Maharashtra 411030" oninput="generate()"></textarea>
   </div>
 
-  <div class="fg f-academy">
-      <label class="fl">Session Date</label>
-      <input class="fi" type="date" id="f-acad-date" oninput="generate()"/>
-      <div class="date-end-row" id="a-date-end-row">
-        <input class="fi" type="date" id="f-acad-date-end" oninput="generate()" style="margin-top:0.35rem"/>
-        <button class="remove-end-date" onclick="removeEndDate('a')" title="Remove end date">✕</button>
-      </div>
-      <button class="add-end-date" id="a-add-end" onclick="addEndDate('a')">+ Add end date</button>
-  </div>
-
   <!-- PAPER SIZE -->
   <div class="section-title">Paper Size</div>
   <div class="size-grid">
@@ -811,11 +806,16 @@ function buildFront(num) {
     <div class="ss-sheet-num">Sheet #${num}</div>
     <div class="ss-header">
       <div class="ss-header-inner">
-        ${logoDataUrl ? `<img class="ss-logo-img" src="${logoDataUrl}" alt="Academy Logo"/>` : ''}
+        ${!isT ? (logoDataUrl
+          ? `<img class="ss-logo-img" src="${logoDataUrl}" alt="Academy Logo"/>`
+          : `<div class="ss-logo-placeholder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>`)
+          : ''}
         <div class="ss-header-text">
           <div class="ss-brand"><span>Chess</span><span>Connect</span></div>
           <div class="ss-event">${name}</div>
-          ${subline ? `<div class="ss-subline">${subline}</div>` : ''}
+          ${!isT && !v('f-acad-address')
+            ? `<div class="ss-subline ss-address-placeholder">Academy address will appear here</div>`
+            : (subline ? `<div class="ss-subline">${subline}</div>` : '')}
           <div class="ss-meta-row">
             ${date  ? `<div class="ss-chip">📅 ${date}</div>` : ''}
             ${venue ? `<div class="ss-chip">📍 ${venue}</div>` : ''}
