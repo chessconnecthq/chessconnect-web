@@ -112,11 +112,9 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .mode-academy .f-academy{display:block}
 .mode-academy .f-academy.frow{display:grid}
 
-/* ── QUANTITY ── */
-.qty-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.35rem;margin-bottom:0.4rem}
-.qty-btn{padding:0.48rem;border-radius:var(--rs);border:1.5px solid var(--gl);background:var(--white);color:var(--gray);font-family:var(--font-b);font-size:0.8rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s}
-.qty-btn:hover{border-color:var(--blue);color:var(--blue)}
-.qty-btn.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+/* ── PREVIEW AREA — single sheet, perfect fit ── */
+.preview-area{flex:1;padding:1.5rem;display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;overflow-x:hidden}
+.scoresheet-wrap{display:flex;justify-content:center;width:100%}
 
 /* ── STYLE CARDS ── */
 .style-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.45rem;margin-bottom:0.4rem}
@@ -169,7 +167,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .side-btn:disabled{opacity:0.35;cursor:not-allowed}
 
 .preview-badge{font-size:0.68rem;font-weight:700;color:var(--green);background:#ECFDF5;border:1px solid #BBF7D0;padding:0.2rem 0.6rem;border-radius:100px;white-space:nowrap}
-.preview-area{flex:1;padding:1.2rem;display:flex;flex-direction:column;gap:1.2rem;align-items:center;overflow-y:auto}
+
 
 /* ══ SCORESHEET BASE ══ */
 .scoresheet{
@@ -278,6 +276,8 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-bw .ss-rbox-lbl{color:#444}
 .ss-bw .ss-sign-line{border-bottom:1px solid #999}
 .ss-bw .ss-sign-label{color:#666}
+.ss-bw .moves-tbl th{border-bottom:1.5px solid #111}
+.ss-bw .ss-result{border-top:1.5px solid #111}
 .ss-bw .ss-footer{background:#efefef;border-top:1px solid #bbb}
 .ss-bw .ss-footer-chess{color:#111}
 .ss-bw .ss-footer-connect{color:#111}
@@ -334,7 +334,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-footer{background:#F8FAFF;border-top:1px solid #e5e9f2;padding:5px 16px;display:flex;align-items:center;justify-content:space-between}
 .ss-footer-brand{font-size:7px;font-weight:800;letter-spacing:-0.2px}
 .ss-footer-chess{color:#102C57}.ss-footer-connect{color:#4285F4}
-.ss-sheet-num{position:absolute;top:10px;right:14px;font-size:6px;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.05em}
 .ss-minimal .ss-sheet-num,.ss-bw .ss-sheet-num{color:rgba(16,44,87,0.35)}
 .ss-footer-note{font-size:5.5px;color:#9CA3AF;flex:1;text-align:center}
 
@@ -352,7 +351,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   .preview-col{display:none;max-height:unset;position:static;overflow-y:auto}
   .form-col.mob-visible{display:block}
   .preview-col.mob-visible{display:flex}
-  .preview-area{padding:0.75rem;align-items:stretch;overflow-x:hidden}
+  .preview-area{padding:0.75rem;overflow-x:auto}
   .scoresheet-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
   .scoresheet{width:680px;min-width:680px}
   .scoresheet.ss-a5{width:480px;min-width:480px}
@@ -505,18 +504,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
   </div>
 
-  <!-- QUANTITY -->
-  <div class="section-title">Quantity</div>
-  <div class="qty-grid">
-    <div class="qty-btn" onclick="setQty(5,this)">5</div>
-    <div class="qty-btn" onclick="setQty(10,this)">10</div>
-    <div class="qty-btn sel" onclick="setQty(20,this)">20</div>
-    <div class="qty-btn" onclick="setQty(50,this)">50</div>
-  </div>
-  <p style="font-size:0.69rem;color:var(--gray)" id="qtyNote">
-    <strong id="qtyDisplay">20</strong> sheets · 2 per A4 · <strong id="pageDisplay">10</strong> pages when printed
-  </p>
-
   <!-- DESIGN STYLE -->
   <div class="section-title">Design Style</div>
   <div class="style-grid">
@@ -569,7 +556,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       <button class="side-btn active" id="btn-front" onclick="setSide('front')">Front</button>
       <button class="side-btn" id="btn-back" onclick="setSide('back')" disabled>Back</button>
     </div>
-    <div class="preview-badge" id="previewBadge">20 sheets ready</div>
   </div>
   <div class="preview-area" id="previewArea"></div>
 </div>
@@ -577,11 +563,10 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 </div><!-- /page -->
 
 <script>
-let qty     = 20;
 let style   = 'classic';
 let mode    = 'tournament';
-let paper   = 'a4';       // 'a4' | 'a5'
-let previewSide = 'front'; // 'front' | 'back'
+let paper   = 'a4';
+let previewSide = 'front';
 
 /* ── MOVE RANGES by paper ── */
 function moveRanges() {
@@ -599,22 +584,11 @@ function setSize(s, btn) {
   document.getElementById('back-sub').textContent = s === 'a5'
     ? 'Continuation moves 31–60 + signatures'
     : 'Continuation moves 51–100 + signatures';
-  // Update qty note
-  updateQtyNote();
   // Update print tip
   document.getElementById('printTip').innerHTML = s === 'a5'
     ? '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page fits <strong>4 A5 scoresheets</strong> (2×2). For duplex back sides, use "Print on both sides" if your printer supports it.'
-    : '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page = <strong>2 scoresheets</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.';
+    : '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page fits <strong>2 scoresheets</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.';
   generate();
-}
-
-function updateQtyNote() {
-  const perPage = paper === 'a5' ? 4 : 2;
-  document.getElementById('qtyDisplay').textContent = qty;
-  document.getElementById('pageDisplay').textContent = Math.ceil(qty / perPage);
-  const label = paper === 'a5' ? '4 per A4' : '2 per A4';
-  document.getElementById('qtyNote').innerHTML =
-    `<strong id="qtyDisplay">${qty}</strong> sheets · ${label} · <strong id="pageDisplay">${Math.ceil(qty/perPage)}</strong> pages when printed`;
 }
 
 /* ── MODE ── */
@@ -627,16 +601,6 @@ function setMode(m) {
   const mb = document.getElementById('modeBadge');
   mb.textContent = m === 'academy' ? 'Academy' : 'Tournament';
   mb.className   = 'preview-mode-badge ' + m;
-  generate();
-}
-
-/* ── QUANTITY ── */
-function setQty(n, btn) {
-  qty = n;
-  document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  document.getElementById('previewBadge').textContent = n + ' sheets ready';
-  updateQtyNote();
   generate();
 }
 
@@ -662,9 +626,10 @@ function onBackToggle() {
   const backBtn = document.getElementById('btn-back');
   backBtn.disabled = !hasBack;
   if (!hasBack) {
-    setSide('front');
+    setSide('front'); // setSide calls generate() internally
+  } else {
+    generate(); // ensure preview refreshes when back side is turned ON
   }
-  generate();
 }
 
 /* ── LOGO UPLOAD ── */
@@ -673,6 +638,22 @@ window._acadLogoDataUrl = null;
 function onLogoUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
+
+  // Fix 4: MIME type check — reject anything that isn't PNG, JPG, or SVG
+  const allowed = ['image/png', 'image/jpeg', 'image/svg+xml'];
+  if (!allowed.includes(file.type)) {
+    alert('Please upload a PNG, JPG, or SVG file.');
+    event.target.value = '';
+    return;
+  }
+
+  // Fix 3: File size limit — reject files over 2MB
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Logo file is too large. Please upload an image under 2MB.');
+    event.target.value = '';
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = e => {
     window._acadLogoDataUrl = e.target.result;
@@ -767,7 +748,8 @@ function buildFront(num) {
   const tcCustom  = v('f-tc-custom');
   const tc        = tcSelect === 'Custom' ? (tcCustom || 'Custom Time Control') : tcSelect;
 
-  const tcChip  = isT ? `<div class="ss-chip">⏱ ${tc}</div>` : '';
+  const isBW = style === 'bw';
+  const tcChip  = isT ? `<div class="ss-chip">${isBW ? '' : '⏱ '}${tc}</div>` : '';
 
   // Academy logo
   const logoDataUrl = (!isT && window._acadLogoDataUrl) ? window._acadLogoDataUrl : null;
@@ -803,7 +785,6 @@ function buildFront(num) {
   return `
   <div class="scoresheet-wrap">
   <div class="scoresheet ss-${style}${sizeClass}">
-    <div class="ss-sheet-num">Sheet #${num}</div>
     <div class="ss-header">
       <div class="ss-header-inner">
         ${!isT ? (logoDataUrl
@@ -817,9 +798,9 @@ function buildFront(num) {
             ? `<div class="ss-subline ss-address-placeholder">Academy address will appear here</div>`
             : (subline ? `<div class="ss-subline">${subline}</div>` : '')}
           <div class="ss-meta-row">
-            ${date  ? `<div class="ss-chip">📅 ${date}</div>` : ''}
-            ${venue ? `<div class="ss-chip">📍 ${venue}</div>` : ''}
-            ${tcChip}${isT ? `<div class="ss-chip">🔄 ${v('f-rounds')||'9'} Rounds</div>` : ''}
+            ${date  ? `<div class="ss-chip">${isBW ? '' : '📅 '}${date}</div>` : ''}
+            ${venue ? `<div class="ss-chip">${isBW ? '' : '📍 '}${venue}</div>` : ''}
+            ${tcChip}${isT ? `<div class="ss-chip">${isBW ? '' : '🔄 '}${v('f-rounds')||'9'} Rounds</div>` : ''}
           </div>
         </div>
       </div>
@@ -887,7 +868,7 @@ function buildBack(num) {
   const name   = isT ? (v('f-name') || 'Tournament Name') : (v('f-acad-name') || 'Academy Name');
   const gi1Val = isT ? 'Round No.' : 'Session No.';
   const gi2Val = isT ? 'Board No.' : 'Board No.';
-  const arbLbl = isT ? 'Arbiter' : 'Arbiter';
+  const arbLbl = 'Arbiter';
 
   const showMoves = chk('opt-moves');
   const showTime  = chk('opt-time');
@@ -958,28 +939,18 @@ function generate() {
   const area = document.getElementById('previewArea');
   const hasBack = chk('opt-back');
   const showing = previewSide;
-  const mcClass = paper === 'a5' ? 'more-card mc-a5' : 'more-card';
-
-  let html = '';
-  const previewCount = Math.min(qty, 3);
-  for (let i = 1; i <= previewCount; i++) {
-    html += showing === 'back' && hasBack ? buildBack(i) : buildFront(i);
-  }
-  if (qty > 3) html += `<div class="${mcClass}">+ ${qty - 3} more sheets visible when printed</div>`;
-  area.innerHTML = html;
+  area.innerHTML = showing === 'back' && hasBack ? buildBack(1) : buildFront(1);
 }
 
-/* ── PRINT — interleaved front+back ── */
+/* ── PRINT ── */
 function printSheets() {
   const area = document.getElementById('previewArea');
   const hasBack = chk('opt-back');
-  let html = '';
-  for (let i = 1; i <= qty; i++) {
-    html += buildFront(i);
-    if (hasBack) html += buildBack(i);
-  }
-  area.innerHTML = html;
-  setTimeout(() => window.print(), 300);
+  area.innerHTML = buildFront(1) + (hasBack ? buildBack(1) : '');
+  setTimeout(() => {
+    window.print();
+    generate();
+  }, 300);
 }
 
 /* ── MOBILE TAB SWITCH ── */
