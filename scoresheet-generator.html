@@ -3,7 +3,52 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ChessConnect Scoresheet Generator</title>
+
+<!-- ── PRIMARY SEO ── -->
+<title>Chess Scoresheet Generator | Free Printable Scoresheets — ChessConnect</title>
+<meta name="description" content="Generate free, print-ready chess scoresheets for tournaments and academies. Choose A4 or A5, classic or custom designs, with duplex back side support. No signup needed."/>
+<meta name="keywords" content="chess scoresheet, chess score sheet generator, printable chess scoresheet, tournament scoresheet, chess notation sheet, AICF scoresheet, chess academy scoresheet, free chess scoresheet"/>
+<meta name="author" content="ChessConnect"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/scoresheet-generator.html"/>
+
+<!-- ── OPEN GRAPH (Facebook, WhatsApp, LinkedIn previews) ── -->
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Chess Scoresheet Generator — ChessConnect"/>
+<meta property="og:description" content="Free printable chess scoresheets for tournaments and academies. A4 & A5 sizes, multiple design themes, duplex printing support."/>
+<meta property="og:url" content="https://chessconnecthq.github.io/chessconnect-web/scoresheet-generator.html"/>
+<meta property="og:site_name" content="ChessConnect"/>
+<meta property="og:locale" content="en_IN"/>
+
+<!-- ── TWITTER CARD ── -->
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Chess Scoresheet Generator — ChessConnect"/>
+<meta name="twitter:description" content="Free printable chess scoresheets for tournaments and academies. A4 & A5, multiple themes, duplex print support."/>
+<meta name="twitter:site" content="@chessconnecthq"/>
+
+<!-- ── STRUCTURED DATA (Google Rich Results) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Chess Scoresheet Generator",
+  "url": "https://chessconnecthq.github.io/chessconnect-web/scoresheet-generator.html",
+  "description": "Generate free, print-ready chess scoresheets for tournaments and academies. Supports A4 and A5 paper sizes, multiple design themes, and duplex back side printing.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "ChessConnect",
+    "url": "https://chessconnecthq.github.io/chessconnect-web/"
+  }
+}
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -190,6 +235,9 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-classic .ss-back-bar{background:linear-gradient(135deg,#102C57,#1E73E8);border-bottom:none;color:rgba(255,255,255,0.7)}
 .ss-classic .ss-back-bar-title{color:#fff}
 .ss-classic .ss-back-bar-chip{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:#fff}
+.ss-minimal .ss-back-bar{background:#fff;border-bottom:2px solid #102C57;color:#6B7280}
+.ss-minimal .ss-back-bar-title{color:#102C57}
+.ss-minimal .ss-back-bar-chip{background:#EFF6FF;border-color:#DBEAFE;color:#1E40AF}
 .ss-academy .ss-back-bar{background:linear-gradient(135deg,#065F46,#059669);border-bottom:none;color:rgba(255,255,255,0.7)}
 .ss-academy .ss-back-bar-title{color:#fff}
 .ss-academy .ss-back-bar-chip{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:#fff}
@@ -267,8 +315,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-bw .ss-rbox-lbl{color:#444}
 .ss-bw .ss-sign-line{border-bottom:1px solid #999}
 .ss-bw .ss-sign-label{color:#666}
-.ss-bw .moves-tbl th{border-bottom:1.5px solid #111}
-.ss-bw .ss-result{border-top:1.5px solid #111}
 .ss-bw .ss-footer{background:#efefef;border-top:1px solid #bbb}
 .ss-bw .ss-footer-chess{color:#111}
 .ss-bw .ss-footer-connect{color:#111}
@@ -327,10 +373,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-footer-chess{color:#102C57}.ss-footer-connect{color:#4285F4}
 .ss-minimal .ss-sheet-num,.ss-bw .ss-sheet-num{color:rgba(16,44,87,0.35)}
 .ss-footer-note{font-size:5.5px;color:#9CA3AF;flex:1;text-align:center}
-
-/* More card */
-.more-card{background:rgba(30,115,232,0.06);border:1.5px dashed rgba(30,115,232,0.22);border-radius:12px;padding:2rem;text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;width:680px}
-.more-card.mc-a5{width:480px}
 
 /* ── MOBILE ── */
 @media(max-width:900px){
@@ -779,7 +821,7 @@ function buildFront(num) {
       <div class="ss-header-inner">
         ${!isT ? (logoDataUrl
           ? `<img class="ss-logo-img" src="${logoDataUrl}" alt="Academy Logo"/>`
-          : `<div class="ss-logo-placeholder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>`)
+          : `<div class="ss-logo-placeholder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${(style==='minimal'||style==='bw') ? '#94A3B8' : '#fff'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>`)
           : ''}
         <div class="ss-header-text">
           <div class="ss-event">${name}</div>
@@ -856,7 +898,7 @@ function buildBack(num) {
 
   const name   = isT ? (v('f-name') || 'Tournament Name') : (v('f-acad-name') || 'Academy Name');
   const gi1Val = 'Round No.';
-  const gi2Val = 'Board No.';
+  const gi2Val = 'Board No. / Table No.';
   const arbLbl = 'Arbiter';
 
   const showMoves = true;
