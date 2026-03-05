@@ -25,16 +25,37 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .nback:hover{color:var(--blue)}
 
 /* ── SPLIT LAYOUT ── */
-.page{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 58px)}
-@media(max-width:900px){.page{grid-template-columns:1fr}.preview-col{display:none}}
+.page{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 58px)}
+
+/* ── MOBILE TAB BAR ── */
+.mob-tabs{display:none}
 
 /* ── LEFT FORM ── */
 .form-col{background:var(--white);border-right:1px solid var(--gl);overflow-y:auto;max-height:calc(100vh - 58px);position:sticky;top:58px}
 .form-inner{padding:1.4rem}
 
-.hero{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:var(--r);padding:1.1rem 1.3rem;margin-bottom:1.4rem;color:#fff}
+/* ── HERO — dynamic ── */
+.hero{border-radius:var(--r);padding:1.1rem 1.3rem;margin-bottom:1.2rem;color:#fff;transition:background 0.35s}
+.hero-tournament{background:linear-gradient(135deg,var(--navy),var(--blue))}
+.hero-academy{background:linear-gradient(135deg,#065F46,#059669)}
 .hero-title{font-family:var(--font-h);font-size:1.1rem;font-weight:800;margin-bottom:0.25rem}
 .hero-sub{font-size:0.73rem;opacity:0.75;line-height:1.5}
+
+/* ── MODE SELECTOR ── */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.2rem}
+.mode-card{border:2px solid var(--gl);border-radius:var(--r);padding:0.9rem 0.8rem;cursor:pointer;transition:all 0.22s;text-align:center;background:var(--white);position:relative;overflow:hidden}
+.mode-card:hover{border-color:var(--blue);background:#F8FAFF}
+.mode-card.sel-tournament{border-color:var(--blue);background:rgba(30,115,232,0.04)}
+.mode-card.sel-academy{border-color:var(--blue);background:rgba(30,115,232,0.04)}
+.mode-icon{margin-bottom:0.5rem;display:flex;align-items:center;justify-content:center}
+.mode-icon svg{stroke:var(--gl);transition:stroke 0.22s}
+.mode-card:hover .mode-icon svg,.mode-card.sel-tournament .mode-icon svg,.mode-card.sel-academy .mode-icon svg{stroke:var(--blue)}
+.mode-name{font-size:0.82rem;font-weight:800;color:var(--navy);margin-bottom:0.18rem}
+.mode-desc{font-size:0.65rem;color:var(--gray);line-height:1.4}
+.mode-card.sel-tournament .mode-name,.mode-card.sel-academy .mode-name{color:var(--blue)}
+.mode-tick{position:absolute;top:7px;right:8px;width:16px;height:16px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s}
+.mode-tick svg{stroke:#fff;stroke-width:2.5;fill:none;width:9px;height:9px}
+.mode-card.sel-tournament .mode-tick,.mode-card.sel-academy .mode-tick{opacity:1}
 
 .section-title{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin:1.1rem 0 0.65rem;display:flex;align-items:center;gap:0.5rem}
 .section-title::after{content:'';flex:1;height:1px;background:var(--gl)}
@@ -45,6 +66,14 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .fi,.fs{width:100%;font-family:var(--font-b);font-size:0.845rem;color:var(--navy);background:var(--white);border:1.5px solid var(--gl);border-radius:var(--rs);padding:0.55rem 0.72rem;outline:none;transition:border-color 0.2s}
 .fi:focus,.fs:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,115,232,0.07)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
+
+/* Field visibility */
+.f-tournament{display:block}
+.f-academy{display:none}
+.mode-academy .f-tournament{display:none}
+.mode-academy .f-tournament.frow{display:none}
+.mode-academy .f-academy{display:block}
+.mode-academy .f-academy.frow{display:grid}
 
 /* Quantity */
 .qty-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.35rem;margin-bottom:0.4rem}
@@ -81,6 +110,8 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .gen-btn{width:100%;padding:0.82rem;border:none;border-radius:var(--rs);background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;font-family:var(--font-b);font-size:0.92rem;font-weight:800;cursor:pointer;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1rem;letter-spacing:0.02em}
 .gen-btn:hover{opacity:0.9}
 .gen-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mob-preview-btn{display:none;width:100%;margin-top:0.5rem;padding:0.72rem;border:2px solid var(--blue);border-radius:var(--rs);background:transparent;color:var(--blue);font-family:var(--font-b);font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.mob-preview-btn:hover{background:rgba(30,115,232,0.06)}
 .tip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:var(--rs);padding:0.7rem 0.85rem;margin-top:0.75rem;font-size:0.72rem;color:#1E40AF;line-height:1.6}
 .tip strong{font-weight:700}
 
@@ -89,6 +120,10 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .preview-header{background:var(--white);border-bottom:1px solid var(--gl);padding:0.7rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .preview-title{font-size:0.8rem;font-weight:700;color:var(--navy)}
 .preview-badge{font-size:0.68rem;font-weight:700;color:var(--green);background:#ECFDF5;border:1px solid #BBF7D0;padding:0.2rem 0.6rem;border-radius:100px}
+.preview-mode-badge{font-size:0.68rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:100px;margin-left:0.4rem}
+.preview-mode-badge.tournament{color:var(--blue);background:rgba(30,115,232,0.08);border:1px solid rgba(30,115,232,0.2)}
+.preview-mode-badge.academy{color:#059669;background:rgba(5,150,105,0.08);border:1px solid rgba(5,150,105,0.2)}
+.preview-header-left{display:flex;align-items:center;gap:0.3rem;flex-wrap:wrap}
 .preview-area{flex:1;padding:1.2rem;display:flex;flex-direction:column;gap:1.2rem;align-items:center;overflow-y:auto}
 
 /* ══ SCORESHEET ══ */
@@ -118,7 +153,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-minimal .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-minimal .ss-chip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#1E40AF}
 
-/* ACADEMY */
+/* ACADEMY STYLE */
 .ss-academy .ss-header{background:linear-gradient(135deg,#065F46,#059669);padding:13px 20px 11px;color:#fff}
 .ss-academy .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px}
 .ss-academy .ss-brand span{color:#6EE7B7}
@@ -139,13 +174,44 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 /* B&W */
 .ss-bw .ss-header{background:#fff;padding:13px 20px 9px;border-bottom:2.5px solid #111}
 .ss-bw .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px;color:#111}
-.ss-bw .ss-brand span{color:#555}
+.ss-bw .ss-brand span{color:#111}
 .ss-bw .ss-event{font-family:'Playfair Display',serif;font-size:14px;font-weight:800;color:#111;margin-bottom:2px}
-.ss-bw .ss-subline{font-size:7px;color:#444;margin-bottom:7px;font-style:italic}
+.ss-bw .ss-subline{font-size:7px;color:#555;margin-bottom:7px;font-style:italic}
 .ss-bw .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
-.ss-bw .ss-chip{background:#f2f2f2;border:1px solid #bbb;border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#111}
+.ss-bw .ss-chip{background:#efefef;border:1px solid #aaa;border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#111}
 .ss-bw .ss-sheet-num{color:rgba(0,0,0,0.3)}
-.ss-bw .moves-tbl th{border-bottom:1.5px solid #111;background:#f2f2f2}
+.ss-bw .ss-players{border-bottom:1px solid #bbb}
+.ss-bw .ss-player:first-child{border-right:1px solid #bbb}
+.ss-bw .ss-player-color{color:#444}
+.ss-bw .ss-player-line{border-bottom:1px solid #999}
+.ss-bw .ss-pi-line{border-bottom:1px solid #999}
+.ss-bw .ss-player-label{color:#777}
+.ss-bw .ss-pi-label{color:#777}
+.ss-bw .ss-gameinfo{background:#efefef;border-bottom:1px solid #bbb}
+.ss-bw .ss-gi-item{border-right:1px solid #bbb}
+.ss-bw .ss-gi-item:last-child{border-right:none}
+.ss-bw .ss-gi-label{color:#444}
+.ss-bw .ss-gi-line{border-bottom:1px solid #999}
+.ss-bw .moves-tbl{border:1.5px solid #aaa}
+.ss-bw .moves-tbl th{border-bottom:1.5px solid #111;border-right:1px solid #aaa;background:#efefef;color:#333}
+.ss-bw .moves-tbl th:last-child{border-right:none}
+.ss-bw .moves-tbl td{border-bottom:1px solid #ddd;border-right:1px solid #ddd}
+.ss-bw .moves-tbl td:last-child{border-right:none}
+.ss-bw .moves-tbl td.mn{background:#f5f5f5;color:#666}
+.ss-bw .moves-tbl tr:nth-child(even) td{background:#f9f9f9}
+.ss-bw .moves-tbl tr:nth-child(even) td.mn{background:#ececec}
+.ss-bw .ss-result{border-top:1.5px solid #111}
+.ss-bw .ss-result-half:first-child{border-right:1px solid #bbb}
+.ss-bw .ss-result-label{color:#444}
+.ss-bw .ss-rbox-sq{border:1.5px solid #aaa}
+.ss-bw .ss-rbox-lbl{color:#444}
+.ss-bw .ss-sign-line{border-bottom:1px solid #999}
+.ss-bw .ss-sign-label{color:#666}
+.ss-bw .ss-footer{background:#efefef;border-top:1px solid #bbb}
+.ss-bw .ss-footer-chess{color:#111}
+.ss-bw .ss-footer-connect{color:#111}
+.ss-bw .ss-footer-note{color:#666}
+
 /* PLAYER INFO */
 .ss-players{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #e5e9f2}
 .ss-player{padding:8px 16px}
@@ -159,7 +225,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-pi-label{font-size:6px;font-weight:600;color:#9CA3AF;white-space:nowrap;flex-shrink:0}
 .ss-pi-line{flex:1;border-bottom:1px solid #CBD5E1;height:14px}
 
-/* GAME INFO BAR — Round, Board, Date only (Start Time & Opening removed) */
+/* GAME INFO BAR */
 .ss-gameinfo{display:flex;border-bottom:1px solid #e5e9f2;background:#F8FAFF}
 .ss-gi-item{flex:1;padding:6px 10px;border-right:1px solid #e5e9f2;font-size:6px}
 .ss-gi-item:last-child{border-right:none}
@@ -195,20 +261,37 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 /* FOOTER */
 .ss-footer{background:#F8FAFF;border-top:1px solid #e5e9f2;padding:5px 16px;display:flex;align-items:center;justify-content:space-between}
-.ss-footer-left{font-size:5.5px;color:#9CA3AF}
 .ss-footer-brand{font-size:7px;font-weight:800;letter-spacing:-0.2px}
 .ss-footer-chess{color:#102C57}.ss-footer-connect{color:#4285F4}
 .ss-sheet-num{position:absolute;top:10px;right:14px;font-size:6px;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.05em}
-.ss-minimal .ss-sheet-num{color:rgba(16,44,87,0.35)}
-
+.ss-minimal .ss-sheet-num,.ss-bw .ss-sheet-num{color:rgba(16,44,87,0.35)}
 .ss-footer-note{font-size:5.5px;color:#9CA3AF;flex:1;text-align:center}
+
 /* More sheets card */
 .more-card{background:rgba(30,115,232,0.06);border:1.5px dashed rgba(30,115,232,0.22);border-radius:12px;padding:2rem;text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;width:680px}
+
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:900px){
+  .page{grid-template-columns:1fr;min-height:unset}
+  .mob-tabs{display:flex;background:var(--white);border-bottom:2px solid var(--gl);position:sticky;top:58px;z-index:90}
+  .mob-tab{flex:1;padding:0.65rem 0.5rem;font-size:0.78rem;font-weight:700;color:var(--gray);background:none;border:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:color 0.2s,border-color 0.2s;font-family:var(--font-b)}
+  .mob-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+  .form-col{display:none;max-height:unset;position:static;overflow-y:auto;border-right:none}
+  .preview-col{display:none;max-height:unset;position:static;overflow-y:auto}
+  .form-col.mob-visible{display:block}
+  .preview-col.mob-visible{display:flex}
+  .preview-area{padding:0.75rem;align-items:stretch;overflow-x:hidden}
+  .scoresheet-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .scoresheet{width:680px;min-width:680px}
+  .more-card{width:100%;min-width:0}
+  .ntag{display:none}
+  .mob-preview-btn{display:block}
+}
 
 /* ── PRINT ── */
 @media print{
   body{background:#fff}
-  .nav,.form-col,.preview-header{display:none!important}
+  .nav,.form-col,.preview-header,.mob-tabs{display:none!important}
   .page{display:block}
   .preview-col{max-height:none;position:static;background:#fff;overflow:visible;display:block!important}
   .preview-area{padding:0;gap:0}
@@ -226,24 +309,64 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   <a href="index.html" class="nback">← Back to Home</a>
 </nav>
 
+<!-- ══ MOBILE TABS ══ -->
+<div class="mob-tabs">
+  <button class="mob-tab active" id="tab-form" onclick="switchTab('form')">⚙ Configure</button>
+  <button class="mob-tab" id="tab-preview" onclick="switchTab('preview')">👁 Preview</button>
+</div>
+
 <div class="page">
 
 <!-- ══ LEFT — FORM ══ -->
-<div class="form-col">
-<div class="form-inner">
+<div class="form-col mob-visible" id="col-form">
+<div class="form-inner" id="formInner">
 
-  <div class="hero">
-    <div class="hero-title">Scoresheet Generator</div>
-    <div class="hero-sub">FIDE-standard scoresheets for your tournament. Live preview on the right — print when ready.</div>
+  <!-- ── HERO ── -->
+  <div class="hero hero-tournament" id="hero">
+    <div class="hero-title" id="heroTitle">Scoresheet Generator</div>
+    <div class="hero-sub" id="heroSub">Professional scoresheets, printed in seconds.</div>
   </div>
 
-  <div class="section-title">Tournament Details</div>
-  <div class="fg"><label class="fl">Tournament Name</label><input class="fi" id="f-name" placeholder="e.g. Pune Open FIDE Rated 2026" oninput="generate()"/></div>
-  <div class="frow">
+  <!-- ── MODE SELECTOR ── -->
+  <div class="mode-grid">
+    <div class="mode-card sel-tournament" id="mode-tournament" onclick="setMode('tournament',this)">
+      <div class="mode-icon">
+        <!-- Podium / bracket: 3 bars of staggered heights -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="11" width="5" height="10" rx="1"/>
+          <rect x="9.5" y="6" width="5" height="15" rx="1"/>
+          <rect x="17" y="14" width="5" height="7" rx="1"/>
+        </svg>
+      </div>
+      <div class="mode-name">Tournament</div>
+      <div class="mode-desc">Generate scoresheets tailored to your tournament event</div>
+      <div class="mode-tick"><svg viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+    </div>
+    <div class="mode-card" id="mode-academy" onclick="setMode('academy',this)">
+      <div class="mode-icon">
+        <!-- Open book: two angled pages with spine -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 6c0 0 4-2 10-2s10 2 10 2v14c0 0-4-2-10-2S2 20 2 20V6z"/>
+          <line x1="12" y1="4" x2="12" y2="18"/>
+        </svg>
+      </div>
+      <div class="mode-name">Academy</div>
+      <div class="mode-desc">Design scoresheets for your academy</div>
+      <div class="mode-tick"><svg viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+    </div>
+  </div>
+
+  <!-- ══ TOURNAMENT FIELDS ══ -->
+  <div class="section-title f-tournament">Tournament Details</div>
+  <div class="fg f-tournament">
+    <label class="fl">Tournament Name</label>
+    <input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generate()"/>
+  </div>
+  <div class="frow f-tournament">
     <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generate()"/></div>
     <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="f-date" oninput="generate()"/></div>
   </div>
-  <div class="frow">
+  <div class="frow f-tournament">
     <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Balewadi Complex" oninput="generate()"/></div>
     <div class="fg"><label class="fl">Time Control</label>
       <select class="fs" id="f-tc" onchange="generate()">
@@ -256,7 +379,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       </select>
     </div>
   </div>
-  <div class="frow">
+  <div class="frow f-tournament">
     <div class="fg"><label class="fl">Organised By</label><input class="fi" id="f-org" placeholder="e.g. Pune Chess Association" oninput="generate()"/></div>
     <div class="fg"><label class="fl">Total Rounds</label>
       <select class="fs" id="f-rounds" onchange="generate()">
@@ -266,6 +389,41 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
   </div>
 
+  <!-- ══ ACADEMY FIELDS ══ -->
+  <div class="section-title f-academy">Academy Details</div>
+  <div class="fg f-academy">
+    <label class="fl">Academy Name</label>
+    <input class="fi" id="f-acad-name" placeholder="e.g. Checkmate Chess Academy" oninput="generate()"/>
+  </div>
+  <div class="frow f-academy">
+    <div class="fg"><label class="fl">Coach / Trainer</label><input class="fi" id="f-coach" placeholder="e.g. FM Rahul Sharma" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Session Date</label><input class="fi" type="date" id="f-acad-date" oninput="generate()"/></div>
+  </div>
+  <div class="frow f-academy">
+    <div class="fg"><label class="fl">Batch / Class</label><input class="fi" id="f-batch" placeholder="e.g. Batch A · U-12" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Level</label>
+      <select class="fs" id="f-level" onchange="generate()">
+        <option>Beginner</option>
+        <option selected>Intermediate</option>
+        <option>Advanced</option>
+        <option>Elite</option>
+      </select>
+    </div>
+  </div>
+  <div class="frow f-academy">
+    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-acad-venue" placeholder="e.g. Academy Hall" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Time Control</label>
+      <select class="fs" id="f-acad-tc" onchange="generate()">
+        <option>10 min + 5 sec</option>
+        <option>15 min + 10 sec</option>
+        <option selected>25 min + 10 sec</option>
+        <option>30 min + 30 sec</option>
+        <option>Custom</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ══ QUANTITY ══ -->
   <div class="section-title">Quantity</div>
   <div class="qty-grid">
     <div class="qty-btn" onclick="setQty(5,this)">5</div>
@@ -277,6 +435,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <strong id="qtyDisplay">20</strong> sheets · 2 per A4 · <strong id="pageDisplay">10</strong> pages when printed
   </p>
 
+  <!-- ══ DESIGN STYLE ══ -->
   <div class="section-title">Design Style</div>
   <div class="style-grid">
     <div class="style-card sel" onclick="setStyle('classic',this)"><div class="style-preview sp-classic">CLASSIC</div><div class="style-name">Classic</div></div>
@@ -286,49 +445,56 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <div class="style-card" onclick="setStyle('bw',this)"><div class="style-preview sp-bw">B &amp; W</div><div class="style-name">Black &amp; White</div></div>
   </div>
 
-  <div class="section-title">Options</div>
-  <div>
-    <div class="trow">
-      <div><div class="tlbl">Show Move Number Column</div><div class="tsub">Numbered rows 1–60</div></div>
-      <label class="tsw"><input type="checkbox" id="opt-moves" checked onchange="generate()"/><span class="tsl"></span></label>
-    </div>
-    <div class="trow">
-      <div><div class="tlbl">Show Time Column</div><div class="tsub">Clock time per move — off by default</div></div>
-      <label class="tsw"><input type="checkbox" id="opt-time" onchange="generate()"/><span class="tsl"></span></label>
-    </div>
-    <div class="trow">
-      <div><div class="tlbl">Show FIDE Rating Fields</div><div class="tsub">Rating + FIDE ID fields</div></div>
-      <label class="tsw"><input type="checkbox" id="opt-rating" checked onchange="generate()"/><span class="tsl"></span></label>
-    </div>
-    <div class="trow">
-      <div><div class="tlbl">Show Result Checkboxes</div><div class="tsub">1–0, 0–1, ½–½, </div></div>
-      <label class="tsw"><input type="checkbox" id="opt-result" checked onchange="generate()"/><span class="tsl"></span></label>
-    </div>
-    <div class="trow">
-      <div><div class="tlbl">Show Signature Lines</div><div class="tsub">Both players + arbiter sign</div></div>
-      <label class="tsw"><input type="checkbox" id="opt-sign" checked onchange="generate()"/><span class="tsl"></span></label>
-    </div>
+  <!-- ══ SHEET OPTIONS ══ -->
+  <div class="section-title">Sheet Options</div>
+  <div class="trow">
+    <div><div class="tlbl">Show Time Column</div><div class="tsub">Adds a clock column for time recording</div></div>
+    <label class="tsw"><input type="checkbox" id="opt-time" onchange="generate()"/><span class="tsl"></span></label>
+  </div>
+  <div class="trow">
+    <div><div class="tlbl">Show Move Numbers</div><div class="tsub">Sr. No. column in moves table</div></div>
+    <label class="tsw"><input type="checkbox" id="opt-moves" checked onchange="generate()"/><span class="tsl"></span></label>
+  </div>
+  <div class="trow" id="trow-rating">
+    <div><div class="tlbl" id="lbl-rating">Show FIDE Rating</div><div class="tsub" id="sub-rating">Rating field under player name</div></div>
+    <label class="tsw"><input type="checkbox" id="opt-rating" checked onchange="generate()"/><span class="tsl"></span></label>
+  </div>
+  <div class="trow">
+    <div><div class="tlbl">Show Result Boxes</div><div class="tsub">1–0 / 0–1 / ½–½ tick boxes</div></div>
+    <label class="tsw"><input type="checkbox" id="opt-result" checked onchange="generate()"/><span class="tsl"></span></label>
+  </div>
+  <div class="trow">
+    <div><div class="tlbl">Show Signature Lines</div><div class="tsub">Players + coach/arbiter sign</div></div>
+    <label class="tsw"><input type="checkbox" id="opt-sign" checked onchange="generate()"/><span class="tsl"></span></label>
   </div>
 
+  <!-- ══ PRINT BUTTON ══ -->
   <button class="gen-btn" onclick="printSheets()">
     <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
     Print / Save as PDF
   </button>
+  <button class="mob-preview-btn" onclick="switchTab('preview')">👁 View Preview</button>
 
+  <!-- ══ FOOTER NOTE ══ -->
   <div class="section-title">Footer Note</div>
-  <div class="fg"><label class="fl">Custom Footer Text <span class="opt">(optional)</span></label><input class="fi" id="f-footer" placeholder="e.g. FIDE Standard Algebraic Notation · Write legibly" oninput="generate()"/></div>
+  <div class="fg"><label class="fl">Custom Footer Text <span class="opt">(optional)</span></label>
+    <input class="fi" id="f-footer" placeholder="e.g. Write legibly in algebraic notation" oninput="generate()"/>
+  </div>
 
   <div class="tip">
-    <strong>💡 Tip:</strong> In the print dialog, select <strong>"Save as PDF"</strong> and set paper to <strong>A4</strong>. Each A4 page = 2 scoresheets. 20 sheets = 10 pages — perfect for one round.
+    <strong>💡 Tip:</strong> In the print dialog, select <strong>"Save as PDF"</strong> and set paper to <strong>A4</strong>. Each A4 page = 2 scoresheets. 20 sheets = 10 pages.
   </div>
 
 </div>
 </div>
 
 <!-- ══ RIGHT — LIVE PREVIEW ══ -->
-<div class="preview-col">
+<div class="preview-col" id="col-preview">
   <div class="preview-header">
-    <div class="preview-title">Live Preview — updates instantly</div>
+    <div class="preview-header-left">
+      <div class="preview-title">Live Preview</div>
+      <span class="preview-mode-badge tournament" id="modeBadge">Tournament</span>
+    </div>
     <div class="preview-badge" id="previewBadge">20 sheets ready</div>
   </div>
   <div class="preview-area" id="previewArea"></div>
@@ -337,9 +503,35 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 </div><!-- /page -->
 
 <script>
-let qty = 20;
+let qty   = 20;
 let style = 'classic';
+let mode  = 'tournament'; // 'tournament' | 'academy'
 
+/* ── MODE ── */
+function setMode(m, card) {
+  mode = m;
+  // card highlight
+  document.getElementById('mode-tournament').className = 'mode-card' + (m==='tournament' ? ' sel-tournament' : '');
+  document.getElementById('mode-academy').className    = 'mode-card' + (m==='academy'    ? ' sel-academy'    : '');
+  // form fields swap via CSS class on formInner
+  document.getElementById('formInner').className = m === 'academy' ? 'form-inner mode-academy' : 'form-inner';
+  // hero
+  const hero = document.getElementById('hero');
+  hero.className = m === 'academy' ? 'hero hero-academy' : 'hero hero-tournament';
+  document.getElementById('heroSub').textContent = m === 'academy'
+    ? 'Professional scoresheets, printed in seconds.'
+    : 'Professional scoresheets, printed in seconds.';
+  // rating toggle label
+  document.getElementById('lbl-rating').textContent = m === 'academy' ? 'Show Level / Grade' : 'Show FIDE Rating';
+  document.getElementById('sub-rating').textContent = m === 'academy' ? 'Level field under student name' : 'Rating field under player name';
+  // preview mode badge
+  const mb = document.getElementById('modeBadge');
+  mb.textContent = m === 'academy' ? 'Academy' : 'Tournament';
+  mb.className   = 'preview-mode-badge ' + m;
+  generate();
+}
+
+/* ── QUANTITY ── */
 function setQty(n, btn) {
   qty = n;
   document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('sel'));
@@ -350,6 +542,7 @@ function setQty(n, btn) {
   generate();
 }
 
+/* ── STYLE ── */
 function setStyle(name, card) {
   style = name;
   document.querySelectorAll('.style-card').forEach(c => c.classList.remove('sel'));
@@ -357,24 +550,48 @@ function setStyle(name, card) {
   generate();
 }
 
-function v(id){ return document.getElementById(id)?.value || ''; }
+/* ── HELPERS ── */
+function v(id)  { return document.getElementById(id)?.value || ''; }
 function chk(id){ return document.getElementById(id)?.checked; }
-
 function fmtDate(str){
   if (!str) return '';
   const d = new Date(str);
   return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
 }
 
+/* ── BUILD SHEET ── */
 function buildSheet(num) {
-  const name     = v('f-name')   || 'Tournament Name';
-  const aicf     = v('f-aicf');
-  const date     = fmtDate(v('f-date'));
-  const venue    = v('f-venue');
-  const tc       = v('f-tc')     || '30 min + 30 sec';
-  const org      = v('f-org')    || 'Organiser';
+  const isTournament = mode === 'tournament';
+  const isAcademy    = mode === 'academy';
+
+  // ── Collect values by mode ──
+  const name       = isTournament ? (v('f-name')      || 'Tournament Name')       : (v('f-acad-name') || 'Academy Name');
+  const subline    = isTournament
+    ? (() => { const org = v('f-org') || 'Organiser'; const aicf = v('f-aicf'); return `Organised by ${org}${aicf ? ' · AICF: ' + aicf : ''}`; })()
+    : (() => { const coach = v('f-coach') || 'Coach'; const batch = v('f-batch'); return `Coach: ${coach}${batch ? ' · Batch: ' + batch : ''}`; })();
+  const date       = isTournament ? fmtDate(v('f-date'))      : fmtDate(v('f-acad-date'));
+  const venue      = isTournament ? v('f-venue')              : v('f-acad-venue');
+  const tc         = isTournament ? (v('f-tc') || '30 min + 30 sec') : (v('f-acad-tc') || '25 min + 10 sec');
   const footerNote = v('f-footer') || '';
-  const rounds   = v('f-rounds') || '9';
+
+  // Chips — right side of header
+  const chip3 = isTournament
+    ? `<div class="ss-chip">🔄 ${v('f-rounds') || '9'} Rounds</div>`
+    : `<div class="ss-chip">📚 ${v('f-level') || 'Intermediate'}</div>`;
+
+  // Game info bar labels
+  const gi1Label = isTournament ? 'Round No.'        : 'Session No.';
+  const gi2Label = isTournament ? 'Board No. / Table No.' : 'Board No.';
+  const gi3Label = 'Date';
+
+  // Player section labels
+  const p1Label = isTournament ? '♔ White Player' : '♔ Player 1 (White)';
+  const p2Label = isTournament ? '♚ Black Player' : '♚ Player 2 (Black)';
+  const ratingLabel = isTournament ? 'FIDE Rating' : 'Level / Grade';
+
+  // Result section — Academy replaces "Arbiter" with "Coach"
+  const arbiterLabel = isTournament ? 'Arbiter Use Only' : 'Coach Use Only';
+  const arbiterName  = isTournament ? 'Name'             : 'Coach Name';
 
   const showMoves  = chk('opt-moves');
   const showTime   = chk('opt-time');
@@ -382,7 +599,6 @@ function buildSheet(num) {
   const showResult = chk('opt-result');
   const showSign   = chk('opt-sign');
 
-  // Moves columns
   function movesCol(start, end) {
     let rows = '';
     for (let i = start; i <= end; i++) {
@@ -400,6 +616,7 @@ function buildSheet(num) {
   const thTime = showTime  ? '<th style="width:28px">Time</th>' : '';
 
   return `
+  <div class="scoresheet-wrap">
   <div class="scoresheet ss-${style}">
     <div class="ss-sheet-num">Sheet #${num}</div>
 
@@ -407,54 +624,44 @@ function buildSheet(num) {
     <div class="ss-header">
       <div class="ss-brand"><span>Chess</span><span>Connect</span></div>
       <div class="ss-event">${name}</div>
-      <div class="ss-subline">Organised by ${org}${aicf ? ' · AICF: ' + aicf : ''}</div>
+      <div class="ss-subline">${subline}</div>
       <div class="ss-meta-row">
         ${date  ? `<div class="ss-chip">📅 ${date}</div>` : ''}
         ${venue ? `<div class="ss-chip">📍 ${venue}</div>` : ''}
         <div class="ss-chip">⏱ ${tc}</div>
-        <div class="ss-chip">🔄 ${rounds} Rounds</div>
+        ${chip3}
       </div>
     </div>
 
     <!-- PLAYERS -->
     <div class="ss-players">
       <div class="ss-player">
-        <div class="ss-player-color">♔ White Player</div>
+        <div class="ss-player-color">${p1Label}</div>
         <div class="ss-player-name-row">
           <span class="ss-player-label">Name</span>
           <div class="ss-player-line"></div>
         </div>
         <div class="ss-player-info">
-          ${showRating ? `
-          <div class="ss-pi-row"><span class="ss-pi-label">FIDE Rating</span><div class="ss-pi-line"></div></div>
-          
-          ` : ''}
-          
-          
+          ${showRating ? `<div class="ss-pi-row"><span class="ss-pi-label">${ratingLabel}</span><div class="ss-pi-line"></div></div>` : ''}
         </div>
       </div>
       <div class="ss-player">
-        <div class="ss-player-color">♚ Black Player</div>
+        <div class="ss-player-color">${p2Label}</div>
         <div class="ss-player-name-row">
           <span class="ss-player-label">Name</span>
           <div class="ss-player-line"></div>
         </div>
         <div class="ss-player-info">
-          ${showRating ? `
-          <div class="ss-pi-row"><span class="ss-pi-label">FIDE Rating</span><div class="ss-pi-line"></div></div>
-          
-          ` : ''}
-          
-          
+          ${showRating ? `<div class="ss-pi-row"><span class="ss-pi-label">${ratingLabel}</span><div class="ss-pi-line"></div></div>` : ''}
         </div>
       </div>
     </div>
 
-    <!-- GAME INFO — Round, Board No., Date only -->
+    <!-- GAME INFO -->
     <div class="ss-gameinfo">
-      <div class="ss-gi-item"><div class="ss-gi-label">Round No.</div><div class="ss-gi-line"></div></div>
-      <div class="ss-gi-item"><div class="ss-gi-label">Board No./Table No.</div><div class="ss-gi-line"></div></div>
-      <div class="ss-gi-item"><div class="ss-gi-label">Date</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">${gi1Label}</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">${gi2Label}</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">${gi3Label}</div><div class="ss-gi-line"></div></div>
     </div>
 
     <!-- MOVES -->
@@ -486,17 +693,18 @@ function buildSheet(num) {
         </div>` : ''}
         ${showSign ? `
         <div class="ss-result-label" style="margin-top:5px">Signatures</div>
-        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">♔ White</span><div class="ss-sign-line"></div></div>
-        <div class="ss-sign-row"><span class="ss-sign-label">♚ Black</span><div class="ss-sign-line"></div></div>
+        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">${p1Label.replace(/♔\s*/,'')}</span><div class="ss-sign-line"></div></div>
+        <div class="ss-sign-row"><span class="ss-sign-label">${p2Label.replace(/♚\s*/,'')}</span><div class="ss-sign-line"></div></div>
         ` : ''}
       </div>
       <div class="ss-result-half">
         ${showResult ? `
-        <div class="ss-result-label">Arbiter Use Only</div>
-        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">Name</span><div class="ss-sign-line"></div></div>
+        <div class="ss-result-label">${arbiterLabel}</div>
+        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">${arbiterName}</span><div class="ss-sign-line"></div></div>
         <div class="ss-sign-row"><span class="ss-sign-label">Signature</span><div class="ss-sign-line"></div></div>
         ` : ''}
       </div>
+    </div>
     ` : ''}
 
     <!-- FOOTER -->
@@ -505,28 +713,46 @@ function buildSheet(num) {
       <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span></div>
     </div>
 
+  </div>
   </div>`;
 }
 
+/* ── GENERATE (preview) ── */
 function generate() {
   const area = document.getElementById('previewArea');
   let html = '';
   const previewCount = Math.min(qty, 3);
-  for (let i = 1; i <= previewCount; i++) {
-    html += buildSheet(i);
-  }
-  if (qty > 3) {
-    html += `<div class="more-card">+ ${qty - 3} more sheets visible when printed</div>`;
-  }
+  for (let i = 1; i <= previewCount; i++) html += buildSheet(i);
+  if (qty > 3) html += `<div class="more-card">+ ${qty - 3} more sheets visible when printed</div>`;
   area.innerHTML = html;
 }
 
+/* ── PRINT ── */
 function printSheets() {
   const area = document.getElementById('previewArea');
   let html = '';
   for (let i = 1; i <= qty; i++) html += buildSheet(i);
   area.innerHTML = html;
   setTimeout(() => window.print(), 300);
+}
+
+/* ── MOBILE TAB SWITCH ── */
+function switchTab(tab) {
+  const formCol    = document.getElementById('col-form');
+  const previewCol = document.getElementById('col-preview');
+  const tabForm    = document.getElementById('tab-form');
+  const tabPreview = document.getElementById('tab-preview');
+  if (tab === 'form') {
+    formCol.classList.add('mob-visible');
+    previewCol.classList.remove('mob-visible');
+    tabForm.classList.add('active');
+    tabPreview.classList.remove('active');
+  } else {
+    previewCol.classList.add('mob-visible');
+    formCol.classList.remove('mob-visible');
+    tabPreview.classList.add('active');
+    tabForm.classList.remove('active');
+  }
 }
 
 // Init
