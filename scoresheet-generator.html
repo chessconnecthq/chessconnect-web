@@ -399,11 +399,12 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   .nav,.form-col,.preview-header,.mob-tabs{display:none!important}
   .page{display:block}
   .preview-col{max-height:none;position:static;background:#fff;overflow:visible;display:block!important}
-  .preview-area{padding:0;gap:0}
-  .scoresheet{box-shadow:none;width:100%;min-height:0;page-break-after:always}
-  .scoresheet:last-child{page-break-after:auto}
+  .preview-area{padding:0;gap:0;display:block}
+  .scoresheet-wrap{display:block;width:100%;page-break-after:always;break-after:page}
+  .scoresheet-wrap:last-child{page-break-after:avoid;break-after:avoid}
+  .scoresheet{display:block;box-shadow:none;width:100%;min-height:0;page-break-after:always;break-after:page}
+  .scoresheet:last-child{page-break-after:avoid;break-after:avoid}
   .more-card{display:none}
-  .scoresheet-wrap{width:100%}
 }
 </style>
 </head>
