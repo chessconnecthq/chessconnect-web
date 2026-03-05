@@ -967,6 +967,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pro-clock .po-text{color:#ffffff}
 .chronos-clock .pause-overlay{background:rgba(0,0,20,0.82)}
 .chronos-clock .po-text{color:#00EFFF}
+.xconnect-clock .pause-overlay{background:rgba(240,245,255,0.88);backdrop-filter:blur(6px)}
+.xconnect-clock .po-text{color:#102C57}
+.xconnect-clock .po-sub{color:rgba(16,44,87,0.45)}
+.xconnect-clock .po-icon{filter:none}
 
 /* ═══════════ FULLSCREEN TOAST ═══════════ */
 .fs-toast{
@@ -1585,6 +1589,8 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-view xconnect-clock hidden" id="xconnect-clock">
     <div class="clock-3d" style="width:100%;max-width:520px">
       <div class="xc-body">
+        <!-- Pause overlay -->
+        <div class="pause-overlay" id="po-xconnect"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap pause to resume</div></div>
         <!-- Top bar -->
         <div class="xc-topbar">
           <div class="xc-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
@@ -2259,13 +2265,13 @@ function togglePause() {
   if(over||active===-1) return;
   paused=!paused;
   // Sync clock-face pause buttons
-  ['hc-pause','pc-pause','cc-pause'].forEach(id=>{
+  ['hc-pause','pc-pause','cc-pause','xc-pause'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.classList.toggle('on',paused);
   });
   setPauseIcon(paused);
   // Show/hide pause overlay on active clock body
-  ['heritage','pro','chronos'].forEach(id=>{
+  ['heritage','pro','chronos','xconnect'].forEach(id=>{
     const po=document.getElementById('po-'+id);
     if(po) po.classList.toggle('show', paused);
   });
