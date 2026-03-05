@@ -733,13 +733,12 @@ function buildFront(num) {
     ? `Organised by ${v('f-org')||'Organiser'}${v('f-aicf') ? ' · AICF: '+v('f-aicf') : ''}`
     : (v('f-acad-address') ? v('f-acad-address').replace(/\n/g,' · ') : '');
 
-  // Date — read end date only if its row is visible
-  const dateStart   = isT ? v('f-date')       : v('f-acad-date');
-  const endRowId    = isT ? 't-date-end-row'  : 'a-date-end-row';
-  const endDateId   = isT ? 'f-date-end'      : 'f-acad-date-end';
-  const hasEndDate  = document.getElementById(endRowId)?.classList.contains('visible');
-  const dateEnd     = hasEndDate ? v(endDateId) : '';
-  const date        = fmtDate(dateStart, dateEnd);
+  // Date — tournament only (academy has no date field)
+  const dateStart  = isT ? v('f-date') : '';
+  const endRowId   = 't-date-end-row';
+  const hasEndDate = isT && document.getElementById(endRowId)?.classList.contains('visible');
+  const dateEnd    = hasEndDate ? v('f-date-end') : '';
+  const date       = fmtDate(dateStart, dateEnd);
 
   const venue   = isT ? v('f-venue') : '';
 
@@ -866,12 +865,12 @@ function buildBack(num) {
   const sizeClass = paper === 'a5' ? ' ss-a5' : '';
 
   const name   = isT ? (v('f-name') || 'Tournament Name') : (v('f-acad-name') || 'Academy Name');
-  const gi1Val = isT ? 'Round No.' : 'Session No.';
-  const gi2Val = isT ? 'Board No.' : 'Board No.';
+  const gi1Val = 'Round No.';
+  const gi2Val = 'Board No.';
   const arbLbl = 'Arbiter';
 
-  const showMoves = chk('opt-moves');
-  const showTime  = chk('opt-time');
+  const showMoves = true;
+  const showTime  = false;
 
   const moveLabel = paper === 'a5' ? '31 – 60' : '51 – 100';
 
