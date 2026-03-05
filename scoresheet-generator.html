@@ -26,15 +26,13 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 /* ── SPLIT LAYOUT ── */
 .page{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 58px)}
-
-/* ── MOBILE TAB BAR ── */
 .mob-tabs{display:none}
 
 /* ── LEFT FORM ── */
 .form-col{background:var(--white);border-right:1px solid var(--gl);overflow-y:auto;max-height:calc(100vh - 58px);position:sticky;top:58px}
 .form-inner{padding:1.4rem}
 
-/* ── HERO — dynamic ── */
+/* ── HERO ── */
 .hero{border-radius:var(--r);padding:1.1rem 1.3rem;margin-bottom:1.2rem;color:#fff;transition:background 0.35s}
 .hero-tournament{background:linear-gradient(135deg,var(--navy),var(--blue))}
 .hero-academy{background:linear-gradient(135deg,#065F46,#059669)}
@@ -45,8 +43,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.2rem}
 .mode-card{border:2px solid var(--gl);border-radius:var(--r);padding:0.9rem 0.8rem;cursor:pointer;transition:all 0.22s;text-align:center;background:var(--white);position:relative;overflow:hidden}
 .mode-card:hover{border-color:var(--blue);background:#F8FAFF}
-.mode-card.sel-tournament{border-color:var(--blue);background:rgba(30,115,232,0.04)}
-.mode-card.sel-academy{border-color:var(--blue);background:rgba(30,115,232,0.04)}
+.mode-card.sel-tournament,.mode-card.sel-academy{border-color:var(--blue);background:rgba(30,115,232,0.04)}
 .mode-icon{margin-bottom:0.5rem;display:flex;align-items:center;justify-content:center}
 .mode-icon svg{stroke:var(--gl);transition:stroke 0.22s}
 .mode-card:hover .mode-icon svg,.mode-card.sel-tournament .mode-icon svg,.mode-card.sel-academy .mode-icon svg{stroke:var(--blue)}
@@ -57,9 +54,44 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .mode-tick svg{stroke:#fff;stroke-width:2.5;fill:none;width:9px;height:9px}
 .mode-card.sel-tournament .mode-tick,.mode-card.sel-academy .mode-tick{opacity:1}
 
+/* ── TEXTAREA ── */
+.fta{resize:vertical;min-height:52px;line-height:1.5}
+
+/* ── LOGO UPLOAD ── */
+.logo-upload-area{border:2px dashed var(--gl);border-radius:var(--rs);padding:0.7rem;cursor:pointer;transition:border-color 0.2s,background 0.2s;display:flex;flex-direction:column;align-items:center;gap:0.3rem;position:relative}
+.logo-upload-area:hover{border-color:var(--blue);background:#F8FAFF}
+.logo-upload-area.has-logo{border-style:solid;border-color:var(--blue);background:rgba(30,115,232,0.03)}
+.logo-upload-inner{display:flex;flex-direction:column;align-items:center;gap:0.25rem;text-align:center}
+.logo-upload-text{font-size:0.75rem;font-weight:600;color:var(--navy)}
+.logo-upload-hint{font-size:0.62rem;color:var(--gray)}
+.logo-thumb{width:48px;height:48px;object-fit:contain;border-radius:4px}
+.logo-remove{background:none;border:none;font-size:0.65rem;font-weight:600;color:#EF4444;cursor:pointer;padding:0.1rem 0.3rem;font-family:var(--font-b);margin-top:0.1rem}
+.logo-remove:hover{opacity:0.75}
+
+/* ── SCORESHEET LOGO ── */
+.ss-header-inner{display:flex;align-items:center;gap:10px}
+.ss-logo-img{width:40px;height:40px;object-fit:contain;flex-shrink:0;border-radius:3px}
+.ss-header-text{flex:1;min-width:0}
+.date-end-row{display:none;margin-top:-0.3rem;margin-bottom:0.8rem;grid-template-columns:1fr auto;align-items:center;gap:0.5rem}
+.date-end-row.visible{display:grid}
+.add-end-date{font-size:0.68rem;font-weight:600;color:var(--blue);cursor:pointer;background:none;border:none;padding:0;font-family:var(--font-b);display:inline-flex;align-items:center;gap:0.25rem;margin-bottom:0.6rem}
+.add-end-date:hover{opacity:0.75}
+.remove-end-date{font-size:0.7rem;color:var(--gray);cursor:pointer;background:none;border:none;padding:0 0 0 0.3rem;font-family:var(--font-b);flex-shrink:0}
+.remove-end-date:hover{color:#EF4444}
+/* ── CUSTOM TIME CONTROL ── */
+.custom-tc-wrap{display:none;margin-top:0.4rem}
+.custom-tc-wrap.visible{display:block}
+.size-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.4rem}
+.size-btn{padding:0.6rem 0.5rem;border:2px solid var(--gl);border-radius:var(--rs);background:var(--white);cursor:pointer;transition:all 0.2s;text-align:center}
+.size-btn:hover{border-color:var(--blue)}
+.size-btn.sel{border-color:var(--blue);background:rgba(30,115,232,0.04)}
+.size-btn-name{font-size:0.82rem;font-weight:800;color:var(--navy)}
+.size-btn-desc{font-size:0.62rem;color:var(--gray);margin-top:0.1rem}
+.size-btn.sel .size-btn-name{color:var(--blue)}
+
+/* ── FORM FIELDS ── */
 .section-title{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin:1.1rem 0 0.65rem;display:flex;align-items:center;gap:0.5rem}
 .section-title::after{content:'';flex:1;height:1px;background:var(--gl)}
-
 .fg{margin-bottom:0.8rem}
 .fl{display:block;font-size:0.7rem;font-weight:700;color:var(--navy);margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.04em}
 .fl .opt{font-weight:400;text-transform:none;color:var(--gray);letter-spacing:0}
@@ -67,7 +99,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .fi:focus,.fs:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,115,232,0.07)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
 
-/* Field visibility */
+/* Field visibility by mode */
 .f-tournament{display:block}
 .f-academy{display:none}
 .mode-academy .f-tournament{display:none}
@@ -75,13 +107,13 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .mode-academy .f-academy{display:block}
 .mode-academy .f-academy.frow{display:grid}
 
-/* Quantity */
+/* ── QUANTITY ── */
 .qty-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.35rem;margin-bottom:0.4rem}
 .qty-btn{padding:0.48rem;border-radius:var(--rs);border:1.5px solid var(--gl);background:var(--white);color:var(--gray);font-family:var(--font-b);font-size:0.8rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s}
 .qty-btn:hover{border-color:var(--blue);color:var(--blue)}
 .qty-btn.sel{background:var(--blue);border-color:var(--blue);color:#fff}
 
-/* Style cards */
+/* ── STYLE CARDS ── */
 .style-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.45rem;margin-bottom:0.4rem}
 .style-card{border:2px solid var(--gl);border-radius:var(--rs);padding:0.6rem;cursor:pointer;transition:all 0.2s;text-align:center}
 .style-card:hover{border-color:var(--blue)}
@@ -94,7 +126,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .sp-bw{background:#fff;color:#111;border:1.5px solid #111}
 .style-name{font-size:0.7rem;font-weight:700;color:var(--navy)}
 
-/* Toggle */
+/* ── TOGGLE ROWS ── */
 .trow{display:flex;align-items:center;justify-content:space-between;padding:0.52rem 0;border-bottom:1px solid var(--gl)}
 .trow:last-child{border-bottom:none}
 .tlbl{font-size:0.8rem;font-weight:500;color:var(--navy)}
@@ -106,7 +138,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .tsw input:checked+.tsl{background:var(--blue)}
 .tsw input:checked+.tsl::before{transform:translateX(17px)}
 
-/* Buttons */
+/* ── BUTTONS ── */
 .gen-btn{width:100%;padding:0.82rem;border:none;border-radius:var(--rs);background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;font-family:var(--font-b);font-size:0.92rem;font-weight:800;cursor:pointer;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1rem;letter-spacing:0.02em}
 .gen-btn:hover{opacity:0.9}
 .gen-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -117,16 +149,24 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 /* ── RIGHT PREVIEW ── */
 .preview-col{background:#D1D9E6;overflow-y:auto;max-height:calc(100vh - 58px);position:sticky;top:58px;display:flex;flex-direction:column}
-.preview-header{background:var(--white);border-bottom:1px solid var(--gl);padding:0.7rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.preview-header{background:var(--white);border-bottom:1px solid var(--gl);padding:0.6rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:0.6rem;flex-wrap:wrap}
+.preview-header-left{display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap}
 .preview-title{font-size:0.8rem;font-weight:700;color:var(--navy)}
-.preview-badge{font-size:0.68rem;font-weight:700;color:var(--green);background:#ECFDF5;border:1px solid #BBF7D0;padding:0.2rem 0.6rem;border-radius:100px}
-.preview-mode-badge{font-size:0.68rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:100px;margin-left:0.4rem}
+.preview-mode-badge{font-size:0.68rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:100px}
 .preview-mode-badge.tournament{color:var(--blue);background:rgba(30,115,232,0.08);border:1px solid rgba(30,115,232,0.2)}
 .preview-mode-badge.academy{color:#059669;background:rgba(5,150,105,0.08);border:1px solid rgba(5,150,105,0.2)}
-.preview-header-left{display:flex;align-items:center;gap:0.3rem;flex-wrap:wrap}
+
+/* ── FRONT / BACK TOGGLE ── */
+.side-toggle{display:flex;background:var(--off);border:1.5px solid var(--gl);border-radius:100px;padding:2px;gap:2px;flex-shrink:0}
+.side-btn{padding:0.22rem 0.75rem;border-radius:100px;border:none;background:transparent;font-family:var(--font-b);font-size:0.7rem;font-weight:700;color:var(--gray);cursor:pointer;transition:all 0.18s;white-space:nowrap}
+.side-btn.active{background:var(--white);color:var(--navy);box-shadow:0 1px 4px rgba(16,44,87,0.1)}
+/* back toggle disabled state when back side is off */
+.side-btn:disabled{opacity:0.35;cursor:not-allowed}
+
+.preview-badge{font-size:0.68rem;font-weight:700;color:var(--green);background:#ECFDF5;border:1px solid #BBF7D0;padding:0.2rem 0.6rem;border-radius:100px;white-space:nowrap}
 .preview-area{flex:1;padding:1.2rem;display:flex;flex-direction:column;gap:1.2rem;align-items:center;overflow-y:auto}
 
-/* ══ SCORESHEET ══ */
+/* ══ SCORESHEET BASE ══ */
 .scoresheet{
   width:680px;background:#fff;
   box-shadow:0 4px 24px rgba(0,0,0,0.12);
@@ -134,8 +174,38 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   page-break-after:always;
   position:relative;
 }
+/* A5 scoresheet — narrower */
+.scoresheet.ss-a5{width:480px}
 
-/* CLASSIC */
+/* ── BACK SIDE label strip ── */
+.ss-back-bar{display:flex;align-items:center;justify-content:space-between;padding:5px 16px;background:#F8FAFF;border-bottom:1.5px solid #102C57;font-size:6px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.08em}
+.ss-back-bar-title{font-size:8px;font-weight:800;color:var(--navy);font-style:normal;letter-spacing:0}
+.ss-back-bar-chips{display:flex;gap:6px}
+.ss-back-bar-chip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;padding:2px 6px;font-size:6px;font-weight:700;color:#1E40AF}
+/* theme overrides for back bar */
+.ss-classic .ss-back-bar{background:linear-gradient(135deg,#102C57,#1E73E8);border-bottom:none;color:rgba(255,255,255,0.7)}
+.ss-classic .ss-back-bar-title{color:#fff}
+.ss-classic .ss-back-bar-chip{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:#fff}
+.ss-academy .ss-back-bar{background:linear-gradient(135deg,#065F46,#059669);border-bottom:none;color:rgba(255,255,255,0.7)}
+.ss-academy .ss-back-bar-title{color:#fff}
+.ss-academy .ss-back-bar-chip{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:#fff}
+.ss-warm .ss-back-bar{background:linear-gradient(135deg,#7C2D12,#C2410C);border-bottom:none;color:rgba(255,255,255,0.7)}
+.ss-warm .ss-back-bar-title{color:#fff}
+.ss-warm .ss-back-bar-chip{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:#fff}
+.ss-bw .ss-back-bar{background:#fff;border-bottom:2px solid #111;color:#555}
+.ss-bw .ss-back-bar-title{color:#111}
+.ss-bw .ss-back-bar-chip{background:#efefef;border-color:#aaa;color:#333}
+
+/* ── BACK SIDE signatures ── */
+.ss-back-sign{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid #102C57;margin:4px 12px 0}
+.ss-back-sign-half{padding:10px 14px}
+.ss-back-sign-half:first-child{border-right:1px solid #e5e9f2}
+.ss-back-sign-label{font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#6B7280;margin-bottom:8px}
+.ss-bw .ss-back-sign{border-top:1.5px solid #111}
+.ss-bw .ss-back-sign-half:first-child{border-right:1px solid #bbb}
+.ss-bw .ss-back-sign-label{color:#444}
+
+/* ── THEME HEADERS ── */
 .ss-classic .ss-header{background:linear-gradient(135deg,#102C57,#1E73E8);padding:13px 20px 11px;color:#fff}
 .ss-classic .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px}
 .ss-classic .ss-brand span{color:#4285F4}
@@ -144,7 +214,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-classic .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-classic .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#fff}
 
-/* MINIMAL */
 .ss-minimal .ss-header{background:#fff;padding:13px 20px 9px;border-bottom:2px solid #102C57}
 .ss-minimal .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px;color:#102C57}
 .ss-minimal .ss-brand span{color:#4285F4}
@@ -153,7 +222,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-minimal .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-minimal .ss-chip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#1E40AF}
 
-/* ACADEMY STYLE */
 .ss-academy .ss-header{background:linear-gradient(135deg,#065F46,#059669);padding:13px 20px 11px;color:#fff}
 .ss-academy .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px}
 .ss-academy .ss-brand span{color:#6EE7B7}
@@ -162,7 +230,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-academy .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-academy .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#fff}
 
-/* WARM */
 .ss-warm .ss-header{background:linear-gradient(135deg,#7C2D12,#C2410C);padding:13px 20px 11px;color:#fff}
 .ss-warm .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px}
 .ss-warm .ss-brand span{color:#FCD34D}
@@ -171,7 +238,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-warm .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-warm .ss-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#fff}
 
-/* B&W */
 .ss-bw .ss-header{background:#fff;padding:13px 20px 9px;border-bottom:2.5px solid #111}
 .ss-bw .ss-brand{font-size:8px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px;color:#111}
 .ss-bw .ss-brand span{color:#111}
@@ -212,7 +278,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-bw .ss-footer-connect{color:#111}
 .ss-bw .ss-footer-note{color:#666}
 
-/* PLAYER INFO */
+/* ── PLAYER INFO ── */
 .ss-players{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #e5e9f2}
 .ss-player{padding:8px 16px}
 .ss-player:first-child{border-right:1px solid #e5e9f2}
@@ -225,14 +291,14 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-pi-label{font-size:6px;font-weight:600;color:#9CA3AF;white-space:nowrap;flex-shrink:0}
 .ss-pi-line{flex:1;border-bottom:1px solid #CBD5E1;height:14px}
 
-/* GAME INFO BAR */
+/* ── GAME INFO BAR ── */
 .ss-gameinfo{display:flex;border-bottom:1px solid #e5e9f2;background:#F8FAFF}
 .ss-gi-item{flex:1;padding:6px 10px;border-right:1px solid #e5e9f2;font-size:6px}
 .ss-gi-item:last-child{border-right:none}
 .ss-gi-label{font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}
 .ss-gi-line{border-bottom:1px solid #CBD5E1;height:17px}
 
-/* MOVES TABLE */
+/* ── MOVES TABLE ── */
 .ss-moves{padding:7px 12px 4px;display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 .ss-moves-col{width:100%}
 .moves-tbl{width:100%;border:1.5px solid #CBD5E1;border-collapse:collapse}
@@ -241,12 +307,12 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .moves-tbl td{font-size:7.5px;padding:0;border-bottom:1px solid #CBD5E1;border-right:1px solid #CBD5E1;height:14px;vertical-align:middle}
 .moves-tbl td:last-child{border-right:none}
 .moves-tbl td.mn{width:22px;font-size:6.5px;font-weight:700;color:#94A3B8;padding:0 3px;font-family:'DM Mono',monospace;background:#FAFBFF;text-align:center}
-.moves-tbl td.mv{padding:0 4px;font-family:'DM Mono',monospace;min-width:65px}
-.moves-tbl td.mt{padding:0 3px;font-family:'DM Mono',monospace;width:28px}
+.moves-tbl td.mv{padding:0 4px;font-family:'DM Mono',monospace;min-width:55px}
+.moves-tbl td.mt{padding:0 3px;font-family:'DM Mono',monospace;width:26px}
 .moves-tbl tr:nth-child(even) td{background:#F8FAFF}
 .moves-tbl tr:nth-child(even) td.mn{background:#F0F4FF}
 
-/* RESULT */
+/* ── RESULT ── */
 .ss-result{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid #102C57;margin:4px 12px 0}
 .ss-result-half{padding:10px 14px}
 .ss-result-half:first-child{border-right:1px solid #e5e9f2}
@@ -259,7 +325,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-sign-label{font-size:6px;font-weight:600;color:#9CA3AF;white-space:nowrap}
 .ss-sign-line{flex:1;border-bottom:1px solid #CBD5E1;height:24px}
 
-/* FOOTER */
+/* ── FOOTER ── */
 .ss-footer{background:#F8FAFF;border-top:1px solid #e5e9f2;padding:5px 16px;display:flex;align-items:center;justify-content:space-between}
 .ss-footer-brand{font-size:7px;font-weight:800;letter-spacing:-0.2px}
 .ss-footer-chess{color:#102C57}.ss-footer-connect{color:#4285F4}
@@ -267,10 +333,11 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-minimal .ss-sheet-num,.ss-bw .ss-sheet-num{color:rgba(16,44,87,0.35)}
 .ss-footer-note{font-size:5.5px;color:#9CA3AF;flex:1;text-align:center}
 
-/* More sheets card */
+/* More card */
 .more-card{background:rgba(30,115,232,0.06);border:1.5px dashed rgba(30,115,232,0.22);border-radius:12px;padding:2rem;text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;width:680px}
+.more-card.mc-a5{width:480px}
 
-/* ── MOBILE RESPONSIVE ── */
+/* ── MOBILE ── */
 @media(max-width:900px){
   .page{grid-template-columns:1fr;min-height:unset}
   .mob-tabs{display:flex;background:var(--white);border-bottom:2px solid var(--gl);position:sticky;top:58px;z-index:90}
@@ -283,6 +350,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   .preview-area{padding:0.75rem;align-items:stretch;overflow-x:hidden}
   .scoresheet-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
   .scoresheet{width:680px;min-width:680px}
+  .scoresheet.ss-a5{width:480px;min-width:480px}
   .more-card{width:100%;min-width:0}
   .ntag{display:none}
   .mob-preview-btn{display:block}
@@ -298,6 +366,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   .scoresheet{box-shadow:none;width:100%;page-break-after:always}
   .scoresheet:last-child{page-break-after:auto}
   .more-card{display:none}
+  .scoresheet-wrap{width:100%}
 }
 </style>
 </head>
@@ -309,7 +378,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   <a href="index.html" class="nback">← Back to Home</a>
 </nav>
 
-<!-- ══ MOBILE TABS ══ -->
 <div class="mob-tabs">
   <button class="mob-tab active" id="tab-form" onclick="switchTab('form')">⚙ Configure</button>
   <button class="mob-tab" id="tab-preview" onclick="switchTab('preview')">👁 Preview</button>
@@ -321,21 +389,17 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 <div class="form-col mob-visible" id="col-form">
 <div class="form-inner" id="formInner">
 
-  <!-- ── HERO ── -->
   <div class="hero hero-tournament" id="hero">
-    <div class="hero-title" id="heroTitle">Scoresheet Generator</div>
+    <div class="hero-title">Scoresheet Generator</div>
     <div class="hero-sub" id="heroSub">Professional scoresheets, printed in seconds.</div>
   </div>
 
-  <!-- ── MODE SELECTOR ── -->
+  <!-- MODE -->
   <div class="mode-grid">
     <div class="mode-card sel-tournament" id="mode-tournament" onclick="setMode('tournament',this)">
       <div class="mode-icon">
-        <!-- Podium / bracket: 3 bars of staggered heights -->
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="11" width="5" height="10" rx="1"/>
-          <rect x="9.5" y="6" width="5" height="15" rx="1"/>
-          <rect x="17" y="14" width="5" height="7" rx="1"/>
+          <rect x="2" y="11" width="5" height="10" rx="1"/><rect x="9.5" y="6" width="5" height="15" rx="1"/><rect x="17" y="14" width="5" height="7" rx="1"/>
         </svg>
       </div>
       <div class="mode-name">Tournament</div>
@@ -344,10 +408,8 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
     <div class="mode-card" id="mode-academy" onclick="setMode('academy',this)">
       <div class="mode-icon">
-        <!-- Open book: two angled pages with spine -->
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 6c0 0 4-2 10-2s10 2 10 2v14c0 0-4-2-10-2S2 20 2 20V6z"/>
-          <line x1="12" y1="4" x2="12" y2="18"/>
+          <path d="M2 6c0 0 4-2 10-2s10 2 10 2v14c0 0-4-2-10-2S2 20 2 20V6z"/><line x1="12" y1="4" x2="12" y2="18"/>
         </svg>
       </div>
       <div class="mode-name">Academy</div>
@@ -356,27 +418,35 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
   </div>
 
-  <!-- ══ TOURNAMENT FIELDS ══ -->
+  <!-- TOURNAMENT FIELDS -->
   <div class="section-title f-tournament">Tournament Details</div>
-  <div class="fg f-tournament">
-    <label class="fl">Tournament Name</label>
-    <input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generate()"/>
-  </div>
+  <div class="fg f-tournament"><label class="fl">Tournament Name</label><input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generate()"/></div>
   <div class="frow f-tournament">
     <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generate()"/></div>
-    <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="f-date" oninput="generate()"/></div>
+    <div class="fg">
+      <label class="fl">Date</label>
+      <input class="fi" type="date" id="f-date" oninput="generate()"/>
+      <div class="date-end-row" id="t-date-end-row">
+        <input class="fi" type="date" id="f-date-end" oninput="generate()" style="margin-top:0.35rem"/>
+        <button class="remove-end-date" onclick="removeEndDate('t')" title="Remove end date">✕</button>
+      </div>
+      <button class="add-end-date" id="t-add-end" onclick="addEndDate('t')">+ Add end date</button>
+    </div>
   </div>
   <div class="frow f-tournament">
-    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Balewadi Complex" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Shree Shiv Chhatrapati Sports Complex, Balewadi, Pune" oninput="generate()"/></div>
     <div class="fg"><label class="fl">Time Control</label>
-      <select class="fs" id="f-tc" onchange="generate()">
+      <select class="fs" id="f-tc" onchange="onTcChange('f-tc','tc-custom-wrap')">
+        <option selected>15 min + 10 sec</option>
         <option>30 min + 30 sec</option>
-        <option>15 min + 10 sec</option>
         <option>10 min + 5 sec</option>
         <option>90 min + 30 sec</option>
         <option>25 min + 10 sec</option>
         <option>Custom</option>
       </select>
+      <div class="custom-tc-wrap" id="tc-custom-wrap">
+        <input class="fi" id="f-tc-custom" placeholder="e.g. 40 moves in 90 min + 30 min" oninput="generate()" style="margin-top:0.4rem"/>
+      </div>
     </div>
   </div>
   <div class="frow f-tournament">
@@ -389,41 +459,72 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
   </div>
 
-  <!-- ══ ACADEMY FIELDS ══ -->
+  <!-- ACADEMY FIELDS -->
   <div class="section-title f-academy">Academy Details</div>
+
+  <!-- Logo upload -->
   <div class="fg f-academy">
-    <label class="fl">Academy Name</label>
-    <input class="fi" id="f-acad-name" placeholder="e.g. Checkmate Chess Academy" oninput="generate()"/>
-  </div>
-  <div class="frow f-academy">
-    <div class="fg"><label class="fl">Coach / Trainer</label><input class="fi" id="f-coach" placeholder="e.g. FM Rahul Sharma" oninput="generate()"/></div>
-    <div class="fg"><label class="fl">Session Date</label><input class="fi" type="date" id="f-acad-date" oninput="generate()"/></div>
-  </div>
-  <div class="frow f-academy">
-    <div class="fg"><label class="fl">Batch / Class</label><input class="fi" id="f-batch" placeholder="e.g. Batch A · U-12" oninput="generate()"/></div>
-    <div class="fg"><label class="fl">Level</label>
-      <select class="fs" id="f-level" onchange="generate()">
-        <option>Beginner</option>
-        <option selected>Intermediate</option>
-        <option>Advanced</option>
-        <option>Elite</option>
-      </select>
+    <label class="fl">Academy Logo <span class="opt">(optional)</span></label>
+    <div class="logo-upload-area" id="logoUploadArea" onclick="document.getElementById('f-acad-logo').click()">
+      <div class="logo-upload-inner" id="logoUploadInner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gl)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21,15 16,10 5,21"/>
+        </svg>
+        <span class="logo-upload-text">Click to upload logo</span>
+        <span class="logo-upload-hint">PNG, JPG or SVG · displays at 40×40px</span>
+      </div>
+      <img id="logoPreviewThumb" class="logo-thumb" style="display:none"/>
+      <button class="logo-remove" id="logoRemoveBtn" style="display:none" onclick="removeLogo(event)">✕ Remove</button>
     </div>
+    <input type="file" id="f-acad-logo" accept="image/png,image/jpeg,image/svg+xml" style="display:none" onchange="onLogoUpload(event)"/>
   </div>
+
+  <div class="fg f-academy"><label class="fl">Academy Name</label><input class="fi" id="f-acad-name" placeholder="e.g. Checkmate Chess Academy" oninput="generate()"/></div>
+
+  <div class="fg f-academy">
+    <label class="fl">Academy Address <span class="opt">(optional)</span></label>
+    <textarea class="fi fta" id="f-acad-address" rows="2" placeholder="e.g. 12, Tilak Road, Sadashiv Peth&#10;Pune, Maharashtra 411030" oninput="generate()"></textarea>
+  </div>
+
   <div class="frow f-academy">
-    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-acad-venue" placeholder="e.g. Academy Hall" oninput="generate()"/></div>
+    <div class="fg">
+      <label class="fl">Session Date</label>
+      <input class="fi" type="date" id="f-acad-date" oninput="generate()"/>
+      <div class="date-end-row" id="a-date-end-row">
+        <input class="fi" type="date" id="f-acad-date-end" oninput="generate()" style="margin-top:0.35rem"/>
+        <button class="remove-end-date" onclick="removeEndDate('a')" title="Remove end date">✕</button>
+      </div>
+      <button class="add-end-date" id="a-add-end" onclick="addEndDate('a')">+ Add end date</button>
+    </div>
     <div class="fg"><label class="fl">Time Control</label>
-      <select class="fs" id="f-acad-tc" onchange="generate()">
+      <select class="fs" id="f-acad-tc" onchange="onTcChange('f-acad-tc','acad-tc-custom-wrap')">
+        <option selected>15 min + 10 sec</option>
         <option>10 min + 5 sec</option>
-        <option>15 min + 10 sec</option>
-        <option selected>25 min + 10 sec</option>
+        <option>25 min + 10 sec</option>
         <option>30 min + 30 sec</option>
         <option>Custom</option>
       </select>
+      <div class="custom-tc-wrap" id="acad-tc-custom-wrap">
+        <input class="fi" id="f-acad-tc-custom" placeholder="e.g. 20 min flat" oninput="generate()" style="margin-top:0.4rem"/>
+      </div>
     </div>
   </div>
 
-  <!-- ══ QUANTITY ══ -->
+  <!-- PAPER SIZE -->
+  <div class="section-title">Paper Size</div>
+  <div class="size-grid">
+    <div class="size-btn sel" id="size-a4" onclick="setSize('a4',this)">
+      <div class="size-btn-name">A4</div>
+      <div class="size-btn-desc">50 moves · 2 per page</div>
+    </div>
+    <div class="size-btn" id="size-a5" onclick="setSize('a5',this)">
+      <div class="size-btn-name">A5</div>
+      <div class="size-btn-desc">30 moves · 4 per page</div>
+    </div>
+  </div>
+
+  <!-- QUANTITY -->
   <div class="section-title">Quantity</div>
   <div class="qty-grid">
     <div class="qty-btn" onclick="setQty(5,this)">5</div>
@@ -431,11 +532,11 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <div class="qty-btn sel" onclick="setQty(20,this)">20</div>
     <div class="qty-btn" onclick="setQty(50,this)">50</div>
   </div>
-  <p style="font-size:0.69rem;color:var(--gray)">
+  <p style="font-size:0.69rem;color:var(--gray)" id="qtyNote">
     <strong id="qtyDisplay">20</strong> sheets · 2 per A4 · <strong id="pageDisplay">10</strong> pages when printed
   </p>
 
-  <!-- ══ DESIGN STYLE ══ -->
+  <!-- DESIGN STYLE -->
   <div class="section-title">Design Style</div>
   <div class="style-grid">
     <div class="style-card sel" onclick="setStyle('classic',this)"><div class="style-preview sp-classic">CLASSIC</div><div class="style-name">Classic</div></div>
@@ -445,7 +546,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <div class="style-card" onclick="setStyle('bw',this)"><div class="style-preview sp-bw">B &amp; W</div><div class="style-name">Black &amp; White</div></div>
   </div>
 
-  <!-- ══ SHEET OPTIONS ══ -->
+  <!-- SHEET OPTIONS -->
   <div class="section-title">Sheet Options</div>
   <div class="trow">
     <div><div class="tlbl">Show Time Column</div><div class="tsub">Adds a clock column for time recording</div></div>
@@ -455,7 +556,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <div><div class="tlbl">Show Move Numbers</div><div class="tsub">Sr. No. column in moves table</div></div>
     <label class="tsw"><input type="checkbox" id="opt-moves" checked onchange="generate()"/><span class="tsl"></span></label>
   </div>
-  <div class="trow" id="trow-rating">
+  <div class="trow">
     <div><div class="tlbl" id="lbl-rating">Show FIDE Rating</div><div class="tsub" id="sub-rating">Rating field under player name</div></div>
     <label class="tsw"><input type="checkbox" id="opt-rating" checked onchange="generate()"/><span class="tsl"></span></label>
   </div>
@@ -467,33 +568,45 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <div><div class="tlbl">Show Signature Lines</div><div class="tsub">Players + coach/arbiter sign</div></div>
     <label class="tsw"><input type="checkbox" id="opt-sign" checked onchange="generate()"/><span class="tsl"></span></label>
   </div>
+  <div class="trow">
+    <div>
+      <div class="tlbl">Print Back Side</div>
+      <div class="tsub" id="back-sub">Continuation moves 51–100 + signatures</div>
+    </div>
+    <label class="tsw"><input type="checkbox" id="opt-back" onchange="onBackToggle()"/><span class="tsl"></span></label>
+  </div>
 
-  <!-- ══ PRINT BUTTON ══ -->
+  <!-- PRINT -->
   <button class="gen-btn" onclick="printSheets()">
     <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
     Print / Save as PDF
   </button>
   <button class="mob-preview-btn" onclick="switchTab('preview')">👁 View Preview</button>
 
-  <!-- ══ FOOTER NOTE ══ -->
+  <!-- FOOTER NOTE -->
   <div class="section-title">Footer Note</div>
   <div class="fg"><label class="fl">Custom Footer Text <span class="opt">(optional)</span></label>
     <input class="fi" id="f-footer" placeholder="e.g. Write legibly in algebraic notation" oninput="generate()"/>
   </div>
 
-  <div class="tip">
+  <div class="tip" id="printTip">
     <strong>💡 Tip:</strong> In the print dialog, select <strong>"Save as PDF"</strong> and set paper to <strong>A4</strong>. Each A4 page = 2 scoresheets. 20 sheets = 10 pages.
   </div>
 
 </div>
 </div>
 
-<!-- ══ RIGHT — LIVE PREVIEW ══ -->
+<!-- ══ RIGHT — PREVIEW ══ -->
 <div class="preview-col" id="col-preview">
   <div class="preview-header">
     <div class="preview-header-left">
       <div class="preview-title">Live Preview</div>
       <span class="preview-mode-badge tournament" id="modeBadge">Tournament</span>
+    </div>
+    <!-- Front / Back toggle -->
+    <div class="side-toggle">
+      <button class="side-btn active" id="btn-front" onclick="setSide('front')">Front</button>
+      <button class="side-btn" id="btn-back" onclick="setSide('back')" disabled>Back</button>
     </div>
     <div class="preview-badge" id="previewBadge">20 sheets ready</div>
   </div>
@@ -503,28 +616,55 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 </div><!-- /page -->
 
 <script>
-let qty   = 20;
-let style = 'classic';
-let mode  = 'tournament'; // 'tournament' | 'academy'
+let qty     = 20;
+let style   = 'classic';
+let mode    = 'tournament';
+let paper   = 'a4';       // 'a4' | 'a5'
+let previewSide = 'front'; // 'front' | 'back'
+
+/* ── MOVE RANGES by paper ── */
+function moveRanges() {
+  return paper === 'a5'
+    ? { frontA:1,  frontB:15, frontMid:16, frontEnd:30, backA:31, backB:45, backMid:46, backEnd:60 }
+    : { frontA:1,  frontB:25, frontMid:26, frontEnd:50, backA:51, backB:75, backMid:76, backEnd:100 };
+}
+
+/* ── PAPER SIZE ── */
+function setSize(s, btn) {
+  paper = s;
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  // Update back-sub label
+  document.getElementById('back-sub').textContent = s === 'a5'
+    ? 'Continuation moves 31–60 + signatures'
+    : 'Continuation moves 51–100 + signatures';
+  // Update qty note
+  updateQtyNote();
+  // Update print tip
+  document.getElementById('printTip').innerHTML = s === 'a5'
+    ? '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page fits <strong>4 A5 scoresheets</strong> (2×2). For duplex back sides, use "Print on both sides" if your printer supports it.'
+    : '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page = <strong>2 scoresheets</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.';
+  generate();
+}
+
+function updateQtyNote() {
+  const perPage = paper === 'a5' ? 4 : 2;
+  document.getElementById('qtyDisplay').textContent = qty;
+  document.getElementById('pageDisplay').textContent = Math.ceil(qty / perPage);
+  const label = paper === 'a5' ? '4 per A4' : '2 per A4';
+  document.getElementById('qtyNote').innerHTML =
+    `<strong id="qtyDisplay">${qty}</strong> sheets · ${label} · <strong id="pageDisplay">${Math.ceil(qty/perPage)}</strong> pages when printed`;
+}
 
 /* ── MODE ── */
-function setMode(m, card) {
+function setMode(m) {
   mode = m;
-  // card highlight
   document.getElementById('mode-tournament').className = 'mode-card' + (m==='tournament' ? ' sel-tournament' : '');
   document.getElementById('mode-academy').className    = 'mode-card' + (m==='academy'    ? ' sel-academy'    : '');
-  // form fields swap via CSS class on formInner
   document.getElementById('formInner').className = m === 'academy' ? 'form-inner mode-academy' : 'form-inner';
-  // hero
-  const hero = document.getElementById('hero');
-  hero.className = m === 'academy' ? 'hero hero-academy' : 'hero hero-tournament';
-  document.getElementById('heroSub').textContent = m === 'academy'
-    ? 'Professional scoresheets, printed in seconds.'
-    : 'Professional scoresheets, printed in seconds.';
-  // rating toggle label
-  document.getElementById('lbl-rating').textContent = m === 'academy' ? 'Show Level / Grade' : 'Show FIDE Rating';
-  document.getElementById('sub-rating').textContent = m === 'academy' ? 'Level field under student name' : 'Rating field under player name';
-  // preview mode badge
+  document.getElementById('hero').className = m === 'academy' ? 'hero hero-academy' : 'hero hero-tournament';
+  document.getElementById('lbl-rating').textContent = 'Show FIDE Rating';
+  document.getElementById('sub-rating').textContent  = 'Rating field under player name';
   const mb = document.getElementById('modeBadge');
   mb.textContent = m === 'academy' ? 'Academy' : 'Tournament';
   mb.className   = 'preview-mode-badge ' + m;
@@ -536,9 +676,8 @@ function setQty(n, btn) {
   qty = n;
   document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  document.getElementById('qtyDisplay').textContent = n;
-  document.getElementById('pageDisplay').textContent = Math.ceil(n/2);
   document.getElementById('previewBadge').textContent = n + ' sheets ready';
+  updateQtyNote();
   generate();
 }
 
@@ -550,48 +689,137 @@ function setStyle(name, card) {
   generate();
 }
 
+/* ── SIDE TOGGLE ── */
+function setSide(side) {
+  previewSide = side;
+  document.getElementById('btn-front').classList.toggle('active', side === 'front');
+  document.getElementById('btn-back').classList.toggle('active',  side === 'back');
+  generate();
+}
+
+/* ── BACK TOGGLE ── */
+function onBackToggle() {
+  const hasBack = chk('opt-back');
+  const backBtn = document.getElementById('btn-back');
+  backBtn.disabled = !hasBack;
+  if (!hasBack) {
+    setSide('front');
+  }
+  generate();
+}
+
+/* ── LOGO UPLOAD ── */
+window._acadLogoDataUrl = null;
+
+function onLogoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    window._acadLogoDataUrl = e.target.result;
+    const thumb = document.getElementById('logoPreviewThumb');
+    const inner = document.getElementById('logoUploadInner');
+    const area  = document.getElementById('logoUploadArea');
+    const rmBtn = document.getElementById('logoRemoveBtn');
+    thumb.src = e.target.result;
+    thumb.style.display = 'block';
+    inner.style.display = 'none';
+    rmBtn.style.display = 'inline-block';
+    area.classList.add('has-logo');
+    generate();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeLogo(event) {
+  event.stopPropagation();
+  window._acadLogoDataUrl = null;
+  document.getElementById('f-acad-logo').value = '';
+  document.getElementById('logoPreviewThumb').style.display = 'none';
+  document.getElementById('logoUploadInner').style.display = 'flex';
+  document.getElementById('logoRemoveBtn').style.display = 'none';
+  document.getElementById('logoUploadArea').classList.remove('has-logo');
+  generate();
+}
+
+/* ── DATE RANGE HELPERS ── */
+function addEndDate(prefix) {
+  document.getElementById(prefix + '-date-end-row').classList.add('visible');
+  document.getElementById(prefix + '-add-end').style.display = 'none';
+  generate();
+}
+function removeEndDate(prefix) {
+  document.getElementById(prefix + '-date-end-row').classList.remove('visible');
+  document.getElementById(prefix + '-add-end').style.display = '';
+  const endId = prefix === 't' ? 'f-date-end' : 'f-acad-date-end';
+  document.getElementById(endId).value = '';
+  generate();
+}
+
+/* ── CUSTOM TIME CONTROL ── */
+function onTcChange(selectId, wrapId) {
+  const sel  = document.getElementById(selectId);
+  const wrap = document.getElementById(wrapId);
+  wrap.classList.toggle('visible', sel.value === 'Custom');
+  generate();
+}
+
 /* ── HELPERS ── */
 function v(id)  { return document.getElementById(id)?.value || ''; }
 function chk(id){ return document.getElementById(id)?.checked; }
-function fmtDate(str){
+function fmtDate(str, endStr) {
   if (!str) return '';
-  const d = new Date(str);
-  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const fmt = s => new Date(s + 'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  if (endStr) {
+    const start = new Date(str  + 'T00:00:00');
+    const end   = new Date(endStr + 'T00:00:00');
+    // Same month+year → "14–16 Mar 2026", else "28 Mar – 2 Apr 2026"
+    if (start.getMonth()===end.getMonth() && start.getFullYear()===end.getFullYear()) {
+      return `${start.getDate()}–${end.getDate()} ${start.toLocaleDateString('en-IN',{month:'short',year:'numeric'})}`;
+    }
+    return `${fmt(str)} – ${fmt(endStr)}`;
+  }
+  return fmt(str);
 }
 
-/* ── BUILD SHEET ── */
-function buildSheet(num) {
-  const isTournament = mode === 'tournament';
-  const isAcademy    = mode === 'academy';
+/* ── BUILD FRONT SHEET ── */
+function buildFront(num) {
+  const isT = mode === 'tournament';
+  const r   = moveRanges();
+  const sizeClass = paper === 'a5' ? ' ss-a5' : '';
 
-  // ── Collect values by mode ──
-  const name       = isTournament ? (v('f-name')      || 'Tournament Name')       : (v('f-acad-name') || 'Academy Name');
-  const subline    = isTournament
-    ? (() => { const org = v('f-org') || 'Organiser'; const aicf = v('f-aicf'); return `Organised by ${org}${aicf ? ' · AICF: ' + aicf : ''}`; })()
-    : (() => { const coach = v('f-coach') || 'Coach'; const batch = v('f-batch'); return `Coach: ${coach}${batch ? ' · Batch: ' + batch : ''}`; })();
-  const date       = isTournament ? fmtDate(v('f-date'))      : fmtDate(v('f-acad-date'));
-  const venue      = isTournament ? v('f-venue')              : v('f-acad-venue');
-  const tc         = isTournament ? (v('f-tc') || '30 min + 30 sec') : (v('f-acad-tc') || '25 min + 10 sec');
+  const name    = isT ? (v('f-name') || 'Tournament Name') : (v('f-acad-name') || 'Academy Name');
+  const subline = isT
+    ? `Organised by ${v('f-org')||'Organiser'}${v('f-aicf') ? ' · AICF: '+v('f-aicf') : ''}`
+    : (v('f-acad-address') ? v('f-acad-address').replace(/\n/g,' · ') : '');
+
+  // Date — read end date only if its row is visible
+  const dateStart   = isT ? v('f-date')       : v('f-acad-date');
+  const endRowId    = isT ? 't-date-end-row'  : 'a-date-end-row';
+  const endDateId   = isT ? 'f-date-end'      : 'f-acad-date-end';
+  const hasEndDate  = document.getElementById(endRowId)?.classList.contains('visible');
+  const dateEnd     = hasEndDate ? v(endDateId) : '';
+  const date        = fmtDate(dateStart, dateEnd);
+
+  const venue   = isT ? v('f-venue') : '';
+
+  // Time control — use custom text when "Custom" is selected
+  const tcSelect  = isT ? v('f-tc')        : v('f-acad-tc');
+  const tcCustom  = isT ? v('f-tc-custom') : v('f-acad-tc-custom');
+  const tc        = tcSelect === 'Custom' ? (tcCustom || 'Custom Time Control') : tcSelect;
+
+  const chip3   = isT ? `<div class="ss-chip">🔄 ${v('f-rounds')||'9'} Rounds</div>` : '';
+
+  // Academy logo
+  const logoDataUrl = (!isT && window._acadLogoDataUrl) ? window._acadLogoDataUrl : null;
+  const gi1     = isT ? 'Round No.'             : 'Session No.';
+  const gi2     = isT ? 'Board No. / Table No.' : 'Board No.';
+  const p1Label = isT ? '♔ White Player'        : '♔ Player 1 (White)';
+  const p2Label = isT ? '♚ Black Player'        : '♚ Player 2 (Black)';
+  const rLbl    = isT ? 'FIDE Rating'            : 'Level / Grade';
+  const arbLbl  = isT ? 'Arbiter Use Only'       : 'Coach Use Only';
+  const arbName = isT ? 'Name'                   : 'Coach Name';
   const footerNote = v('f-footer') || '';
-
-  // Chips — right side of header
-  const chip3 = isTournament
-    ? `<div class="ss-chip">🔄 ${v('f-rounds') || '9'} Rounds</div>`
-    : `<div class="ss-chip">📚 ${v('f-level') || 'Intermediate'}</div>`;
-
-  // Game info bar labels
-  const gi1Label = isTournament ? 'Round No.'        : 'Session No.';
-  const gi2Label = isTournament ? 'Board No. / Table No.' : 'Board No.';
-  const gi3Label = 'Date';
-
-  // Player section labels
-  const p1Label = isTournament ? '♔ White Player' : '♔ Player 1 (White)';
-  const p2Label = isTournament ? '♚ Black Player' : '♚ Player 2 (Black)';
-  const ratingLabel = isTournament ? 'FIDE Rating' : 'Level / Grade';
-
-  // Result section — Academy replaces "Arbiter" with "Coach"
-  const arbiterLabel = isTournament ? 'Arbiter Use Only' : 'Coach Use Only';
-  const arbiterName  = isTournament ? 'Name'             : 'Coach Name';
 
   const showMoves  = chk('opt-moves');
   const showTime   = chk('opt-time');
@@ -599,118 +827,162 @@ function buildSheet(num) {
   const showResult = chk('opt-result');
   const showSign   = chk('opt-sign');
 
-  function movesCol(start, end) {
+  function movesCol(s, e) {
     let rows = '';
-    for (let i = start; i <= end; i++) {
+    for (let i = s; i <= e; i++) {
       rows += `<tr>
         ${showMoves ? `<td class="mn">${i}.</td>` : ''}
-        <td class="mv"></td>
-        <td class="mv"></td>
+        <td class="mv"></td><td class="mv"></td>
         ${showTime ? '<td class="mt"></td>' : ''}
       </tr>`;
     }
     return rows;
   }
-
-  const thMn   = showMoves ? '<th style="width:28px;text-align:center">Sr.No</th>' : '';
-  const thTime = showTime  ? '<th style="width:28px">Time</th>' : '';
+  const thMn   = showMoves ? '<th style="width:26px;text-align:center">Sr.No</th>' : '';
+  const thTime = showTime  ? '<th style="width:26px">Time</th>' : '';
 
   return `
   <div class="scoresheet-wrap">
-  <div class="scoresheet ss-${style}">
+  <div class="scoresheet ss-${style}${sizeClass}">
     <div class="ss-sheet-num">Sheet #${num}</div>
-
-    <!-- HEADER -->
     <div class="ss-header">
-      <div class="ss-brand"><span>Chess</span><span>Connect</span></div>
-      <div class="ss-event">${name}</div>
-      <div class="ss-subline">${subline}</div>
-      <div class="ss-meta-row">
-        ${date  ? `<div class="ss-chip">📅 ${date}</div>` : ''}
-        ${venue ? `<div class="ss-chip">📍 ${venue}</div>` : ''}
-        <div class="ss-chip">⏱ ${tc}</div>
-        ${chip3}
+      <div class="ss-header-inner">
+        ${logoDataUrl ? `<img class="ss-logo-img" src="${logoDataUrl}" alt="Academy Logo"/>` : ''}
+        <div class="ss-header-text">
+          <div class="ss-brand"><span>Chess</span><span>Connect</span></div>
+          <div class="ss-event">${name}</div>
+          ${subline ? `<div class="ss-subline">${subline}</div>` : ''}
+          <div class="ss-meta-row">
+            ${date  ? `<div class="ss-chip">📅 ${date}</div>` : ''}
+            ${venue ? `<div class="ss-chip">📍 ${venue}</div>` : ''}
+            <div class="ss-chip">⏱ ${tc}</div>${chip3}
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- PLAYERS -->
     <div class="ss-players">
       <div class="ss-player">
         <div class="ss-player-color">${p1Label}</div>
-        <div class="ss-player-name-row">
-          <span class="ss-player-label">Name</span>
-          <div class="ss-player-line"></div>
-        </div>
-        <div class="ss-player-info">
-          ${showRating ? `<div class="ss-pi-row"><span class="ss-pi-label">${ratingLabel}</span><div class="ss-pi-line"></div></div>` : ''}
-        </div>
+        <div class="ss-player-name-row"><span class="ss-player-label">Name</span><div class="ss-player-line"></div></div>
+        <div class="ss-player-info">${showRating ? `<div class="ss-pi-row"><span class="ss-pi-label">${rLbl}</span><div class="ss-pi-line"></div></div>` : ''}</div>
       </div>
       <div class="ss-player">
         <div class="ss-player-color">${p2Label}</div>
-        <div class="ss-player-name-row">
-          <span class="ss-player-label">Name</span>
-          <div class="ss-player-line"></div>
-        </div>
-        <div class="ss-player-info">
-          ${showRating ? `<div class="ss-pi-row"><span class="ss-pi-label">${ratingLabel}</span><div class="ss-pi-line"></div></div>` : ''}
-        </div>
+        <div class="ss-player-name-row"><span class="ss-player-label">Name</span><div class="ss-player-line"></div></div>
+        <div class="ss-player-info">${showRating ? `<div class="ss-pi-row"><span class="ss-pi-label">${rLbl}</span><div class="ss-pi-line"></div></div>` : ''}</div>
       </div>
     </div>
-
-    <!-- GAME INFO -->
     <div class="ss-gameinfo">
-      <div class="ss-gi-item"><div class="ss-gi-label">${gi1Label}</div><div class="ss-gi-line"></div></div>
-      <div class="ss-gi-item"><div class="ss-gi-label">${gi2Label}</div><div class="ss-gi-line"></div></div>
-      <div class="ss-gi-item"><div class="ss-gi-label">${gi3Label}</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">${gi1}</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">${gi2}</div><div class="ss-gi-line"></div></div>
+      <div class="ss-gi-item"><div class="ss-gi-label">Date</div><div class="ss-gi-line"></div></div>
     </div>
-
-    <!-- MOVES -->
     <div class="ss-moves">
       <div class="ss-moves-col">
-        <table class="moves-tbl">
-          <thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
-          <tbody>${movesCol(1, 25)}</tbody>
-        </table>
+        <table class="moves-tbl"><thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
+        <tbody>${movesCol(r.frontA, r.frontB)}</tbody></table>
       </div>
       <div class="ss-moves-col">
-        <table class="moves-tbl">
-          <thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
-          <tbody>${movesCol(26, 50)}</tbody>
-        </table>
+        <table class="moves-tbl"><thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
+        <tbody>${movesCol(r.frontMid, r.frontEnd)}</tbody></table>
       </div>
     </div>
-
-    <!-- RESULT + SIGNATURES -->
     ${showResult || showSign ? `
     <div class="ss-result">
       <div class="ss-result-half">
-        ${showResult ? `
-        <div class="ss-result-label">Result</div>
+        ${showResult ? `<div class="ss-result-label">Result</div>
         <div class="ss-result-boxes">
           <div class="ss-rbox"><div class="ss-rbox-sq"></div><div class="ss-rbox-lbl">1–0</div></div>
           <div class="ss-rbox"><div class="ss-rbox-sq"></div><div class="ss-rbox-lbl">0–1</div></div>
           <div class="ss-rbox"><div class="ss-rbox-sq"></div><div class="ss-rbox-lbl">½–½</div></div>
         </div>` : ''}
-        ${showSign ? `
-        <div class="ss-result-label" style="margin-top:5px">Signatures</div>
-        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">${p1Label.replace(/♔\s*/,'')}</span><div class="ss-sign-line"></div></div>
-        <div class="ss-sign-row"><span class="ss-sign-label">${p2Label.replace(/♚\s*/,'')}</span><div class="ss-sign-line"></div></div>
-        ` : ''}
+        ${showSign ? `<div class="ss-result-label" style="margin-top:5px">Signatures</div>
+        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">${p1Label.replace(/[♔♚]\s*/,'')}</span><div class="ss-sign-line"></div></div>
+        <div class="ss-sign-row"><span class="ss-sign-label">${p2Label.replace(/[♔♚]\s*/,'')}</span><div class="ss-sign-line"></div></div>` : ''}
       </div>
       <div class="ss-result-half">
-        ${showResult ? `
-        <div class="ss-result-label">${arbiterLabel}</div>
-        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">${arbiterName}</span><div class="ss-sign-line"></div></div>
-        <div class="ss-sign-row"><span class="ss-sign-label">Signature</span><div class="ss-sign-line"></div></div>
-        ` : ''}
+        ${showResult ? `<div class="ss-result-label">${arbLbl}</div>
+        <div class="ss-sign-row" style="margin-bottom:5px"><span class="ss-sign-label">${arbName}</span><div class="ss-sign-line"></div></div>
+        <div class="ss-sign-row"><span class="ss-sign-label">Signature</span><div class="ss-sign-line"></div></div>` : ''}
       </div>
-    </div>
-    ` : ''}
-
-    <!-- FOOTER -->
+    </div>` : ''}
     <div class="ss-footer">
       <div class="ss-footer-note">${footerNote}</div>
       <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span></div>
+    </div>
+  </div>
+  </div>`;
+}
+
+/* ── BUILD BACK SHEET ── */
+function buildBack(num) {
+  const isT = mode === 'tournament';
+  const r   = moveRanges();
+  const sizeClass = paper === 'a5' ? ' ss-a5' : '';
+
+  const name   = isT ? (v('f-name') || 'Tournament Name') : (v('f-acad-name') || 'Academy Name');
+  const gi1Val = isT ? 'Round No.' : 'Session No.';
+  const gi2Val = isT ? 'Board No.' : 'Board No.';
+  const arbLbl = isT ? 'Arbiter' : 'Arbiter';
+
+  const showMoves = chk('opt-moves');
+  const showTime  = chk('opt-time');
+
+  const moveLabel = paper === 'a5' ? '31 – 60' : '51 – 100';
+
+  function movesCol(s, e) {
+    let rows = '';
+    for (let i = s; i <= e; i++) {
+      rows += `<tr>
+        ${showMoves ? `<td class="mn">${i}.</td>` : ''}
+        <td class="mv"></td><td class="mv"></td>
+        ${showTime ? '<td class="mt"></td>' : ''}
+      </tr>`;
+    }
+    return rows;
+  }
+  const thMn   = showMoves ? '<th style="width:26px;text-align:center">Sr.No</th>' : '';
+  const thTime = showTime  ? '<th style="width:26px">Time</th>' : '';
+
+  return `
+  <div class="scoresheet-wrap">
+  <div class="scoresheet ss-${style}${sizeClass}">
+    <!-- BACK TOP BAR -->
+    <div class="ss-back-bar">
+      <div>
+        <div class="ss-back-bar-title">${name}</div>
+        <div>Continuation · Moves ${moveLabel} · Sheet #${num}</div>
+      </div>
+      <div class="ss-back-bar-chips">
+        <div class="ss-back-bar-chip">${gi1Val} ____</div>
+        <div class="ss-back-bar-chip">${gi2Val} ____</div>
+      </div>
+    </div>
+
+    <!-- CONTINUATION MOVES -->
+    <div class="ss-moves" style="padding-top:8px">
+      <div class="ss-moves-col">
+        <table class="moves-tbl"><thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
+        <tbody>${movesCol(r.backA, r.backB)}</tbody></table>
+      </div>
+      <div class="ss-moves-col">
+        <table class="moves-tbl"><thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
+        <tbody>${movesCol(r.backMid, r.backEnd)}</tbody></table>
+      </div>
+    </div>
+
+    <!-- SIGNATURES ONLY -->
+    <div class="ss-back-sign">
+      <div class="ss-back-sign-half">
+        <div class="ss-back-sign-label">Signatures</div>
+        <div class="ss-sign-row" style="margin-bottom:6px"><span class="ss-sign-label">White Player</span><div class="ss-sign-line"></div></div>
+        <div class="ss-sign-row"><span class="ss-sign-label">Black Player</span><div class="ss-sign-line"></div></div>
+      </div>
+      <div class="ss-back-sign-half">
+        <div class="ss-back-sign-label">${arbLbl} Use Only</div>
+        <div class="ss-sign-row" style="margin-bottom:6px"><span class="ss-sign-label">${arbLbl} Name</span><div class="ss-sign-line"></div></div>
+        <div class="ss-sign-row"><span class="ss-sign-label">Signature</span><div class="ss-sign-line"></div></div>
+      </div>
     </div>
 
   </div>
@@ -720,38 +992,44 @@ function buildSheet(num) {
 /* ── GENERATE (preview) ── */
 function generate() {
   const area = document.getElementById('previewArea');
+  const hasBack = chk('opt-back');
+  const showing = previewSide;
+  const mcClass = paper === 'a5' ? 'more-card mc-a5' : 'more-card';
+
   let html = '';
   const previewCount = Math.min(qty, 3);
-  for (let i = 1; i <= previewCount; i++) html += buildSheet(i);
-  if (qty > 3) html += `<div class="more-card">+ ${qty - 3} more sheets visible when printed</div>`;
+  for (let i = 1; i <= previewCount; i++) {
+    html += showing === 'back' && hasBack ? buildBack(i) : buildFront(i);
+  }
+  if (qty > 3) html += `<div class="${mcClass}">+ ${qty - 3} more sheets visible when printed</div>`;
   area.innerHTML = html;
 }
 
-/* ── PRINT ── */
+/* ── PRINT — interleaved front+back ── */
 function printSheets() {
   const area = document.getElementById('previewArea');
+  const hasBack = chk('opt-back');
   let html = '';
-  for (let i = 1; i <= qty; i++) html += buildSheet(i);
+  for (let i = 1; i <= qty; i++) {
+    html += buildFront(i);
+    if (hasBack) html += buildBack(i);
+  }
   area.innerHTML = html;
   setTimeout(() => window.print(), 300);
 }
 
 /* ── MOBILE TAB SWITCH ── */
 function switchTab(tab) {
-  const formCol    = document.getElementById('col-form');
-  const previewCol = document.getElementById('col-preview');
-  const tabForm    = document.getElementById('tab-form');
-  const tabPreview = document.getElementById('tab-preview');
+  const fc = document.getElementById('col-form');
+  const pc = document.getElementById('col-preview');
+  const tf = document.getElementById('tab-form');
+  const tp = document.getElementById('tab-preview');
   if (tab === 'form') {
-    formCol.classList.add('mob-visible');
-    previewCol.classList.remove('mob-visible');
-    tabForm.classList.add('active');
-    tabPreview.classList.remove('active');
+    fc.classList.add('mob-visible'); pc.classList.remove('mob-visible');
+    tf.classList.add('active');      tp.classList.remove('active');
   } else {
-    previewCol.classList.add('mob-visible');
-    formCol.classList.remove('mob-visible');
-    tabPreview.classList.add('active');
-    tabForm.classList.remove('active');
+    pc.classList.add('mob-visible'); fc.classList.remove('mob-visible');
+    tp.classList.add('active');      tf.classList.remove('active');
   }
 }
 
