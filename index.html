@@ -3,8 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ChessConnect – Find Trusted Chess Coaches Near You</title>
-  <meta name="description" content="India's chess coach marketplace. Connect directly with experienced individual chess trainers. Online & Offline sessions available across India."/>
+
+  <!-- ── PRIMARY SEO ── -->
+  <title>ChessConnect — India's Chess Coach Marketplace | Find & List Chess Coaches</title>
+  <meta name="description" content="India's first chess coach marketplace. Find FIDE-rated chess coaches or list yourself free — zero commission. Plus free tools: Chess Clock, Tournament Brochure Maker & Scoresheet Generator."/>
+  <meta name="keywords" content="chess coach India, find chess coach, chess coach near me, chess coaching India, online chess coach, chess tutor India, FIDE rated coach, chess coach marketplace, chess classes India, list chess coach, chess coach directory, chess coaching online offline, chess coach Mumbai, chess coach Chennai, chess coach Delhi, chess coach Bengaluru, chess coach Pune, chess clock online, tournament brochure maker chess, chess scoresheet generator, free chess tools India"/>
+  <meta name="author" content="ChessConnect"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/"/>
+
+  <!-- ── GEO TARGETING ── -->
+  <meta name="geo.region" content="IN"/>
+  <meta name="geo.placename" content="India"/>
+  <meta name="geo.position" content="20.5937;78.9629"/>
+  <meta name="ICBM" content="20.5937, 78.9629"/>
+
+  <!-- ── OPEN GRAPH (WhatsApp / Facebook / LinkedIn) ── -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="ChessConnect"/>
+  <meta property="og:title" content="ChessConnect — India's Chess Coach Marketplace"/>
+  <meta property="og:description" content="India's first chess coach marketplace. Find FIDE-rated chess coaches or list yourself free — zero commission. Plus free tools: Chess Clock, Tournament Brochure Maker & Scoresheet Generator."/>
+  <meta property="og:url" content="https://chessconnecthq.github.io/chessconnect-web/"/>
+  <meta property="og:locale" content="en_IN"/>
+  <meta property="og:image" content="https://chessconnecthq.github.io/chessconnect-web/og-chessconnect.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:image:alt" content="ChessConnect — India's Chess Coach Marketplace"/>
+
+  <!-- ── TWITTER / X CARD ── -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@chessconnecthq"/>
+  <meta name="twitter:title" content="ChessConnect — India's Chess Coach Marketplace"/>
+  <meta name="twitter:description" content="India's first chess coach marketplace. Find FIDE-rated chess coaches or list yourself free — zero commission. Plus free tools: Chess Clock, Tournament Brochure Maker & Scoresheet Generator."/>
+  <meta name="twitter:image" content="https://chessconnecthq.github.io/chessconnect-web/og-chessconnect.png"/>
+
+  <!-- ── JSON-LD STRUCTURED DATA ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://chessconnecthq.github.io/chessconnect-web/#organization",
+        "name": "ChessConnect",
+        "url": "https://chessconnecthq.github.io/chessconnect-web/",
+        "logo": "https://chessconnecthq.github.io/chessconnect-web/favicon.ico",
+        "description": "India's first chess coach marketplace connecting students with FIDE-rated and experienced chess coaches across India.",
+        "areaServed": "IN",
+        "email": "chessconnect.in@gmail.com",
+        "sameAs": ["https://twitter.com/chessconnecthq"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://chessconnecthq.github.io/chessconnect-web/#website",
+        "url": "https://chessconnecthq.github.io/chessconnect-web/",
+        "name": "ChessConnect",
+        "description": "India's first chess coach marketplace",
+        "publisher": {"@id": "https://chessconnecthq.github.io/chessconnect-web/#organization"},
+        "inLanguage": "en-IN",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://chessconnecthq.github.io/chessconnect-web/?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Service",
+        "name": "Chess Coach Marketplace",
+        "provider": {"@id": "https://chessconnecthq.github.io/chessconnect-web/#organization"},
+        "serviceType": "Chess Coaching Directory",
+        "areaServed": "IN",
+        "description": "Find and connect with experienced chess coaches across India for online and offline sessions.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR",
+          "description": "Free coach listing — zero commission"
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -184,6 +264,17 @@
       100% { opacity: 0; transform: scale(1.15); }
     }
 
+    /* hero badge live dot */
+    .badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--blue); flex-shrink: 0;
+      animation: badge-pulse 2s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(30,115,232,0.5); opacity: 1; }
+      50% { box-shadow: 0 0 0 4px rgba(30,115,232,0); opacity: 0.8; }
+    }
+
     /* ── SECTIONS SHARED ── */
     section { padding: 80px 5%; }
     .section-label {
@@ -251,7 +342,7 @@
       overflow: hidden;
     }
     .sample-card-header {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
       padding: 1.75rem 1.75rem 1.25rem; color: var(--white);
       display: flex; align-items: center; gap: 1rem;
     }
@@ -266,10 +357,20 @@
     .sample-meta { font-size: 0.85rem; opacity: 0.8; margin-top: 0.2rem; }
     .fide-badge {
       display: inline-flex; align-items: center; gap: 0.3rem;
-      background: #F59E0B; color: #fff;
+      background: rgba(255,255,255,0.15); color: #fff;
       font-size: 0.72rem; font-weight: 700;
       padding: 0.2rem 0.55rem; border-radius: 100px;
       margin-top: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+    .title-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      background: rgba(255,255,255,0.15); color: #fff;
+      font-size: 0.72rem; font-weight: 800;
+      padding: 0.2rem 0.55rem; border-radius: 100px;
+      margin-top: 0.5rem; margin-right: 0.3rem;
+      border: 1px solid rgba(255,255,255,0.35);
+      letter-spacing: 0.04em;
     }
     .sample-body { padding: 1.5rem 1.75rem; }
     .sample-section { margin-bottom: 1.1rem; }
@@ -458,6 +559,19 @@
     .photo-upload-text { font-size: 0.85rem; color: var(--gray); }
     .photo-preview { display: none; margin-top: 0.75rem; }
     .photo-preview img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--blue); }
+
+    /* Input with prefix (₹) */
+    .input-prefix-wrap { position: relative; display: flex; align-items: center; }
+    .input-prefix {
+      position: absolute; left: 0.9rem;
+      font-size: 0.9rem; font-weight: 600; color: var(--gray);
+      pointer-events: none; z-index: 1;
+    }
+    .prefix-input { padding-left: 1.8rem !important; }
+
+    /* Side by side form fields */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
 
     /* Char count */
     .char-count { font-size: 0.75rem; color: var(--gray); text-align: right; margin-top: 0.25rem; }
@@ -969,7 +1083,7 @@
 
 <!-- HERO -->
 <section class="hero" id="home" aria-label="Hero section">
-  <div class="hero-badge"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l-1 4h-4L9 2zm-2 4h10l1 3H6l1-3zm-1 5h12v2H6v-2zm2 4h8l1 5H7l1-5z"/></svg></span> India's Chess Coach Marketplace</div>
+  <div class="hero-badge"><div class="badge-dot" aria-hidden="true"></div> India's Chess Coach Marketplace</div>
   <h1>Find Trusted <span>Chess Coaches</span> Near You</h1>
   <p>Connect directly with experienced individual chess trainers. Online &amp; Offline sessions available across India.</p>
   <div class="hero-ctas">
@@ -1049,36 +1163,44 @@
             <div class="sample-avatar" aria-hidden="true">AR</div>
             <div>
               <div class="sample-name">Arjun Rao</div>
-              <div class="sample-meta">8 years experience · Bengaluru</div>
-              <div class="fide-badge"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.7 5.5 21 7 14 2 9.3 9 8.5 12 2"/></svg></span> FIDE 1840</div>
+              <div class="sample-meta">8 years experience · Bengaluru, Karnataka</div>
+              <div style="display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.5rem;">
+                <div class="title-badge">FM</div>
+                <div class="fide-badge"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.7 5.5 21 7 14 2 9.3 9 8.5 12 2"/></svg></span> FIDE 2320</div>
+              </div>
             </div>
           </div>
           <div class="sample-body">
             <div class="sample-section">
               <div class="sample-section-label">About</div>
-              <p>FIDE rated coach specialising in openings and endgame theory. Trained 120+ students from beginner to competitive level across India.</p>
+              <p>FIDE Master specialising in openings and endgame theory. Trained 500+ students from beginner to competitive level across India.</p>
             </div>
             <div class="sample-section">
               <div class="sample-section-label">Teaches</div>
               <div class="tag-row">
                 <span class="tag">Beginner</span>
                 <span class="tag">Intermediate</span>
-                <span class="tag">Tournament</span>
-                <span class="tag">Kids</span>
+                <span class="tag">Advanced</span>
               </div>
             </div>
             <div class="sample-section">
-              <div class="sample-section-label">Mode &amp; Languages</div>
+              <div class="sample-section-label">Mode</div>
               <div class="tag-row">
                 <span class="tag">Online</span>
                 <span class="tag">Offline</span>
+              </div>
+            </div>
+            <div class="sample-section">
+              <div class="sample-section-label">Languages</div>
+              <div class="tag-row">
                 <span class="tag">English</span>
                 <span class="tag">Kannada</span>
+                <span class="tag">Hindi</span>
               </div>
             </div>
             <div class="sample-section">
               <div class="sample-section-label">Fees</div>
-              <p>₹3,000 / month · Trial class available</p>
+              <p>₹750 / session · Trial class available</p>
             </div>
           </div>
           <div class="sample-ctas">
@@ -1200,9 +1322,56 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="city">City <span aria-hidden="true">*</span></label>
-            <input class="form-input" type="text" id="city" placeholder="e.g. Mumbai, Chennai, Delhi" autocomplete="address-level2" required aria-required="true"/>
-            <div class="field-error" id="err-city" role="alert">Please enter your city.</div>
+            <div class="form-row">
+              <div class="form-col">
+                <label class="form-label" for="city">City <span aria-hidden="true">*</span></label>
+                <input class="form-input" type="text" id="city" placeholder="e.g. Mumbai" autocomplete="address-level2" required aria-required="true"/>
+                <div class="field-error" id="err-city" role="alert">Please enter your city.</div>
+              </div>
+              <div class="form-col">
+                <label class="form-label" for="state">State <span aria-hidden="true">*</span></label>
+                <select class="form-select" id="state" required aria-required="true">
+                  <option value="">Select state</option>
+                  <option>Andhra Pradesh</option>
+                  <option>Assam</option>
+                  <option>Bihar</option>
+                  <option>Chandigarh</option>
+                  <option>Chhattisgarh</option>
+                  <option>Delhi</option>
+                  <option>Goa</option>
+                  <option>Gujarat</option>
+                  <option>Haryana</option>
+                  <option>Himachal Pradesh</option>
+                  <option>Jammu & Kashmir</option>
+                  <option>Jharkhand</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Madhya Pradesh</option>
+                  <option>Maharashtra</option>
+                  <option>Manipur</option>
+                  <option>Meghalaya</option>
+                  <option>Mizoram</option>
+                  <option>Nagaland</option>
+                  <option>Odisha</option>
+                  <option>Puducherry</option>
+                  <option>Punjab</option>
+                  <option>Rajasthan</option>
+                  <option>Sikkim</option>
+                  <option>Tamil Nadu</option>
+                  <option>Telangana</option>
+                  <option>Tripura</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Uttarakhand</option>
+                  <option>West Bengal</option>
+                </select>
+                <div class="field-error" id="err-state" role="alert">Please select your state.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pincode">Pincode <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
+            <input class="form-input" type="text" id="pincode" placeholder="e.g. 400001" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" aria-label="6-digit pincode (optional)"/>
           </div>
 
           <div class="form-group">
@@ -1251,9 +1420,6 @@
               <button type="button" class="toggle-btn multi" data-group="levels" data-value="Beginner" onclick="toggleMulti(this)" aria-pressed="false">Beginner</button>
               <button type="button" class="toggle-btn multi" data-group="levels" data-value="Intermediate" onclick="toggleMulti(this)" aria-pressed="false">Intermediate</button>
               <button type="button" class="toggle-btn multi" data-group="levels" data-value="Advanced" onclick="toggleMulti(this)" aria-pressed="false">Advanced</button>
-              <button type="button" class="toggle-btn multi" data-group="levels" data-value="Tournament Players" onclick="toggleMulti(this)" aria-pressed="false">Tournament Players</button>
-              <button type="button" class="toggle-btn multi" data-group="levels" data-value="Kids (5-10)" onclick="toggleMulti(this)" aria-pressed="false">Kids (5–10)</button>
-              <button type="button" class="toggle-btn multi" data-group="levels" data-value="All Levels" onclick="toggleMulti(this)" aria-pressed="false">All Levels</button>
             </div>
             <div class="field-error" id="err-levels" role="alert">Please select at least one level.</div>
           </div>
@@ -1265,8 +1431,16 @@
               <button type="button" class="toggle-btn multi" data-group="languages" data-value="Hindi" onclick="toggleMulti(this)" aria-pressed="false">Hindi</button>
               <button type="button" class="toggle-btn multi" data-group="languages" data-value="Tamil" onclick="toggleMulti(this)" aria-pressed="false">Tamil</button>
               <button type="button" class="toggle-btn multi" data-group="languages" data-value="Telugu" onclick="toggleMulti(this)" aria-pressed="false">Telugu</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Kannada" onclick="toggleMulti(this)" aria-pressed="false">Kannada</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Malayalam" onclick="toggleMulti(this)" aria-pressed="false">Malayalam</button>
               <button type="button" class="toggle-btn multi" data-group="languages" data-value="Marathi" onclick="toggleMulti(this)" aria-pressed="false">Marathi</button>
               <button type="button" class="toggle-btn multi" data-group="languages" data-value="Bengali" onclick="toggleMulti(this)" aria-pressed="false">Bengali</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Gujarati" onclick="toggleMulti(this)" aria-pressed="false">Gujarati</button>
+              <button type="button" class="toggle-btn multi" data-group="languages" data-value="Punjabi" onclick="toggleMulti(this)" aria-pressed="false">Punjabi</button>
+              <button type="button" class="toggle-btn multi" id="btn-lang-other" data-group="languages" data-value="other-trigger" onclick="toggleOtherLang(this)" aria-pressed="false">Other</button>
+            </div>
+            <div id="other-lang-wrap" style="display:none; margin-top:0.6rem;">
+              <input class="form-input" type="text" id="otherLangInput" placeholder="e.g. Odia" maxlength="30" oninput="formatOtherLang(this)" aria-label="Enter other language"/>
             </div>
             <div class="field-error" id="err-languages" role="alert">Please select at least one language.</div>
           </div>
@@ -1315,6 +1489,22 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label class="form-label">Chess Title <small style="font-weight:400;color:var(--gray)">(optional — select if you hold a FIDE or national title)</small></label>
+            <div class="toggle-group" role="group" aria-label="Select your chess title if applicable">
+              <button type="button" class="toggle-btn" data-group="title" data-value="CM" onclick="selectToggle(this)" aria-pressed="false">CM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="FM" onclick="selectToggle(this)" aria-pressed="false">FM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="IM" onclick="selectToggle(this)" aria-pressed="false">IM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="GM" onclick="selectToggle(this)" aria-pressed="false">GM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="WCM" onclick="selectToggle(this)" aria-pressed="false">WCM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="WFM" onclick="selectToggle(this)" aria-pressed="false">WFM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="WIM" onclick="selectToggle(this)" aria-pressed="false">WIM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="WGM" onclick="selectToggle(this)" aria-pressed="false">WGM</button>
+              <button type="button" class="toggle-btn" data-group="title" data-value="NM" onclick="selectToggle(this)" aria-pressed="false">NM</button>
+            </div>
+            <div class="otp-hint" style="margin-top:0.4rem;">CM = Candidate Master · FM = FIDE Master · IM = International Master · GM = Grandmaster · NM = National Master</div>
+          </div>
+
           <div class="form-nav">
             <button class="btn-back" onclick="goToStep(1)" aria-label="Go back to step 1">← Back</button>
             <button class="btn-next" onclick="nextStep(2)" aria-label="Continue to step 3">Next Step →</button>
@@ -1352,8 +1542,11 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="fees">Starting Fees / month <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
-            <input class="form-input" type="text" id="fees" placeholder="e.g. ₹2,500" aria-label="Starting monthly fees (optional)"/>
+            <label class="form-label" for="fees">Fees / session <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix">₹</span>
+              <input class="form-input prefix-input" type="number" id="fees" placeholder="e.g. 2500" min="0" max="99999" aria-label="Starting monthly fees in rupees (optional)"/>
+            </div>
           </div>
 
           <div class="form-group">
@@ -1395,6 +1588,7 @@
                 <div class="review-item"><span class="review-label">Name</span><span class="review-value" id="rv-name">—</span></div>
                 <div class="review-item"><span class="review-label">WhatsApp</span><span class="review-value" id="rv-whatsapp">—</span></div>
                 <div class="review-item"><span class="review-label">City</span><span class="review-value" id="rv-city">—</span></div>
+                <div class="review-item"><span class="review-label">State</span><span class="review-value" id="rv-state">—</span></div>
                 <div class="review-item"><span class="review-label">Mode</span><span class="review-value" id="rv-mode">—</span></div>
               </div>
             </div>
@@ -1406,6 +1600,7 @@
               </div>
               <div class="review-grid">
                 <div class="review-item"><span class="review-label">Experience</span><span class="review-value" id="rv-experience">—</span></div>
+                <div class="review-item"><span class="review-label">Chess Title</span><span class="review-value" id="rv-title">—</span></div>
                 <div class="review-item"><span class="review-label">Levels</span><span class="review-value" id="rv-levels">—</span></div>
                 <div class="review-item"><span class="review-label">Languages</span><span class="review-value" id="rv-languages">—</span></div>
                 <div class="review-item"><span class="review-label">FIDE Rated</span><span class="review-value" id="rv-fide">—</span></div>
@@ -1541,15 +1736,15 @@
           </div>
           <div class="tool-feature">
             <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
-            All time controls — Bullet to Classical
+            All time controls with Fischer increment
           </div>
           <div class="tool-feature">
             <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
-            5 premium themes
+            4 premium themes
           </div>
           <div class="tool-feature">
             <svg viewBox="0 0 16 16"><polyline points="3 8 6 11 13 4"/></svg>
-            Works offline on any phone
+            Works offline · Installs as app
           </div>
         </div>
 
@@ -1635,7 +1830,7 @@
     <div class="tools-cta-strip animate-on-scroll">
       <div class="tools-cta-text">
         <h3>More tools coming soon</h3>
-        <p>Swiss Pairing Calculator · Rating Progress Tracker · Tournament Results Publisher</p>
+        <p>Chess Lens · Coach Profile Studio · Coach Card</p>
       </div>
       <div class="tools-cta-badge">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -1672,7 +1867,7 @@
         <h4>Info</h4>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
-        <a href="/cdn-cgi/l/email-protection#a9cac1ccdadacac6c7c7cccadd87c0c7e9cec4c8c0c587cac6c4">Contact Us</a>
+        <a href="mailto:chessconnect.in@gmail.com">Contact Us</a>
       </div>
     </div>
   </div>
@@ -1694,7 +1889,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // ── Supabase init ──
   const { createClient } = supabase;
   const sb = createClient(
@@ -1705,6 +1900,7 @@
   // ── State ──
   let currentStep = 1;
   let selectedMode = '';
+  let selectedTitle = '';
   let selectedLevels = [];
   let selectedLanguages = [];
   let isFide = false;
@@ -1778,13 +1974,46 @@
   // ── Toggle (single select) ──
   function selectToggle(btn) {
     const group = btn.dataset.group;
+    const alreadySelected = btn.classList.contains('selected');
     document.querySelectorAll(`[data-group="${group}"]`).forEach(b => {
       b.classList.remove('selected');
       b.setAttribute('aria-pressed', 'false');
     });
+    // Title is optional — allow deselect by clicking again
+    if (group === 'title' && alreadySelected) {
+      selectedTitle = '';
+      return;
+    }
     btn.classList.add('selected');
     btn.setAttribute('aria-pressed', 'true');
     if (group === 'mode') selectedMode = btn.dataset.value;
+    if (group === 'title') selectedTitle = btn.dataset.value;
+  }
+
+  // ── Other language toggle ──
+  function toggleOtherLang(btn) {
+    btn.classList.toggle('selected');
+    const isSelected = btn.classList.contains('selected');
+    btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+    const wrap = document.getElementById('other-lang-wrap');
+    wrap.style.display = isSelected ? 'block' : 'none';
+    if (!isSelected) {
+      // Remove any custom language from array when deselected
+      document.getElementById('otherLangInput').value = '';
+      selectedLanguages = selectedLanguages.filter(l => !l.startsWith('__other__'));
+    }
+  }
+
+  function formatOtherLang(input) {
+    // Title case — first letter capital rest small
+    const raw = input.value;
+    const formatted = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
+    input.value = formatted;
+    // Update selectedLanguages — remove old custom, add new
+    selectedLanguages = selectedLanguages.filter(l => !l.startsWith('__other__'));
+    if (formatted.trim().length > 0) {
+      selectedLanguages.push('__other__' + formatted.trim());
+    }
   }
 
   // ── Toggle (multi select) ──
@@ -1853,7 +2082,7 @@
     const bio = document.getElementById('bio').value;
     const len = bio.length;
     const el = document.getElementById('charCount');
-    el.textContent = `${len} / 100 characters`;
+    el.textContent = len < 100 ? `${len} / 100 minimum` : `${len} / 500 characters`;
     el.className = 'char-count' + (len >= 100 ? ' ok' : '');
   }
 
@@ -1915,9 +2144,11 @@
     document.getElementById('rv-name').textContent = document.getElementById('fullName').value.trim() || '—';
     document.getElementById('rv-whatsapp').textContent = document.getElementById('whatsapp').value.trim() || '—';
     document.getElementById('rv-city').textContent = document.getElementById('city').value.trim() || '—';
+    document.getElementById('rv-state').textContent = document.getElementById('state').value || '—';
     document.getElementById('rv-mode').textContent = selectedMode || '—';
     // Expertise
     document.getElementById('rv-experience').textContent = document.getElementById('experience').value || '—';
+    document.getElementById('rv-title').textContent = selectedTitle || 'None';
     document.getElementById('rv-levels').textContent = selectedLevels.length ? selectedLevels.join(', ') : '—';
     document.getElementById('rv-languages').textContent = selectedLanguages.length ? selectedLanguages.join(', ') : '—';
     document.getElementById('rv-fide').textContent = isFide ? 'Yes — FIDE Rated' : 'Not Rated';
@@ -1930,8 +2161,8 @@
     }
     // Final Touches
     document.getElementById('rv-bio').textContent = document.getElementById('bio').value.trim() || '—';
-    const fees = document.getElementById('fees').value.trim();
-    document.getElementById('rv-fees').textContent = fees ? `₹${fees} / month` : 'Not specified';
+    const fees = document.getElementById('fees').value;
+    document.getElementById('rv-fees').textContent = fees ? `₹${parseInt(fees).toLocaleString('en-IN')} / session` : 'Not specified';
     const trial = document.querySelector('input[name="trial"]:checked');
     document.getElementById('rv-trial').textContent = trial ? (trial.value === 'yes' ? 'Yes — available' : 'No') : '—';
   }
@@ -1944,6 +2175,8 @@
     if (!/^\d{10}$/.test(wa)) { showError('whatsapp', true); ok = false; } else showError('whatsapp', false);
     const city = document.getElementById('city').value.trim();
     if (!city) { showError('city', true); ok = false; } else showError('city', false);
+    const state = document.getElementById('state').value;
+    if (!state) { showError('state', true); ok = false; } else showError('state', false);
     if (!selectedMode) { showError('mode', true); ok = false; } else showError('mode', false);
     return ok;
   }
@@ -1953,7 +2186,13 @@
     const exp = document.getElementById('experience').value;
     if (!exp) { showError('experience', true); ok = false; } else showError('experience', false);
     if (selectedLevels.length === 0) { showError('levels', true); ok = false; } else showError('levels', false);
-    if (selectedLanguages.length === 0) { showError('languages', true); ok = false; } else showError('languages', false);
+    // Languages — must have at least one; if Other selected, must have typed something
+    const otherBtn = document.getElementById('btn-lang-other');
+    const otherInput = document.getElementById('otherLangInput').value.trim();
+    const otherSelected = otherBtn && otherBtn.classList.contains('selected');
+    const realLanguages = selectedLanguages.filter(l => !l.startsWith('__other__'));
+    const hasLanguage = realLanguages.length > 0 || (otherSelected && otherInput.length > 0);
+    if (!hasLanguage) { showError('languages', true); ok = false; } else showError('languages', false);
     const fideVal = document.querySelector('input[name="fide"]:checked');
     if (!fideVal) { showError('fide', true); ok = false; } else showError('fide', false);
     if (isFide) {
@@ -2005,17 +2244,20 @@
       full_name: document.getElementById('fullName').value.trim(),
       whatsapp: document.getElementById('whatsapp').value.trim(),
       city: document.getElementById('city').value.trim(),
+      state: document.getElementById('state').value,
+      pincode: document.getElementById('pincode').value.trim() || null,
       coaching_mode: selectedMode,
       experience: document.getElementById('experience').value,
+      chess_title: selectedTitle || null,
       levels_taught: selectedLevels,
-      languages: selectedLanguages,
+      languages: selectedLanguages.map(l => l.startsWith('__other__') ? l.replace('__other__','') : l),
       is_fide_rated: isFide,
       fide_rating: isFide ? document.getElementById('fideRating').value : null,
       fide_id: isFide ? document.getElementById('fideId').value.trim() : null,
       bio: document.getElementById('bio').value.trim(),
-      fees: document.getElementById('fees').value.trim() || null,
+      fees: document.getElementById('fees').value ? parseInt(document.getElementById('fees').value) : null,
       trial_available: trialEl ? trialEl.value === 'yes' : false,
-      is_live: true
+      is_live: false
     };
 
     try {
@@ -2033,7 +2275,7 @@
 
       // Success!
       document.getElementById('successOverlay').classList.add('show');
-      showToast('Profile submitted! We will be in touch shortly. 🎉');
+      showToast('Profile submitted! We\'ll review and activate it within 24 hours. 🎉');
 
     } catch (err) {
       console.error('Supabase error:', err);
