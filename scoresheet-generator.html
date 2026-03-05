@@ -171,14 +171,15 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 /* ══ SCORESHEET BASE ══ */
 .scoresheet{
-  width:680px;background:#fff;
+  width:680px;min-height:480px;background:#fff;
   box-shadow:0 4px 24px rgba(0,0,0,0.12);
   font-family:'DM Sans',sans-serif;
   page-break-after:always;
   position:relative;
+  display:flex;flex-direction:column;
 }
-/* A5 scoresheet — narrower */
-.scoresheet.ss-a5{width:480px}
+/* A5 scoresheet — narrower, taller (full A5 portrait) */
+.scoresheet.ss-a5{width:480px;min-height:679px}
 
 /* ── BACK SIDE label strip ── */
 .ss-back-bar{display:flex;align-items:center;justify-content:space-between;padding:5px 16px;background:#F8FAFF;border-bottom:1.5px solid #102C57;font-size:6px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.08em}
@@ -199,8 +200,8 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-bw .ss-back-bar-title{color:#111}
 .ss-bw .ss-back-bar-chip{background:#efefef;border-color:#aaa;color:#333}
 
-/* ── BACK SIDE signatures ── */
-.ss-back-sign{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid #102C57;margin:4px 12px 0}
+.ss-back-moves{padding:8px 12px 4px;display:grid;grid-template-columns:1fr 1fr;gap:0 12px;flex:1}
+.ss-back-sign{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid #102C57;margin:auto 12px 0}
 .ss-back-sign-half{padding:10px 14px}
 .ss-back-sign-half:first-child{border-right:1px solid #e5e9f2}
 .ss-back-sign-label{font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#6B7280;margin-bottom:8px}
@@ -321,7 +322,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-sign-line{flex:1;border-bottom:1px solid #CBD5E1;height:24px}
 
 /* ── FOOTER ── */
-.ss-footer{background:#F8FAFF;border-top:1px solid #e5e9f2;padding:5px 16px;display:flex;align-items:center;justify-content:space-between}
+.ss-footer{background:#F8FAFF;border-top:1px solid #e5e9f2;padding:5px 16px;display:flex;align-items:center;justify-content:space-between;margin-top:auto}
 .ss-footer-brand{font-size:7px;font-weight:800;letter-spacing:-0.2px}
 .ss-footer-chess{color:#102C57}.ss-footer-connect{color:#4285F4}
 .ss-minimal .ss-sheet-num,.ss-bw .ss-sheet-num{color:rgba(16,44,87,0.35)}
@@ -357,7 +358,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   .page{display:block}
   .preview-col{max-height:none;position:static;background:#fff;overflow:visible;display:block!important}
   .preview-area{padding:0;gap:0}
-  .scoresheet{box-shadow:none;width:100%;page-break-after:always}
+  .scoresheet{box-shadow:none;width:100%;min-height:0;page-break-after:always}
   .scoresheet:last-child{page-break-after:auto}
   .more-card{display:none}
   .scoresheet-wrap{width:100%}
@@ -893,7 +894,7 @@ function buildBack(num) {
     </div>
 
     <!-- CONTINUATION MOVES -->
-    <div class="ss-moves" style="padding-top:8px">
+    <div class="ss-back-moves">
       <div class="ss-moves-col">
         <table class="moves-tbl"><thead><tr>${thMn}<th>White</th><th>Black</th>${thTime}</tr></thead>
         <tbody>${movesCol(r.backA, r.backB)}</tbody></table>
@@ -916,6 +917,10 @@ function buildBack(num) {
         <div class="ss-sign-row" style="margin-bottom:6px"><span class="ss-sign-label">${arbLbl} Name</span><div class="ss-sign-line"></div></div>
         <div class="ss-sign-row"><span class="ss-sign-label">Signature</span><div class="ss-sign-line"></div></div>
       </div>
+    </div>
+    <div class="ss-footer">
+      <div class="ss-footer-note"></div>
+      <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span></div>
     </div>
 
   </div>
