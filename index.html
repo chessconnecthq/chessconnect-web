@@ -507,8 +507,7 @@
     .field-error.show { display: block; }
 
     /* OTP row */
-    .otp-row { display: flex; gap: 0.5rem; }
-    .otp-row .form-input { flex: 1; }
+    
     .btn-otp {
       font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
       white-space: nowrap; padding: 0.7rem 1rem;
@@ -519,8 +518,7 @@
     .btn-otp:hover { background: var(--navy); }
     .btn-otp:disabled { background: var(--gray-light); color: var(--gray); cursor: not-allowed; }
     .otp-hint { font-size: 0.78rem; color: var(--gray); margin-top: 0.35rem; }
-    .otp-success { font-size: 0.82rem; color: var(--green); font-weight: 600; display: none; margin-top: 0.4rem; }
-    .otp-success.show { display: block; }
+    
 
     /* Toggle buttons */
     .toggle-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
@@ -1046,7 +1044,7 @@
     <a href="#register">List Yourself</a>
   </div>
   <div class="nav-ctas">
-    <button class="btn-ghost" onclick="scrollToRegister()" aria-label="Find a coach">Find a Coach</button>
+    <button class="btn-ghost" onclick="scrollToSample()" aria-label="Find a coach">Find a Coach</button>
     <button class="btn-primary" onclick="scrollToRegister()" aria-label="List yourself as a coach">List Yourself</button>
   </div>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open navigation menu" aria-expanded="false">
@@ -1078,7 +1076,7 @@
     <div class="mobile-nav-divider"></div>
     <div class="mobile-nav-ctas">
       <button class="btn-primary" onclick="closeMenu(); scrollToRegister();" aria-label="List yourself as a coach">List Yourself Free</button>
-      <button class="btn-ghost" onclick="closeMenu(); scrollToRegister();" aria-label="Find a coach">Find a Coach</button>
+      <button class="btn-ghost" onclick="closeMenu(); scrollToSample();" aria-label="Find a coach">Find a Coach</button>
     </div>
   </div>
 </div>
@@ -1089,7 +1087,7 @@
   <h1>Find Trusted <span>Chess Coaches</span> Near You</h1>
   <p>Connect directly with experienced individual chess trainers. Online &amp; Offline sessions available across India.</p>
   <div class="hero-ctas">
-    <button class="btn-hero-secondary" onclick="scrollToRegister()" aria-label="Find a coach near you">Find a Coach</button>
+    <button class="btn-hero-secondary" onclick="scrollToSample()" aria-label="Find a coach near you">Find a Coach</button>
     <div class="pulse-wrap">
       <div class="pulse-ring" aria-hidden="true"></div>
       <button class="btn-hero-primary" onclick="scrollToRegister()" aria-label="List yourself as a chess coach"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> List Yourself Free</button>
@@ -1148,7 +1146,7 @@
           <div class="step-num" aria-hidden="true">3</div>
         </div>
         <h3>Publish &amp; Go Live</h3>
-        <p>Add your bio, photo, and fees. Hit Publish — your profile is saved and goes live instantly.</p>
+        <p>Add your bio, photo, and fees. Hit Publish — your profile is submitted for review and goes live within 24 hours.</p>
       </div>
     </div>
   </div>
@@ -1264,133 +1262,193 @@
     <div class="section-header center animate-on-scroll">
       <div class="section-label">Coach Registration</div>
       <h2 class="section-title">List Your Profile – It's Free</h2>
-      <p class="section-sub">Complete 4 quick steps and go live on ChessConnect.</p>
+      <p class="section-sub">Complete 3 quick steps and submit your profile for review.</p>
     </div>
 
     <div class="register-inner animate-on-scroll">
       <!-- Step indicator -->
-      <div class="step-indicator" role="progressbar" aria-label="Registration progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4">
-        <div class="step-dot active" id="dot1" aria-label="Step 1: Basic Info">1</div>
+      <div class="step-indicator" role="progressbar" aria-label="Registration progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3">
+        <div class="step-dot active" id="dot1" aria-label="Step 1: Your Profile">1</div>
         <div class="step-line" id="line1"></div>
         <div class="step-dot" id="dot2" aria-label="Step 2: Expertise">2</div>
         <div class="step-line" id="line2"></div>
-        <div class="step-dot" id="dot3" aria-label="Step 3: Publish">3</div>
-        <div class="step-line" id="line3"></div>
-        <div class="step-dot" id="dot4" aria-label="Step 4: Review">4</div>
+        <div class="step-dot" id="dot3" aria-label="Step 3: Review & Publish">3</div>
       </div>
       <div class="step-label-row" aria-hidden="true">
-        <span class="step-label active" id="lbl1">Basic Info</span>
+        <span class="step-label active" id="lbl1">Your Profile</span>
         <span class="step-label" id="lbl2">Expertise</span>
-        <span class="step-label" id="lbl3">Publish</span>
-        <span class="step-label" id="lbl4">Review</span>
+        <span class="step-label" id="lbl3">Review & Publish</span>
       </div>
 
       <div class="form-card" style="margin-top:1.5rem;">
 
-        <!-- STEP 1 -->
+        <!-- STEP 1 — YOUR PROFILE (FIDE first) -->
         <div class="form-step active" id="step1">
-          <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
           <div class="form-step-header">
             <div class="form-step-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
             </div>
             <div>
-              <div class="form-step-title">Basic Information</div>
-              <div class="form-step-sub">Step 1 of 4 — Let's start with the essentials</div>
+              <div class="form-step-title">Your Profile</div>
+              <div class="form-step-sub">Step 1 of 3 — Start with your FIDE ID to auto-fill your details</div>
             </div>
           </div>
 
+          <!-- FIDE ID — first field -->
           <div class="form-group">
-            <label class="form-label" for="fullName">Full Name <span aria-hidden="true">*</span></label>
-            <input class="form-input" type="text" id="fullName" placeholder="e.g. Arjun Rao" autocomplete="name" required aria-required="true"/>
-            <div class="field-error" id="err-fullName" role="alert">Please enter your full name.</div>
+            <label class="form-label" for="fideId">FIDE ID <span aria-hidden="true">*</span></label>
+            <div style="display:flex; gap:0.5rem;">
+              <input class="form-input" type="text" id="fideId" placeholder="e.g. 5013012" maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" aria-label="Your FIDE ID number"/>
+              <button type="button" class="btn-otp" onclick="lookupFide()" id="btnFideLookup">Verify →</button>
+            </div>
+            <div class="otp-hint">Enter your FIDE ID and click Verify — your name, title and ratings will be auto-filled.</div>
+            <div class="field-error" id="err-fideId" role="alert">Please enter a valid FIDE ID.</div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="whatsapp">WhatsApp Number <span aria-hidden="true">*</span></label>
-            <input class="form-input" type="tel" id="whatsapp" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" autocomplete="tel" required aria-required="true"/>
-            <div class="otp-hint">Our team will reach out on this number to verify your profile.</div>
-            <div class="field-error" id="err-whatsapp" role="alert">Please enter a valid 10-digit WhatsApp number.</div>
-          </div>
-
-          <div class="form-group">
-            <div class="form-row">
-              <div class="form-col">
-                <label class="form-label" for="city">City <span aria-hidden="true">*</span></label>
-                <input class="form-input" type="text" id="city" placeholder="e.g. Mumbai" autocomplete="address-level2" required aria-required="true"/>
-                <div class="field-error" id="err-city" role="alert">Please enter your city.</div>
+          <!-- FIDE verified card — shown after successful lookup -->
+          <div id="fideVerifiedCard" style="display:none; margin-bottom:1.25rem;">
+            <div class="fide-verify-card fide-confirmed">
+              <div class="fide-verify-top">
+                <span class="fide-verify-icon"><span class="icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span></span>
+                <div>
+                  <div class="fide-verify-title" style="color:var(--green);">✓ FIDE Profile Verified</div>
+                  <div class="fide-verify-sub" id="fideVerifiedSummary">—</div>
+                </div>
               </div>
-              <div class="form-col">
-                <label class="form-label" for="state">State <span aria-hidden="true">*</span></label>
-                <select class="form-select" id="state" required aria-required="true">
-                  <option value="">Select state</option>
-                  <option>Andhra Pradesh</option>
-                  <option>Assam</option>
-                  <option>Bihar</option>
-                  <option>Chandigarh</option>
-                  <option>Chhattisgarh</option>
-                  <option>Delhi</option>
-                  <option>Goa</option>
-                  <option>Gujarat</option>
-                  <option>Haryana</option>
-                  <option>Himachal Pradesh</option>
-                  <option>Jammu & Kashmir</option>
-                  <option>Jharkhand</option>
-                  <option>Karnataka</option>
-                  <option>Kerala</option>
-                  <option>Madhya Pradesh</option>
-                  <option>Maharashtra</option>
-                  <option>Manipur</option>
-                  <option>Meghalaya</option>
-                  <option>Mizoram</option>
-                  <option>Nagaland</option>
-                  <option>Odisha</option>
-                  <option>Puducherry</option>
-                  <option>Punjab</option>
-                  <option>Rajasthan</option>
-                  <option>Sikkim</option>
-                  <option>Tamil Nadu</option>
-                  <option>Telangana</option>
-                  <option>Tripura</option>
-                  <option>Uttar Pradesh</option>
-                  <option>Uttarakhand</option>
-                  <option>West Bengal</option>
-                </select>
-                <div class="field-error" id="err-state" role="alert">Please select your state.</div>
+              <a id="fideProfileLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-fide-verify" style="background:var(--green);" aria-label="View FIDE profile">
+                <span class="icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                View My FIDE Profile
+              </a>
+            </div>
+          </div>
+
+          <!-- Auto-filled fields — shown after FIDE verified -->
+          <div id="profileFields" style="display:none;">
+
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input class="form-input" type="text" id="fullName" readonly style="background:var(--off-white); color:var(--gray);" aria-label="Name auto-filled from FIDE"/>
+              <div class="otp-hint">Auto-filled from FIDE database.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">FIDE Rating</label>
+              <input class="form-input" type="text" id="fideRatingDisplay" readonly style="background:var(--off-white); color:var(--gray);" aria-label="Rating auto-filled from FIDE"/>
+              <div class="otp-hint">Auto-filled from FIDE database. Classical → Rapid → Blitz priority.</div>
+            </div>
+
+            <!-- Photo upload -->
+            <div class="form-group">
+              <label class="form-label" for="photoInput">Profile Photo <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
+              <div class="photo-upload" onclick="document.getElementById('photoInput').click()" role="button" tabindex="0" aria-label="Upload profile photo">
+                <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(event)"/>
+                <div class="photo-upload-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span></div>
+                <div class="photo-upload-text">Click to upload · JPG or PNG · Max 5MB</div>
+              </div>
+              <div class="photo-preview" id="photoPreview"><img id="photoImg" src="" alt="Profile preview"/></div>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="form-group">
+              <label class="form-label" for="whatsapp">WhatsApp Number <span aria-hidden="true">*</span></label>
+              <input class="form-input" type="tel" id="whatsapp" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" autocomplete="tel" required aria-required="true"/>
+              <div class="otp-hint">Our team will reach out on this number to verify your profile.</div>
+              <div class="field-error" id="err-whatsapp" role="alert">Please enter a valid 10-digit WhatsApp number.</div>
+            </div>
+
+            <!-- City + State -->
+            <div class="form-group">
+              <div class="form-row">
+                <div class="form-col">
+                  <label class="form-label" for="city">City <span aria-hidden="true">*</span></label>
+                  <input class="form-input" type="text" id="city" placeholder="e.g. Mumbai" autocomplete="address-level2" required aria-required="true"/>
+                  <div class="field-error" id="err-city" role="alert">Please enter your city.</div>
+                </div>
+                <div class="form-col">
+                  <label class="form-label" for="state">State <span aria-hidden="true">*</span></label>
+                  <select class="form-select" id="state" required aria-required="true">
+                    <option value="">Select state</option>
+                    <option>Andhra Pradesh</option>
+                    <option>Assam</option>
+                    <option>Bihar</option>
+                    <option>Chandigarh</option>
+                    <option>Chhattisgarh</option>
+                    <option>Delhi</option>
+                    <option>Goa</option>
+                    <option>Gujarat</option>
+                    <option>Haryana</option>
+                    <option>Himachal Pradesh</option>
+                    <option>Jammu & Kashmir</option>
+                    <option>Jharkhand</option>
+                    <option>Karnataka</option>
+                    <option>Kerala</option>
+                    <option>Madhya Pradesh</option>
+                    <option>Maharashtra</option>
+                    <option>Manipur</option>
+                    <option>Meghalaya</option>
+                    <option>Mizoram</option>
+                    <option>Nagaland</option>
+                    <option>Odisha</option>
+                    <option>Puducherry</option>
+                    <option>Punjab</option>
+                    <option>Rajasthan</option>
+                    <option>Sikkim</option>
+                    <option>Tamil Nadu</option>
+                    <option>Telangana</option>
+                    <option>Tripura</option>
+                    <option>Uttar Pradesh</option>
+                    <option>Uttarakhand</option>
+                    <option>West Bengal</option>
+                  </select>
+                  <div class="field-error" id="err-state" role="alert">Please select your state.</div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="form-label" for="pincode">Pincode <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
-            <input class="form-input" type="text" id="pincode" placeholder="e.g. 400001" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" aria-label="6-digit pincode (optional)"/>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Coaching Mode <span aria-hidden="true">*</span></label>
-            <div class="toggle-group" role="group" aria-label="Select coaching mode">
-              <button type="button" class="toggle-btn" data-group="mode" data-value="Online" onclick="selectToggle(this)" aria-pressed="false">Online</button>
-              <button type="button" class="toggle-btn" data-group="mode" data-value="Offline" onclick="selectToggle(this)" aria-pressed="false">Offline</button>
-              <button type="button" class="toggle-btn" data-group="mode" data-value="Both" onclick="selectToggle(this)" aria-pressed="false">Both</button>
+            <!-- Pincode -->
+            <div class="form-group">
+              <label class="form-label" for="pincode">Pincode <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
+              <input class="form-input" type="text" id="pincode" placeholder="e.g. 400001" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" aria-label="6-digit pincode (optional)"/>
             </div>
-            <div class="field-error" id="err-mode" role="alert">Please select a coaching mode.</div>
-          </div>
 
-          <div class="form-nav">
+            <!-- Coaching Mode -->
+            <div class="form-group">
+              <label class="form-label">Coaching Mode <span aria-hidden="true">*</span></label>
+              <div class="toggle-group" role="group" aria-label="Select coaching mode">
+                <button type="button" class="toggle-btn" data-group="mode" data-value="Online" onclick="selectToggle(this)" aria-pressed="false">Online</button>
+                <button type="button" class="toggle-btn" data-group="mode" data-value="Offline" onclick="selectToggle(this)" aria-pressed="false">Offline</button>
+                <button type="button" class="toggle-btn" data-group="mode" data-value="Both" onclick="selectToggle(this)" aria-pressed="false">Both</button>
+              </div>
+              <div class="field-error" id="err-mode" role="alert">Please select a coaching mode.</div>
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group">
+              <label class="form-label" for="bio">About You <span aria-hidden="true">*</span></label>
+              <textarea class="form-textarea" id="bio" placeholder="Tell students about your coaching experience, style, achievements and what makes you unique as a chess coach. Minimum 100 characters." maxlength="500" oninput="updateCharCount()" aria-label="Your coaching bio — minimum 100 characters" aria-required="true"></textarea>
+              <div class="char-count" id="charCount">0 / 100 minimum</div>
+              <div class="field-error" id="err-bio" role="alert">Bio must be at least 100 characters.</div>
+            </div>
+
+          </div><!-- end profileFields -->
+
+          <div class="form-nav" id="step1Nav" style="display:none;">
             <button class="btn-next" onclick="nextStep(1)" aria-label="Continue to step 2">Next Step →</button>
           </div>
         </div>
 
         <!-- STEP 2 -->
+        <!-- STEP 2 — EXPERTISE -->
         <div class="form-step" id="step2">
-          <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
           <div class="form-step-header">
             <div class="form-step-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><path d="M6 11.5V17c0 0 2 3 6 3s6-3 6-3v-5.5"/></svg>
             </div>
             <div>
               <div class="form-step-title">Your Expertise</div>
-              <div class="form-step-sub">Step 2 of 4 — Tell students about your credentials</div>
+              <div class="form-step-sub">Step 2 of 3 — Tell students about your coaching</div>
             </div>
           </div>
 
@@ -1438,106 +1496,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Are you a FIDE Rated Player? <span aria-hidden="true">*</span></label>
-            <div class="radio-group" role="group" aria-label="FIDE rating status">
-              <label class="radio-label"><input type="radio" name="fide" value="yes" onchange="toggleFide(true)" aria-label="Yes, I am FIDE rated"/> Yes, I'm Rated</label>
-              <label class="radio-label"><input type="radio" name="fide" value="no" onchange="toggleFide(false)" aria-label="I am not FIDE rated"/> Not Rated</label>
-            </div>
-            <div class="field-error" id="err-fide" role="alert">Please select your FIDE status.</div>
-          </div>
-
-          <div class="fide-fields" id="fideFields">
-            <div class="form-group">
-              <label class="form-label" for="fideId">FIDE ID <span aria-hidden="true">*</span></label>
-              <input class="form-input" type="text" id="fideId" placeholder="7 to 9 digit number e.g. 5013012" maxlength="9" oninput="onFideIdInput(this)" aria-label="Your FIDE ID number — 7 to 9 digits"/>
-              <div class="field-error" id="err-fideId" role="alert">Please enter a valid FIDE ID (7–9 digits, numbers only).</div>
-              <!-- FIDE verify link — shows after valid format -->
-              <div id="fideVerifyBox" style="display:none; margin-top:0.6rem;">
-                <div class="fide-verify-card">
-                  <div class="fide-verify-top">
-                    <span class="fide-verify-icon"><span class="icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span></span>
-                    <div>
-                      <div class="fide-verify-title">Verify your FIDE profile</div>
-                      <div class="fide-verify-sub">Click below to open your FIDE profile and confirm it's yours.</div>
-                    </div>
-                  </div>
-                  <a id="fideVerifyLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-fide-verify" aria-label="Open FIDE profile in new tab">
-                    <span class="icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
-                    Open My FIDE Profile
-                  </a>
-                  <label class="fide-confirm-label">
-                    <input type="checkbox" id="fideConfirm" onchange="onFideConfirm()" aria-label="I confirm this FIDE profile belongs to me"/>
-                    <span>I confirm this FIDE profile is mine</span>
-                  </label>
-                  <div class="field-error" id="err-fideConfirm" role="alert">Please confirm your FIDE profile before continuing.</div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="fideRating">Highest FIDE Rating <span aria-hidden="true">*</span></label>
-              <input class="form-input" type="number" id="fideRating" placeholder="e.g. 1840" min="800" max="2900" aria-label="Your highest FIDE rating — must be between 800 and 2900"/>
-              <div class="otp-hint">Must be between 800 and 2900. Check your rating at <a id="fideRatingLink" href="https://ratings.fide.com" target="_blank" rel="noopener noreferrer" style="color:var(--blue);font-weight:600;">ratings.fide.com</a></div>
-              <div class="field-error" id="err-fideRating" role="alert">Please enter a valid FIDE rating (800–2900).</div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Chess Title <small style="font-weight:400;color:var(--gray)">(optional — select if you hold a FIDE or national title)</small></label>
-            <div class="toggle-group" role="group" aria-label="Select your chess title if applicable">
-              <button type="button" class="toggle-btn" data-group="title" data-value="CM" onclick="selectToggle(this)" aria-pressed="false">CM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="FM" onclick="selectToggle(this)" aria-pressed="false">FM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="IM" onclick="selectToggle(this)" aria-pressed="false">IM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="GM" onclick="selectToggle(this)" aria-pressed="false">GM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="WCM" onclick="selectToggle(this)" aria-pressed="false">WCM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="WFM" onclick="selectToggle(this)" aria-pressed="false">WFM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="WIM" onclick="selectToggle(this)" aria-pressed="false">WIM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="WGM" onclick="selectToggle(this)" aria-pressed="false">WGM</button>
-              <button type="button" class="toggle-btn" data-group="title" data-value="NM" onclick="selectToggle(this)" aria-pressed="false">NM</button>
-            </div>
-            <div class="otp-hint" style="margin-top:0.4rem;">CM = Candidate Master · FM = FIDE Master · IM = International Master · GM = Grandmaster · NM = National Master</div>
-          </div>
-
-          <div class="form-nav">
-            <button class="btn-back" onclick="goToStep(1)" aria-label="Go back to step 1">← Back</button>
-            <button class="btn-next" onclick="nextStep(2)" aria-label="Continue to step 3">Next Step →</button>
-          </div>
-        </div>
-
-        <!-- STEP 3 -->
-        <div class="form-step" id="step3">
-          <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
-          <div class="form-step-header">
-            <div class="form-step-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 000 11.4"/><path d="M17.7 6.3a8 8 0 010 11.4"/><path d="M3.5 3.5a14 14 0 000 17"/><path d="M20.5 3.5a14 14 0 010 17"/></svg>
-            </div>
-            <div>
-              <div class="form-step-title">Final Touches</div>
-              <div class="form-step-sub">Step 3 of 4 — Almost there! Complete your profile.</div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="bio">Short Bio <span aria-hidden="true">*</span> <small style="font-weight:400;color:var(--gray)">(min 100 characters)</small></label>
-            <textarea class="form-textarea" id="bio" placeholder="Tell students about your coaching approach, achievements, and teaching style..." maxlength="500" oninput="updateCharCount()" aria-label="Short biography, minimum 100 characters" aria-describedby="charCount" required></textarea>
-            <div class="char-count" id="charCount" aria-live="polite">0 / 100 characters</div>
-            <div class="field-error" id="err-bio" role="alert">Bio must be at least 100 characters.</div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Profile Photo <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
-            <div class="photo-upload" onclick="document.getElementById('photoInput').click()" role="button" tabindex="0" aria-label="Click to upload profile photo" onkeypress="if(event.key==='Enter') document.getElementById('photoInput').click()">
-              <input type="file" id="photoInput" accept="image/jpeg,image/png" onchange="handlePhoto(event)" aria-label="Upload profile photo, JPG or PNG, max 5MB"/>
-              <div class="photo-upload-icon" aria-hidden="true"><span class="icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span></div>
-              <div class="photo-upload-text">Click to upload photo &nbsp; JPG or PNG, max 5MB</div>
-              <div class="photo-preview" id="photoPreview"><img id="photoImg" src="" alt="Profile photo preview"/></div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="fees">Fees / session <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
+            <label class="form-label" for="fees">Fees / Session <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
             <div class="input-prefix-wrap">
               <span class="input-prefix">₹</span>
-              <input class="form-input prefix-input" type="number" id="fees" placeholder="e.g. 2500" min="0" max="99999" aria-label="Starting monthly fees in rupees (optional)"/>
+              <input class="form-input prefix-input" type="number" id="fees" placeholder="e.g. 750" min="0" max="99999" aria-label="Fees per session in rupees (optional)"/>
             </div>
           </div>
 
@@ -1551,39 +1513,45 @@
           </div>
 
           <div class="form-nav">
-            <button class="btn-back" onclick="goToStep(2)" aria-label="Go back to step 2">← Back</button>
-            <button class="btn-next" onclick="nextStep(3)" aria-label="Proceed to review">Review Profile →</button>
+            <button class="btn-back" onclick="goToStep(1)" aria-label="Go back to step 1">← Back</button>
+            <button class="btn-next" onclick="nextStep(2)" aria-label="Proceed to review">Review Profile →</button>
           </div>
         </div>
 
-        <!-- STEP 4 — REVIEW -->
-        <div class="form-step" id="step4">
+        <!-- STEP 3 — REVIEW & PUBLISH -->
+        <div class="form-step" id="step3">
           <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
           <div class="form-step-header">
             <div class="form-step-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 12 11 14 15 10"/></svg>
             </div>
             <div>
-              <div class="form-step-title">Review Your Profile</div>
-              <div class="form-step-sub">Step 4 of 4 — Please confirm before submitting</div>
+              <div class="form-step-title">Review & Publish</div>
+              <div class="form-step-sub">Step 3 of 3 — Review your profile and submit</div>
             </div>
           </div>
 
           <div class="review-card">
+            <!-- Your Profile -->
             <div class="review-section">
               <div class="review-section-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
-                Basic Info
-                <button class="review-edit-btn" onclick="goToStep(1)" aria-label="Edit basic info">Edit</button>
+                Your Profile
+                <button class="review-edit-btn" onclick="goToStep(1)" aria-label="Edit profile">Edit</button>
               </div>
               <div class="review-grid">
                 <div class="review-item"><span class="review-label">Name</span><span class="review-value" id="rv-name">—</span></div>
+                <div class="review-item"><span class="review-label">FIDE ID</span><span class="review-value" id="rv-fideid">—</span></div>
+                <div class="review-item"><span class="review-label">Title</span><span class="review-value" id="rv-title">—</span></div>
+                <div class="review-item"><span class="review-label">Rating</span><span class="review-value" id="rv-rating">—</span></div>
                 <div class="review-item"><span class="review-label">WhatsApp</span><span class="review-value" id="rv-whatsapp">—</span></div>
+                <div class="review-item"><span class="review-label">Mode</span><span class="review-value" id="rv-mode">—</span></div>
                 <div class="review-item"><span class="review-label">City</span><span class="review-value" id="rv-city">—</span></div>
                 <div class="review-item"><span class="review-label">State</span><span class="review-value" id="rv-state">—</span></div>
-                <div class="review-item"><span class="review-label">Mode</span><span class="review-value" id="rv-mode">—</span></div>
+                <div class="review-item full-width"><span class="review-label">Bio</span><span class="review-value" id="rv-bio">—</span></div>
               </div>
             </div>
+            <!-- Expertise -->
             <div class="review-section">
               <div class="review-section-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><path d="M6 11.5V17c0 0 2 3 6 3s6-3 6-3v-5.5"/></svg>
@@ -1592,34 +1560,21 @@
               </div>
               <div class="review-grid">
                 <div class="review-item"><span class="review-label">Experience</span><span class="review-value" id="rv-experience">—</span></div>
-                <div class="review-item"><span class="review-label">Chess Title</span><span class="review-value" id="rv-title">—</span></div>
-                <div class="review-item"><span class="review-label">Levels</span><span class="review-value" id="rv-levels">—</span></div>
-                <div class="review-item"><span class="review-label">Languages</span><span class="review-value" id="rv-languages">—</span></div>
-                <div class="review-item"><span class="review-label">FIDE Rated</span><span class="review-value" id="rv-fide">—</span></div>
-                <div class="review-item" id="rv-fide-detail-row" style="display:none"><span class="review-label">FIDE ID / Rating</span><span class="review-value" id="rv-fide-detail">—</span></div>
-              </div>
-            </div>
-            <div class="review-section">
-              <div class="review-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 000 11.4"/><path d="M17.7 6.3a8 8 0 010 11.4"/><path d="M3.5 3.5a14 14 0 000 17"/><path d="M20.5 3.5a14 14 0 010 17"/></svg>
-                Final Touches
-                <button class="review-edit-btn" onclick="goToStep(3)" aria-label="Edit final touches">Edit</button>
-              </div>
-              <div class="review-grid">
-                <div class="review-item full-width"><span class="review-label">Bio</span><span class="review-value" id="rv-bio">—</span></div>
-                <div class="review-item"><span class="review-label">Fees</span><span class="review-value" id="rv-fees">—</span></div>
                 <div class="review-item"><span class="review-label">Trial Class</span><span class="review-value" id="rv-trial">—</span></div>
+                <div class="review-item"><span class="review-label">Levels</span><span class="review-value" id="rv-levels">—</span></div>
+                <div class="review-item"><span class="review-label">Fees</span><span class="review-value" id="rv-fees">—</span></div>
+                <div class="review-item full-width"><span class="review-label">Languages</span><span class="review-value" id="rv-languages">—</span></div>
               </div>
             </div>
           </div>
 
           <div class="review-note">
             <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Your profile will be reviewed by our team before going live. We'll reach out on your WhatsApp to verify and activate it.
+            Your profile will be reviewed by our team before going live. We'll reach out on your WhatsApp within 24 hours to verify and activate it.
           </div>
 
           <div class="form-nav">
-            <button class="btn-back" onclick="goToStep(3)" aria-label="Go back to step 3">← Back</button>
+            <button class="btn-back" onclick="goToStep(2)" aria-label="Go back to step 2">← Back</button>
             <button class="btn-publish" id="publishBtn" onclick="publishProfile()" aria-label="Confirm and submit profile">
               <span id="publishText"><span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span> Confirm &amp; Submit</span>
               <div class="spinner" id="publishSpinner" aria-hidden="true"></div>
@@ -1881,22 +1836,22 @@
 <!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
   // ── Supabase init ──
   const { createClient } = supabase;
   const sb = createClient(
-    'https://ktoialhxgbskadheihlk.supabase.co',
-    'sb_publishable_W047QPQtYh0Fig6vzskQgw_IKVuBswe'
+    'https://ipslahlvworwgzbgxppc.supabase.co',
+    'sb_publishable_uEoVcVB_c-JDJRJZZdHQ3Q_C1wlMoaZ'
   );
 
   // ── State ──
   let currentStep = 1;
   let selectedMode = '';
-  let selectedTitle = '';
   let selectedLevels = [];
   let selectedLanguages = [];
-  let isFide = false;
   let photoFile = null;
+
+  // FIDE auto-filled data
+  let fideData = null; // { fide_id, name, title, rating, rapid_rating, blitz_rating, country, rating_display, rating_type }
 
   // ── Mobile menu ──
   const hamburger = document.getElementById('hamburger');
@@ -1908,7 +1863,6 @@
     hamburger.classList.toggle('open', menuOpen);
     hamburger.setAttribute('aria-expanded', menuOpen);
     mobileNav.style.display = 'block';
-    // Force reflow before adding open class for transition
     mobileNav.offsetHeight;
     mobileNav.classList.toggle('open', menuOpen);
     document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -1923,20 +1877,9 @@
     setTimeout(() => { mobileNav.style.display = 'none'; }, 300);
   }
 
-  // Close menu when clicking overlay
-  mobileNav.addEventListener('click', (e) => {
-    if (e.target === mobileNav) closeMenu();
-  });
-
-  // Close menu on resize to desktop
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) closeMenu();
-  });
-
-  // Close on Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && menuOpen) closeMenu();
-  });
+  mobileNav.addEventListener('click', (e) => { if (e.target === mobileNav) closeMenu(); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
 
   // ── Nav scroll ──
   window.addEventListener('scroll', () => {
@@ -1946,6 +1889,11 @@
   // ── Scroll to register ──
   function scrollToRegister() {
     document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── Scroll to sample (for Find a Coach) ──
+  function scrollToSample() {
+    document.getElementById('sample').scrollIntoView({ behavior: 'smooth' });
   }
 
   // ── Animate on scroll ──
@@ -1963,23 +1911,102 @@
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 
+  // ── FIDE ID Lookup ──
+  async function lookupFide() {
+    const fideId = document.getElementById('fideId').value.trim();
+    if (!fideId || !/^\d{6,10}$/.test(fideId)) {
+      showError('fideId', true, 'Please enter a valid FIDE ID (numbers only).');
+      return;
+    }
+    showError('fideId', false);
+
+    const btn = document.getElementById('btnFideLookup');
+    btn.textContent = 'Looking up...';
+    btn.disabled = true;
+
+    try {
+      const { data, error } = await sb
+        .from('fide_players')
+        .select('fide_id, name, title, rating, rapid_rating, blitz_rating, country, is_active')
+        .eq('fide_id', fideId)
+        .single();
+
+      if (error || !data) {
+        showError('fideId', true, 'FIDE ID not found in our database. Please check your ID at ratings.fide.com');
+        btn.textContent = 'Verify →';
+        btn.disabled = false;
+        return;
+      }
+
+      // Determine active rating: Classical → Rapid → Blitz
+      let activeRating = 0, ratingType = '';
+      if (data.rating > 0) {
+        activeRating = data.rating; ratingType = 'Classical';
+      } else if (data.rapid_rating > 0) {
+        activeRating = data.rapid_rating; ratingType = 'Rapid';
+      } else if (data.blitz_rating > 0) {
+        activeRating = data.blitz_rating; ratingType = 'Blitz';
+      }
+
+      if (activeRating === 0) {
+        showError('fideId', true, 'Your FIDE profile shows no active rating in Classical, Rapid or Blitz formats. ChessConnect currently accepts coaches with a FIDE rating. If you believe this is an error, please contact us at chessconnect.in@gmail.com');
+        btn.textContent = 'Verify →';
+        btn.disabled = false;
+        return;
+      }
+
+      // Store fide data
+      fideData = {
+        fide_id:      data.fide_id,
+        name:         data.name,
+        title:        data.title || null,
+        rating:       data.rating,
+        rapid_rating: data.rapid_rating,
+        blitz_rating: data.blitz_rating,
+        country:      data.country,
+        rating_display: `${activeRating} (${ratingType})`,
+        rating_type:  ratingType,
+        is_active:    data.is_active,
+      };
+
+      // Show verified card
+      const titleStr = data.title ? `${data.title} · ` : '';
+      const activeStr = data.is_active ? '' : ' · Inactive';
+      document.getElementById('fideVerifiedSummary').textContent =
+        `${data.name} · ${titleStr}${activeRating} ${ratingType} · ${data.country}${activeStr}`;
+      document.getElementById('fideProfileLink').href = `https://ratings.fide.com/profile/${fideId}`;
+      document.getElementById('fideVerifiedCard').style.display = 'block';
+
+      // Auto-fill read-only fields
+      document.getElementById('fullName').value = data.name;
+      document.getElementById('fideRatingDisplay').value = `${activeRating} (${ratingType})`;
+
+      // Show rest of profile fields and Next button
+      document.getElementById('profileFields').style.display = 'block';
+      document.getElementById('step1Nav').style.display = 'flex';
+
+      btn.textContent = '✓ Verified';
+      btn.style.background = 'var(--green)';
+      showToast('FIDE profile verified! Please complete your details below.');
+
+    } catch (err) {
+      console.error('FIDE lookup error:', err);
+      showError('fideId', true, 'Something went wrong. Please try again.');
+      btn.textContent = 'Verify →';
+      btn.disabled = false;
+    }
+  }
+
   // ── Toggle (single select) ──
   function selectToggle(btn) {
     const group = btn.dataset.group;
-    const alreadySelected = btn.classList.contains('selected');
     document.querySelectorAll(`[data-group="${group}"]`).forEach(b => {
       b.classList.remove('selected');
       b.setAttribute('aria-pressed', 'false');
     });
-    // Title is optional — allow deselect by clicking again
-    if (group === 'title' && alreadySelected) {
-      selectedTitle = '';
-      return;
-    }
     btn.classList.add('selected');
     btn.setAttribute('aria-pressed', 'true');
     if (group === 'mode') selectedMode = btn.dataset.value;
-    if (group === 'title') selectedTitle = btn.dataset.value;
   }
 
   // ── Other language toggle ──
@@ -1987,25 +2014,18 @@
     btn.classList.toggle('selected');
     const isSelected = btn.classList.contains('selected');
     btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
-    const wrap = document.getElementById('other-lang-wrap');
-    wrap.style.display = isSelected ? 'block' : 'none';
+    document.getElementById('other-lang-wrap').style.display = isSelected ? 'block' : 'none';
     if (!isSelected) {
-      // Remove any custom language from array when deselected
       document.getElementById('otherLangInput').value = '';
       selectedLanguages = selectedLanguages.filter(l => !l.startsWith('__other__'));
     }
   }
 
   function formatOtherLang(input) {
-    // Title case — first letter capital rest small
     const raw = input.value;
-    const formatted = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
-    input.value = formatted;
-    // Update selectedLanguages — remove old custom, add new
+    input.value = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
     selectedLanguages = selectedLanguages.filter(l => !l.startsWith('__other__'));
-    if (formatted.trim().length > 0) {
-      selectedLanguages.push('__other__' + formatted.trim());
-    }
+    if (input.value.trim().length > 0) selectedLanguages.push('__other__' + input.value.trim());
   }
 
   // ── Toggle (multi select) ──
@@ -2014,59 +2034,11 @@
     btn.classList.toggle('selected');
     const isSelected = btn.classList.contains('selected');
     btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
-
     const arr = group === 'levels' ? selectedLevels : selectedLanguages;
     const val = btn.dataset.value;
     const idx = arr.indexOf(val);
     if (isSelected && idx === -1) arr.push(val);
     if (!isSelected && idx !== -1) arr.splice(idx, 1);
-  }
-
-  // ── FIDE ID validation & verify link ──
-  function onFideIdInput(input) {
-    // Strip non-digits
-    input.value = input.value.replace(/\D/g, '');
-    const val = input.value.trim();
-    const box = document.getElementById('fideVerifyBox');
-    const link = document.getElementById('fideVerifyLink');
-    const ratingLink = document.getElementById('fideRatingLink');
-
-    if (val.length >= 7 && val.length <= 9) {
-      // Valid format — show verify box
-      showError('fideId', false);
-      box.style.display = 'block';
-      const fideUrl = `https://ratings.fide.com/profile/${val}`;
-      link.href = fideUrl;
-      ratingLink.href = fideUrl;
-      // Reset confirmation if ID changes
-      document.getElementById('fideConfirm').checked = false;
-      document.getElementById('fideVerifyBox').querySelector('.fide-verify-card').classList.remove('fide-confirmed');
-      showError('fideConfirm', false);
-    } else {
-      box.style.display = 'none';
-    }
-  }
-
-  function onFideConfirm() {
-    const checked = document.getElementById('fideConfirm').checked;
-    const card = document.getElementById('fideVerifyBox').querySelector('.fide-verify-card');
-    card.classList.toggle('fide-confirmed', checked);
-    if (checked) showError('fideConfirm', false);
-  }
-
-  // ── FIDE toggle ──
-  function toggleFide(show) {
-    isFide = show;
-    document.getElementById('fideFields').classList.toggle('show', show);
-    if (!show) {
-      // Reset FIDE fields when toggled off
-      document.getElementById('fideId').value = '';
-      document.getElementById('fideVerifyBox').style.display = 'none';
-      document.getElementById('fideRating').value = '';
-      if (document.getElementById('fideConfirm')) {
-        document.getElementById('fideConfirm').checked = false;
-      }
-    }
   }
 
   // ── Char count ──
@@ -2093,10 +2065,13 @@
   }
 
   // ── Field error helpers ──
-  function showError(id, show) {
+  function showError(id, show, msg) {
     const err = document.getElementById(`err-${id}`);
     const input = document.getElementById(id);
-    if (err) err.classList.toggle('show', show);
+    if (err) {
+      err.classList.toggle('show', show);
+      if (show && msg) err.textContent = msg;
+    }
     if (input) input.classList.toggle('error', show);
   }
 
@@ -2110,14 +2085,14 @@
   }
 
   function updateIndicator() {
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 3; i++) {
       const dot = document.getElementById(`dot${i}`);
       const lbl = document.getElementById(`lbl${i}`);
       dot.className = 'step-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
       dot.setAttribute('aria-current', i === currentStep ? 'step' : 'false');
       lbl.className = 'step-label' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
     }
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 2; i++) {
       document.getElementById(`line${i}`).className = 'step-line' + (i < currentStep ? ' done' : '');
     }
     document.querySelector('.step-indicator').setAttribute('aria-valuenow', currentStep);
@@ -2126,33 +2101,25 @@
   function nextStep(from) {
     if (from === 1 && !validateStep1()) return;
     if (from === 2 && !validateStep2()) return;
-    if (from === 3 && !validateStep3()) return;
-    if (from === 3) populateReview();
+    if (from === 2) populateReview();
     goToStep(from + 1);
   }
 
   function populateReview() {
-    // Basic Info
-    document.getElementById('rv-name').textContent = document.getElementById('fullName').value.trim() || '—';
+    document.getElementById('rv-name').textContent     = fideData ? fideData.name : '—';
+    document.getElementById('rv-fideid').textContent   = fideData ? fideData.fide_id : '—';
+    document.getElementById('rv-title').textContent    = fideData && fideData.title ? fideData.title : 'None';
+    document.getElementById('rv-rating').textContent   = fideData ? fideData.rating_display : '—';
     document.getElementById('rv-whatsapp').textContent = document.getElementById('whatsapp').value.trim() || '—';
-    document.getElementById('rv-city').textContent = document.getElementById('city').value.trim() || '—';
-    document.getElementById('rv-state').textContent = document.getElementById('state').value || '—';
-    document.getElementById('rv-mode').textContent = selectedMode || '—';
-    // Expertise
+    document.getElementById('rv-city').textContent     = document.getElementById('city').value.trim() || '—';
+    document.getElementById('rv-state').textContent    = document.getElementById('state').value || '—';
+    document.getElementById('rv-mode').textContent     = selectedMode || '—';
+    document.getElementById('rv-bio').textContent      = document.getElementById('bio').value.trim() || '—';
     document.getElementById('rv-experience').textContent = document.getElementById('experience').value || '—';
-    document.getElementById('rv-title').textContent = selectedTitle || 'None';
-    document.getElementById('rv-levels').textContent = selectedLevels.length ? selectedLevels.join(', ') : '—';
-    document.getElementById('rv-languages').textContent = selectedLanguages.length ? selectedLanguages.join(', ') : '—';
-    document.getElementById('rv-fide').textContent = isFide ? 'Yes — FIDE Rated' : 'Not Rated';
-    if (isFide) {
-      document.getElementById('rv-fide-detail-row').style.display = '';
-      document.getElementById('rv-fide-detail').textContent =
-        `ID: ${document.getElementById('fideId').value.trim()} · Rating: ${document.getElementById('fideRating').value}`;
-    } else {
-      document.getElementById('rv-fide-detail-row').style.display = 'none';
-    }
-    // Final Touches
-    document.getElementById('rv-bio').textContent = document.getElementById('bio').value.trim() || '—';
+    document.getElementById('rv-levels').textContent   = selectedLevels.length ? selectedLevels.join(', ') : '—';
+    // Clean __other__ prefix for display
+    const cleanLangs = selectedLanguages.map(l => l.startsWith('__other__') ? l.replace('__other__','') : l);
+    document.getElementById('rv-languages').textContent = cleanLangs.length ? cleanLangs.join(', ') : '—';
     const fees = document.getElementById('fees').value;
     document.getElementById('rv-fees').textContent = fees ? `₹${parseInt(fees).toLocaleString('en-IN')} / session` : 'Not specified';
     const trial = document.querySelector('input[name="trial"]:checked');
@@ -2161,8 +2128,7 @@
 
   function validateStep1() {
     let ok = true;
-    const name = document.getElementById('fullName').value.trim();
-    if (!name) { showError('fullName', true); ok = false; } else showError('fullName', false);
+    if (!fideData) { showError('fideId', true, 'Please verify your FIDE ID first.'); ok = false; } else showError('fideId', false);
     const wa = document.getElementById('whatsapp').value.trim();
     if (!/^\d{10}$/.test(wa)) { showError('whatsapp', true); ok = false; } else showError('whatsapp', false);
     const city = document.getElementById('city').value.trim();
@@ -2170,6 +2136,8 @@
     const state = document.getElementById('state').value;
     if (!state) { showError('state', true); ok = false; } else showError('state', false);
     if (!selectedMode) { showError('mode', true); ok = false; } else showError('mode', false);
+    const bio = document.getElementById('bio').value.trim();
+    if (bio.length < 100) { showError('bio', true); ok = false; } else showError('bio', false);
     return ok;
   }
 
@@ -2178,41 +2146,12 @@
     const exp = document.getElementById('experience').value;
     if (!exp) { showError('experience', true); ok = false; } else showError('experience', false);
     if (selectedLevels.length === 0) { showError('levels', true); ok = false; } else showError('levels', false);
-    // Languages — must have at least one; if Other selected, must have typed something
     const otherBtn = document.getElementById('btn-lang-other');
     const otherInput = document.getElementById('otherLangInput').value.trim();
     const otherSelected = otherBtn && otherBtn.classList.contains('selected');
     const realLanguages = selectedLanguages.filter(l => !l.startsWith('__other__'));
     const hasLanguage = realLanguages.length > 0 || (otherSelected && otherInput.length > 0);
     if (!hasLanguage) { showError('languages', true); ok = false; } else showError('languages', false);
-    const fideVal = document.querySelector('input[name="fide"]:checked');
-    if (!fideVal) { showError('fide', true); ok = false; } else showError('fide', false);
-    if (isFide) {
-      // FIDE ID — must be 7–9 digits
-      const fideId = document.getElementById('fideId').value.trim();
-      if (!/^\d{7,9}$/.test(fideId)) {
-        showError('fideId', true); ok = false;
-      } else {
-        showError('fideId', false);
-      }
-      // Must have confirmed FIDE profile
-      const confirmed = document.getElementById('fideConfirm').checked;
-      if (!confirmed) { showError('fideConfirm', true); ok = false; } else showError('fideConfirm', false);
-      // FIDE rating — must be 800–2900
-      const rating = parseInt(document.getElementById('fideRating').value);
-      if (!rating || rating < 800 || rating > 2900) {
-        showError('fideRating', true); ok = false;
-      } else {
-        showError('fideRating', false);
-      }
-    }
-    return ok;
-  }
-
-  function validateStep3() {
-    let ok = true;
-    const bio = document.getElementById('bio').value.trim();
-    if (bio.length < 100) { showError('bio', true); ok = false; } else showError('bio', false);
     const trial = document.querySelector('input[name="trial"]:checked');
     if (!trial) { showError('trial', true); ok = false; } else showError('trial', false);
     return ok;
@@ -2220,10 +2159,8 @@
 
   // ── Publish (save to Supabase) ──
   async function publishProfile() {
-    if (!validateStep3()) return;
-
-    const btn = document.getElementById('publishBtn');
-    const text = document.getElementById('publishText');
+    const btn     = document.getElementById('publishBtn');
+    const text    = document.getElementById('publishText');
     const spinner = document.getElementById('publishSpinner');
 
     btn.disabled = true;
@@ -2231,56 +2168,53 @@
     spinner.classList.add('show');
 
     const trialEl = document.querySelector('input[name="trial"]:checked');
+    const cleanLangs = selectedLanguages.map(l => l.startsWith('__other__') ? l.replace('__other__','') : l);
 
     const profileData = {
-      full_name: document.getElementById('fullName').value.trim(),
-      whatsapp: document.getElementById('whatsapp').value.trim(),
-      city: document.getElementById('city').value.trim(),
-      state: document.getElementById('state').value,
-      pincode: document.getElementById('pincode').value.trim() || null,
-      coaching_mode: selectedMode,
-      experience: document.getElementById('experience').value,
-      chess_title: selectedTitle || null,
-      levels_taught: selectedLevels,
-      languages: selectedLanguages.map(l => l.startsWith('__other__') ? l.replace('__other__','') : l),
-      is_fide_rated: isFide,
-      fide_rating: isFide ? document.getElementById('fideRating').value : null,
-      fide_id: isFide ? document.getElementById('fideId').value.trim() : null,
-      bio: document.getElementById('bio').value.trim(),
-      fees: document.getElementById('fees').value ? parseInt(document.getElementById('fees').value) : null,
-      trial_available: trialEl ? trialEl.value === 'yes' : false,
-      is_live: false
+      fide_id:          fideData.fide_id,
+      full_name:        fideData.name,
+      chess_title:      fideData.title || null,
+      fide_rating:      fideData.rating,
+      fide_rapid:       fideData.rapid_rating,
+      fide_blitz:       fideData.blitz_rating,
+      fide_rating_type: fideData.rating_type,
+      country:          fideData.country,
+      whatsapp:         document.getElementById('whatsapp').value.trim(),
+      city:             document.getElementById('city').value.trim(),
+      state:            document.getElementById('state').value,
+      pincode:          document.getElementById('pincode').value.trim() || null,
+      coaching_mode:    selectedMode,
+      experience:       document.getElementById('experience').value,
+      levels_taught:    selectedLevels,
+      languages:        cleanLangs,
+      bio:              document.getElementById('bio').value.trim(),
+      fees:             document.getElementById('fees').value ? parseInt(document.getElementById('fees').value) : null,
+      trial_available:  trialEl ? trialEl.value === 'yes' : false,
+      is_live:          false,
     };
 
     try {
       const { data, error } = await sb.from('coaches').insert([profileData]).select();
       if (error) {
-        if (error.code === '23505' && error.message.includes('unique_whatsapp')) {
+        if (error.code === '23505' && error.message.includes('whatsapp')) {
           showToast('This WhatsApp number is already registered. Please contact us if you need help.', 'error');
-        } else if (error.code === '23505' && error.message.includes('unique_fide_id')) {
+        } else if (error.code === '23505' && error.message.includes('fide_id')) {
           showToast('This FIDE ID is already registered. Please contact us if this is an error.', 'error');
         } else {
           showToast('Something went wrong. Please try again.', 'error');
         }
         throw error;
       }
-
-      // Success!
       document.getElementById('successOverlay').classList.add('show');
-      showToast('Profile submitted! We\'ll review and activate it within 24 hours. 🎉');
-
     } catch (err) {
       console.error('Supabase error:', err);
-      showToast('Something went wrong. Please try again.', 'error');
       btn.disabled = false;
-      text.innerHTML = '<span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span> Submit Profile';
+      text.innerHTML = '<span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span> Confirm &amp; Submit';
       spinner.classList.remove('show');
     }
   }
 
-  function closeSuccess() {
-    document.getElementById('successOverlay').classList.remove('show');
-  }
+
 </script>
 </body>
 </html>
