@@ -6,7 +6,7 @@
 
   <!-- ── PRIMARY SEO ── -->
   <title>ChessConnect — Find Chess Coaches Worldwide | List Yourself Free</title>
-  <meta name="description" content="ChessConnect is the global chess coach marketplace. Find FIDE-verified chess coaches worldwide or list yourself free — zero commission. Plus free tools: Chess Clock, Tournament Brochure Maker &amp; Scoresheet Generator."/>
+  <meta name="description" content="ChessConnect is the global chess coach marketplace. Find FIDE-rated chess coaches worldwide or list yourself free — zero commission. Plus free tools: Chess Clock, Tournament Brochure Maker &amp; Scoresheet Generator."/>
   <meta name="keywords" content="chess coach India, find chess coach, chess coach near me, chess coaching India, online chess coach, chess tutor India, FIDE rated coach, chess coach marketplace, chess classes India, list chess coach, chess coach directory, chess coaching online offline, chess coach Mumbai, chess coach Chennai, chess coach Delhi, chess coach Bengaluru, chess coach Pune, chess clock online, tournament brochure maker chess, chess scoresheet generator, free chess tools India"/>
   <meta name="author" content="ChessConnect"/>
   <meta name="robots" content="index, follow"/>
@@ -48,7 +48,7 @@
         "name": "ChessConnect",
         "url": "https://chessconnecthq.github.io/chessconnect-web/",
         "logo": "https://chessconnecthq.github.io/chessconnect-web/favicon.ico",
-        "description": "The global chess coach marketplace connecting FIDE-verified coaches with students worldwide.",
+        "description": "The global chess coach marketplace connecting FIDE-rated coaches with students worldwide.",
         "areaServed": "IN",
         "email": "chessconnect.in@gmail.com",
         "sameAs": ["https://twitter.com/chessconnecthq"]
@@ -73,7 +73,7 @@
         "provider": {"@id": "https://chessconnecthq.github.io/chessconnect-web/#organization"},
         "serviceType": "Chess Coaching Directory",
         "areaServed": "IN",
-        "description": "Find FIDE-verified chess coaches worldwide for online and offline sessions.",
+        "description": "Find FIDE-rated chess coaches worldwide for online and offline sessions.",
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -910,25 +910,38 @@
     /* Mobile nav overlay */
     .mobile-nav {
       display: none;
-      position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+      position: fixed; inset: 0;
+      z-index: 200;
+    }
+    .mobile-nav.open { display: block; }
+    .mobile-nav-overlay {
+      position: absolute; inset: 0;
       background: rgba(16,44,87,0.5);
       backdrop-filter: blur(2px);
-      z-index: 99;
-      opacity: 0; transition: opacity 0.3s ease;
+      animation: fadeIn 0.25s ease;
     }
-    .mobile-nav.open { opacity: 1; }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     .mobile-nav-panel {
       position: absolute; top: 0; right: 0;
-      width: min(320px, 85vw);
+      width: min(300px, 82vw);
       height: 100%;
       background: var(--white);
       padding: 1.5rem;
+      padding-top: 4rem;
       transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
       overflow-y: auto;
-      box-shadow: -8px 0 32px rgba(16,44,87,0.15);
+      box-shadow: -8px 0 32px rgba(16,44,87,0.18);
     }
     .mobile-nav.open .mobile-nav-panel { transform: translateX(0); }
+    .mobile-nav-close {
+      position: absolute; top: 1.1rem; right: 1.1rem;
+      background: var(--off-white); border: 1px solid var(--gray-light);
+      border-radius: 8px; padding: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .mobile-nav-close:hover { background: var(--gray-light); }
     .mobile-nav-links { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.5rem; }
     .mobile-nav-links a {
       font-size: 1rem; font-weight: 600; color: var(--navy);
@@ -937,13 +950,13 @@
       display: flex; align-items: center; gap: 0.75rem;
     }
     .mobile-nav-links a:hover { background: var(--off-white); }
-    .mobile-nav-links a svg { width: 18px; height: 18px; stroke: var(--blue); flex-shrink: 0; }
+    .mobile-nav-links a svg { width: 18px; height: 18px; stroke: var(--blue); flex-shrink: 0; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .mobile-nav-divider { height: 1px; background: var(--gray-light); margin: 0.75rem 0; }
     .mobile-nav-ctas { display: flex; flex-direction: column; gap: 0.75rem; }
     .mobile-nav-ctas .btn-ghost,
     .mobile-nav-ctas .btn-primary {
       width: 100%; padding: 0.85rem; font-size: 0.95rem;
-      border-radius: 10px; text-align: center;
+      border-radius: 10px; text-align: center; justify-content: center;
     }
 
     /* ── COMPREHENSIVE RESPONSIVE ── */
@@ -1136,16 +1149,20 @@
 </nav>
 
 <!-- MOBILE NAV -->
-<div class="mobile-nav" id="mobileNav" role="dialog" aria-label="Mobile navigation" style="display:none;">
+<div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+  <div class="mobile-nav-overlay" onclick="closeMenu()"></div>
   <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" onclick="closeMenu()" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
     <div class="mobile-nav-links">
       <a href="#how-it-works" onclick="closeMenu()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
         How It Works
       </a>
-      <a href="#sample" onclick="closeMenu()">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        Sample Profile
+      <a href="coaches.html" onclick="closeMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Find a Coach
       </a>
       <a href="#why" onclick="closeMenu()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1158,9 +1175,8 @@
     </div>
     <div class="mobile-nav-divider"></div>
     <div class="mobile-nav-ctas">
-      <button class="btn-primary" onclick="closeMenu(); openAuthModal('register');" aria-label="List yourself as a coach">List Yourself Free</button>
-      <button class="btn-ghost" onclick="closeMenu(); openAuthModal('login');" aria-label="Coach login">Coach Login</button>
-      <button class="btn-ghost" onclick="window.location.href='coaches.html'" aria-label="Find a coach">Find a Coach</button>
+      <button class="btn-primary" onclick="closeMenu(); openAuthModal('register');">List Yourself Free</button>
+      <button class="btn-ghost" onclick="closeMenu(); openAuthModal('login');">Coach Login</button>
     </div>
   </div>
 </div>
@@ -1309,7 +1325,7 @@
             </div>
             <div class="sample-section">
               <div class="sample-section-label">Fees</div>
-              <p>₹750 / session · Trial class available</p>
+              <p>₹750 / session · Demo class available</p>
             </div>
           </div>
           <div class="sample-ctas">
@@ -1322,7 +1338,7 @@
         <h3>See a Sample Coach Profile</h3>
         <p>This is exactly how coach profiles appear to students and parents. Clean, verified and direct. Students contact coaches with one tap, no middleman involved.</p>
         <ul class="sample-highlights" aria-label="Profile benefits">
-          <li>FIDE-verified badge builds instant credibility</li>
+          <li>FIDE-rated badge builds instant credibility</li>
           <li>Students contact you directly via WhatsApp or call</li>
           <li>You keep 100% of your fees, zero commission ever</li>
           <li>Discoverable by location, mode, level &amp; rating</li>
@@ -1624,12 +1640,12 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Trial Class Available? <span aria-hidden="true">*</span></label>
-            <div class="radio-group" role="group" aria-label="Trial class availability">
-              <label class="radio-label"><input type="radio" name="trial" value="yes" aria-label="Yes, trial class available"/> Yes</label>
-              <label class="radio-label"><input type="radio" name="trial" value="no" aria-label="No trial class"/> No</label>
+            <label class="form-label">Demo Class Available? <span aria-hidden="true">*</span></label>
+            <div class="radio-group" role="group" aria-label="Demo class availability">
+              <label class="radio-label"><input type="radio" name="demo" value="yes" aria-label="Yes, demo class available"/> Yes</label>
+              <label class="radio-label"><input type="radio" name="demo" value="no" aria-label="No demo class"/> No</label>
             </div>
-            <div class="field-error" id="err-trial" role="alert">Please select trial class availability.</div>
+            <div class="field-error" id="err-demo" role="alert">Please select demo class availability.</div>
           </div>
 
           <div class="form-nav">
@@ -2127,8 +2143,6 @@
     menuOpen = !menuOpen;
     hamburger.classList.toggle('open', menuOpen);
     hamburger.setAttribute('aria-expanded', menuOpen);
-    mobileNav.style.display = 'block';
-    mobileNav.offsetHeight;
     mobileNav.classList.toggle('open', menuOpen);
     document.body.style.overflow = menuOpen ? 'hidden' : '';
   }
@@ -2139,10 +2153,8 @@
     hamburger.setAttribute('aria-expanded', 'false');
     mobileNav.classList.remove('open');
     document.body.style.overflow = '';
-    setTimeout(() => { mobileNav.style.display = 'none'; }, 300);
   }
 
-  mobileNav.addEventListener('click', (e) => { if (e.target === mobileNav) closeMenu(); });
   window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
 
@@ -2440,11 +2452,11 @@
 
     // Fees
     const fees = document.getElementById('fees').value;
-    const trial = document.querySelector('input[name="trial"]:checked');
-    const trialText = trial && trial.value === 'yes' ? ' · Trial class available' : '';
+    const demo = document.querySelector('input[name="demo"]:checked');
+    const demoText = demo && demo.value === 'yes' ? ' · Demo class available' : '';
     document.getElementById('previewFees').textContent = fees
-      ? `₹${parseInt(fees).toLocaleString('en-IN')} / session${trialText}`
-      : `Not specified${trialText}`;
+      ? `₹${parseInt(fees).toLocaleString('en-IN')} / session${demoText}`
+      : `Not specified${demoText}`;
   }
 
   function validateStep1() {
@@ -2473,8 +2485,8 @@
     const realLanguages = selectedLanguages.filter(l => !l.startsWith('__other__'));
     const hasLanguage = realLanguages.length > 0 || (otherSelected && otherInput.length > 0);
     if (!hasLanguage) { showError('languages', true); ok = false; } else showError('languages', false);
-    const trial = document.querySelector('input[name="trial"]:checked');
-    if (!trial) { showError('trial', true); ok = false; } else showError('trial', false);
+    const demo = document.querySelector('input[name="demo"]:checked');
+    if (!demo) { showError('demo', true); ok = false; } else showError('demo', false);
     return ok;
   }
 
@@ -2493,7 +2505,7 @@
     text.textContent = 'Saving...';
     spinner.classList.add('show');
 
-    const trialEl = document.querySelector('input[name="trial"]:checked');
+    const demoEl = document.querySelector('input[name="demo"]:checked');
     const cleanLangs = selectedLanguages.map(l => l.startsWith('__other__') ? l.replace('__other__','') : l);
 
     const profileData = {
@@ -2514,7 +2526,7 @@
       languages:        cleanLangs,
       bio:              document.getElementById('bio').value.trim(),
       fees:             document.getElementById('fees').value ? parseInt(document.getElementById('fees').value) : null,
-      trial_available:  trialEl ? trialEl.value === 'yes' : false,
+      demo_available:  demoEl ? demoEl.value === 'yes' : false,
       is_live:          true,
       auth_user_id:     currentUser ? currentUser.id : null,
       email:            currentUser ? currentUser.email : null,
