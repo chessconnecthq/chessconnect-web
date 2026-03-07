@@ -3,10 +3,52 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Find a Chess Coach — ChessConnect</title>
-  <meta name="description" content="Search and filter FIDE-verified chess coaches in India. Filter by city, mode, level, language, title and rating. Contact coaches directly via WhatsApp or call."/>
+  <title>Find a Chess Coach in India — FIDE-Rated Coaches | ChessConnect</title>
+  <meta name="description" content="Find and contact FIDE-rated chess coaches across India. Filter by city, rating, title, level and language. Online and offline coaching available. Connect directly — no middleman."/>
+  <meta name="keywords" content="chess coach India, chess coach near me, online chess coach India, chess tutor India, FIDE rated chess coach, chess coach Mumbai, chess coach Delhi, chess coach Chennai, chess coach Bengaluru, chess coach Pune, chess coach Hyderabad, chess coach Kolkata, chess coach for beginners, GM chess coach India, IM chess coach India, chess coaching online, chess coaching offline, chess classes India, find chess coach, chess coach directory India"/>
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/coaches.html"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="ChessConnect"/>
+  <meta property="og:url" content="https://chessconnecthq.github.io/chessconnect-web/coaches.html"/>
+  <meta property="og:title" content="Find a Chess Coach in India — ChessConnect"/>
+  <meta property="og:description" content="Browse FIDE-rated chess coaches across India. Filter by city, rating, title and language. Contact coaches directly via WhatsApp or call — no middleman."/>
+  <meta property="og:image" content="https://chessconnecthq.github.io/chessconnect-web/og-coaches.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:locale" content="en_IN"/>
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Find a Chess Coach in India — ChessConnect"/>
+  <meta name="twitter:description" content="Browse FIDE-rated chess coaches across India. Filter by city, rating, title and language. Contact directly — no middleman."/>
+  <meta name="twitter:image" content="https://chessconnecthq.github.io/chessconnect-web/og-coaches.png"/>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SearchResultsPage",
+    "name": "Find a Chess Coach in India",
+    "description": "Browse and contact FIDE-rated chess coaches across India on ChessConnect.",
+    "url": "https://chessconnecthq.github.io/chessconnect-web/coaches.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "ChessConnect",
+      "url": "https://chessconnecthq.github.io/chessconnect-web/",
+      "description": "India's chess coach marketplace connecting students with FIDE-rated coaches."
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://chessconnecthq.github.io/chessconnect-web/" },
+        { "@type": "ListItem", "position": 2, "name": "Find a Coach", "item": "https://chessconnecthq.github.io/chessconnect-web/coaches.html" }
+      ]
+    }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -244,6 +286,15 @@
     .card-fee span { font-weight: 400; color: var(--gray); font-size: 0.8rem; }
     .trial-badge { font-size: 0.72rem; font-weight: 600; color: var(--green); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 100px; padding: 0.15rem 0.55rem; margin-left: 0.5rem; }
     .card-footer { padding: 0 1.5rem 1.25rem; display: flex; gap: 0.6rem; }
+    .btn-card-view {
+      font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+      background: var(--off-white); color: var(--navy);
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      padding: 0.6rem 0.9rem; cursor: pointer;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: all 0.2s; text-decoration: none; white-space: nowrap;
+    }
+    .btn-card-view:hover { border-color: var(--blue); color: var(--blue); background: rgba(30,115,232,0.04); }
     .btn-card-call {
       flex: 1; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
       background: var(--off-white); color: var(--navy);
@@ -1089,16 +1140,19 @@
     const callHref = c.phone ? `tel:${c.phone}` : '#';
     const hasContact = c.whatsapp || c.phone;
 
+    const cardLink = `coach.html?id=${c.id}`;
     return `
     <div class="coach-card">
+      <a href="${cardLink}" style="text-decoration:none; color:inherit;">
       <div class="card-header">
         <div class="card-avatar">${initials}</div>
         <div class="card-header-info">
-          <div class="card-name">${escHtml(c.name || 'Coach')}</div>
+          <div class="card-name">${escHtml(c.name || c.full_name || 'Coach')}</div>
           <div class="card-meta">${[exp, location].filter(Boolean).join(' · ')}</div>
           <div class="card-badges">${badges.join('')}</div>
         </div>
       </div>
+      </a>
       <div class="card-body">
         ${c.bio ? `<div class="card-bio">${escHtml(c.bio)}</div>` : ''}
         ${modeTags.length ? `<div class="card-row-label">Mode</div><div class="card-row">${modeTags.join('')}</div>` : ''}
@@ -1109,6 +1163,10 @@
         </div>
       </div>
       <div class="card-footer">
+        <a class="btn-card-view" href="${cardLink}">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          View Profile
+        </a>
         ${hasContact ? `
           <button class="btn-card-call" onclick="handleCall('${escAttr(c.phone)}')" ${!c.phone ? 'disabled style="opacity:0.4"' : ''}>
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.5a19.79 19.79 0 01-3-8.56A2 2 0 012.48 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
