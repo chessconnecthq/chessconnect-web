@@ -346,16 +346,102 @@
     }
 
     /* ── MOBILE ── */
+    /* Desktop filters shown, mobile button hidden */
+    .filters-desktop { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+    .btn-filter-mobile { display: none; }
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-ctas { display: none; }
       .hamburger { display: flex; }
       .page-header { padding: 90px 5% 32px; }
-      .search-bar-inner { flex-direction: column; align-items: stretch; }
-      .filter-select { width: 100%; }
+      .page-header h1 { font-size: 1.8rem; }
+      .search-bar-inner { gap: 0.6rem; }
+      .filters-desktop { display: none; }
+      .btn-filter-mobile { display: flex; }
       .coaches-grid { grid-template-columns: 1fr; }
       .results-bar { flex-direction: column; align-items: flex-start; }
+      .main-wrap { padding: 1.25rem 4% 3rem; }
     }
+
+    /* ── MOBILE FILTER BUTTON ── */
+    .btn-filter-mobile {
+      align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.1rem;
+      background: var(--white); color: var(--navy);
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; white-space: nowrap;
+      transition: border-color 0.2s;
+    }
+    .btn-filter-mobile:hover { border-color: var(--blue); }
+    .btn-filter-mobile.active { border-color: var(--blue); background: rgba(30,115,232,0.05); color: var(--blue); }
+    .filter-count-badge {
+      background: var(--blue); color: white;
+      font-size: 0.7rem; font-weight: 700;
+      width: 18px; height: 18px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    /* ── FILTER DRAWER ── */
+    .filter-drawer-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(16,44,87,0.45); z-index: 300;
+    }
+    .filter-drawer-overlay.open { display: block; }
+    .filter-drawer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--white); z-index: 301;
+      border-radius: 20px 20px 0 0;
+      transform: translateY(100%);
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+      max-height: 88vh; display: flex; flex-direction: column;
+    }
+    .filter-drawer.open { transform: translateY(0); }
+    .filter-drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--gray-light);
+      flex-shrink: 0;
+    }
+    .filter-drawer-title { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+    .filter-drawer-close {
+      background: var(--off-white); border: 1px solid var(--gray-light);
+      border-radius: 8px; padding: 6px; cursor: pointer;
+      display: flex; align-items: center;
+    }
+    .filter-drawer-body {
+      overflow-y: auto; padding: 1rem 1.5rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
+      flex: 1;
+    }
+    .drawer-filter-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .drawer-filter-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--gray); text-transform: uppercase; }
+    .drawer-filter-group .filter-select { width: 100%; }
+    .drawer-lang-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.4rem;
+    }
+    .drawer-lang-option {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 0.75rem; font-size: 0.88rem; font-weight: 500;
+      color: var(--navy); cursor: pointer;
+      background: var(--off-white); border-radius: 8px;
+      border: 1px solid var(--gray-light);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .drawer-lang-option:has(input:checked) {
+      border-color: var(--blue); background: rgba(30,115,232,0.06); color: var(--blue);
+    }
+    .drawer-lang-option input { accent-color: var(--blue); width: 14px; height: 14px; }
+    .filter-drawer-footer {
+      padding: 1rem 1.5rem 1.5rem;
+      display: flex; gap: 0.75rem;
+      border-top: 1px solid var(--gray-light);
+      flex-shrink: 0;
+    }
+    .filter-drawer-footer .btn-ghost,
+    .filter-drawer-footer .btn-primary { flex: 1; padding: 0.85rem; font-size: 0.95rem; border-radius: 10px; justify-content: center; }
 
     /* Mobile nav */
     .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; }
@@ -467,66 +553,162 @@
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <input type="text" class="search-input" id="searchInput" placeholder="Search by name or country..." oninput="onFilterChange()" autocomplete="off"/>
     </div>
-    <!-- Filters -->
-    <select class="filter-select" id="filterMode" onchange="onFilterChange()">
-      <option value="">Select Mode</option>
-      <option value="online">Online</option>
-      <option value="offline">Offline</option>
-      <option value="both">Online + Offline</option>
-    </select>
-    <select class="filter-select" id="filterLevel" onchange="onFilterChange()">
-      <option value="">Select Level</option>
-      <option value="Beginner">Beginner</option>
-      <option value="Intermediate">Intermediate</option>
-      <option value="Advanced">Advanced</option>
-    </select>
-    <select class="filter-select" id="filterTitle" onchange="onFilterChange()">
-      <option value="">Select Title</option>
-      <option value="GM">GM</option>
-      <option value="IM">IM</option>
-      <option value="FM">FM</option>
-      <option value="CM">CM</option>
-      <option value="WGM">WGM</option>
-      <option value="WIM">WIM</option>
-      <option value="WFM">WFM</option>
-    </select>
-    <select class="filter-select" id="filterRating" onchange="onFilterChange()">
-      <option value="">Select Rating Range</option>
-      <option value="1400-1600">1400 – 1600</option>
-      <option value="1600-1800">1600 – 1800</option>
-      <option value="1800-2000">1800 – 2000</option>
-      <option value="2000-2200">2000 – 2200</option>
-      <option value="2200-2400">2200 – 2400</option>
-      <option value="2400-2600">2400 – 2600</option>
-      <option value="2600+">2600+</option>
-    </select>
-    <select class="filter-select" id="filterCountry" onchange="onFilterChange()">
-      <option value="">Select Country</option>
-    </select>
-    <!-- Language multi-select -->
-    <div class="multi-select-wrap" id="langWrap">
-      <button class="filter-select multi-select-btn" id="langBtn" onclick="toggleLangDropdown(event)" type="button">
-        <span id="langBtnLabel">Select Language</span>
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="multi-select-menu" id="langMenu" style="display:none;">
-        <label class="multi-option"><input type="checkbox" value="English" onchange="onLangChange()"> English</label>
-        <label class="multi-option"><input type="checkbox" value="Hindi" onchange="onLangChange()"> Hindi</label>
-        <label class="multi-option"><input type="checkbox" value="Tamil" onchange="onLangChange()"> Tamil</label>
-        <label class="multi-option"><input type="checkbox" value="Telugu" onchange="onLangChange()"> Telugu</label>
-        <label class="multi-option"><input type="checkbox" value="Kannada" onchange="onLangChange()"> Kannada</label>
-        <label class="multi-option"><input type="checkbox" value="Malayalam" onchange="onLangChange()"> Malayalam</label>
-        <label class="multi-option"><input type="checkbox" value="Marathi" onchange="onLangChange()"> Marathi</label>
-        <label class="multi-option"><input type="checkbox" value="Bengali" onchange="onLangChange()"> Bengali</label>
-        <label class="multi-option"><input type="checkbox" value="Gujarati" onchange="onLangChange()"> Gujarati</label>
-        <label class="multi-option"><input type="checkbox" value="Punjabi" onchange="onLangChange()"> Punjabi</label>
+    <!-- Desktop filters -->
+    <div class="filters-desktop">
+      <select class="filter-select" id="filterMode" onchange="onFilterChange()">
+        <option value="">Select Mode</option>
+        <option value="online">Online</option>
+        <option value="offline">Offline</option>
+        <option value="both">Online + Offline</option>
+      </select>
+      <select class="filter-select" id="filterLevel" onchange="onFilterChange()">
+        <option value="">Select Level</option>
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+      <select class="filter-select" id="filterTitle" onchange="onFilterChange()">
+        <option value="">Select Title</option>
+        <option value="GM">GM</option>
+        <option value="IM">IM</option>
+        <option value="FM">FM</option>
+        <option value="CM">CM</option>
+        <option value="WGM">WGM</option>
+        <option value="WIM">WIM</option>
+        <option value="WFM">WFM</option>
+      </select>
+      <select class="filter-select" id="filterRating" onchange="onFilterChange()">
+        <option value="">Select Rating Range</option>
+        <option value="1400-1600">1400 – 1600</option>
+        <option value="1600-1800">1600 – 1800</option>
+        <option value="1800-2000">1800 – 2000</option>
+        <option value="2000-2200">2000 – 2200</option>
+        <option value="2200-2400">2200 – 2400</option>
+        <option value="2400-2600">2400 – 2600</option>
+        <option value="2600+">2600+</option>
+      </select>
+      <select class="filter-select" id="filterCountry" onchange="onFilterChange()">
+        <option value="">Select Country</option>
+      </select>
+      <div class="multi-select-wrap" id="langWrap">
+        <button class="filter-select multi-select-btn" id="langBtn" onclick="toggleLangDropdown(event)" type="button">
+          <span id="langBtnLabel">Select Language</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="multi-select-menu" id="langMenu" style="display:none;">
+          <label class="multi-option"><input type="checkbox" value="English" onchange="onLangChange()"> English</label>
+          <label class="multi-option"><input type="checkbox" value="Hindi" onchange="onLangChange()"> Hindi</label>
+          <label class="multi-option"><input type="checkbox" value="Tamil" onchange="onLangChange()"> Tamil</label>
+          <label class="multi-option"><input type="checkbox" value="Telugu" onchange="onLangChange()"> Telugu</label>
+          <label class="multi-option"><input type="checkbox" value="Kannada" onchange="onLangChange()"> Kannada</label>
+          <label class="multi-option"><input type="checkbox" value="Malayalam" onchange="onLangChange()"> Malayalam</label>
+          <label class="multi-option"><input type="checkbox" value="Marathi" onchange="onLangChange()"> Marathi</label>
+          <label class="multi-option"><input type="checkbox" value="Bengali" onchange="onLangChange()"> Bengali</label>
+          <label class="multi-option"><input type="checkbox" value="Gujarati" onchange="onLangChange()"> Gujarati</label>
+          <label class="multi-option"><input type="checkbox" value="Punjabi" onchange="onLangChange()"> Punjabi</label>
+        </div>
+      </div>
+      <select class="filter-select" id="filterTrial" onchange="onFilterChange()">
+        <option value="">Select Demo</option>
+        <option value="yes">Demo Available</option>
+      </select>
+      <button class="btn-clear-filters" id="btnClear" onclick="clearFilters()" style="display:none;">✕ Clear</button>
+    </div>
+    <!-- Mobile filter button -->
+    <button class="btn-filter-mobile" id="btnFilterMobile" onclick="openFilterDrawer()">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      Filters
+      <span class="filter-count-badge" id="filterCountBadge" style="display:none;">0</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── MOBILE FILTER DRAWER ── -->
+<div class="filter-drawer-overlay" id="filterDrawerOverlay" onclick="closeFilterDrawer()"></div>
+<div class="filter-drawer" id="filterDrawer">
+  <div class="filter-drawer-header">
+    <span class="filter-drawer-title">Filters</span>
+    <button class="filter-drawer-close" onclick="closeFilterDrawer()" aria-label="Close filters">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="filter-drawer-body">
+    <div class="drawer-filter-group">
+      <label class="drawer-filter-label">Mode</label>
+      <select class="filter-select" id="filterModeM" onchange="syncFromDrawer()">
+        <option value="">Select Mode</option>
+        <option value="online">Online</option>
+        <option value="offline">Offline</option>
+        <option value="both">Online + Offline</option>
+      </select>
+    </div>
+    <div class="drawer-filter-group">
+      <label class="drawer-filter-label">Level</label>
+      <select class="filter-select" id="filterLevelM" onchange="syncFromDrawer()">
+        <option value="">Select Level</option>
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+    </div>
+    <div class="drawer-filter-group">
+      <label class="drawer-filter-label">Title</label>
+      <select class="filter-select" id="filterTitleM" onchange="syncFromDrawer()">
+        <option value="">Select Title</option>
+        <option value="GM">GM</option>
+        <option value="IM">IM</option>
+        <option value="FM">FM</option>
+        <option value="CM">CM</option>
+        <option value="WGM">WGM</option>
+        <option value="WIM">WIM</option>
+        <option value="WFM">WFM</option>
+      </select>
+    </div>
+    <div class="drawer-filter-group">
+      <label class="drawer-filter-label">Rating Range</label>
+      <select class="filter-select" id="filterRatingM" onchange="syncFromDrawer()">
+        <option value="">Select Rating Range</option>
+        <option value="1400-1600">1400 – 1600</option>
+        <option value="1600-1800">1600 – 1800</option>
+        <option value="1800-2000">1800 – 2000</option>
+        <option value="2000-2200">2000 – 2200</option>
+        <option value="2200-2400">2200 – 2400</option>
+        <option value="2400-2600">2400 – 2600</option>
+        <option value="2600+">2600+</option>
+      </select>
+    </div>
+    <div class="drawer-filter-group">
+      <label class="drawer-filter-label">Country</label>
+      <select class="filter-select" id="filterCountryM" onchange="syncFromDrawer()">
+        <option value="">Select Country</option>
+      </select>
+    </div>
+    <div class="drawer-filter-group">
+      <label class="drawer-filter-label">Language</label>
+      <div class="drawer-lang-grid">
+        <label class="drawer-lang-option"><input type="checkbox" value="English" onchange="syncFromDrawer()"> English</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Hindi" onchange="syncFromDrawer()"> Hindi</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Tamil" onchange="syncFromDrawer()"> Tamil</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Telugu" onchange="syncFromDrawer()"> Telugu</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Kannada" onchange="syncFromDrawer()"> Kannada</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Malayalam" onchange="syncFromDrawer()"> Malayalam</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Marathi" onchange="syncFromDrawer()"> Marathi</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Bengali" onchange="syncFromDrawer()"> Bengali</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Gujarati" onchange="syncFromDrawer()"> Gujarati</label>
+        <label class="drawer-lang-option"><input type="checkbox" value="Punjabi" onchange="syncFromDrawer()"> Punjabi</label>
       </div>
     </div>
-    <select class="filter-select" id="filterTrial" onchange="onFilterChange()">
-      <option value="">Select Demo</option>
-      <option value="yes">Demo Available</option>
-    </select>
-    <button class="btn-clear-filters" id="btnClear" onclick="clearFilters()" style="display:none;">✕ Clear</button>
+    <div class="drawer-filter-group">
+      <label class="drawer-filter-label">Demo Class</label>
+      <select class="filter-select" id="filterTrialM" onchange="syncFromDrawer()">
+        <option value="">Select Demo</option>
+        <option value="yes">Demo Available</option>
+      </select>
+    </div>
+  </div>
+  <div class="filter-drawer-footer">
+    <button class="btn-ghost" onclick="clearFilters(); closeFilterDrawer();">✕ Clear All</button>
+    <button class="btn-primary" onclick="closeFilterDrawer()">Show Results</button>
   </div>
 </div>
 
@@ -629,14 +811,65 @@
     applyFilters();
   }
 
+  // ── FILTER DRAWER (MOBILE) ──
+  function openFilterDrawer() {
+    document.getElementById('filterDrawerOverlay').classList.add('open');
+    document.getElementById('filterDrawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFilterDrawer() {
+    document.getElementById('filterDrawerOverlay').classList.remove('open');
+    document.getElementById('filterDrawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Sync drawer values → desktop selects → apply
+  function syncFromDrawer() {
+    document.getElementById('filterMode').value    = document.getElementById('filterModeM').value;
+    document.getElementById('filterLevel').value   = document.getElementById('filterLevelM').value;
+    document.getElementById('filterTitle').value   = document.getElementById('filterTitleM').value;
+    document.getElementById('filterRating').value  = document.getElementById('filterRatingM').value;
+    document.getElementById('filterCountry').value = document.getElementById('filterCountryM').value;
+    document.getElementById('filterTrial').value   = document.getElementById('filterTrialM').value;
+    // Sync drawer language checkboxes to desktop
+    const drawerLangs = [...document.querySelectorAll('.filter-drawer input[type="checkbox"]:checked')].map(cb => cb.value);
+    document.querySelectorAll('#langMenu input[type="checkbox"]').forEach(cb => {
+      cb.checked = drawerLangs.includes(cb.value);
+    });
+    updateLangBtnLabel();
+    updateFilterCountBadge();
+    onFilterChange();
+  }
+
+  function updateFilterCountBadge() {
+    const count = [
+      document.getElementById('filterMode').value,
+      document.getElementById('filterLevel').value,
+      document.getElementById('filterTitle').value,
+      document.getElementById('filterRating').value,
+      document.getElementById('filterCountry').value,
+      document.getElementById('filterTrial').value,
+    ].filter(Boolean).length + getSelectedLanguages().length;
+
+    const badge = document.getElementById('filterCountBadge');
+    const btn   = document.getElementById('btnFilterMobile');
+    badge.style.display = count > 0 ? 'inline-flex' : 'none';
+    badge.textContent   = count;
+    btn.classList.toggle('active', count > 0);
+  }
+
   // ── POPULATE COUNTRY FILTER ──
   function populateCountryFilter(coaches) {
     const countries = [...new Set(coaches.map(c => c.country).filter(Boolean))].sort();
-    const sel = document.getElementById('filterCountry');
-    countries.forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c; opt.textContent = c;
-      sel.appendChild(opt);
+    ['filterCountry', 'filterCountryM'].forEach(id => {
+      const sel = document.getElementById(id);
+      if (!sel) return;
+      countries.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c; opt.textContent = c;
+        sel.appendChild(opt);
+      });
     });
   }
 
@@ -728,6 +961,7 @@
     });
 
     updateActivePills(q, mode, level, title, rating, country, languages, trial);
+    updateFilterCountBadge();
     renderPage();
     renderPagination();
   }
@@ -795,15 +1029,14 @@
 
   // ── CLEAR FILTERS ──
   function clearFilters() {
-    document.getElementById('searchInput').value  = '';
-    document.getElementById('filterMode').value   = '';
-    document.getElementById('filterLevel').value  = '';
-    document.getElementById('filterTitle').value  = '';
-    document.getElementById('filterRating').value = '';
-    document.getElementById('filterCountry').value= '';
-    document.getElementById('filterTrial').value  = '';
-    document.querySelectorAll('#langMenu input[type="checkbox"]').forEach(cb => cb.checked = false);
+    ['filterMode','filterLevel','filterTitle','filterRating','filterCountry','filterTrial',
+     'filterModeM','filterLevelM','filterTitleM','filterRatingM','filterCountryM','filterTrialM'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    document.getElementById('searchInput').value = '';
+    document.querySelectorAll('#langMenu input[type="checkbox"], .filter-drawer input[type="checkbox"]').forEach(cb => cb.checked = false);
     updateLangBtnLabel();
+    updateFilterCountBadge();
     onFilterChange();
   }
 
