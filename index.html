@@ -2067,28 +2067,35 @@
     updateNavLoggedIn(currentUser);
     closeAuthModal();
     // Check if coach already has a profile
-    const { data: existing } = await sb.from('coaches').select('id').eq('auth_user_id', currentUser.id).single();
-    if (existing) {
-      // Already registered — redirect to dashboard
-      window.location.href = 'dashboard.html';
-    } else {
-      // New coach — scroll to form and pre-fill email
-      scrollToRegister();
-      const emailField = document.getElementById('coachEmail');
-      if (emailField) emailField.value = currentUser.email || '';
-    }
+    try {
+      const { data: existing } = await sb.from('coaches').select('id').eq('auth_user_id', currentUser.id).single();
+      if (existing) {
+        // Already registered — redirect to dashboard
+        window.location.href = 'dashboard.html';
+        return;
+      }
+    } catch(e) { /* no profile found — continue to registration */ }
+    // New coach — scroll to form and pre-fill email
+    scrollToRegister();
+    const emailField = document.getElementById('coachEmail');
+    if (emailField) emailField.value = currentUser.email || '';
   }
 
   function updateNavLoggedIn(user) {
     const firstName = (user.user_metadata?.full_name || user.email || 'Coach').split(' ')[0];
-    document.getElementById('btnLoginNav').style.display = 'none';
-    document.getElementById('coachDropdown').style.display = 'inline-flex';
-    document.getElementById('navUserName').textContent = firstName;
+    const btnLogin = document.getElementById('btnLoginNav');
+    const dropdown = document.getElementById('coachDropdown');
+    if (btnLogin) btnLogin.style.display = 'none';
+    if (dropdown) dropdown.style.display = 'inline-flex';
+    const nameEl = document.getElementById('navUserName');
+    if (nameEl) nameEl.textContent = firstName;
   }
 
   function updateNavLoggedOut() {
-    document.getElementById('btnLoginNav').style.display = 'inline-flex';
-    document.getElementById('coachDropdown').style.display = 'none';
+    const btnLogin = document.getElementById('btnLoginNav');
+    const dropdown = document.getElementById('coachDropdown');
+    if (btnLogin) btnLogin.style.display = 'inline-flex';
+    if (dropdown) dropdown.style.display = 'none';
   }
 
   function toggleDropdown() {
@@ -2105,15 +2112,16 @@
   });
 
   async function signOutCoach() {
+    const menu = document.getElementById('coachDropdownMenu');
+    if (menu) menu.style.display = 'none';
     await sb.auth.signOut();
     currentUser = null;
     updateNavLoggedOut();
-    document.getElementById('coachDropdownMenu').style.display = 'none';
   }
 
   // ── Listen for auth state changes ──
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) {
+    if (event === 'SIGNED_IN' && session && !currentUser) {
       currentUser = session.user;
       await handleAuthenticatedUser();
     } else if (event === 'SIGNED_OUT') {
@@ -2203,11 +2211,10 @@
     btn.disabled = true;
 
     try {
-      const { data, error } = await sb
-        .from('fide_players')
-        .select('fide_id, name, title, rating, rapid_rating, blitz_rating, country, is_active')
-        .eq('fide_id', fideId)
-        .single();
+      // Timeout after 10 seconds
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000));
+      const queryPromise = sb.from('fide_players').select('fide_id, name, title, rating, rapid_rating, blitz_rating, country, is_active').eq('fide_id', fideId).single();
+      const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
 
       if (error || !data) {
         showError('fideId', true, 'We could not find this FIDE ID in our database. Please double-check your ID at ratings.fide.com. If you are sure it is correct, please contact us at chessconnect.in@gmail.com and we will assist you.');
@@ -2269,7 +2276,10 @@
 
     } catch (err) {
       console.error('FIDE lookup error:', err);
-      showError('fideId', true, 'Something went wrong. Please try again.');
+      const msg = err.message === 'timeout'
+        ? 'Request timed out. Please check your connection and try again.'
+        : 'Something went wrong. Please try again.';
+      showError('fideId', true, msg);
       btn.textContent = 'Verify →';
       btn.disabled = false;
     }
