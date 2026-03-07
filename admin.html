@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel | ChessConnect</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #1E73E8; --dark: #102C57; --red: #e53935; --green: #22c55e;
+      --orange: #f59e0b; --gray: #f5f7fa; --border: #e0e8f0;
+      --text: #1a2a3a; --sub: #5a6a7a;
+    }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray); color: var(--text); min-height: 100vh; }
+
+    /* ── LOGIN SCREEN ── */
+    .login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0a1628 0%, #102C57 100%);
+    }
+    .login-box {
+      background: #fff; border-radius: 20px; padding: 2.5rem 2rem;
+      width: 100%; max-width: 380px; text-align: center;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+    }
+    .login-logo { margin-bottom: 1.5rem; }
+    .login-logo span:first-child { color: #102C57; font-family: Arial, sans-serif; font-weight: 700; font-size: 1.5rem; }
+    .login-logo span:last-child  { color: #4285F4; font-family: Arial, sans-serif; font-weight: 700; font-size: 1.5rem; }
+    .login-box h2 { font-size: 1.1rem; color: var(--sub); font-weight: 500; margin-bottom: 1.8rem; }
+    .login-field { margin-bottom: 1rem; text-align: left; }
+    .login-field label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--sub); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .login-field input {
+      width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 0.95rem; transition: border-color 0.2s;
+    }
+    .login-field input:focus { outline: none; border-color: var(--blue); }
+    .btn-login {
+      width: 100%; padding: 0.85rem; background: var(--dark); color: #fff;
+      border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; margin-top: 0.5rem;
+    }
+    .btn-login:hover { background: var(--blue); }
+    .login-error { color: var(--red); font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+
+    /* ── NAV ── */
+    .admin-nav {
+      background: var(--dark); padding: 0 2rem; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .admin-logo span:first-child { color: #fff; font-family: Arial, sans-serif; font-weight: 700; font-size: 1.1rem; }
+    .admin-logo span:last-child  { color: #4285F4; font-family: Arial, sans-serif; font-weight: 700; font-size: 1.1rem; }
+    .admin-badge { background: var(--red); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-left: 0.5rem; vertical-align: middle; }
+    .btn-logout { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+    /* ── MAIN ── */
+    .admin-main { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* ── STATS ROW ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media (max-width: 700px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    .stat-card {
+      background: #fff; border-radius: 14px; padding: 1.2rem 1.5rem;
+      border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(30,115,232,0.06);
+    }
+    .stat-card .stat-num { font-size: 2rem; font-weight: 800; color: var(--dark); line-height: 1; }
+    .stat-card .stat-lbl { font-size: 0.8rem; color: var(--sub); margin-top: 0.3rem; font-weight: 500; }
+    .stat-card.live .stat-num  { color: #166534; }
+    .stat-card.hidden .stat-num { color: var(--orange); }
+    .stat-card.total .stat-num  { color: var(--blue); }
+
+    /* ── CONTROLS ── */
+    .controls-row {
+      display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;
+    }
+    .search-wrap { position: relative; flex: 1; min-width: 220px; }
+    .search-wrap svg { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--sub); pointer-events: none; }
+    .search-input {
+      width: 100%; padding: 0.7rem 0.9rem 0.7rem 2.5rem;
+      border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.9rem;
+      background: #fff; transition: border-color 0.2s;
+    }
+    .search-input:focus { outline: none; border-color: var(--blue); }
+    .filter-select {
+      padding: 0.7rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 0.9rem; background: #fff; color: var(--text); cursor: pointer;
+    }
+    .filter-select:focus { outline: none; border-color: var(--blue); }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: #fff; border-radius: 16px; border: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(30,115,232,0.06); overflow: hidden;
+    }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    thead { background: #f8fafd; }
+    thead th { padding: 0.9rem 1rem; text-align: left; font-size: 0.78rem; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid #f0f4fa; transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fbff; }
+    td { padding: 0.85rem 1rem; vertical-align: middle; }
+
+    .coach-name { font-weight: 700; color: var(--dark); }
+    .coach-meta { font-size: 0.78rem; color: var(--sub); margin-top: 2px; }
+
+    .title-badge { display: inline-block; background: #fff3cd; color: #856404; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 5px; }
+    .rating-val { font-weight: 600; color: var(--dark); }
+
+    .status-pill { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+    .status-pill.live   { background: #dcfce7; color: #166534; }
+    .status-pill.hidden { background: #fef9c3; color: #854d0e; }
+    .status-pill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .status-pill.live .status-pill-dot   { background: #22c55e; }
+    .status-pill.hidden .status-pill-dot { background: #eab308; }
+
+    .action-btns { display: flex; gap: 0.5rem; align-items: center; }
+    .btn-action {
+      padding: 0.35rem 0.75rem; border-radius: 8px; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.18s; white-space: nowrap;
+    }
+    .btn-hide   { background: #fef9c3; color: #854d0e; }
+    .btn-hide:hover   { background: #fde68a; }
+    .btn-unhide { background: #dcfce7; color: #166534; }
+    .btn-unhide:hover { background: #bbf7d0; }
+    .btn-del    { background: #fee2e2; color: #991b1b; }
+    .btn-del:hover    { background: #fca5a5; }
+
+    .table-empty { text-align: center; padding: 3rem; color: var(--sub); }
+    .table-footer { padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--sub); border-top: 1px solid var(--border); background: #f8fafd; }
+
+    /* ── CONFIRM DIALOG ── */
+    .confirm-overlay {
+      position: fixed; inset: 0; background: rgba(10,20,40,0.6);
+      z-index: 9998; display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .confirm-overlay.show { display: flex; }
+    .confirm-box { background: #fff; border-radius: 16px; padding: 2rem; max-width: 380px; width: 90%; text-align: center; box-shadow: 0 24px 64px rgba(0,0,0,0.2); }
+    .confirm-box h3 { color: var(--dark); margin-bottom: 0.5rem; font-size: 1.1rem; }
+    .confirm-box p  { color: var(--sub); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1.5rem; }
+    .confirm-btns { display: flex; gap: 0.75rem; }
+    .confirm-btns button { flex: 1; padding: 0.75rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
+    .btn-cancel-c { background: var(--gray); color: var(--text); }
+    .btn-delete-c { background: var(--red); color: #fff; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: #1a2a3a; color: #fff; padding: 0.85rem 1.5rem;
+      border-radius: 12px; font-size: 0.9rem; font-weight: 500;
+      z-index: 9999; transition: transform 0.3s ease; white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #166534; }
+    .toast.error   { background: #991b1b; }
+
+    /* ── LOADING ── */
+    .loading-row td { text-align: center; padding: 3rem; color: var(--sub); }
+    .spinner-sm { display: inline-block; width: 20px; height: 20px; border: 2px solid #e0e8f0; border-top-color: var(--blue); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 0.5rem; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <div class="login-logo"><span>Chess</span><span>Connect</span></div>
+    <h2>Admin Panel</h2>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="adminPassword" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')adminLogin()"/>
+    </div>
+    <button class="btn-login" onclick="adminLogin()">Sign In</button>
+    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" style="display:none;">
+
+  <!-- Nav -->
+  <nav class="admin-nav">
+    <div class="admin-logo">
+      <span>Chess</span><span>Connect</span>
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <button class="btn-logout" onclick="adminLogout()">Log Out</button>
+  </nav>
+
+  <main class="admin-main">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card total">
+        <div class="stat-num" id="statTotal">—</div>
+        <div class="stat-lbl">Total Coaches</div>
+      </div>
+      <div class="stat-card live">
+        <div class="stat-num" id="statLive">—</div>
+        <div class="stat-lbl">Live Profiles</div>
+      </div>
+      <div class="stat-card hidden">
+        <div class="stat-num" id="statHidden">—</div>
+        <div class="stat-lbl">Hidden Profiles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statCountries">—</div>
+        <div class="stat-lbl">Countries</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-row">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search by name, FIDE ID, country, city..." oninput="renderTable()"/>
+      </div>
+      <select class="filter-select" id="filterStatus" onchange="renderTable()">
+        <option value="all">All Status</option>
+        <option value="live">Live Only</option>
+        <option value="hidden">Hidden Only</option>
+      </select>
+      <select class="filter-select" id="filterCountry" onchange="renderTable()">
+        <option value="all">All Countries</option>
+      </select>
+      <select class="filter-select" id="sortBy" onchange="renderTable()">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="rating">Highest Rating</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Coach</th>
+              <th>FIDE</th>
+              <th>Rating</th>
+              <th>Location</th>
+              <th>Mode</th>
+              <th>Fees</th>
+              <th>Status</th>
+              <th>Registered</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="coachTableBody">
+            <tr class="loading-row"><td colspan="10"><span class="spinner-sm"></span> Loading coaches...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-footer" id="tableFooter"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h3>Delete Profile?</h3>
+    <p id="confirmMsg">This will permanently remove this coach from ChessConnect. This cannot be undone.</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel-c" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-delete-c" onclick="executeDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const { createClient } = supabase;
+  const sb = createClient(
+    'https://ipslahlvworwgzbgxppc.supabase.co',
+    'sb_publishable_uEoVcVB_c-JDJRJZZdHQ3Q_C1wlMoaZ'
+  );
+
+  // ── ADMIN PASSWORD ──
+  // Change this to your own secure password
+  const ADMIN_PASSWORD = 'ChessConnect@Admin2026';
+
+  let allCoaches = [];
+  let deleteTargetId = null;
+
+  // ── LOGIN ──
+  function adminLogin() {
+    const pwd = document.getElementById('adminPassword').value;
+    const err = document.getElementById('loginError');
+    if (pwd === ADMIN_PASSWORD) {
+      sessionStorage.setItem('cc_admin', '1');
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      loadCoaches();
+    } else {
+      err.style.display = 'block';
+      document.getElementById('adminPassword').value = '';
+    }
+  }
+
+  function adminLogout() {
+    sessionStorage.removeItem('cc_admin');
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminPassword').value = '';
+  }
+
+  // Auto-login if session exists
+  window.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('cc_admin') === '1') {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      loadCoaches();
+    }
+    document.getElementById('adminPassword').focus();
+  });
+
+  // ── LOAD COACHES ──
+  async function loadCoaches() {
+    const { data, error } = await sb.from('coaches').select('*').order('created_at', { ascending: false });
+    if (error) { showToast('Failed to load coaches.', 'error'); return; }
+    allCoaches = data || [];
+    updateStats();
+    populateCountryFilter();
+    renderTable();
+  }
+
+  function updateStats() {
+    const live    = allCoaches.filter(c => c.is_live).length;
+    const hidden  = allCoaches.filter(c => !c.is_live).length;
+    const countries = new Set(allCoaches.map(c => c.state).filter(Boolean)).size;
+    document.getElementById('statTotal').textContent     = allCoaches.length;
+    document.getElementById('statLive').textContent      = live;
+    document.getElementById('statHidden').textContent    = hidden;
+    document.getElementById('statCountries').textContent = countries;
+  }
+
+  function populateCountryFilter() {
+    const countries = [...new Set(allCoaches.map(c => c.state).filter(Boolean))].sort();
+    const sel = document.getElementById('filterCountry');
+    sel.innerHTML = '<option value="all">All Countries</option>';
+    countries.forEach(c => sel.innerHTML += `<option value="${c}">${c}</option>`);
+  }
+
+  // ── RENDER TABLE ──
+  function renderTable() {
+    const search  = document.getElementById('searchInput').value.toLowerCase();
+    const status  = document.getElementById('filterStatus').value;
+    const country = document.getElementById('filterCountry').value;
+    const sortBy  = document.getElementById('sortBy').value;
+
+    let coaches = [...allCoaches];
+
+    // Filter
+    if (search) {
+      coaches = coaches.filter(c =>
+        (c.full_name || '').toLowerCase().includes(search) ||
+        (c.fide_id || '').toString().includes(search) ||
+        (c.state || '').toLowerCase().includes(search) ||
+        (c.city || '').toLowerCase().includes(search) ||
+        (c.email || '').toLowerCase().includes(search)
+      );
+    }
+    if (status !== 'all') coaches = coaches.filter(c => status === 'live' ? c.is_live : !c.is_live);
+    if (country !== 'all') coaches = coaches.filter(c => c.state === country);
+
+    // Sort
+    if (sortBy === 'oldest') coaches.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+    else if (sortBy === 'rating') coaches.sort((a,b) => (b.fide_rating||0) - (a.fide_rating||0));
+    else if (sortBy === 'name') coaches.sort((a,b) => (a.full_name||'').localeCompare(b.full_name||''));
+
+    const tbody = document.getElementById('coachTableBody');
+    if (coaches.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="10" class="table-empty">No coaches found matching your filters.</td></tr>';
+      document.getElementById('tableFooter').textContent = 'No results.';
+      return;
+    }
+
+    tbody.innerHTML = coaches.map((c, i) => {
+      const date = c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'2-digit' }) : '—';
+      const rating = c.fide_rating || c.fide_rapid || c.fide_blitz || '—';
+      const ratingType = c.fide_rating ? 'Classical' : c.fide_rapid ? 'Rapid' : c.fide_blitz ? 'Blitz' : '';
+      const fees = c.fees ? `$${c.fees}` : '—';
+      const location = [c.city, c.state].filter(Boolean).join(', ') || '—';
+      const isLive = c.is_live;
+
+      return `<tr>
+        <td style="color:var(--sub);font-size:0.8rem;">${i+1}</td>
+        <td>
+          <div class="coach-name">${escHtml(c.full_name || '—')}</div>
+          <div class="coach-meta">${escHtml(c.email || c.whatsapp || '—')}</div>
+        </td>
+        <td>
+          <div style="font-size:0.82rem;color:var(--sub);">${c.fide_id || '—'}</div>
+          ${c.chess_title ? `<span class="title-badge">${escHtml(c.chess_title)}</span>` : ''}
+        </td>
+        <td>
+          <span class="rating-val">${rating}</span>
+          ${ratingType ? `<div style="font-size:0.72rem;color:var(--sub);">${ratingType}</div>` : ''}
+        </td>
+        <td style="font-size:0.84rem;">${escHtml(location)}</td>
+        <td style="font-size:0.84rem;">${escHtml(c.coaching_mode || '—')}</td>
+        <td style="font-size:0.84rem;">${fees}</td>
+        <td>
+          <span class="status-pill ${isLive ? 'live' : 'hidden'}">
+            <span class="status-pill-dot"></span>
+            ${isLive ? 'Live' : 'Hidden'}
+          </span>
+        </td>
+        <td style="font-size:0.82rem;color:var(--sub);white-space:nowrap;">${date}</td>
+        <td>
+          <div class="action-btns">
+            <button class="btn-action ${isLive ? 'btn-hide' : 'btn-unhide'}"
+              onclick="toggleLive('${c.id}', ${isLive})">
+              ${isLive ? 'Hide' : 'Unhide'}
+            </button>
+            <button class="btn-action btn-del" onclick="confirmDelete('${c.id}', '${escHtml(c.full_name || 'this coach')}')">Delete</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('tableFooter').textContent = `Showing ${coaches.length} of ${allCoaches.length} coaches`;
+  }
+
+  // ── TOGGLE LIVE ──
+  async function toggleLive(id, currentState) {
+    const newState = !currentState;
+    const { error } = await sb.from('coaches').update({ is_live: newState }).eq('id', id);
+    if (error) { showToast('Failed to update status.', 'error'); return; }
+    const coach = allCoaches.find(c => c.id === id);
+    if (coach) coach.is_live = newState;
+    updateStats();
+    renderTable();
+    showToast(newState ? 'Profile is now live.' : 'Profile hidden.', 'success');
+  }
+
+  // ── DELETE ──
+  function confirmDelete(id, name) {
+    deleteTargetId = id;
+    document.getElementById('confirmMsg').textContent = `This will permanently delete ${name}'s profile from ChessConnect. This cannot be undone.`;
+    document.getElementById('confirmOverlay').classList.add('show');
+  }
+
+  function closeConfirm() {
+    deleteTargetId = null;
+    document.getElementById('confirmOverlay').classList.remove('show');
+  }
+
+  async function executeDelete() {
+    if (!deleteTargetId) return;
+    const { error } = await sb.from('coaches').delete().eq('id', deleteTargetId);
+    closeConfirm();
+    if (error) { showToast('Failed to delete profile.', 'error'); return; }
+    allCoaches = allCoaches.filter(c => c.id !== deleteTargetId);
+    deleteTargetId = null;
+    updateStats();
+    populateCountryFilter();
+    renderTable();
+    showToast('Profile deleted permanently.', 'success');
+  }
+
+  // ── HELPERS ──
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + type;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
