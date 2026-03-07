@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coach Dashboard | ChessConnect</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #1E73E8;
+      --dark: #102C57;
+      --light-blue: #e8f1fd;
+      --red: #e53935;
+      --green: #22c55e;
+      --gray: #f5f7fa;
+      --border: #e0e8f0;
+      --text: #1a2a3a;
+      --sub: #5a6a7a;
+    }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    .dash-nav {
+      background: #fff; border-bottom: 1px solid var(--border);
+      padding: 0 2rem; height: 60px; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 8px rgba(30,115,232,0.06);
+    }
+    .dash-logo { text-decoration: none; }
+    .dash-logo span:first-child { color: #102C57; font-family: Arial, sans-serif; font-weight: 700; font-size: 1.2rem; }
+    .dash-logo span:last-child  { color: #4285F4; font-family: Arial, sans-serif; font-weight: 700; font-size: 1.2rem; }
+    .dash-nav-right { display: flex; align-items: center; gap: 1rem; }
+    .dash-user { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: var(--sub); }
+    .dash-avatar {
+      width: 34px; height: 34px; border-radius: 50%; background: var(--blue);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; overflow: hidden;
+    }
+    .dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .btn-signout {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.4rem 0.9rem; font-size: 0.85rem; color: var(--sub);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-signout:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── LOADING SCREEN ── */
+    .loading-screen {
+      min-height: 80vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem;
+    }
+    .spinner-large {
+      width: 48px; height: 48px; border: 4px solid var(--light-blue);
+      border-top-color: var(--blue); border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── NOT LOGGED IN ── */
+    .auth-wall {
+      min-height: 80vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem; text-align: center; padding: 2rem;
+    }
+    .auth-wall h2 { font-size: 1.5rem; color: var(--dark); }
+    .auth-wall p { color: var(--sub); max-width: 380px; line-height: 1.6; }
+    .btn-google {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.5rem;
+      background: #fff; border: 2px solid var(--border); border-radius: 12px;
+      font-size: 1rem; font-weight: 600; color: #333; cursor: pointer;
+      transition: all 0.2s; margin-top: 0.5rem;
+    }
+    .btn-google:hover { border-color: var(--blue); box-shadow: 0 4px 16px rgba(30,115,232,0.15); }
+
+    /* ── MAIN LAYOUT ── */
+    .dash-main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; display: none; }
+    .dash-main.visible { display: block; }
+
+    /* ── PAGE HEADER ── */
+    .dash-header { margin-bottom: 2rem; }
+    .dash-header h1 { font-size: 1.6rem; color: var(--dark); font-weight: 700; }
+    .dash-header p { color: var(--sub); margin-top: 0.3rem; font-size: 0.95rem; }
+
+    /* ── STATUS BANNER ── */
+    .status-banner {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1.2rem; border-radius: 12px; margin-bottom: 1.5rem;
+      font-size: 0.9rem; font-weight: 500;
+    }
+    .status-banner.live { background: #dcfce7; color: #166534; }
+    .status-banner.hidden { background: #fef9c3; color: #854d0e; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .status-banner.live .status-dot { background: #22c55e; }
+    .status-banner.hidden .status-dot { background: #eab308; }
+
+    /* ── TWO COLUMN LAYOUT ── */
+    .dash-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.5rem; align-items: start; }
+    @media (max-width: 820px) { .dash-grid { grid-template-columns: 1fr; } }
+
+    /* ── CARD ── */
+    .dash-card {
+      background: #fff; border-radius: 16px; padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(30,115,232,0.06); border: 1px solid var(--border);
+    }
+    .dash-card h3 {
+      font-size: 1rem; font-weight: 700; color: var(--dark);
+      margin-bottom: 1.2rem; padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── FORM FIELDS ── */
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--sub); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%; padding: 0.7rem 0.9rem; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 0.95rem; color: var(--text);
+      background: #fafbfd; transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+      outline: none; border-color: var(--blue); background: #fff;
+    }
+    .form-row input[readonly] { background: #f0f4fa; color: var(--sub); cursor: not-allowed; }
+    .form-row textarea { resize: vertical; min-height: 90px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 480px) { .form-row-2 { grid-template-columns: 1fr; } }
+
+    /* ── TOGGLE PILLS ── */
+    .pill-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill {
+      padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.82rem;
+      font-weight: 600; border: 1.5px solid var(--border); background: #fafbfd;
+      cursor: pointer; transition: all 0.18s; color: var(--sub); user-select: none;
+    }
+    .pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .pill:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+
+    /* ── SAVE BUTTON ── */
+    .btn-save {
+      width: 100%; padding: 0.85rem; background: var(--blue); color: #fff;
+      border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; margin-top: 1rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-save:hover { background: #1560c8; box-shadow: 0 4px 16px rgba(30,115,232,0.3); }
+    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+    .save-spinner {
+      width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.6s linear infinite; display: none;
+    }
+    .save-spinner.show { display: block; }
+
+    /* ── PROFILE PREVIEW CARD ── */
+    .preview-card {
+      background: #fff; border-radius: 16px; padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(30,115,232,0.06); border: 1px solid var(--border);
+      position: sticky; top: 80px;
+    }
+    .preview-card h3 {
+      font-size: 0.85rem; font-weight: 700; color: var(--sub); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 1rem;
+    }
+    .pc-photo-wrap { display: flex; justify-content: center; margin-bottom: 1rem; }
+    .pc-photo {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--dark), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; font-weight: 700; color: #fff; overflow: hidden;
+      border: 3px solid var(--light-blue);
+    }
+    .pc-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .pc-name { text-align: center; font-size: 1.1rem; font-weight: 700; color: var(--dark); }
+    .pc-title-badge {
+      display: inline-block; background: #fff3cd; color: #856404;
+      font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;
+      margin: 0.3rem auto 0.5rem; display: block; width: fit-content; margin: 0.3rem auto 0.6rem;
+    }
+    .pc-rating { text-align: center; font-size: 0.85rem; color: var(--sub); margin-bottom: 0.8rem; }
+    .pc-bio { font-size: 0.82rem; color: #555; line-height: 1.5; margin-bottom: 0.8rem; border-top: 1px solid var(--border); padding-top: 0.8rem; }
+    .pc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem; }
+    .pc-tag { background: var(--light-blue); color: var(--blue); font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+    .pc-fee { text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--dark); border-top: 1px solid var(--border); padding-top: 0.8rem; }
+    .pc-live-badge {
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      font-size: 0.78rem; color: #166534; background: #dcfce7;
+      border-radius: 20px; padding: 0.3rem 0.8rem; margin-top: 0.7rem;
+    }
+
+    /* ── DANGER ZONE ── */
+    .danger-zone { margin-top: 1.5rem; }
+    .danger-zone h3 { color: var(--red); border-bottom-color: #fecaca; }
+    .btn-danger {
+      width: 100%; padding: 0.75rem; background: #fff; color: var(--red);
+      border: 1.5px solid #fca5a5; border-radius: 10px; font-size: 0.9rem;
+      font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
+    }
+    .btn-danger:hover { background: #fef2f2; border-color: var(--red); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: #1a2a3a; color: #fff; padding: 0.85rem 1.5rem;
+      border-radius: 12px; font-size: 0.9rem; font-weight: 500;
+      z-index: 9999; transition: transform 0.3s ease; white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #166534; }
+    .toast.error   { background: #991b1b; }
+
+    /* ── CONFIRM DIALOG ── */
+    .confirm-overlay {
+      position: fixed; inset: 0; background: rgba(10,20,40,0.6);
+      z-index: 9998; display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .confirm-overlay.show { display: flex; }
+    .confirm-box {
+      background: #fff; border-radius: 16px; padding: 2rem;
+      max-width: 380px; width: 90%; text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+    }
+    .confirm-box h3 { color: var(--dark); margin-bottom: 0.5rem; }
+    .confirm-box p { color: var(--sub); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; }
+    .confirm-btns { display: flex; gap: 0.75rem; }
+    .confirm-btns button { flex: 1; padding: 0.75rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
+    .btn-cancel-confirm { background: var(--gray); color: var(--text); }
+    .btn-delete-confirm { background: var(--red); color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="dash-nav">
+  <a href="index.html" class="dash-logo"><span>Chess</span><span>Connect</span></a>
+  <div class="dash-nav-right">
+    <div class="dash-user" id="dashUser" style="display:none;">
+      <div class="dash-avatar" id="dashAvatar">?</div>
+      <span id="dashUserName">Coach</span>
+    </div>
+    <button class="btn-signout" onclick="signOut()">Sign Out</button>
+  </div>
+</nav>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="spinner-large"></div>
+  <p style="color:#5a6a7a;">Loading your profile...</p>
+</div>
+
+<!-- AUTH WALL (not logged in) -->
+<div class="auth-wall" id="authWall" style="display:none;">
+  <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#1E73E8" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20v-1a8 8 0 0116 0v1"/></svg>
+  <h2>Coach Login Required</h2>
+  <p>Sign in with Google to access your ChessConnect profile and dashboard.</p>
+  <button class="btn-google" onclick="signInWithGoogle()">
+    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    Continue with Google
+  </button>
+  <p style="font-size:0.82rem;color:#999;margin-top:0.5rem;">Not a coach yet? <a href="index.html" style="color:#1E73E8;">List yourself free</a></p>
+</div>
+
+<!-- NO PROFILE FOUND -->
+<div class="auth-wall" id="noProfileWall" style="display:none;">
+  <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#1E73E8" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+  <h2>No Profile Found</h2>
+  <p>You haven't listed yourself as a coach yet. It takes just 3 minutes and is completely free.</p>
+  <a href="index.html" style="display:inline-block;background:#1E73E8;color:#fff;padding:0.85rem 2rem;border-radius:12px;font-weight:700;text-decoration:none;margin-top:0.5rem;">List Yourself Free</a>
+</div>
+
+<!-- MAIN DASHBOARD -->
+<main class="dash-main" id="dashMain">
+
+  <div class="dash-header">
+    <h1>My Coach Profile</h1>
+    <p>Edit your details below. Changes go live immediately.</p>
+  </div>
+
+  <div id="statusBanner" class="status-banner live">
+    <div class="status-dot"></div>
+    <span id="statusText">Your profile is live. Students can find and contact you.</span>
+  </div>
+
+  <div class="dash-grid">
+    <!-- LEFT: EDIT FORM -->
+    <div>
+      <!-- Contact & Location -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>Contact & Location</h3>
+        <div class="form-row-2">
+          <div class="form-row">
+            <label>WhatsApp Number</label>
+            <input type="tel" id="dWhatsapp" placeholder="+91 98765 43210"/>
+          </div>
+          <div class="form-row">
+            <label>City</label>
+            <input type="text" id="dCity" placeholder="e.g. Mumbai"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Country</label>
+          <select id="dCountry">
+            <option value="India">India</option>
+            <option value="United States">United States</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="Germany">Germany</option>
+            <option value="France">France</option>
+            <option value="Spain">Spain</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="Poland">Poland</option>
+            <option value="Ukraine">Ukraine</option>
+            <option value="Russia">Russia</option>
+            <option value="Azerbaijan">Azerbaijan</option>
+            <option value="Armenia">Armenia</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Kazakhstan">Kazakhstan</option>
+            <option value="Uzbekistan">Uzbekistan</option>
+            <option value="China">China</option>
+            <option value="Japan">Japan</option>
+            <option value="South Korea">South Korea</option>
+            <option value="Vietnam">Vietnam</option>
+            <option value="Philippines">Philippines</option>
+            <option value="Indonesia">Indonesia</option>
+            <option value="Malaysia">Malaysia</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Sri Lanka">Sri Lanka</option>
+            <option value="Bangladesh">Bangladesh</option>
+            <option value="Pakistan">Pakistan</option>
+            <option value="Iran">Iran</option>
+            <option value="Israel">Israel</option>
+            <option value="Turkey">Turkey</option>
+            <option value="Egypt">Egypt</option>
+            <option value="South Africa">South Africa</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Cuba">Cuba</option>
+            <option value="Peru">Peru</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Canada">Canada</option>
+            <option value="Australia">Australia</option>
+            <option value="New Zealand">New Zealand</option>
+            <option value="Czech Republic">Czech Republic</option>
+            <option value="Hungary">Hungary</option>
+            <option value="Romania">Romania</option>
+            <option value="Serbia">Serbia</option>
+            <option value="Croatia">Croatia</option>
+            <option value="Bulgaria">Bulgaria</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>About You</h3>
+        <div class="form-row">
+          <label>Bio</label>
+          <textarea id="dBio" placeholder="Tell students about your coaching style, experience and achievements..." oninput="livePreview()"></textarea>
+        </div>
+        <div class="form-row">
+          <label>Experience</label>
+          <select id="dExperience">
+            <option value="">Select experience</option>
+            <option value="less_than_1">Less than 1 year</option>
+            <option value="1_to_3">1 to 3 years</option>
+            <option value="3_to_5">3 to 5 years</option>
+            <option value="5_to_10">5 to 10 years</option>
+            <option value="more_than_10">More than 10 years</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Coaching Details -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>Coaching Details</h3>
+        <div class="form-row">
+          <label>Coaching Mode</label>
+          <div class="pill-group" id="dModeGroup">
+            <div class="pill" data-val="online" onclick="toggleMode(this)">Online</div>
+            <div class="pill" data-val="in-person" onclick="toggleMode(this)">In-Person</div>
+            <div class="pill" data-val="both" onclick="toggleMode(this)">Both</div>
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:1rem;">
+          <label>Levels Taught</label>
+          <div class="pill-group" id="dLevelsGroup">
+            <div class="pill" data-val="Beginner" onclick="toggleLevel(this)">Beginner</div>
+            <div class="pill" data-val="Intermediate" onclick="toggleLevel(this)">Intermediate</div>
+            <div class="pill" data-val="Advanced" onclick="toggleLevel(this)">Advanced</div>
+            <div class="pill" data-val="Tournament" onclick="toggleLevel(this)">Tournament</div>
+            <div class="pill" data-val="Kids" onclick="toggleLevel(this)">Kids</div>
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:1rem;">
+          <label>Languages</label>
+          <div class="pill-group" id="dLangsGroup">
+            <div class="pill" data-val="English" onclick="toggleLang(this)">English</div>
+            <div class="pill" data-val="Hindi" onclick="toggleLang(this)">Hindi</div>
+            <div class="pill" data-val="Tamil" onclick="toggleLang(this)">Tamil</div>
+            <div class="pill" data-val="Telugu" onclick="toggleLang(this)">Telugu</div>
+            <div class="pill" data-val="Kannada" onclick="toggleLang(this)">Kannada</div>
+            <div class="pill" data-val="Malayalam" onclick="toggleLang(this)">Malayalam</div>
+            <div class="pill" data-val="Bengali" onclick="toggleLang(this)">Bengali</div>
+            <div class="pill" data-val="Marathi" onclick="toggleLang(this)">Marathi</div>
+            <div class="pill" data-val="Gujarati" onclick="toggleLang(this)">Gujarati</div>
+            <div class="pill" data-val="Punjabi" onclick="toggleLang(this)">Punjabi</div>
+            <div class="pill" data-val="Russian" onclick="toggleLang(this)">Russian</div>
+            <div class="pill" data-val="Spanish" onclick="toggleLang(this)">Spanish</div>
+            <div class="pill" data-val="French" onclick="toggleLang(this)">French</div>
+            <div class="pill" data-val="German" onclick="toggleLang(this)">German</div>
+            <div class="pill" data-val="Arabic" onclick="toggleLang(this)">Arabic</div>
+            <div class="pill" data-val="Chinese" onclick="toggleLang(this)">Chinese</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fees -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>Fees & Trial</h3>
+        <div class="form-row-2">
+          <div class="form-row">
+            <label>Fee per Hour (USD)</label>
+            <input type="number" id="dFees" placeholder="e.g. 25" min="1" max="500" oninput="livePreview()"/>
+          </div>
+          <div class="form-row">
+            <label>Free Trial Available</label>
+            <select id="dTrial">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIDE Info (read only) -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>FIDE Details (verified, read-only)</h3>
+        <div class="form-row-2">
+          <div class="form-row">
+            <label>Full Name</label>
+            <input type="text" id="dName" readonly/>
+          </div>
+          <div class="form-row">
+            <label>FIDE ID</label>
+            <input type="text" id="dFideId" readonly/>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row">
+            <label>Title</label>
+            <input type="text" id="dTitle" readonly/>
+          </div>
+          <div class="form-row">
+            <label>FIDE Rating</label>
+            <input type="text" id="dRating" readonly/>
+          </div>
+        </div>
+        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at chessconnect.in@gmail.com</p>
+      </div>
+
+      <button class="btn-save" id="saveBtn" onclick="saveProfile()">
+        <div class="save-spinner" id="saveSpinner"></div>
+        <span id="saveText">Save Changes</span>
+      </button>
+
+      <!-- Danger Zone -->
+      <div class="dash-card danger-zone">
+        <h3>Danger Zone</h3>
+        <p style="font-size:0.85rem;color:#5a6a7a;margin-bottom:0.5rem;">Hide your profile temporarily or delete it permanently.</p>
+        <button class="btn-danger" id="toggleLiveBtn" onclick="toggleLive()">Hide My Profile</button>
+        <button class="btn-danger" onclick="confirmDelete()" style="margin-top:0.5rem;">Delete My Profile Permanently</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: PREVIEW CARD -->
+    <div class="preview-card">
+      <h3>Live Preview</h3>
+      <div class="pc-photo-wrap">
+        <div class="pc-photo" id="pcPhoto">?</div>
+      </div>
+      <div class="pc-name" id="pcName">Your Name</div>
+      <div class="pc-title-badge" id="pcTitleBadge" style="display:none;"></div>
+      <div class="pc-rating" id="pcRating"></div>
+      <div class="pc-bio" id="pcBio" style="display:none;"></div>
+      <div class="pc-tags" id="pcTags"></div>
+      <div class="pc-fee" id="pcFee"></div>
+      <div class="pc-live-badge">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="#22c55e"><circle cx="12" cy="12" r="10"/></svg>
+        Live on ChessConnect
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- CONFIRM DELETE DIALOG -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h3>Delete Profile?</h3>
+    <p>This will permanently remove your profile from ChessConnect. Students will no longer be able to find you. This cannot be undone.</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel-confirm" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-delete-confirm" onclick="deleteProfile()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const { createClient } = supabase;
+  const sb = createClient(
+    'https://ipslahlvworwgzbgxppc.supabase.co',
+    'sb_publishable_uEoVcVB_c-JDJRJZZdHQ3Q_C1wlMoaZ'
+  );
+
+  let currentUser = null;
+  let coachProfile = null;
+  let selectedMode = '';
+  let selectedLevels = [];
+  let selectedLanguages = [];
+
+  // ── Init ──
+  window.addEventListener('DOMContentLoaded', async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      await loadDashboard();
+    } else {
+      showScreen('authWall');
+    }
+  });
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session && !currentUser) {
+      currentUser = session.user;
+      await loadDashboard();
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      showScreen('authWall');
+    }
+  });
+
+  async function loadDashboard() {
+    showScreen('loadingScreen');
+    // Update nav user info
+    const name = currentUser.user_metadata?.full_name || currentUser.email || 'Coach';
+    const avatar = currentUser.user_metadata?.avatar_url;
+    document.getElementById('dashUserName').textContent = name.split(' ')[0];
+    const avatarEl = document.getElementById('dashAvatar');
+    if (avatar) avatarEl.innerHTML = `<img src="${avatar}" alt="${name}"/>`;
+    else avatarEl.textContent = name.charAt(0).toUpperCase();
+    document.getElementById('dashUser').style.display = 'flex';
+
+    // Fetch coach profile
+    const { data, error } = await sb.from('coaches').select('*').eq('auth_user_id', currentUser.id).single();
+    if (error || !data) {
+      showScreen('noProfileWall');
+      return;
+    }
+    coachProfile = data;
+    populateForm(data);
+    showScreen('dashMain');
+  }
+
+  function populateForm(p) {
+    document.getElementById('dWhatsapp').value  = p.whatsapp || '';
+    document.getElementById('dCity').value       = p.city || '';
+    document.getElementById('dCountry').value    = p.state || 'India';
+    document.getElementById('dBio').value        = p.bio || '';
+    document.getElementById('dExperience').value = p.experience || '';
+    document.getElementById('dFees').value       = p.fees || '';
+    document.getElementById('dTrial').value      = p.trial_available ? 'yes' : 'no';
+    document.getElementById('dName').value       = p.full_name || '';
+    document.getElementById('dFideId').value     = p.fide_id || '';
+    document.getElementById('dTitle').value      = p.chess_title || 'Unrated';
+    document.getElementById('dRating').value     = p.fide_rating ? `${p.fide_rating} (Classical)` : 'Unrated';
+
+    // Mode pills
+    selectedMode = p.coaching_mode || '';
+    document.querySelectorAll('#dModeGroup .pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.val === selectedMode);
+    });
+
+    // Level pills
+    selectedLevels = p.levels_taught || [];
+    document.querySelectorAll('#dLevelsGroup .pill').forEach(pill => {
+      pill.classList.toggle('active', selectedLevels.includes(pill.dataset.val));
+    });
+
+    // Language pills
+    selectedLanguages = p.languages || [];
+    document.querySelectorAll('#dLangsGroup .pill').forEach(pill => {
+      pill.classList.toggle('active', selectedLanguages.includes(pill.dataset.val));
+    });
+
+    // Status banner
+    updateStatusBanner(p.is_live);
+    document.getElementById('toggleLiveBtn').textContent = p.is_live ? 'Hide My Profile' : 'Make Profile Live';
+
+    livePreview();
+  }
+
+  function updateStatusBanner(isLive) {
+    const banner = document.getElementById('statusBanner');
+    const text = document.getElementById('statusText');
+    banner.className = 'status-banner ' + (isLive ? 'live' : 'hidden');
+    text.textContent = isLive
+      ? 'Your profile is live. Students can find and contact you.'
+      : 'Your profile is hidden. Students cannot see you until you make it live again.';
+  }
+
+  // ── Toggle pills ──
+  function toggleMode(el) {
+    document.querySelectorAll('#dModeGroup .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    selectedMode = el.dataset.val;
+    livePreview();
+  }
+  function toggleLevel(el) {
+    el.classList.toggle('active');
+    const v = el.dataset.val;
+    selectedLevels = selectedLevels.includes(v) ? selectedLevels.filter(x => x !== v) : [...selectedLevels, v];
+    livePreview();
+  }
+  function toggleLang(el) {
+    el.classList.toggle('active');
+    const v = el.dataset.val;
+    selectedLanguages = selectedLanguages.includes(v) ? selectedLanguages.filter(x => x !== v) : [...selectedLanguages, v];
+  }
+
+  // ── Live Preview ──
+  function livePreview() {
+    if (!coachProfile) return;
+    const name = coachProfile.full_name || 'Your Name';
+    const initials = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+    document.getElementById('pcPhoto').textContent = initials;
+    document.getElementById('pcName').textContent = name;
+
+    const titleBadge = document.getElementById('pcTitleBadge');
+    if (coachProfile.chess_title) {
+      titleBadge.textContent = coachProfile.chess_title;
+      titleBadge.style.display = 'block';
+    } else { titleBadge.style.display = 'none'; }
+
+    const rating = coachProfile.fide_rating || coachProfile.fide_rapid || coachProfile.fide_blitz;
+    document.getElementById('pcRating').textContent = rating ? `FIDE ${coachProfile.fide_rating_type || 'Classical'}: ${rating}` : '';
+
+    const bio = document.getElementById('dBio').value.trim();
+    const bioEl = document.getElementById('pcBio');
+    if (bio) { bioEl.textContent = bio.length > 120 ? bio.substring(0,117) + '...' : bio; bioEl.style.display = 'block'; }
+    else { bioEl.style.display = 'none'; }
+
+    const tags = document.getElementById('pcTags');
+    tags.innerHTML = '';
+    if (selectedMode) tags.innerHTML += `<span class="pc-tag">${selectedMode}</span>`;
+    selectedLevels.slice(0,3).forEach(l => tags.innerHTML += `<span class="pc-tag">${l}</span>`);
+
+    const fees = document.getElementById('dFees').value;
+    document.getElementById('pcFee').textContent = fees ? `$${fees} / hour` : '';
+  }
+
+  // ── Save Profile ──
+  async function saveProfile() {
+    const btn = document.getElementById('saveBtn');
+    const text = document.getElementById('saveText');
+    const spinner = document.getElementById('saveSpinner');
+    btn.disabled = true;
+    text.textContent = 'Saving...';
+    spinner.classList.add('show');
+
+    const updates = {
+      whatsapp:       document.getElementById('dWhatsapp').value.trim(),
+      city:           document.getElementById('dCity').value.trim(),
+      state:          document.getElementById('dCountry').value,
+      bio:            document.getElementById('dBio').value.trim(),
+      experience:     document.getElementById('dExperience').value,
+      coaching_mode:  selectedMode,
+      levels_taught:  selectedLevels,
+      languages:      selectedLanguages,
+      fees:           document.getElementById('dFees').value ? parseInt(document.getElementById('dFees').value) : null,
+      trial_available: document.getElementById('dTrial').value === 'yes',
+    };
+
+    const { error } = await sb.from('coaches').update(updates).eq('id', coachProfile.id);
+    btn.disabled = false;
+    spinner.classList.remove('show');
+    if (error) {
+      text.textContent = 'Save Changes';
+      showToast('Error saving. Please try again.', 'error');
+    } else {
+      text.textContent = 'Save Changes';
+      Object.assign(coachProfile, updates);
+      showToast('Profile updated successfully!', 'success');
+    }
+  }
+
+  // ── Toggle Live ──
+  async function toggleLive() {
+    const newState = !coachProfile.is_live;
+    const { error } = await sb.from('coaches').update({ is_live: newState }).eq('id', coachProfile.id);
+    if (!error) {
+      coachProfile.is_live = newState;
+      updateStatusBanner(newState);
+      document.getElementById('toggleLiveBtn').textContent = newState ? 'Hide My Profile' : 'Make Profile Live';
+      showToast(newState ? 'Profile is now live!' : 'Profile hidden.', 'success');
+    }
+  }
+
+  // ── Delete ──
+  function confirmDelete() { document.getElementById('confirmOverlay').classList.add('show'); }
+  function closeConfirm()  { document.getElementById('confirmOverlay').classList.remove('show'); }
+
+  async function deleteProfile() {
+    closeConfirm();
+    const { error } = await sb.from('coaches').delete().eq('id', coachProfile.id);
+    if (!error) {
+      await sb.auth.signOut();
+      window.location.href = 'index.html';
+    } else {
+      showToast('Error deleting profile. Please try again.', 'error');
+    }
+  }
+
+  // ── Auth ──
+  async function signInWithGoogle() {
+    await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href }
+    });
+  }
+
+  async function signOut() {
+    await sb.auth.signOut();
+    window.location.href = 'index.html';
+  }
+
+  // ── Helpers ──
+  function showScreen(id) {
+    ['loadingScreen','authWall','noProfileWall','dashMain'].forEach(s => {
+      const el = document.getElementById(s);
+      if (s === 'dashMain') { el.classList.toggle('visible', s === id); }
+      else { el.style.display = s === id ? 'flex' : 'none'; }
+    });
+  }
+
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + type;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
