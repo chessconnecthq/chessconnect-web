@@ -1070,6 +1070,27 @@
 
   /* ── LOGGED-IN NAV STATE ── */
   #btnCoachLogin .icon { display: inline-flex; align-items: center; margin-right: 4px; vertical-align: middle; }
+  /* ── COACH DROPDOWN ── */
+  .coach-dropdown { position: relative; }
+  .coach-dropdown-trigger { display: flex; align-items: center; gap: 0.35rem; }
+  .coach-dropdown-menu {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: #fff; border: 1px solid var(--border, #e0e8f0);
+    border-radius: 12px; box-shadow: 0 8px 24px rgba(30,115,232,0.12);
+    min-width: 170px; z-index: 999; overflow: hidden;
+    animation: dropIn 0.15s ease;
+  }
+  @keyframes dropIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+  .dropdown-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.75rem 1rem; font-size: 0.88rem; font-weight: 500;
+    color: #1a2a3a; text-decoration: none; cursor: pointer;
+    border: none; background: none; width: 100%; text-align: left;
+    transition: background 0.15s;
+  }
+  .dropdown-item:hover { background: #f5f7fa; }
+  .dropdown-item-danger { color: #e53935; }
+  .dropdown-item-danger:hover { background: #fef2f2; }
   </style>
 </head>
 <body>
@@ -1088,10 +1109,24 @@
   </div>
   <div class="nav-ctas">
     <button class="btn-ghost" onclick="scrollToSample()" aria-label="Find a coach">Find a Coach</button>
-    <button class="btn-ghost" id="btnCoachLogin" onclick="openAuthModal('login')" aria-label="Coach login" style="display:none;">
-      <span class="icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-1a8 8 0 0116 0v1"/></svg></span>
-      <span id="navUserName">My Profile</span>
-    </button>
+    <!-- Logged-in dropdown -->
+    <div class="coach-dropdown" id="coachDropdown" style="display:none;">
+      <button class="btn-ghost coach-dropdown-trigger" onclick="toggleDropdown()" aria-label="Coach menu">
+        <span class="icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-1a8 8 0 0116 0v1"/></svg></span>
+        <span id="navUserName">My Profile</span>
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="coach-dropdown-menu" id="coachDropdownMenu" style="display:none;">
+        <a href="dashboard.html" class="dropdown-item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          My Dashboard
+        </a>
+        <button class="dropdown-item dropdown-item-danger" onclick="signOutCoach()">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </div>
     <button class="btn-ghost" id="btnLoginNav" onclick="openAuthModal('login')" aria-label="Coach login">Coach Login</button>
     <button class="btn-primary" onclick="openAuthModal('register')" aria-label="List yourself as a coach">List Yourself</button>
   </div>
@@ -2030,13 +2065,33 @@
   function updateNavLoggedIn(user) {
     const firstName = (user.user_metadata?.full_name || user.email || 'Coach').split(' ')[0];
     document.getElementById('btnLoginNav').style.display = 'none';
-    document.getElementById('btnCoachLogin').style.display = 'inline-flex';
+    document.getElementById('coachDropdown').style.display = 'inline-flex';
     document.getElementById('navUserName').textContent = firstName;
   }
 
   function updateNavLoggedOut() {
     document.getElementById('btnLoginNav').style.display = 'inline-flex';
-    document.getElementById('btnCoachLogin').style.display = 'none';
+    document.getElementById('coachDropdown').style.display = 'none';
+  }
+
+  function toggleDropdown() {
+    const menu = document.getElementById('coachDropdownMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('coachDropdown');
+    if (dropdown && !dropdown.contains(e.target)) {
+      document.getElementById('coachDropdownMenu').style.display = 'none';
+    }
+  });
+
+  async function signOutCoach() {
+    await sb.auth.signOut();
+    currentUser = null;
+    updateNavLoggedOut();
+    document.getElementById('coachDropdownMenu').style.display = 'none';
   }
 
   // ── Listen for auth state changes ──
