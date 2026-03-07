@@ -1,0 +1,19 @@
+User-agent: *
+
+# Allow all main public pages
+Allow: /chessconnect-web/
+Allow: /chessconnect-web/coaches.html
+Allow: /chessconnect-web/coach.html
+Allow: /chessconnect-web/chess-clock.html
+Allow: /chessconnect-web/brochure-maker.html
+Allow: /chessconnect-web/scoresheet-generator.html
+Allow: /chessconnect-web/privacy-policy.html
+Allow: /chessconnect-web/terms.html
+
+# Block private pages
+Disallow: /chessconnect-web/dashboard.html
+Disallow: /chessconnect-web/analytics.html
+Disallow: /chessconnect-web/admin.html
+
+# Sitemap location
+Sitemap: https://chessconnecthq.github.io/chessconnect-web/sitemap.xml
