@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find a Chess Coach — ChessConnect</title>
+  <meta name="description" content="Search and filter FIDE-verified chess coaches in India. Filter by city, mode, level, language, title and rating. Contact coaches directly via WhatsApp or call."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/coaches.html"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --blue: #1E73E8;
+      --blue-logo: #4285F4;
+      --navy: #102C57;
+      --navy-light: #1a3d73;
+      --white: #ffffff;
+      --off-white: #F8FAFF;
+      --gray: #6B7280;
+      --gray-light: #E5E9F2;
+      --green: #10B981;
+      --red: #EF4444;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --shadow-sm: 0 1px 3px rgba(16,44,87,0.08);
+      --shadow-md: 0 4px 16px rgba(16,44,87,0.12);
+      --shadow-lg: 0 8px 32px rgba(16,44,87,0.16);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--navy); background: var(--off-white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 68px;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-logo-wrap { display: flex; flex-direction: column; text-decoration: none; line-height: 1; }
+    .nav-logo-text { font-family: var(--font-body); font-weight: 800; font-size: 1.5rem; letter-spacing: -1.2px; display: flex; }
+    .nav-logo-tagline { font-size: 0.65rem; font-weight: 500; color: var(--gray); letter-spacing: 0.04em; margin-top: 2px; padding-left: 1px; }
+    .chess { color: var(--navy); }
+    .connect { color: var(--blue-logo); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--navy); text-decoration: none; opacity: 0.75; transition: opacity 0.2s; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; }
+    .nav-links a.active { color: var(--blue); font-weight: 600; }
+    .nav-ctas { display: flex; gap: 0.75rem; align-items: center; }
+    .btn-ghost {
+      font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
+      color: var(--navy); background: transparent;
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      padding: 0.5rem 1.1rem; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+    }
+    .btn-ghost:hover { border-color: var(--blue); background: var(--off-white); }
+    .btn-primary {
+      font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
+      color: var(--white); background: var(--blue);
+      border: none; border-radius: 8px;
+      padding: 0.5rem 1.25rem; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--navy); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--navy); border-radius: 2px; transition: all 0.3s; }
+
+    /* ── COACH DROPDOWN ── */
+    .coach-dropdown { position: relative; }
+    .coach-dropdown-trigger { display: flex; align-items: center; gap: 0.35rem; }
+    .coach-dropdown-menu {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: #fff; border: 1px solid var(--gray-light);
+      border-radius: 12px; box-shadow: 0 8px 24px rgba(30,115,232,0.12);
+      min-width: 170px; z-index: 999; overflow: hidden;
+    }
+    .dropdown-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.75rem 1rem; font-size: 0.88rem; font-weight: 500;
+      color: #1a2a3a; text-decoration: none; cursor: pointer;
+      border: none; background: none; width: 100%; text-align: left;
+      transition: background 0.15s;
+    }
+    .dropdown-item:hover { background: #f5f7fa; }
+    .dropdown-item-danger { color: #e53935; }
+    .dropdown-item-danger:hover { background: #fef2f2; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3d73 100%);
+      padding: 100px 5% 40px;
+      text-align: center;
+      color: white;
+    }
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; margin-bottom: 0.75rem;
+    }
+    .page-header h1 span { color: #7eb8ff; }
+    .page-header p { font-size: 1rem; opacity: 0.8; max-width: 480px; margin: 0 auto; }
+
+    /* ── SEARCH BAR ── */
+    .search-bar-wrap {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-light);
+      padding: 1.25rem 5%;
+      position: sticky; top: 68px; z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+    .search-bar-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
+    }
+    .search-input-wrap {
+      flex: 1; min-width: 220px; position: relative;
+    }
+    .search-input-wrap svg {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      stroke: var(--gray); pointer-events: none;
+    }
+    .search-input {
+      width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem;
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      font-family: var(--font-body); font-size: 0.9rem; color: var(--navy);
+      background: var(--off-white); outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--blue); background: white; }
+    .filter-select {
+      padding: 0.65rem 2rem 0.65rem 0.9rem;
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      font-family: var(--font-body); font-size: 0.88rem; color: var(--navy);
+      background: var(--off-white); outline: none; cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+      transition: border-color 0.2s;
+    }
+    .filter-select:focus { border-color: var(--blue); }
+    .filter-select.active { border-color: var(--blue); background-color: rgba(30,115,232,0.05); color: var(--blue); font-weight: 600; }
+    .btn-clear-filters {
+      font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+      color: var(--gray); background: none; border: none; cursor: pointer;
+      padding: 0.5rem 0.75rem; border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-clear-filters:hover { color: var(--red); background: #fef2f2; }
+
+    /* ── MAIN LAYOUT ── */
+    .main-wrap {
+      max-width: 1100px; margin: 0 auto;
+      padding: 2rem 5% 4rem;
+    }
+
+    /* Results bar */
+    .results-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .results-count {
+      font-size: 0.88rem; color: var(--gray); font-weight: 500;
+    }
+    .results-count strong { color: var(--navy); }
+    .sort-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    .sort-label { font-size: 0.82rem; color: var(--gray); font-weight: 500; }
+
+    /* ── COACH GRID ── */
+    .coaches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ── COACH CARD ── */
+    .coach-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-light);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: box-shadow 0.25s, transform 0.25s;
+      display: flex; flex-direction: column;
+    }
+    .coach-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .card-header {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
+      padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      color: white;
+    }
+    .card-avatar {
+      width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    .card-header-info { flex: 1; min-width: 0; }
+    .card-name { font-weight: 700; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-meta { font-size: 0.8rem; opacity: 0.8; margin-top: 0.15rem; }
+    .card-badges { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      background: rgba(255,255,255,0.15); color: #fff;
+      font-size: 0.68rem; font-weight: 700;
+      padding: 0.18rem 0.5rem; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.3);
+      letter-spacing: 0.03em;
+    }
+    .card-body { padding: 1.1rem 1.5rem; flex: 1; }
+    .card-bio {
+      font-size: 0.85rem; color: var(--gray); line-height: 1.6;
+      margin-bottom: 1rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
+    .card-row-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; color: var(--gray); text-transform: uppercase; margin-bottom: 0.3rem; }
+    .tag {
+      font-size: 0.75rem; font-weight: 600;
+      background: var(--off-white); color: var(--navy);
+      border: 1px solid var(--gray-light); border-radius: 100px;
+      padding: 0.2rem 0.6rem;
+    }
+    .tag-online { background: rgba(16,185,129,0.08); color: #059669; border-color: rgba(16,185,129,0.25); }
+    .tag-offline { background: rgba(30,115,232,0.07); color: var(--blue); border-color: rgba(30,115,232,0.2); }
+    .card-fee { font-size: 0.85rem; font-weight: 700; color: var(--navy); }
+    .card-fee span { font-weight: 400; color: var(--gray); font-size: 0.8rem; }
+    .trial-badge { font-size: 0.72rem; font-weight: 600; color: var(--green); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 100px; padding: 0.15rem 0.55rem; margin-left: 0.5rem; }
+    .card-footer { padding: 0 1.5rem 1.25rem; display: flex; gap: 0.6rem; }
+    .btn-card-call {
+      flex: 1; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+      background: var(--off-white); color: var(--navy);
+      border: 1.5px solid var(--gray-light); border-radius: 8px;
+      padding: 0.6rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      transition: background 0.2s;
+    }
+    .btn-card-call:hover { background: var(--gray-light); }
+    .btn-card-wa {
+      flex: 1; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+      background: #25D366; color: white;
+      border: none; border-radius: 8px;
+      padding: 0.6rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      transition: background 0.2s;
+    }
+    .btn-card-wa:hover { background: #1ebe5a; }
+
+    /* ── STATES ── */
+    .state-box {
+      text-align: center; padding: 5rem 2rem;
+      grid-column: 1 / -1;
+    }
+    .state-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .state-box h3 { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+    .state-box p { font-size: 0.9rem; color: var(--gray); max-width: 360px; margin: 0 auto; }
+
+    /* Skeleton loader */
+    .skeleton-card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--gray-light); overflow: hidden;
+    }
+    .skeleton-header { height: 90px; background: linear-gradient(135deg, #c8d8f0, #a0b8e0); }
+    .skeleton-body { padding: 1.1rem 1.5rem; }
+    .skeleton-line {
+      height: 12px; border-radius: 6px; background: var(--gray-light);
+      margin-bottom: 0.75rem; animation: shimmer 1.4s ease-in-out infinite;
+    }
+    .skeleton-line.short { width: 55%; }
+    .skeleton-line.medium { width: 78%; }
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ── ACTIVE FILTERS PILLS ── */
+    .active-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(30,115,232,0.08); color: var(--blue);
+      border: 1px solid rgba(30,115,232,0.2); border-radius: 100px;
+      font-size: 0.78rem; font-weight: 600; padding: 0.25rem 0.75rem;
+    }
+    .filter-pill button {
+      background: none; border: none; cursor: pointer; color: var(--blue);
+      font-size: 1rem; line-height: 1; padding: 0; display: flex;
+    }
+    .filter-pill button:hover { color: var(--red); }
+
+    /* ── PAGINATION ── */
+    .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .page-btn {
+      min-width: 38px; height: 38px; border-radius: 8px;
+      font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
+      border: 1.5px solid var(--gray-light); background: var(--white);
+      color: var(--navy); cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; padding: 0 0.5rem;
+    }
+    .page-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .page-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+    .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-ctas { display: none; }
+      .hamburger { display: flex; }
+      .page-header { padding: 90px 5% 32px; }
+      .search-bar-inner { flex-direction: column; align-items: stretch; }
+      .filter-select { width: 100%; }
+      .coaches-grid { grid-template-columns: 1fr; }
+      .results-bar { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* Mobile nav */
+    .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav-overlay { position: absolute; inset: 0; background: rgba(16,44,87,0.5); }
+    .mobile-nav-panel {
+      position: relative; background: var(--white); width: 280px;
+      height: 100%; padding: 5rem 1.5rem 2rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      overflow-y: auto;
+    }
+    .mobile-nav-panel a, .mobile-nav-panel button.mobile-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.85rem 1rem; border-radius: 10px;
+      font-size: 0.95rem; font-weight: 500; color: var(--navy);
+      text-decoration: none; border: none; background: none;
+      cursor: pointer; width: 100%; font-family: var(--font-body);
+      transition: background 0.15s;
+    }
+    .mobile-nav-panel a:hover, .mobile-nav-panel button.mobile-link:hover { background: var(--off-white); }
+    .mobile-nav-panel svg { stroke: var(--blue); flex-shrink: 0; }
+    .mobile-nav-divider { height: 1px; background: var(--gray-light); margin: 0.5rem 0; }
+    .mobile-close {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+
+    .icon { display: inline-flex; align-items: center; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo-wrap" aria-label="ChessConnect home">
+    <div class="nav-logo-text"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="nav-logo-tagline">Connecting the Chess World</div>
+  </a>
+  <div class="nav-links" role="navigation">
+    <a href="index.html">Home</a>
+    <a href="coaches.html" class="active">Find a Coach</a>
+    <a href="index.html#tools">Tools</a>
+    <a href="index.html#register">List Yourself</a>
+  </div>
+  <div class="nav-ctas">
+    <div class="coach-dropdown" id="coachDropdown" style="display:none;">
+      <button class="btn-ghost coach-dropdown-trigger" onclick="toggleDropdown()" aria-label="Coach menu">
+        <span class="icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-1a8 8 0 0116 0v1"/></svg></span>
+        <span id="navUserName">My Profile</span>
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="coach-dropdown-menu" id="coachDropdownMenu" style="display:none;">
+        <a href="dashboard.html" class="dropdown-item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          My Dashboard
+        </a>
+        <button class="dropdown-item dropdown-item-danger" onclick="signOutCoach()">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </div>
+    <button class="btn-ghost" id="btnLoginNav" onclick="window.location.href='index.html#register'" aria-label="Coach login">Coach Login</button>
+    <button class="btn-primary" onclick="window.location.href='index.html#register'" aria-label="List yourself as a coach">List Yourself Free</button>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-overlay" onclick="toggleMobileNav()"></div>
+  <div class="mobile-nav-panel">
+    <button class="mobile-close" onclick="toggleMobileNav()" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--navy)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <a href="index.html">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Home
+    </a>
+    <a href="coaches.html">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      Find a Coach
+    </a>
+    <a href="index.html#tools">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      Free Tools
+    </a>
+    <div class="mobile-nav-divider"></div>
+    <a href="index.html#register">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      List Yourself Free
+    </a>
+  </div>
+</div>
+
+<!-- ── PAGE HEADER ── -->
+<div class="page-header">
+  <h1>Find Your <span>Chess Coach</span></h1>
+  <p>Browse FIDE-verified coaches. Filter by city, mode, level, language and rating. Contact directly — no middleman.</p>
+</div>
+
+<!-- ── SEARCH & FILTER BAR ── -->
+<div class="search-bar-wrap">
+  <div class="search-bar-inner">
+    <!-- Search -->
+    <div class="search-input-wrap">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name or city..." oninput="onFilterChange()" autocomplete="off"/>
+    </div>
+    <!-- Filters -->
+    <select class="filter-select" id="filterMode" onchange="onFilterChange()">
+      <option value="">All Modes</option>
+      <option value="online">Online</option>
+      <option value="offline">Offline</option>
+      <option value="both">Online + Offline</option>
+    </select>
+    <select class="filter-select" id="filterLevel" onchange="onFilterChange()">
+      <option value="">All Levels</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+      <option value="Tournament">Tournament</option>
+    </select>
+    <select class="filter-select" id="filterTitle" onchange="onFilterChange()">
+      <option value="">All Titles</option>
+      <option value="GM">GM</option>
+      <option value="IM">IM</option>
+      <option value="FM">FM</option>
+      <option value="CM">CM</option>
+      <option value="WGM">WGM</option>
+      <option value="WIM">WIM</option>
+      <option value="WFM">WFM</option>
+    </select>
+    <select class="filter-select" id="filterCountry" onchange="onFilterChange()">
+      <option value="">All Countries</option>
+    </select>
+    <select class="filter-select" id="filterTrial" onchange="onFilterChange()">
+      <option value="">Trial: Any</option>
+      <option value="yes">Trial Available</option>
+    </select>
+    <button class="btn-clear-filters" id="btnClear" onclick="clearFilters()" style="display:none;">✕ Clear</button>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main-wrap">
+  <!-- Active filter pills -->
+  <div class="active-filters" id="activePills"></div>
+
+  <!-- Results bar -->
+  <div class="results-bar">
+    <div class="results-count" id="resultsCount">Loading coaches...</div>
+    <div class="sort-wrap">
+      <span class="sort-label">Sort by</span>
+      <select class="filter-select" id="sortBy" onchange="onFilterChange()">
+        <option value="rating">Highest Rating</option>
+        <option value="newest">Newest First</option>
+        <option value="fee_low">Fee: Low to High</option>
+        <option value="fee_high">Fee: High to Low</option>
+        <option value="az">A to Z</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="coaches-grid" id="coachesGrid">
+    <!-- Skeletons while loading -->
+    <div class="skeleton-card"><div class="skeleton-header"></div><div class="skeleton-body"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div>
+    <div class="skeleton-card"><div class="skeleton-header"></div><div class="skeleton-body"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div>
+    <div class="skeleton-card"><div class="skeleton-header"></div><div class="skeleton-body"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://ipslahlvworwgzbgxppc.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_uEoVcVB_c-JDJRJZZdHQ3Q_C1wlMoaZ';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const PER_PAGE = 12;
+  let allCoaches = [];
+  let filtered   = [];
+  let currentPage = 1;
+
+  // ── INIT ──
+  window.addEventListener('DOMContentLoaded', async () => {
+    await loadCoaches();
+    await checkAuth();
+  });
+
+  // ── AUTH ──
+  async function checkAuth() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) updateNavLoggedIn(session.user);
+  }
+  function updateNavLoggedIn(user) {
+    const firstName = (user.user_metadata?.full_name || user.email || 'Coach').split(' ')[0];
+    document.getElementById('btnLoginNav').style.display = 'none';
+    document.getElementById('coachDropdown').style.display = 'inline-flex';
+    document.getElementById('navUserName').textContent = firstName;
+  }
+  function toggleDropdown() {
+    const menu = document.getElementById('coachDropdownMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  }
+  document.addEventListener('click', e => {
+    const d = document.getElementById('coachDropdown');
+    if (d && !d.contains(e.target)) document.getElementById('coachDropdownMenu').style.display = 'none';
+  });
+  async function signOutCoach() {
+    await sb.auth.signOut();
+    document.getElementById('coachDropdown').style.display = 'none';
+    document.getElementById('btnLoginNav').style.display = 'inline-flex';
+    document.getElementById('coachDropdownMenu').style.display = 'none';
+  }
+
+  // ── MOBILE NAV ──
+  function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    nav.classList.toggle('open');
+  }
+
+  // ── LOAD COACHES ──
+  async function loadCoaches() {
+    const { data, error } = await sb
+      .from('coaches')
+      .select('*')
+      .eq('is_live', true)
+      .order('created_at', { ascending: false });
+
+    if (error || !data) {
+      document.getElementById('coachesGrid').innerHTML = `
+        <div class="state-box">
+          <div class="state-icon">⚠️</div>
+          <h3>Could not load coaches</h3>
+          <p>Please refresh the page or try again shortly.</p>
+        </div>`;
+      return;
+    }
+
+    allCoaches = data;
+    populateCountryFilter(data);
+    applyFilters();
+  }
+
+  // ── POPULATE COUNTRY FILTER ──
+  function populateCountryFilter(coaches) {
+    const countries = [...new Set(coaches.map(c => c.country).filter(Boolean))].sort();
+    const sel = document.getElementById('filterCountry');
+    countries.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      sel.appendChild(opt);
+    });
+  }
+
+  // ── FILTER CHANGE ──
+  let debounceTimer;
+  function onFilterChange() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      currentPage = 1;
+      applyFilters();
+    }, 180);
+  }
+
+  // ── APPLY FILTERS ──
+  function applyFilters() {
+    const q       = document.getElementById('searchInput').value.trim().toLowerCase();
+    const mode    = document.getElementById('filterMode').value;
+    const level   = document.getElementById('filterLevel').value;
+    const title   = document.getElementById('filterTitle').value;
+    const country = document.getElementById('filterCountry').value;
+    const trial   = document.getElementById('filterTrial').value;
+    const sort    = document.getElementById('sortBy').value;
+
+    // Highlight active selects
+    ['filterMode','filterLevel','filterTitle','filterCountry','filterTrial'].forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.toggle('active', el.value !== '');
+    });
+
+    const hasFilters = q || mode || level || title || country || trial;
+    document.getElementById('btnClear').style.display = hasFilters ? 'inline-block' : 'none';
+
+    filtered = allCoaches.filter(c => {
+      if (q) {
+        const name = (c.name || '').toLowerCase();
+        const city = (c.city || '').toLowerCase();
+        if (!name.includes(q) && !city.includes(q)) return false;
+      }
+      if (mode) {
+        const m = (c.mode || '').toLowerCase();
+        if (mode === 'online'  && !m.includes('online'))  return false;
+        if (mode === 'offline' && !m.includes('offline')) return false;
+        if (mode === 'both'    && !(m.includes('online') && m.includes('offline'))) return false;
+      }
+      if (level) {
+        const levels = c.levels || [];
+        if (!levels.some(l => l.toLowerCase().includes(level.toLowerCase()))) return false;
+      }
+      if (title) {
+        if ((c.fide_title || '') !== title) return false;
+      }
+      if (country) {
+        if ((c.country || '') !== country) return false;
+      }
+      if (trial === 'yes') {
+        if (!c.trial_available) return false;
+      }
+      return true;
+    });
+
+    // Sort
+    filtered.sort((a, b) => {
+      if (sort === 'rating') {
+        const ra = Math.max(a.fide_rating || 0, a.rapid_rating || 0, a.blitz_rating || 0);
+        const rb = Math.max(b.fide_rating || 0, b.rapid_rating || 0, b.blitz_rating || 0);
+        return rb - ra;
+      }
+      if (sort === 'newest') return 0; // already sorted by created_at
+      if (sort === 'fee_low') return (a.fee || 0) - (b.fee || 0);
+      if (sort === 'fee_high') return (b.fee || 0) - (a.fee || 0);
+      if (sort === 'az') return (a.name || '').localeCompare(b.name || '');
+      return 0;
+    });
+
+    updateActivePills(q, mode, level, title, country, trial);
+    renderPage();
+    renderPagination();
+  }
+
+  // ── ACTIVE PILLS ──
+  function updateActivePills(q, mode, level, title, country, trial) {
+    const wrap = document.getElementById('activePills');
+    wrap.innerHTML = '';
+    const add = (label, clearFn) => {
+      const pill = document.createElement('div');
+      pill.className = 'filter-pill';
+      pill.innerHTML = `${label}<button onclick="${clearFn}" aria-label="Remove filter">×</button>`;
+      wrap.appendChild(pill);
+    };
+    if (q)       add(`"${q}"`,    `document.getElementById('searchInput').value=''; onFilterChange()`);
+    if (mode)    add(mode,         `document.getElementById('filterMode').value=''; onFilterChange()`);
+    if (level)   add(level,        `document.getElementById('filterLevel').value=''; onFilterChange()`);
+    if (title)   add(title,        `document.getElementById('filterTitle').value=''; onFilterChange()`);
+    if (country) add(country,      `document.getElementById('filterCountry').value=''; onFilterChange()`);
+    if (trial)   add('Trial only', `document.getElementById('filterTrial').value=''; onFilterChange()`);
+  }
+
+  // ── RENDER PAGE ──
+  function renderPage() {
+    const grid = document.getElementById('coachesGrid');
+    const start = (currentPage - 1) * PER_PAGE;
+    const page  = filtered.slice(start, start + PER_PAGE);
+
+    const total = filtered.length;
+    document.getElementById('resultsCount').innerHTML =
+      `Showing <strong>${Math.min(start+1, total)}–${Math.min(start+PER_PAGE, total)}</strong> of <strong>${total}</strong> coach${total !== 1 ? 'es' : ''}`;
+
+    if (total === 0) {
+      grid.innerHTML = `
+        <div class="state-box">
+          <div class="state-icon">🔍</div>
+          <h3>No coaches found</h3>
+          <p>Try adjusting your filters or search term. More coaches are joining every week!</p>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = page.map(c => renderCard(c)).join('');
+  }
+
+  // ── RENDER CARD ──
+  function renderCard(c) {
+    const initials = (c.name || 'CC').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+    const rating = c.fide_rating || c.rapid_rating || c.blitz_rating || 0;
+    const ratingType = c.fide_rating ? 'Classical' : c.rapid_rating ? 'Rapid' : c.blitz_rating ? 'Blitz' : '';
+    const levels  = Array.isArray(c.levels) ? c.levels : [];
+    const langs   = Array.isArray(c.languages) ? c.languages : [];
+    const mode    = (c.mode || '').toLowerCase();
+    const exp     = c.experience ? `${c.experience} yr${c.experience !== 1 ? 's' : ''} exp` : '';
+    const location = [c.city, c.country].filter(Boolean).join(', ');
+
+    const badges = [];
+    if (c.fide_title) badges.push(`<span class="badge">${c.fide_title}</span>`);
+    if (rating)       badges.push(`<span class="badge"><svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.7 5.5 21 7 14 2 9.3 9 8.5 12 2"/></svg> FIDE ${rating}${ratingType ? ' ' + ratingType : ''}</span>`);
+
+    const modeTags = [];
+    if (mode.includes('online'))  modeTags.push('<span class="tag tag-online">Online</span>');
+    if (mode.includes('offline')) modeTags.push('<span class="tag tag-offline">Offline</span>');
+
+    const feeText = c.fee ? `₹${c.fee.toLocaleString('en-IN')} / session` : 'Contact for fees';
+    const trialBadge = c.trial_available ? '<span class="trial-badge">Trial available</span>' : '';
+
+    const waHref   = c.whatsapp ? `https://wa.me/${c.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Hi, I found you on ChessConnect and would like to know more about your chess coaching.`)}` : '#';
+    const callHref = c.phone ? `tel:${c.phone}` : '#';
+    const hasContact = c.whatsapp || c.phone;
+
+    return `
+    <div class="coach-card">
+      <div class="card-header">
+        <div class="card-avatar">${initials}</div>
+        <div class="card-header-info">
+          <div class="card-name">${escHtml(c.name || 'Coach')}</div>
+          <div class="card-meta">${[exp, location].filter(Boolean).join(' · ')}</div>
+          <div class="card-badges">${badges.join('')}</div>
+        </div>
+      </div>
+      <div class="card-body">
+        ${c.bio ? `<div class="card-bio">${escHtml(c.bio)}</div>` : ''}
+        ${modeTags.length ? `<div class="card-row-label">Mode</div><div class="card-row">${modeTags.join('')}</div>` : ''}
+        ${levels.length ? `<div class="card-row-label">Teaches</div><div class="card-row">${levels.map(l => `<span class="tag">${escHtml(l)}</span>`).join('')}</div>` : ''}
+        ${langs.length ? `<div class="card-row-label">Languages</div><div class="card-row">${langs.map(l => `<span class="tag">${escHtml(l)}</span>`).join('')}</div>` : ''}
+        <div style="margin-top:0.75rem;">
+          <span class="card-fee">${feeText}</span>${trialBadge}
+        </div>
+      </div>
+      <div class="card-footer">
+        ${hasContact ? `
+          <button class="btn-card-call" onclick="handleCall('${escAttr(c.phone)}')" ${!c.phone ? 'disabled style="opacity:0.4"' : ''}>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.5a19.79 19.79 0 01-3-8.56A2 2 0 012.48 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </button>
+          <a class="btn-card-wa" href="${waHref}" target="_blank" rel="noopener" ${!c.whatsapp ? 'style="opacity:0.4;pointer-events:none"' : ''}>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            WhatsApp
+          </a>
+        ` : `<div style="font-size:0.8rem;color:var(--gray);padding:0.5rem 0;">Contact details not available</div>`}
+      </div>
+    </div>`;
+  }
+
+  // ── RENDER PAGINATION ──
+  function renderPagination() {
+    const total = Math.ceil(filtered.length / PER_PAGE);
+    const wrap  = document.getElementById('pagination');
+    if (total <= 1) { wrap.innerHTML = ''; return; }
+
+    let html = '';
+    html += `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ Prev</button>`;
+
+    for (let i = 1; i <= total; i++) {
+      if (total > 7 && i > 2 && i < total - 1 && Math.abs(i - currentPage) > 1) {
+        if (i === 3 || i === total - 2) html += `<button class="page-btn" disabled>…</button>`;
+        continue;
+      }
+      html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+    }
+
+    html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===total?'disabled':''}>Next ›</button>`;
+    wrap.innerHTML = html;
+  }
+
+  function goPage(p) {
+    const total = Math.ceil(filtered.length / PER_PAGE);
+    if (p < 1 || p > total) return;
+    currentPage = p;
+    renderPage();
+    renderPagination();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── CLEAR FILTERS ──
+  function clearFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('filterMode').value  = '';
+    document.getElementById('filterLevel').value = '';
+    document.getElementById('filterTitle').value = '';
+    document.getElementById('filterCountry').value = '';
+    document.getElementById('filterTrial').value = '';
+    onFilterChange();
+  }
+
+  // ── HANDLE CALL ──
+  function handleCall(phone) {
+    if (phone) window.location.href = `tel:${phone}`;
+  }
+
+  // ── HELPERS ──
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function escAttr(str) {
+    return str ? String(str).replace(/'/g, "\\'") : '';
+  }
+</script>
+</body>
+</html>
