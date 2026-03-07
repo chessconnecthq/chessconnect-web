@@ -94,6 +94,40 @@
     .status-banner.live .status-dot { background: #22c55e; }
     .status-banner.hidden .status-dot { background: #eab308; }
 
+    /* ── PROFILE LINK BAR ── */
+    .profile-link-bar {
+      background: #f0f7ff; border: 1.5px solid #c7dffe;
+      border-radius: 10px; padding: 0.7rem 1rem;
+      margin-bottom: 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; flex-wrap: wrap;
+    }
+    .profile-link-bar-left {
+      display: flex; align-items: center; gap: 0.5rem;
+      color: var(--dark); font-size: 0.82rem; font-weight: 500;
+      min-width: 0; overflow: hidden;
+    }
+    .profile-link-bar-left svg { stroke: var(--blue); flex-shrink: 0; }
+    .profile-link-url {
+      color: var(--blue); font-size: 0.8rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 260px;
+    }
+    .profile-link-bar-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn-link-action {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 0.78rem; font-weight: 600;
+      border-radius: 7px; padding: 0.45rem 0.85rem;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;
+      border: none; transition: all 0.18s; white-space: nowrap;
+    }
+    .btn-link-view { background: var(--blue); color: white; }
+    .btn-link-view:hover { background: var(--dark); }
+    .btn-link-wa { background: #25D366; color: white; }
+    .btn-link-wa:hover { background: #1daa55; }
+    .btn-link-copy { background: white; color: var(--dark); border: 1px solid var(--border); }
+    .btn-link-copy:hover { border-color: var(--blue); color: var(--blue); }
+
     /* ── TWO COLUMN LAYOUT ── */
     .dash-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.5rem; align-items: start; }
     @media (max-width: 820px) { .dash-grid { grid-template-columns: 1fr; } }
@@ -281,6 +315,27 @@
   <div id="statusBanner" class="status-banner live">
     <div class="status-dot"></div>
     <span id="statusText">Your profile is live. Students can find and contact you.</span>
+  </div>
+
+  <div id="profileLinkBar" class="profile-link-bar" style="display:none;">
+    <div class="profile-link-bar-left">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+      <span id="profileLinkUrl" class="profile-link-url"></span>
+    </div>
+    <div class="profile-link-bar-btns">
+      <button class="btn-link-action btn-link-view" id="btnViewProfile" onclick="viewMyProfile()">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        View
+      </button>
+      <button class="btn-link-action btn-link-wa" onclick="shareMyProfile()">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Share on WhatsApp
+      </button>
+      <button class="btn-link-action btn-link-copy" onclick="copyMyProfileLink()">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy Link
+      </button>
+    </div>
   </div>
 
   <div class="dash-grid">
@@ -472,6 +527,10 @@
         <h3>Danger Zone</h3>
         <p style="font-size:0.85rem;color:#5a6a7a;margin-bottom:0.5rem;">Hide your profile temporarily or delete it permanently.</p>
         <button class="btn-danger" id="toggleLiveBtn" onclick="toggleLive()">Hide My Profile</button>
+        <a href="analytics.html" style="font-family:'Segoe UI',Arial,sans-serif;font-size:0.85rem;font-weight:600;background:none;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.9rem;color:var(--sub);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.2s;">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Analytics
+        </a>
         <button class="btn-danger" onclick="confirmDelete()" style="margin-top:0.5rem;">Delete My Profile Permanently</button>
       </div>
     </div>
@@ -601,6 +660,14 @@
     // Status banner
     updateStatusBanner(p.is_live);
     document.getElementById('toggleLiveBtn').textContent = p.is_live ? 'Hide My Profile' : 'Make Profile Live';
+
+    // Profile link bar
+    if (p.id) {
+      const url = `${location.origin}${location.pathname.replace('dashboard.html','').replace(/\/$/, '')}/coach.html?id=${p.id}`;
+      document.getElementById('profileLinkUrl').textContent = url;
+      document.getElementById('profileLinkBar').style.display = 'flex';
+      document.getElementById('btnViewProfile').dataset.url = url;
+    }
 
     livePreview();
   }
@@ -754,6 +821,31 @@
     t.className = 'toast ' + type;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── MY PROFILE LINK ──
+  function getMyProfileUrl() {
+    return document.getElementById('btnViewProfile')?.dataset.url || '';
+  }
+  function viewMyProfile() {
+    const url = getMyProfileUrl();
+    if (url) window.open(url, '_blank');
+  }
+  function shareMyProfile() {
+    const url = getMyProfileUrl();
+    const name = coachProfile?.full_name || 'Coach';
+    const msg = encodeURIComponent(`Hi! I'm ${name}, a FIDE-rated chess coach. Check out my profile on ChessConnect:\n${url}`);
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  }
+  function copyMyProfileLink() {
+    const url = getMyProfileUrl();
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.querySelector('.btn-link-copy');
+      const orig = btn.innerHTML;
+      btn.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      btn.style.color = '#166534'; btn.style.borderColor = '#22c55e';
+      setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+    });
   }
 </script>
 </body>
