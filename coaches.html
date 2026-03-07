@@ -317,6 +317,34 @@
     .page-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
     .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+    /* ── MULTI SELECT ── */
+    .multi-select-wrap { position: relative; }
+    .multi-select-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem; min-width: 148px; width: 100%;
+      padding: 0.65rem 0.9rem;
+      background-image: none !important;
+    }
+    .multi-select-btn.active { border-color: var(--blue); background-color: rgba(30,115,232,0.05); color: var(--blue); font-weight: 600; }
+    .multi-select-menu {
+      position: absolute; top: calc(100% + 6px); left: 0;
+      background: var(--white); border: 1.5px solid var(--gray-light);
+      border-radius: 10px; box-shadow: var(--shadow-md);
+      min-width: 180px; z-index: 200; padding: 0.5rem 0;
+      animation: dropIn 0.15s ease;
+    }
+    @keyframes dropIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+    .multi-option {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 1rem; font-size: 0.88rem; font-weight: 500;
+      color: var(--navy); cursor: pointer;
+      transition: background 0.15s;
+    }
+    .multi-option:hover { background: var(--off-white); }
+    .multi-option input[type="checkbox"] {
+      width: 15px; height: 15px; accent-color: var(--blue); cursor: pointer; flex-shrink: 0;
+    }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       .nav-links { display: none; }
@@ -428,7 +456,7 @@
 <!-- ── PAGE HEADER ── -->
 <div class="page-header">
   <h1>Find Your <span>Chess Coach</span></h1>
-  <p>Browse FIDE-verified coaches. Filter by city, mode, level, language and rating. Contact directly — no middleman.</p>
+  <p>Browse FIDE-rated coaches. Filter by country, mode, level, language and rating range. Contact directly, no middleman.</p>
 </div>
 
 <!-- ── SEARCH & FILTER BAR ── -->
@@ -437,24 +465,23 @@
     <!-- Search -->
     <div class="search-input-wrap">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" class="search-input" id="searchInput" placeholder="Search by name or city..." oninput="onFilterChange()" autocomplete="off"/>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name or country..." oninput="onFilterChange()" autocomplete="off"/>
     </div>
     <!-- Filters -->
     <select class="filter-select" id="filterMode" onchange="onFilterChange()">
-      <option value="">All Modes</option>
+      <option value="">Select Mode</option>
       <option value="online">Online</option>
       <option value="offline">Offline</option>
       <option value="both">Online + Offline</option>
     </select>
     <select class="filter-select" id="filterLevel" onchange="onFilterChange()">
-      <option value="">All Levels</option>
+      <option value="">Select Level</option>
       <option value="Beginner">Beginner</option>
       <option value="Intermediate">Intermediate</option>
       <option value="Advanced">Advanced</option>
-      <option value="Tournament">Tournament</option>
     </select>
     <select class="filter-select" id="filterTitle" onchange="onFilterChange()">
-      <option value="">All Titles</option>
+      <option value="">Select Title</option>
       <option value="GM">GM</option>
       <option value="IM">IM</option>
       <option value="FM">FM</option>
@@ -463,12 +490,41 @@
       <option value="WIM">WIM</option>
       <option value="WFM">WFM</option>
     </select>
-    <select class="filter-select" id="filterCountry" onchange="onFilterChange()">
-      <option value="">All Countries</option>
+    <select class="filter-select" id="filterRating" onchange="onFilterChange()">
+      <option value="">Select Rating Range</option>
+      <option value="1400-1600">1400 – 1600</option>
+      <option value="1600-1800">1600 – 1800</option>
+      <option value="1800-2000">1800 – 2000</option>
+      <option value="2000-2200">2000 – 2200</option>
+      <option value="2200-2400">2200 – 2400</option>
+      <option value="2400-2600">2400 – 2600</option>
+      <option value="2600+">2600+</option>
     </select>
+    <select class="filter-select" id="filterCountry" onchange="onFilterChange()">
+      <option value="">Select Country</option>
+    </select>
+    <!-- Language multi-select -->
+    <div class="multi-select-wrap" id="langWrap">
+      <button class="filter-select multi-select-btn" id="langBtn" onclick="toggleLangDropdown(event)" type="button">
+        <span id="langBtnLabel">Select Language</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="multi-select-menu" id="langMenu" style="display:none;">
+        <label class="multi-option"><input type="checkbox" value="English" onchange="onLangChange()"> English</label>
+        <label class="multi-option"><input type="checkbox" value="Hindi" onchange="onLangChange()"> Hindi</label>
+        <label class="multi-option"><input type="checkbox" value="Tamil" onchange="onLangChange()"> Tamil</label>
+        <label class="multi-option"><input type="checkbox" value="Telugu" onchange="onLangChange()"> Telugu</label>
+        <label class="multi-option"><input type="checkbox" value="Kannada" onchange="onLangChange()"> Kannada</label>
+        <label class="multi-option"><input type="checkbox" value="Malayalam" onchange="onLangChange()"> Malayalam</label>
+        <label class="multi-option"><input type="checkbox" value="Marathi" onchange="onLangChange()"> Marathi</label>
+        <label class="multi-option"><input type="checkbox" value="Bengali" onchange="onLangChange()"> Bengali</label>
+        <label class="multi-option"><input type="checkbox" value="Gujarati" onchange="onLangChange()"> Gujarati</label>
+        <label class="multi-option"><input type="checkbox" value="Punjabi" onchange="onLangChange()"> Punjabi</label>
+      </div>
+    </div>
     <select class="filter-select" id="filterTrial" onchange="onFilterChange()">
-      <option value="">Trial: Any</option>
-      <option value="yes">Trial Available</option>
+      <option value="">Select Demo</option>
+      <option value="yes">Demo Available</option>
     </select>
     <button class="btn-clear-filters" id="btnClear" onclick="clearFilters()" style="display:none;">✕ Clear</button>
   </div>
@@ -537,10 +593,6 @@
     const menu = document.getElementById('coachDropdownMenu');
     menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
   }
-  document.addEventListener('click', e => {
-    const d = document.getElementById('coachDropdown');
-    if (d && !d.contains(e.target)) document.getElementById('coachDropdownMenu').style.display = 'none';
-  });
   async function signOutCoach() {
     await sb.auth.signOut();
     document.getElementById('coachDropdown').style.display = 'none';
@@ -600,21 +652,24 @@
 
   // ── APPLY FILTERS ──
   function applyFilters() {
-    const q       = document.getElementById('searchInput').value.trim().toLowerCase();
-    const mode    = document.getElementById('filterMode').value;
-    const level   = document.getElementById('filterLevel').value;
-    const title   = document.getElementById('filterTitle').value;
-    const country = document.getElementById('filterCountry').value;
-    const trial   = document.getElementById('filterTrial').value;
-    const sort    = document.getElementById('sortBy').value;
+    const q         = document.getElementById('searchInput').value.trim().toLowerCase();
+    const mode      = document.getElementById('filterMode').value;
+    const level     = document.getElementById('filterLevel').value;
+    const title     = document.getElementById('filterTitle').value;
+    const rating    = document.getElementById('filterRating').value;
+    const country   = document.getElementById('filterCountry').value;
+    const languages = getSelectedLanguages();
+    const trial     = document.getElementById('filterTrial').value;
+    const sort      = document.getElementById('sortBy').value;
 
     // Highlight active selects
-    ['filterMode','filterLevel','filterTitle','filterCountry','filterTrial'].forEach(id => {
+    ['filterMode','filterLevel','filterTitle','filterRating','filterCountry','filterTrial'].forEach(id => {
       const el = document.getElementById(id);
       el.classList.toggle('active', el.value !== '');
     });
+    document.getElementById('langBtn').classList.toggle('active', languages.length > 0);
 
-    const hasFilters = q || mode || level || title || country || trial;
+    const hasFilters = q || mode || level || title || rating || country || languages.length || trial;
     document.getElementById('btnClear').style.display = hasFilters ? 'inline-block' : 'none';
 
     filtered = allCoaches.filter(c => {
@@ -636,11 +691,24 @@
       if (title) {
         if ((c.fide_title || '') !== title) return false;
       }
+      if (rating) {
+        const r = Math.max(c.fide_rating || 0, c.rapid_rating || 0, c.blitz_rating || 0);
+        if (rating === '2600+') {
+          if (r < 2600) return false;
+        } else {
+          const [min, max] = rating.split('-').map(Number);
+          if (r < min || r >= max) return false;
+        }
+      }
       if (country) {
         if ((c.country || '') !== country) return false;
       }
+      if (languages.length > 0) {
+        const coachLangs = (c.languages || []).map(l => l.toLowerCase());
+        if (!languages.some(l => coachLangs.includes(l.toLowerCase()))) return false;
+      }
       if (trial === 'yes') {
-        if (!c.trial_available) return false;
+        if (!c.demo_available) return false;
       }
       return true;
     });
@@ -659,13 +727,13 @@
       return 0;
     });
 
-    updateActivePills(q, mode, level, title, country, trial);
+    updateActivePills(q, mode, level, title, rating, country, languages, trial);
     renderPage();
     renderPagination();
   }
 
   // ── ACTIVE PILLS ──
-  function updateActivePills(q, mode, level, title, country, trial) {
+  function updateActivePills(q, mode, level, title, rating, country, languages, trial) {
     const wrap = document.getElementById('activePills');
     wrap.innerHTML = '';
     const add = (label, clearFn) => {
@@ -674,12 +742,69 @@
       pill.innerHTML = `${label}<button onclick="${clearFn}" aria-label="Remove filter">×</button>`;
       wrap.appendChild(pill);
     };
-    if (q)       add(`"${q}"`,    `document.getElementById('searchInput').value=''; onFilterChange()`);
-    if (mode)    add(mode,         `document.getElementById('filterMode').value=''; onFilterChange()`);
-    if (level)   add(level,        `document.getElementById('filterLevel').value=''; onFilterChange()`);
-    if (title)   add(title,        `document.getElementById('filterTitle').value=''; onFilterChange()`);
-    if (country) add(country,      `document.getElementById('filterCountry').value=''; onFilterChange()`);
-    if (trial)   add('Trial only', `document.getElementById('filterTrial').value=''; onFilterChange()`);
+    if (q)              add(`"${q}"`, `document.getElementById('searchInput').value=''; onFilterChange()`);
+    if (mode)           add(mode,      `document.getElementById('filterMode').value=''; onFilterChange()`);
+    if (level)          add(level,     `document.getElementById('filterLevel').value=''; onFilterChange()`);
+    if (title)          add(title,     `document.getElementById('filterTitle').value=''; onFilterChange()`);
+    if (rating)         add(`Rating: ${rating.replace('-',' – ')}`, `document.getElementById('filterRating').value=''; onFilterChange()`);
+    if (country)        add(country,   `document.getElementById('filterCountry').value=''; onFilterChange()`);
+    languages.forEach(l => add(l,      `clearOneLang('${l}')`));
+    if (trial)          add('Demo only', `document.getElementById('filterTrial').value=''; onFilterChange()`);
+  }
+
+  // ── LANGUAGE MULTI-SELECT HELPERS ──
+  function getSelectedLanguages() {
+    return [...document.querySelectorAll('#langMenu input[type="checkbox"]:checked')].map(cb => cb.value);
+  }
+
+  function updateLangBtnLabel() {
+    const selected = getSelectedLanguages();
+    const label = document.getElementById('langBtnLabel');
+    if (selected.length === 0) label.textContent = 'Select Language';
+    else if (selected.length === 1) label.textContent = selected[0];
+    else label.textContent = `${selected.length} Languages`;
+  }
+
+  function toggleLangDropdown(e) {
+    e.stopPropagation();
+    const menu = document.getElementById('langMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function onLangChange() {
+    updateLangBtnLabel();
+    onFilterChange();
+  }
+
+  function clearOneLang(lang) {
+    const cb = document.querySelector(`#langMenu input[value="${lang}"]`);
+    if (cb) cb.checked = false;
+    updateLangBtnLabel();
+    onFilterChange();
+  }
+
+  // Close lang dropdown when clicking outside
+  document.addEventListener('click', e => {
+    const wrap = document.getElementById('langWrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('langMenu').style.display = 'none';
+    }
+    const dd = document.getElementById('coachDropdown');
+    if (dd && !dd.contains(e.target)) document.getElementById('coachDropdownMenu').style.display = 'none';
+  });
+
+  // ── CLEAR FILTERS ──
+  function clearFilters() {
+    document.getElementById('searchInput').value  = '';
+    document.getElementById('filterMode').value   = '';
+    document.getElementById('filterLevel').value  = '';
+    document.getElementById('filterTitle').value  = '';
+    document.getElementById('filterRating').value = '';
+    document.getElementById('filterCountry').value= '';
+    document.getElementById('filterTrial').value  = '';
+    document.querySelectorAll('#langMenu input[type="checkbox"]').forEach(cb => cb.checked = false);
+    updateLangBtnLabel();
+    onFilterChange();
   }
 
   // ── RENDER PAGE ──
@@ -725,7 +850,7 @@
     if (mode.includes('offline')) modeTags.push('<span class="tag tag-offline">Offline</span>');
 
     const feeText = c.fee ? `₹${c.fee.toLocaleString('en-IN')} / session` : 'Contact for fees';
-    const trialBadge = c.trial_available ? '<span class="trial-badge">Trial available</span>' : '';
+    const trialBadge = c.demo_available ? '<span class="trial-badge">Demo available</span>' : '';
 
     const waHref   = c.whatsapp ? `https://wa.me/${c.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Hi, I found you on ChessConnect and would like to know more about your chess coaching.`)}` : '#';
     const callHref = c.phone ? `tel:${c.phone}` : '#';
@@ -793,17 +918,6 @@
     renderPage();
     renderPagination();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // ── CLEAR FILTERS ──
-  function clearFilters() {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('filterMode').value  = '';
-    document.getElementById('filterLevel').value = '';
-    document.getElementById('filterTitle').value = '';
-    document.getElementById('filterCountry').value = '';
-    document.getElementById('filterTrial').value = '';
-    onFilterChange();
   }
 
   // ── HANDLE CALL ──
