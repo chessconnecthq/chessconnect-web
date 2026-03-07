@@ -2142,7 +2142,7 @@
         .single();
 
       if (error || !data) {
-        showError('fideId', true, 'FIDE ID not found in our database. Please check your ID at ratings.fide.com');
+        showError('fideId', true, 'We could not find this FIDE ID in our database. Please double-check your ID at ratings.fide.com. If you are sure it is correct, please contact us at chessconnect.in@gmail.com and we will assist you.');
         btn.textContent = 'Verify →';
         btn.disabled = false;
         return;
@@ -2159,7 +2159,7 @@
       }
 
       if (activeRating === 0) {
-        showError('fideId', true, 'Your FIDE profile shows no active rating in Classical, Rapid or Blitz formats. ChessConnect currently accepts coaches with a FIDE rating. If you believe this is an error, please contact us at chessconnect.in@gmail.com');
+        showError('fideId', true, 'Thank you for your interest in ChessConnect! As per our FIDE records dated March 2026, your profile currently shows no rating in Classical, Rapid or Blitz formats. ChessConnect requires a FIDE rating to list as a coach. If you believe this is an error or your rating was recently updated, please write to us at chessconnect.in@gmail.com and we will be happy to help.');
         btn.textContent = 'Verify →';
         btn.disabled = false;
         return;
