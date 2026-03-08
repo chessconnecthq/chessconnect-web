@@ -2762,6 +2762,13 @@
     }
   }
 
+  // ── Close success overlay ──
+  function closeSuccess() {
+    document.getElementById('successOverlay').classList.remove('show');
+    // Scroll to top and reset form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
 </script>
 </body>
 </html>
