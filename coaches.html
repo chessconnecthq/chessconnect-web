@@ -992,7 +992,7 @@
         if (!languages.some(l => coachLangs.includes(l.toLowerCase()))) return false;
       }
       if (trial === 'yes') {
-        if (!c.demo_available) return false;
+        if (!c.trial_available) return false;
       }
       return true;
     });
@@ -1133,8 +1133,10 @@
     if (mode.includes('online'))  modeTags.push('<span class="tag tag-online">Online</span>');
     if (mode.includes('offline')) modeTags.push('<span class="tag tag-offline">Offline</span>');
 
-    const feeText = c.fee ? `₹${c.fee.toLocaleString('en-IN')} / session` : 'Contact for fees';
-    const trialBadge = c.demo_available ? '<span class="trial-badge">Demo available</span>' : '';
+    const currSym = c.fees_currency === 'USD' ? '$' : c.fees_currency === 'EUR' ? '€' : '₹';
+    const feeNum = c.fees_currency === 'INR' || !c.fees_currency ? parseInt(c.fees||c.fee).toLocaleString('en-IN') : parseInt(c.fees||c.fee).toLocaleString();
+    const feeText = (c.fees||c.fee) ? `${currSym}${feeNum} / session` : 'Contact for fees';
+    const trialBadge = c.trial_available ? '<span class="trial-badge">Trial available</span>' : '';
 
     const waHref   = c.whatsapp ? `https://wa.me/${c.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Hi, I found you on ChessConnect and would like to know more about your chess coaching.`)}` : '#';
     const callHref = c.phone ? `tel:${c.phone}` : '#';
