@@ -166,7 +166,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-card:active{transform:scale(0.985)}
 .clock-card.selected{border-color:#1E73E8!important;box-shadow:0 0 0 1px #1E73E8,0 4px 16px rgba(30,115,232,0.12)}
 .card-inner{display:flex;flex-direction:column;position:relative;overflow:hidden}
-.card-preview{width:100%;height:160px;overflow:hidden;position:relative;flex-shrink:0}
+.card-preview{display:none}
 .preview-scaler{width:428px;transform:scale(0.245);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
 .preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:343px}
 .card-info{padding:0.6rem 0.75rem;display:flex;flex-direction:column;justify-content:center}
@@ -254,7 +254,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   .mob-title{font-size:1.65rem;margin-bottom:0.3rem}
   .mob-sub{margin-bottom:1.2rem}
   .clock-cards{max-width:480px}
-  .card-preview{width:100%;height:170px}
+
   .preview-scaler{transform:scale(0.268)}
   .next-btn{max-width:580px}
   .tc-wrap,.custom-row,.s2-btns{max-width:440px}
@@ -266,7 +266,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   .mob-content{padding:2.5rem 2.5rem}
   .mob-title{font-size:1.9rem}
   .clock-cards{max-width:640px}
-  .card-preview{width:100%;height:180px}
+
   .preview-scaler{transform:scale(0.292)}
   .next-btn{max-width:640px}
 }
@@ -641,7 +641,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px,
       rgba(0,0,0,0.0) 4px,rgba(0,0,0,0.0) 6px
     ),
-    linear-gradient(160deg,#3A3A3A 0%,#2A2A2A 35%,#1E1E1E 65%,#161616 100%);
+    linear-gradient(160deg,#2E2E2E 0%,#262626 35%,#1E1E1E 65%,#1A1A1A 100%);
   border-right:2px solid rgba(0,0,0,0.7);
   box-shadow:
     inset -3px 0 8px rgba(0,0,0,0.6),
@@ -659,7 +659,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px,
       rgba(0,0,0,0.0) 4px,rgba(0,0,0,0.0) 6px
     ),
-    linear-gradient(160deg,#3A3A3A 0%,#2A2A2A 35%,#1E1E1E 65%,#161616 100%);
+    linear-gradient(160deg,#2E2E2E 0%,#262626 35%,#1E1E1E 65%,#1A1A1A 100%);
   border-left:2px solid rgba(0,0,0,0.7);
   box-shadow:
     inset 3px 0 8px rgba(0,0,0,0.6),
@@ -675,7 +675,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       rgba(255,255,255,0.04) 0px,rgba(255,255,255,0.04) 1px,
       rgba(0,0,0,0.0) 1px,rgba(0,0,0,0.0) 3px
     ),
-    linear-gradient(160deg,#222 0%,#181818 50%,#111 100%);
+    linear-gradient(160deg,#1E1E1E 0%,#161616 50%,#111 100%);
 }
 .pc-side-r:active,.pc-side-r.pressing{
   box-shadow:inset -7px 0 18px rgba(0,0,0,0.9),inset -2px 0 4px rgba(0,0,0,0.7);
@@ -684,7 +684,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       rgba(255,255,255,0.04) 0px,rgba(255,255,255,0.04) 1px,
       rgba(0,0,0,0.0) 1px,rgba(0,0,0,0.0) 3px
     ),
-    linear-gradient(160deg,#222 0%,#181818 50%,#111 100%);
+    linear-gradient(160deg,#1E1E1E 0%,#161616 50%,#111 100%);
 }
 .pc-side-l.active-l{box-shadow:inset -3px 0 8px rgba(0,0,0,0.6),inset 0 0 22px rgba(255,255,255,0.07)}
 .pc-side-r.active-l{box-shadow:inset 3px 0 8px rgba(0,0,0,0.6),inset 0 0 22px rgba(255,255,255,0.07)}
@@ -692,14 +692,14 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* LED dot inside panel */
 .pc-side-led{
   width:9px;height:9px;border-radius:50%;
-  background:#111;border:1px solid #1e1e1e;
+  background:#2a2a2a;border:1px solid #333;
   transition:all 0.3s;flex-shrink:0;
 }
 .pc-side-led.on-g{background:#00E676;border-color:#00E676;box-shadow:0 0 8px rgba(0,230,118,0.85),0 0 20px rgba(0,230,118,0.3)}
 .pc-side-led.on-r{background:#FF3A3A;border-color:#FF3A3A;box-shadow:0 0 8px rgba(255,58,58,0.85),0 0 20px rgba(255,58,58,0.3)}
 .pc-side-lbl{
   font-size:0.72rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.32em;color:rgba(200,200,200,0.55);
+  letter-spacing:0.32em;color:rgba(209,209,209,0.6);
   white-space:nowrap;font-family:'Share Tech Mono',monospace;
   writing-mode:vertical-rl;text-orientation:mixed;
   transform:rotate(180deg);pointer-events:none;
@@ -715,7 +715,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 .pc-body{
   width:min(96vw,580px);flex-shrink:0;
-  background:linear-gradient(158deg,#252525 0%,#1A1A1A 25%,#111 55%,#0B0B0B 100%);
+  background:linear-gradient(158deg,#3A3A3A 0%,#333333 25%,#2A2A2A 55%,#242424 100%);
   border-radius:14px 14px 10px 10px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.08),
@@ -755,7 +755,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* 2. Center controls */
 .pc-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
 /* 1. Brand */
-.pc-brand-t{font-size:0.85rem;font-weight:800;letter-spacing:0.06em;font-family:'Share Tech Mono',monospace;color:rgba(220,220,220,0.9);text-shadow:0 1px 4px rgba(0,0,0,0.7)}
+.pc-brand-t{font-size:0.85rem;font-weight:800;letter-spacing:0.06em;font-family:'Share Tech Mono',monospace;color:rgba(209,209,209,0.92);text-shadow:0 1px 4px rgba(0,0,0,0.5)}
 .pc-ctrls{display:flex;gap:5px}
 /* 2. Buttons */
 .pc-cbtn{
@@ -777,21 +777,21 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-displays{display:flex;padding:0 80px;position:relative;z-index:2}
 .pc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
 /* 4. Player labels */
-.pc-plbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#444;transition:color 0.3s;font-family:'Share Tech Mono',monospace}
-.pc-dunit.active .pc-plbl{color:rgba(220,220,220,0.95);text-shadow:0 0 8px rgba(255,255,255,0.2)}
+.pc-plbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#808080;transition:color 0.3s;font-family:'Share Tech Mono',monospace}
+.pc-dunit.active .pc-plbl{color:#D1D1D1;text-shadow:0 0 6px rgba(209,209,209,0.15)}
 /* 8. Display border more visible */
-.pc-disp{width:100%;background:#040404;border-radius:5px;border:1.5px solid #2a2a2a;padding:9px 4px 7px;text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 4px 14px rgba(0,0,0,0.95),inset 0 1px 4px #000;transition:border-color 0.3s,box-shadow 0.3s}
+.pc-disp{width:100%;background:#080808;border-radius:5px;border:1.5px solid #383838;padding:9px 4px 7px;text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 4px 14px rgba(0,0,0,0.95),inset 0 1px 4px #000;transition:border-color 0.3s,box-shadow 0.3s}
 .pc-disp::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);pointer-events:none}
 .pc-dunit.active .pc-disp{border-color:#3a3a3a;box-shadow:inset 0 4px 14px rgba(0,0,0,0.95),0 0 16px rgba(255,255,255,0.05)}
 .pc-dunit.flagged .pc-disp{border-color:#FF2020!important;animation:flagPulse 0.5s ease infinite alternate}
 /* 7. Inactive timer readable mid-grey */
-.pc-time{font-family:'Share Tech Mono',monospace;font-size:clamp(2rem,10vw,2.85rem);letter-spacing:0.05em;color:#4a4a4a;line-height:1;transition:color 0.3s,text-shadow 0.3s;user-select:none;font-variant-numeric:tabular-nums}
-.pc-dunit.active .pc-time{color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.72),0 0 22px rgba(255,255,255,0.2)}
+.pc-time{font-family:'Share Tech Mono',monospace;font-size:clamp(2rem,10vw,2.85rem);letter-spacing:0.05em;color:#555;line-height:1;transition:color 0.3s,text-shadow 0.3s;user-select:none;font-variant-numeric:tabular-nums}
+.pc-dunit.active .pc-time{color:#D1D1D1;text-shadow:0 0 8px rgba(209,209,209,0.6),0 0 20px rgba(209,209,209,0.15)}
 .pc-dunit.flagged .pc-time{color:#FF2020!important;text-shadow:0 0 12px rgba(255,32,32,0.6)!important}
 .pc-dunit.warning .pc-time{color:#FF6B00!important;text-shadow:0 0 10px rgba(255,107,0,0.55)!important;animation:warnBlink 1s ease infinite}
 /* 9. Moves count */
-.pc-moves{font-size:0.58rem;color:#3a3a3a;font-family:'Share Tech Mono',monospace;transition:color 0.3s;font-weight:600}
-.pc-dunit.active .pc-moves{color:#666}
+.pc-moves{font-size:0.58rem;color:#808080;font-family:'Share Tech Mono',monospace;transition:color 0.3s;font-weight:600}
+.pc-dunit.active .pc-moves{color:#808080}
 /* 10. Increment badge */
 .pc-inc{position:absolute;bottom:4px;right:6px;font-size:0.5rem;color:#3a3a3a;font-weight:700;letter-spacing:0.04em}
 .pc-divider{width:1px;background:linear-gradient(180deg,transparent,#2a2a2a,transparent);margin:4px 3px;flex-shrink:0}
@@ -1106,63 +1106,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
-        <div class="card-preview" style="position:relative;overflow:hidden;background:repeating-linear-gradient(170deg,transparent 0,transparent 8px,rgba(0,0,0,0.035) 8px,rgba(0,0,0,0.035) 9px),linear-gradient(155deg,#7A3018 0%,#4E1E08 40%,#2E1004 80%,#1E0A02 100%);">
-          <!-- Corner ornaments -->
-          <div style="position:absolute;top:4px;left:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
-          <div style="position:absolute;top:4px;right:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
-          <div style="position:absolute;bottom:4px;left:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
-          <div style="position:absolute;bottom:4px;right:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
-          <!-- LEFT side panel — rubber ridges -->
-          <div style="position:absolute;left:0;top:0;bottom:0;width:24px;z-index:3;
-            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.06) 0px,rgba(255,255,255,0.06) 1px,transparent 1px,transparent 4px),
-            linear-gradient(90deg,#1A0D05 0%,#2A1508 60%,#1E1008 100%);
-            border-right:1px solid rgba(80,40,10,0.8);
-            box-shadow:inset -2px 0 4px rgba(0,0,0,0.6),2px 0 6px rgba(0,0,0,0.4);
-            display:flex;flex-direction:column;align-items:center;justify-content:center;">
-            <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(196,135,58,0.65);font-family:'DM Sans',sans-serif;">PLAYER 1</div>
-          </div>
-          <!-- RIGHT side panel — rubber ridges -->
-          <div style="position:absolute;right:0;top:0;bottom:0;width:24px;z-index:3;
-            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.06) 0px,rgba(255,255,255,0.06) 1px,transparent 1px,transparent 4px),
-            linear-gradient(270deg,#1A0D05 0%,#2A1508 60%,#1E1008 100%);
-            border-left:1px solid rgba(80,40,10,0.8);
-            box-shadow:inset 2px 0 4px rgba(0,0,0,0.6),-2px 0 6px rgba(0,0,0,0.4);
-            display:flex;flex-direction:column;align-items:center;justify-content:center;">
-            <div style="writing-mode:vertical-rl;transform:rotate(0deg);font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(196,135,58,0.65);font-family:'DM Sans',sans-serif;">PLAYER 2</div>
-          </div>
-          <!-- Main body content -->
-          <div style="position:absolute;left:24px;right:24px;top:0;bottom:0;display:flex;flex-direction:column;padding:6px 7px 5px;gap:4px;">
-            <!-- Brand + buttons row -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-              <div style="font-family:'DM Sans',sans-serif;font-size:5px;font-weight:800;color:rgba(220,175,90,0.92);letter-spacing:0.04em;text-shadow:0 1px 3px rgba(0,0,0,0.6)">ChessConnect</div>
-              <div style="display:flex;gap:2px;">
-                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(196,135,58,0.5);background:rgba(15,6,1,0.8);color:rgba(220,175,80,0.85);font-family:'DM Sans',sans-serif;border-radius:1px;">PAUSE</span>
-                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(196,135,58,0.5);background:rgba(15,6,1,0.8);color:rgba(220,175,80,0.85);font-family:'DM Sans',sans-serif;border-radius:1px;">RESTART</span>
-              </div>
-              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(220,175,80,0.7);font-family:'DM Sans',sans-serif;">TAP TO START</div>
-            </div>
-            <!-- Player labels -->
-            <div style="display:flex;justify-content:space-between;padding:0 2px;">
-              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:rgba(196,135,58,0.5);font-family:'DM Sans',sans-serif;">PLAYER 1</div>
-              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:rgba(196,135,58,0.5);font-family:'DM Sans',sans-serif;">PLAYER 2</div>
-            </div>
-            <!-- Display boxes -->
-            <div style="display:flex;gap:3px;flex:1;">
-              <div style="flex:1;background:#070503;border-radius:3px;border:1px solid rgba(120,75,25,0.5);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.95);">
-                <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:#C4873A;text-shadow:0 0 8px rgba(196,135,58,0.7);line-height:1;letter-spacing:0.04em;">10:00</div>
-                <div style="font-size:2.5px;color:rgba(160,110,45,0.5);font-family:'DM Sans',sans-serif;margin-top:1px;">0 moves</div>
-              </div>
-              <div style="flex:1;background:#070503;border-radius:3px;border:1px solid rgba(120,75,25,0.5);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.95);">
-                <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:#C4873A;text-shadow:0 0 8px rgba(196,135,58,0.7);line-height:1;letter-spacing:0.04em;">10:00</div>
-                <div style="font-size:2.5px;color:rgba(160,110,45,0.5);font-family:'DM Sans',sans-serif;margin-top:1px;">0 moves</div>
-              </div>
-            </div>
-            <!-- Footer -->
-            <div style="text-align:center;border-top:1px solid rgba(196,135,58,0.15);padding-top:2px;">
-              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(180,125,50,0.5);font-family:'DM Sans',sans-serif;">Heritage Edition · Tournament</div>
-            </div>
-          </div>
-        </div>
         <div class="card-info">
           <div class="card-name">Heritage</div>
           <div class="card-desc">Walnut wood body · Rubber side panels · Amber digits · Tournament Edition</div>
@@ -1172,64 +1115,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-pro" id="card-pro" onclick="selectClock('pro',this)">
       <div class="card-inner">
-        <div class="card-preview" style="position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#141414 0%,#080808 50%,#030303 100%);">
-          <!-- carbon fibre overlay -->
-          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(255,255,255,0.012) 3px,rgba(255,255,255,0.012) 4px);pointer-events:none;z-index:0"></div>
-          <!-- LEFT brushed steel panel -->
-          <div style="position:absolute;left:0;top:0;bottom:0;width:18px;z-index:3;
-            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.07) 0px,rgba(255,255,255,0.07) 1px,transparent 1px,transparent 3px,rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px,transparent 4px,transparent 6px),
-            linear-gradient(160deg,#3A3A3A 0%,#252525 40%,#181818 100%);
-            border-right:1px solid rgba(0,0,0,0.8);
-            box-shadow:inset -2px 0 5px rgba(0,0,0,0.7),-2px 0 8px rgba(255,255,255,0.07);
-            border:0.5px solid rgba(255,255,255,0.1);border-right:1px solid rgba(0,0,0,0.8);
-            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-            <div style="width:5px;height:5px;border-radius:50%;background:#00E676;box-shadow:0 0 4px rgba(0,230,118,0.9);flex-shrink:0;"></div>
-            <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(200,200,200,0.5);font-family:'Share Tech Mono',monospace;">PLAYER 1</div>
-          </div>
-          <!-- RIGHT brushed steel panel -->
-          <div style="position:absolute;right:0;top:0;bottom:0;width:18px;z-index:3;
-            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.07) 0px,rgba(255,255,255,0.07) 1px,transparent 1px,transparent 3px,rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px,transparent 4px,transparent 6px),
-            linear-gradient(160deg,#3A3A3A 0%,#252525 40%,#181818 100%);
-            border-left:1px solid rgba(0,0,0,0.8);
-            box-shadow:inset 2px 0 5px rgba(0,0,0,0.7),2px 0 8px rgba(255,255,255,0.07);
-            border:0.5px solid rgba(255,255,255,0.1);border-left:1px solid rgba(0,0,0,0.8);
-            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-            <div style="width:5px;height:5px;border-radius:50%;background:#FF3A3A;box-shadow:0 0 4px rgba(255,58,58,0.9);flex-shrink:0;"></div>
-            <div style="writing-mode:vertical-rl;transform:rotate(0deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(200,200,200,0.5);font-family:'Share Tech Mono',monospace;">PLAYER 2</div>
-          </div>
-          <!-- Main body -->
-          <div style="position:absolute;left:24px;right:24px;top:0;bottom:0;display:flex;flex-direction:column;padding:6px 7px 5px;gap:4px;z-index:1;">
-            <!-- Brand row -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-              <div style="font-size:5px;font-weight:800;color:rgba(210,210,210,0.9);letter-spacing:0.06em;font-family:'Share Tech Mono',monospace;">ChessConnect</div>
-              <div style="display:flex;gap:2px;">
-                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(180,180,180,0.35);background:rgba(10,10,10,0.9);color:rgba(200,200,200,0.85);font-family:'Share Tech Mono',monospace;border-radius:1px;">PAUSE</span>
-                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(180,180,180,0.35);background:rgba(10,10,10,0.9);color:rgba(200,200,200,0.85);font-family:'Share Tech Mono',monospace;border-radius:1px;">RESTART</span>
-              </div>
-              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(200,200,200,0.6);font-family:'Share Tech Mono',monospace;">TAP TO START</div>
-            </div>
-            <!-- Player labels -->
-            <div style="display:flex;justify-content:space-between;padding:0 2px;">
-              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;font-family:'Share Tech Mono',monospace;">PLAYER 1</div>
-              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;font-family:'Share Tech Mono',monospace;">PLAYER 2</div>
-            </div>
-            <!-- Displays -->
-            <div style="display:flex;gap:3px;flex:1;">
-              <div style="flex:1;background:#040404;border-radius:3px;border:1px solid #222;padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.98);">
-                <div style="font-family:'Share Tech Mono',monospace;font-size:22px;font-weight:700;color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.8);line-height:1;letter-spacing:0.04em;">10:00</div>
-                <div style="font-size:2.5px;color:#444;font-family:'Share Tech Mono',monospace;margin-top:1px;">0 moves</div>
-              </div>
-              <div style="flex:1;background:#040404;border-radius:3px;border:1px solid #222;padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.98);">
-                <div style="font-family:'Share Tech Mono',monospace;font-size:22px;font-weight:700;color:#4a4a4a;line-height:1;letter-spacing:0.04em;">10:00</div>
-                <div style="font-size:2.5px;color:#444;font-family:'Share Tech Mono',monospace;margin-top:1px;">0 moves</div>
-              </div>
-            </div>
-            <!-- Footer -->
-            <div style="text-align:center;border-top:1px solid #1a1a1a;padding-top:2px;">
-              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(130,130,130,0.45);font-family:'Share Tech Mono',monospace;">Pro Edition · Tournament</div>
-            </div>
-          </div>
-        </div>
         <div class="card-info">
           <div class="card-name">Pro</div>
           <div class="card-desc">Matte black · Brushed steel panels · LED indicators · White digits</div>
@@ -1239,69 +1124,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div>
     <div class="clock-card card-chronos" id="card-chronos" onclick="selectClock('chronos',this)">
       <div class="card-inner">
-        <div class="card-preview" style="position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#0a0820 0%,#04041a 50%,#020208 100%);">
-          <!-- nebula glow -->
-          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,100,255,0.07) 0%,transparent 55%),radial-gradient(ellipse at 80% 50%,rgba(200,0,255,0.07) 0%,transparent 55%);pointer-events:none;z-index:0"></div>
-          <!-- circuit traces SVG -->
-          <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:0.4" viewBox="0 0 300 110" fill="none" preserveAspectRatio="none">
-            <path d="M0 25 L18 25 L18 14 L45 14" stroke="#00EFFF" stroke-width="0.8"/>
-            <path d="M300 25 L282 25 L282 14 L255 14" stroke="#EE00FF" stroke-width="0.8"/>
-            <path d="M0 85 L18 85 L18 96 L45 96" stroke="#00EFFF" stroke-width="0.8"/>
-            <path d="M300 85 L282 85 L282 96 L255 96" stroke="#EE00FF" stroke-width="0.8"/>
-            <circle cx="18" cy="25" r="1.5" fill="#00EFFF"/>
-            <circle cx="282" cy="25" r="1.5" fill="#EE00FF"/>
-          </svg>
-          <!-- LEFT cyan panel -->
-          <div style="position:absolute;left:0;top:0;bottom:0;width:18px;z-index:3;
-            background:linear-gradient(160deg,rgba(0,25,45,0.98) 0%,rgba(0,15,35,0.98) 100%);
-            border-right:none;border:0.5px solid rgba(0,200,255,0.4);
-            box-shadow:inset -2px 0 5px rgba(0,0,0,0.8),-2px 0 10px rgba(0,200,255,0.15);
-            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-            <div style="width:5px;height:5px;border-radius:50%;background:rgba(0,200,255,0.3);border:0.5px solid rgba(0,200,255,0.5);flex-shrink:0;"></div>
-            <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(0,220,255,0.6);font-family:'Orbitron',sans-serif;">PLAYER 1</div>
-          </div>
-          <!-- RIGHT magenta panel -->
-          <div style="position:absolute;right:0;top:0;bottom:0;width:18px;z-index:3;
-            background:linear-gradient(160deg,rgba(30,0,45,0.98) 0%,rgba(18,0,35,0.98) 100%);
-            border-left:none;border:0.5px solid rgba(200,0,255,0.4);
-            box-shadow:inset 2px 0 5px rgba(0,0,0,0.8),2px 0 10px rgba(200,0,255,0.15);
-            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-            <div style="width:5px;height:5px;border-radius:50%;background:rgba(200,0,255,0.3);border:0.5px solid rgba(200,0,255,0.5);flex-shrink:0;"></div>
-            <div style="writing-mode:vertical-rl;transform:rotate(0deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(220,0,255,0.6);font-family:'Orbitron',sans-serif;">PLAYER 2</div>
-          </div>
-          <!-- Main body -->
-          <div style="position:absolute;left:24px;right:24px;top:0;bottom:0;display:flex;flex-direction:column;padding:6px 7px 5px;gap:4px;z-index:2;">
-            <!-- Brand row -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-              <div style="font-size:5px;font-weight:700;background:linear-gradient(90deg,#00EFFF,#EE00FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.05em;font-family:'Orbitron',sans-serif;">ChessConnect</div>
-              <div style="display:flex;gap:2px;">
-                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.45);color:rgba(0,220,255,0.85);font-family:'Orbitron',sans-serif;border-radius:1px;">PAUSE</span>
-                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.45);color:rgba(0,220,255,0.85);font-family:'Orbitron',sans-serif;border-radius:1px;">RESTART</span>
-              </div>
-              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,220,255,0.55);font-family:'Orbitron',sans-serif;">TAP TO START</div>
-            </div>
-            <!-- Player labels -->
-            <div style="display:flex;justify-content:space-between;padding:0 2px;">
-              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(0,200,255,0.45);font-family:'Orbitron',sans-serif;">PLAYER 1</div>
-              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(200,0,255,0.45);font-family:'Orbitron',sans-serif;">PLAYER 2</div>
-            </div>
-            <!-- Displays -->
-            <div style="display:flex;gap:3px;flex:1;">
-              <div style="flex:1;background:rgba(0,4,18,0.95);border-radius:3px;border:0.5px solid rgba(0,200,255,0.4);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 5px rgba(0,200,255,0.12);">
-                <div style="font-family:'Orbitron',sans-serif;font-size:21px;font-weight:700;color:#00EFFF;text-shadow:0 0 8px rgba(0,239,255,0.9),0 0 16px rgba(0,239,255,0.5);line-height:1;letter-spacing:0.02em;">10:00</div>
-                <div style="font-size:2.5px;color:rgba(0,200,255,0.4);font-family:'Orbitron',sans-serif;margin-top:1px;">0 moves</div>
-              </div>
-              <div style="flex:1;background:rgba(0,4,18,0.95);border-radius:3px;border:0.5px solid rgba(200,0,255,0.4);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 5px rgba(200,0,255,0.12);">
-                <div style="font-family:'Orbitron',sans-serif;font-size:21px;font-weight:700;color:#EE00FF;text-shadow:0 0 8px rgba(238,0,255,0.9),0 0 16px rgba(238,0,255,0.5);line-height:1;letter-spacing:0.02em;">10:00</div>
-                <div style="font-size:2.5px;color:rgba(200,0,255,0.4);font-family:'Orbitron',sans-serif;margin-top:1px;">0 moves</div>
-              </div>
-            </div>
-            <!-- Footer -->
-            <div style="text-align:center;border-top:1px solid rgba(0,200,255,0.12);padding-top:2px;">
-              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(80,80,200,0.55);font-family:'Orbitron',sans-serif;">Chronos 2050 Edition · Tournament</div>
-            </div>
-          </div>
-        </div>
         <div class="card-info">
           <div class="card-name">Chronos 2050</div>
           <div class="card-desc">Deep space · Cyan &amp; magenta panels · Neon digits · Sci-Fi Edition</div>
