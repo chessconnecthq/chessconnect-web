@@ -6,6 +6,7 @@
   <title>Coach Dashboard | ChessConnect</title>
   <meta name="robots" content="noindex, nofollow"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -20,8 +21,6 @@
       --sub: #5a6a7a;
     }
     body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray); color: var(--text); min-height: 100vh; }
-
-    /* ── NAV ── */
     .dash-nav {
       background: #fff; border-bottom: 1px solid var(--border);
       padding: 0 2rem; height: 60px; display: flex; align-items: center;
@@ -33,240 +32,104 @@
     .dash-logo span:last-child  { color: #4285F4; font-family: Arial, sans-serif; font-weight: 700; font-size: 1.2rem; }
     .dash-nav-right { display: flex; align-items: center; gap: 1rem; }
     .dash-user { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: var(--sub); }
-    .dash-avatar {
-      width: 34px; height: 34px; border-radius: 50%; background: var(--blue);
-      color: #fff; display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.85rem; overflow: hidden;
-    }
+    .dash-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; overflow: hidden; }
     .dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .btn-signout {
-      background: none; border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.4rem 0.9rem; font-size: 0.85rem; color: var(--sub);
-      cursor: pointer; transition: all 0.2s;
-    }
+    .btn-signout { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 0.9rem; font-size: 0.85rem; color: var(--sub); cursor: pointer; transition: all 0.2s; }
     .btn-signout:hover { border-color: var(--red); color: var(--red); }
-
-    /* ── LOADING SCREEN ── */
-    .loading-screen {
-      min-height: 80vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1rem;
-    }
-    .spinner-large {
-      width: 48px; height: 48px; border: 4px solid var(--light-blue);
-      border-top-color: var(--blue); border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+    .loading-screen { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+    .spinner-large { width: 48px; height: 48px; border: 4px solid var(--light-blue); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── NOT LOGGED IN ── */
-    .auth-wall {
-      min-height: 80vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1rem; text-align: center; padding: 2rem;
-    }
+    .auth-wall { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; text-align: center; padding: 2rem; }
     .auth-wall h2 { font-size: 1.5rem; color: var(--dark); }
     .auth-wall p { color: var(--sub); max-width: 380px; line-height: 1.6; }
-    .btn-google {
-      display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.5rem;
-      background: #fff; border: 2px solid var(--border); border-radius: 12px;
-      font-size: 1rem; font-weight: 600; color: #333; cursor: pointer;
-      transition: all 0.2s; margin-top: 0.5rem;
-    }
+    .btn-google { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.5rem; background: #fff; border: 2px solid var(--border); border-radius: 12px; font-size: 1rem; font-weight: 600; color: #333; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
     .btn-google:hover { border-color: var(--blue); box-shadow: 0 4px 16px rgba(30,115,232,0.15); }
-
-    /* ── MAIN LAYOUT ── */
     .dash-main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; display: none; }
     .dash-main.visible { display: block; }
-
-    /* ── PAGE HEADER ── */
     .dash-header { margin-bottom: 2rem; }
     .dash-header h1 { font-size: 1.6rem; color: var(--dark); font-weight: 700; }
     .dash-header p { color: var(--sub); margin-top: 0.3rem; font-size: 0.95rem; }
-
-    /* ── STATUS BANNER ── */
-    .status-banner {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.9rem 1.2rem; border-radius: 12px; margin-bottom: 1.5rem;
-      font-size: 0.9rem; font-weight: 500;
-    }
+    .status-banner { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 500; }
     .status-banner.live { background: #dcfce7; color: #166534; }
     .status-banner.hidden { background: #fef9c3; color: #854d0e; }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .status-banner.live .status-dot { background: #22c55e; }
     .status-banner.hidden .status-dot { background: #eab308; }
-
-    /* ── PROFILE LINK BAR ── */
-    .profile-link-bar {
-      background: #f0f7ff; border: 1.5px solid #c7dffe;
-      border-radius: 10px; padding: 0.7rem 1rem;
-      margin-bottom: 1.25rem;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 0.75rem; flex-wrap: wrap;
-    }
-    .profile-link-bar-left {
-      display: flex; align-items: center; gap: 0.5rem;
-      color: var(--dark); font-size: 0.82rem; font-weight: 500;
-      min-width: 0; overflow: hidden;
-    }
+    .profile-link-bar { background: #f0f7ff; border: 1.5px solid #c7dffe; border-radius: 10px; padding: 0.7rem 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+    .profile-link-bar-left { display: flex; align-items: center; gap: 0.5rem; color: var(--dark); font-size: 0.82rem; font-weight: 500; min-width: 0; overflow: hidden; }
     .profile-link-bar-left svg { stroke: var(--blue); flex-shrink: 0; }
-    .profile-link-url {
-      color: var(--blue); font-size: 0.8rem;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      max-width: 260px;
-    }
+    .profile-link-url { color: var(--blue); font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; }
     .profile-link-bar-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .btn-link-action {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      font-size: 0.78rem; font-weight: 600;
-      border-radius: 7px; padding: 0.45rem 0.85rem;
-      cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;
-      border: none; transition: all 0.18s; white-space: nowrap;
-    }
+    .btn-link-action { font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.78rem; font-weight: 600; border-radius: 7px; padding: 0.45rem 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; border: none; transition: all 0.18s; white-space: nowrap; }
     .btn-link-view { background: var(--blue); color: white; }
     .btn-link-view:hover { background: var(--dark); }
     .btn-link-wa { background: #25D366; color: white; }
     .btn-link-wa:hover { background: #1daa55; }
     .btn-link-copy { background: white; color: var(--dark); border: 1px solid var(--border); }
     .btn-link-copy:hover { border-color: var(--blue); color: var(--blue); }
-
-    /* ── TWO COLUMN LAYOUT ── */
     .dash-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.5rem; align-items: start; }
     @media (max-width: 820px) { .dash-grid { grid-template-columns: 1fr; } }
-
-    /* ── CARD ── */
-    .dash-card {
-      background: #fff; border-radius: 16px; padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(30,115,232,0.06); border: 1px solid var(--border);
-    }
-    .dash-card h3 {
-      font-size: 1rem; font-weight: 700; color: var(--dark);
-      margin-bottom: 1.2rem; padding-bottom: 0.8rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ── FORM FIELDS ── */
+    .dash-card { background: #fff; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(30,115,232,0.06); border: 1px solid var(--border); }
+    .dash-card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); }
     .form-row { margin-bottom: 1rem; }
     .form-row label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--sub); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .form-row input, .form-row select, .form-row textarea {
-      width: 100%; padding: 0.7rem 0.9rem; border: 1.5px solid var(--border);
-      border-radius: 10px; font-size: 0.95rem; color: var(--text);
-      background: #fafbfd; transition: border-color 0.2s;
-      font-family: inherit;
-    }
-    .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
-      outline: none; border-color: var(--blue); background: #fff;
-    }
+    .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.95rem; color: var(--text); background: #fafbfd; transition: border-color 0.2s; font-family: inherit; }
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus { outline: none; border-color: var(--blue); background: #fff; }
     .form-row input[readonly] { background: #f0f4fa; color: var(--sub); cursor: not-allowed; }
-    .form-row textarea { resize: vertical; min-height: 90px; }
+    .form-row textarea { resize: vertical; min-height: 110px; }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     @media (max-width: 480px) { .form-row-2 { grid-template-columns: 1fr; } }
-
-    /* ── TOGGLE PILLS ── */
     .pill-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .pill {
-      padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.82rem;
-      font-weight: 600; border: 1.5px solid var(--border); background: #fafbfd;
-      cursor: pointer; transition: all 0.18s; color: var(--sub); user-select: none;
-    }
+    .pill { padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--border); background: #fafbfd; cursor: pointer; transition: all 0.18s; color: var(--sub); user-select: none; }
     .pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
     .pill:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
-
-    /* ── SAVE BUTTON ── */
-    .btn-save {
-      width: 100%; padding: 0.85rem; background: var(--blue); color: #fff;
-      border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
-      cursor: pointer; transition: all 0.2s; margin-top: 1rem;
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    }
+    .btn-save { width: 100%; padding: 0.85rem; background: var(--blue); color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
     .btn-save:hover { background: #1560c8; box-shadow: 0 4px 16px rgba(30,115,232,0.3); }
     .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
-    .save-spinner {
-      width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: #fff; border-radius: 50%;
-      animation: spin 0.6s linear infinite; display: none;
-    }
+    .save-spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
     .save-spinner.show { display: block; }
-
-    /* ── PROFILE PREVIEW CARD ── */
-    .preview-card {
-      background: #fff; border-radius: 16px; padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(30,115,232,0.06); border: 1px solid var(--border);
-      position: sticky; top: 80px;
-    }
-    .preview-card h3 {
-      font-size: 0.85rem; font-weight: 700; color: var(--sub); text-transform: uppercase;
-      letter-spacing: 0.06em; margin-bottom: 1rem;
-    }
+    .preview-card { background: #fff; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(30,115,232,0.06); border: 1px solid var(--border); position: sticky; top: 80px; }
+    .preview-card h3 { font-size: 0.85rem; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
     .pc-photo-wrap { display: flex; justify-content: center; margin-bottom: 1rem; }
-    .pc-photo {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--dark), var(--blue));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem; font-weight: 700; color: #fff; overflow: hidden;
-      border: 3px solid var(--light-blue);
-    }
+    .pc-photo { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--dark), var(--blue)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; color: #fff; overflow: hidden; border: 3px solid var(--light-blue); }
     .pc-photo img { width: 100%; height: 100%; object-fit: cover; }
     .pc-name { text-align: center; font-size: 1.1rem; font-weight: 700; color: var(--dark); }
-    .pc-title-badge {
-      display: inline-block; background: #fff3cd; color: #856404;
-      font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;
-      margin: 0.3rem auto 0.5rem; display: block; width: fit-content; margin: 0.3rem auto 0.6rem;
-    }
+    .pc-title-badge { display: inline-block; background: #fff3cd; color: #856404; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; width: fit-content; margin: 0.3rem auto 0.6rem; display: block; }
     .pc-rating { text-align: center; font-size: 0.85rem; color: var(--sub); margin-bottom: 0.8rem; }
     .pc-bio { font-size: 0.82rem; color: #555; line-height: 1.5; margin-bottom: 0.8rem; border-top: 1px solid var(--border); padding-top: 0.8rem; }
     .pc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem; }
     .pc-tag { background: var(--light-blue); color: var(--blue); font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
     .pc-fee { text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--dark); border-top: 1px solid var(--border); padding-top: 0.8rem; }
-    .pc-live-badge {
-      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
-      font-size: 0.78rem; color: #166534; background: #dcfce7;
-      border-radius: 20px; padding: 0.3rem 0.8rem; margin-top: 0.7rem;
-    }
-
-    /* ── DANGER ZONE ── */
+    .pc-live-badge { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.78rem; color: #166534; background: #dcfce7; border-radius: 20px; padding: 0.3rem 0.8rem; margin-top: 0.7rem; }
     .danger-zone { margin-top: 1.5rem; }
     .danger-zone h3 { color: var(--red); border-bottom-color: #fecaca; }
-    .btn-danger {
-      width: 100%; padding: 0.75rem; background: #fff; color: var(--red);
-      border: 1.5px solid #fca5a5; border-radius: 10px; font-size: 0.9rem;
-      font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
-    }
+    .btn-danger { width: 100%; padding: 0.75rem; background: #fff; color: var(--red); border: 1.5px solid #fca5a5; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
     .btn-danger:hover { background: #fef2f2; border-color: var(--red); }
-
-    /* ── TOAST ── */
-    .toast {
-      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
-      background: #1a2a3a; color: #fff; padding: 0.85rem 1.5rem;
-      border-radius: 12px; font-size: 0.9rem; font-weight: 500;
-      z-index: 9999; transition: transform 0.3s ease; white-space: nowrap;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a2a3a; color: #fff; padding: 0.85rem 1.5rem; border-radius: 12px; font-size: 0.9rem; font-weight: 500; z-index: 9999; transition: transform 0.3s ease; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast.success { background: #166534; }
-    .toast.error   { background: #991b1b; }
-
-    /* ── CONFIRM DIALOG ── */
-    .confirm-overlay {
-      position: fixed; inset: 0; background: rgba(10,20,40,0.6);
-      z-index: 9998; display: none; align-items: center; justify-content: center;
-      backdrop-filter: blur(3px);
-    }
+    .toast.error { background: #991b1b; }
+    .confirm-overlay { position: fixed; inset: 0; background: rgba(10,20,40,0.6); z-index: 9998; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
     .confirm-overlay.show { display: flex; }
-    .confirm-box {
-      background: #fff; border-radius: 16px; padding: 2rem;
-      max-width: 380px; width: 90%; text-align: center;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
-    }
+    .confirm-box { background: #fff; border-radius: 16px; padding: 2rem; max-width: 380px; width: 90%; text-align: center; box-shadow: 0 24px 64px rgba(0,0,0,0.2); }
     .confirm-box h3 { color: var(--dark); margin-bottom: 0.5rem; }
     .confirm-box p { color: var(--sub); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; }
     .confirm-btns { display: flex; gap: 0.75rem; }
     .confirm-btns button { flex: 1; padding: 0.75rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
     .btn-cancel-confirm { background: var(--gray); color: var(--text); }
     .btn-delete-confirm { background: var(--red); color: #fff; }
+    /* WhatsApp input row */
+    .wa-input-row { display: flex; gap: 0.5rem; }
+    .wa-input-row select { width: 130px; flex-shrink: 0; padding: 0.7rem 0.5rem; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.9rem; color: var(--text); background: #fafbfd; font-family: inherit; }
+    .wa-input-row input { flex: 1; }
+    /* Fees row */
+    .fees-input-row { display: flex; gap: 0.5rem; }
+    .fees-input-row select { width: 110px; flex-shrink: 0; padding: 0.7rem 0.5rem; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.9rem; color: var(--text); background: #fafbfd; font-family: inherit; }
+    .fees-input-row input { flex: 1; }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="dash-nav">
   <a href="index.html" class="dash-logo"><span>Chess</span><span>Connect</span></a>
   <div class="dash-nav-right">
@@ -278,13 +141,11 @@
   </div>
 </nav>
 
-<!-- LOADING -->
 <div class="loading-screen" id="loadingScreen">
   <div class="spinner-large"></div>
   <p style="color:#5a6a7a;">Loading your profile...</p>
 </div>
 
-<!-- AUTH WALL (not logged in) -->
 <div class="auth-wall" id="authWall" style="display:none;">
   <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#1E73E8" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20v-1a8 8 0 0116 0v1"/></svg>
   <h2>Coach Login Required</h2>
@@ -296,7 +157,6 @@
   <p style="font-size:0.82rem;color:#999;margin-top:0.5rem;">Not a coach yet? <a href="index.html" style="color:#1E73E8;">List yourself free</a></p>
 </div>
 
-<!-- NO PROFILE FOUND -->
 <div class="auth-wall" id="noProfileWall" style="display:none;">
   <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#1E73E8" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
   <h2>No Profile Found</h2>
@@ -304,9 +164,7 @@
   <a href="index.html" style="display:inline-block;background:#1E73E8;color:#fff;padding:0.85rem 2rem;border-radius:12px;font-weight:700;text-decoration:none;margin-top:0.5rem;">List Yourself Free</a>
 </div>
 
-<!-- MAIN DASHBOARD -->
 <main class="dash-main" id="dashMain">
-
   <div class="dash-header">
     <h1>My Coach Profile</h1>
     <p>Edit your details below. Changes go live immediately.</p>
@@ -324,88 +182,133 @@
     </div>
     <div class="profile-link-bar-btns">
       <button class="btn-link-action btn-link-view" id="btnViewProfile" onclick="viewMyProfile()">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        View
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View
       </button>
       <button class="btn-link-action btn-link-wa" onclick="shareMyProfile()">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-        Share on WhatsApp
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>Share on WhatsApp
       </button>
       <button class="btn-link-action btn-link-copy" onclick="copyMyProfileLink()">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-        Copy Link
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Link
       </button>
     </div>
   </div>
 
   <div class="dash-grid">
-    <!-- LEFT: EDIT FORM -->
     <div>
       <!-- Contact & Location -->
       <div class="dash-card" style="margin-bottom:1.5rem;">
         <h3>Contact & Location</h3>
-        <div class="form-row-2">
-          <div class="form-row">
-            <label>WhatsApp Number</label>
-            <input type="tel" id="dWhatsapp" placeholder="+91 98765 43210"/>
+        <div class="form-row">
+          <label>WhatsApp Number</label>
+          <div class="wa-input-row">
+            <select id="dWaCode" aria-label="Country code">
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+7">🇷🇺 +7</option>
+              <option value="+86">🇨🇳 +86</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+31">🇳🇱 +31</option>
+              <option value="+47">🇳🇴 +47</option>
+              <option value="+994">🇦🇿 +994</option>
+              <option value="+374">🇦🇲 +374</option>
+              <option value="+995">🇬🇪 +995</option>
+              <option value="+380">🇺🇦 +380</option>
+              <option value="+48">🇵🇱 +48</option>
+              <option value="+36">🇭🇺 +36</option>
+              <option value="+40">🇷🇴 +40</option>
+              <option value="+359">🇧🇬 +359</option>
+              <option value="+381">🇷🇸 +381</option>
+              <option value="+420">🇨🇿 +420</option>
+              <option value="+90">🇹🇷 +90</option>
+              <option value="+98">🇮🇷 +98</option>
+              <option value="+972">🇮🇱 +972</option>
+              <option value="+20">🇪🇬 +20</option>
+              <option value="+27">🇿🇦 +27</option>
+              <option value="+234">🇳🇬 +234</option>
+              <option value="+880">🇧🇩 +880</option>
+              <option value="+94">🇱🇰 +94</option>
+              <option value="+92">🇵🇰 +92</option>
+              <option value="+977">🇳🇵 +977</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+60">🇲🇾 +60</option>
+              <option value="+62">🇮🇩 +62</option>
+              <option value="+63">🇵🇭 +63</option>
+              <option value="+84">🇻🇳 +84</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+82">🇰🇷 +82</option>
+              <option value="+55">🇧🇷 +55</option>
+              <option value="+54">🇦🇷 +54</option>
+              <option value="+52">🇲🇽 +52</option>
+              <option value="+57">🇨🇴 +57</option>
+              <option value="+51">🇵🇪 +51</option>
+              <option value="+53">🇨🇺 +53</option>
+            </select>
+            <input type="tel" id="dWhatsapp" placeholder="Mobile number" maxlength="15"/>
           </div>
-          <div class="form-row">
+          <p style="font-size:0.78rem;color:#999;margin-top:0.4rem;">Students / Parents will contact you directly on this number.</p>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row" style="margin-bottom:0;">
             <label>City</label>
             <input type="text" id="dCity" placeholder="e.g. Mumbai"/>
           </div>
-        </div>
-        <div class="form-row">
-          <label>Country</label>
-          <select id="dCountry">
-            <option value="India">India</option>
-            <option value="United States">United States</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="Germany">Germany</option>
-            <option value="France">France</option>
-            <option value="Spain">Spain</option>
-            <option value="Netherlands">Netherlands</option>
-            <option value="Poland">Poland</option>
-            <option value="Ukraine">Ukraine</option>
-            <option value="Russia">Russia</option>
-            <option value="Azerbaijan">Azerbaijan</option>
-            <option value="Armenia">Armenia</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Kazakhstan">Kazakhstan</option>
-            <option value="Uzbekistan">Uzbekistan</option>
-            <option value="China">China</option>
-            <option value="Japan">Japan</option>
-            <option value="South Korea">South Korea</option>
-            <option value="Vietnam">Vietnam</option>
-            <option value="Philippines">Philippines</option>
-            <option value="Indonesia">Indonesia</option>
-            <option value="Malaysia">Malaysia</option>
-            <option value="Singapore">Singapore</option>
-            <option value="Sri Lanka">Sri Lanka</option>
-            <option value="Bangladesh">Bangladesh</option>
-            <option value="Pakistan">Pakistan</option>
-            <option value="Iran">Iran</option>
-            <option value="Israel">Israel</option>
-            <option value="Turkey">Turkey</option>
-            <option value="Egypt">Egypt</option>
-            <option value="South Africa">South Africa</option>
-            <option value="Nigeria">Nigeria</option>
-            <option value="Kenya">Kenya</option>
-            <option value="Brazil">Brazil</option>
-            <option value="Argentina">Argentina</option>
-            <option value="Cuba">Cuba</option>
-            <option value="Peru">Peru</option>
-            <option value="Colombia">Colombia</option>
-            <option value="Mexico">Mexico</option>
-            <option value="Canada">Canada</option>
-            <option value="Australia">Australia</option>
-            <option value="New Zealand">New Zealand</option>
-            <option value="Czech Republic">Czech Republic</option>
-            <option value="Hungary">Hungary</option>
-            <option value="Romania">Romania</option>
-            <option value="Serbia">Serbia</option>
-            <option value="Croatia">Croatia</option>
-            <option value="Bulgaria">Bulgaria</option>
-          </select>
+          <div class="form-row" style="margin-bottom:0;">
+            <label>Country</label>
+            <select id="dCountry" onchange="autoSelectWaCode(this.value)">
+              <option value="India">India</option>
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+              <option value="Germany">Germany</option>
+              <option value="France">France</option>
+              <option value="Spain">Spain</option>
+              <option value="Netherlands">Netherlands</option>
+              <option value="Norway">Norway</option>
+              <option value="Poland">Poland</option>
+              <option value="Ukraine">Ukraine</option>
+              <option value="Russia">Russia</option>
+              <option value="Azerbaijan">Azerbaijan</option>
+              <option value="Armenia">Armenia</option>
+              <option value="Georgia">Georgia</option>
+              <option value="China">China</option>
+              <option value="Japan">Japan</option>
+              <option value="South Korea">South Korea</option>
+              <option value="Vietnam">Vietnam</option>
+              <option value="Philippines">Philippines</option>
+              <option value="Indonesia">Indonesia</option>
+              <option value="Malaysia">Malaysia</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Sri Lanka">Sri Lanka</option>
+              <option value="Bangladesh">Bangladesh</option>
+              <option value="Pakistan">Pakistan</option>
+              <option value="Nepal">Nepal</option>
+              <option value="Iran">Iran</option>
+              <option value="Israel">Israel</option>
+              <option value="Turkey">Turkey</option>
+              <option value="Egypt">Egypt</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="Brazil">Brazil</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Cuba">Cuba</option>
+              <option value="Peru">Peru</option>
+              <option value="Colombia">Colombia</option>
+              <option value="Mexico">Mexico</option>
+              <option value="Czech Republic">Czech Republic</option>
+              <option value="Hungary">Hungary</option>
+              <option value="Romania">Romania</option>
+              <option value="Serbia">Serbia</option>
+              <option value="Bulgaria">Bulgaria</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -414,17 +317,18 @@
         <h3>About You</h3>
         <div class="form-row">
           <label>Bio</label>
-          <textarea id="dBio" placeholder="Tell students about your coaching style, experience and achievements..." oninput="livePreview()"></textarea>
+          <textarea id="dBio" placeholder="Tell students about your coaching style, experience and achievements... (100 words minimum)" oninput="livePreview(); updateBioCount();"></textarea>
+          <div id="bioCount" style="font-size:0.75rem;color:#999;margin-top:0.3rem;text-align:right;">0 words</div>
         </div>
         <div class="form-row">
           <label>Experience</label>
           <select id="dExperience">
             <option value="">Select experience</option>
-            <option value="less_than_1">Less than 1 year</option>
-            <option value="1_to_3">1 to 3 years</option>
-            <option value="3_to_5">3 to 5 years</option>
-            <option value="5_to_10">5 to 10 years</option>
-            <option value="more_than_10">More than 10 years</option>
+            <option value="Less than 1 yr">Less than 1 yr</option>
+            <option value="1-3 yrs">1–3 yrs</option>
+            <option value="3-5 yrs">3–5 yrs</option>
+            <option value="5-10 yrs">5–10 yrs</option>
+            <option value="10+ yrs">10+ yrs</option>
           </select>
         </div>
       </div>
@@ -435,9 +339,9 @@
         <div class="form-row">
           <label>Coaching Mode</label>
           <div class="pill-group" id="dModeGroup">
-            <div class="pill" data-val="online" onclick="toggleMode(this)">Online</div>
-            <div class="pill" data-val="in-person" onclick="toggleMode(this)">In-Person</div>
-            <div class="pill" data-val="both" onclick="toggleMode(this)">Both</div>
+            <div class="pill" data-val="Online" onclick="toggleMode(this)">Online</div>
+            <div class="pill" data-val="Offline" onclick="toggleMode(this)">Offline</div>
+            <div class="pill" data-val="Both" onclick="toggleMode(this)">Both</div>
           </div>
         </div>
         <div class="form-row" style="margin-top:1rem;">
@@ -446,8 +350,6 @@
             <div class="pill" data-val="Beginner" onclick="toggleLevel(this)">Beginner</div>
             <div class="pill" data-val="Intermediate" onclick="toggleLevel(this)">Intermediate</div>
             <div class="pill" data-val="Advanced" onclick="toggleLevel(this)">Advanced</div>
-            <div class="pill" data-val="Tournament" onclick="toggleLevel(this)">Tournament</div>
-            <div class="pill" data-val="Kids" onclick="toggleLevel(this)">Kids</div>
           </div>
         </div>
         <div class="form-row" style="margin-top:1rem;">
@@ -477,12 +379,19 @@
       <div class="dash-card" style="margin-bottom:1.5rem;">
         <h3>Fees & Trial</h3>
         <div class="form-row-2">
-          <div class="form-row">
-            <label>Fee per Hour (USD)</label>
-            <input type="number" id="dFees" placeholder="e.g. 25" min="1" max="500" oninput="livePreview()"/>
+          <div class="form-row" style="margin-bottom:0;">
+            <label>Fees / Session</label>
+            <div class="fees-input-row">
+              <select id="dFeesCurrency">
+                <option value="INR">₹ INR</option>
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+              </select>
+              <input type="number" id="dFees" placeholder="e.g. 750" min="1" max="99999" oninput="livePreview()"/>
+            </div>
           </div>
-          <div class="form-row">
-            <label>Free Trial Available</label>
+          <div class="form-row" style="margin-bottom:0;">
+            <label>Trial Class Available</label>
             <select id="dTrial">
               <option value="yes">Yes</option>
               <option value="no">No</option>
@@ -522,14 +431,12 @@
         <span id="saveText">Save Changes</span>
       </button>
 
-      <!-- Danger Zone -->
       <div class="dash-card danger-zone">
         <h3>Danger Zone</h3>
         <p style="font-size:0.85rem;color:#5a6a7a;margin-bottom:0.5rem;">Hide your profile temporarily or delete it permanently.</p>
         <button class="btn-danger" id="toggleLiveBtn" onclick="toggleLive()">Hide My Profile</button>
-        <a href="analytics.html" style="font-family:'Segoe UI',Arial,sans-serif;font-size:0.85rem;font-weight:600;background:none;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.9rem;color:var(--sub);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.2s;">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Analytics
+        <a href="analytics.html" style="font-family:'Segoe UI',Arial,sans-serif;font-size:0.85rem;font-weight:600;background:none;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.9rem;color:var(--sub);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.2s;margin-top:0.5rem;">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Analytics
         </a>
         <button class="btn-danger" onclick="confirmDelete()" style="margin-top:0.5rem;">Delete My Profile Permanently</button>
       </div>
@@ -538,9 +445,7 @@
     <!-- RIGHT: PREVIEW CARD -->
     <div class="preview-card">
       <h3>Live Preview</h3>
-      <div class="pc-photo-wrap">
-        <div class="pc-photo" id="pcPhoto">?</div>
-      </div>
+      <div class="pc-photo-wrap"><div class="pc-photo" id="pcPhoto">?</div></div>
       <div class="pc-name" id="pcName">Your Name</div>
       <div class="pc-title-badge" id="pcTitleBadge" style="display:none;"></div>
       <div class="pc-rating" id="pcRating"></div>
@@ -555,7 +460,6 @@
   </div>
 </main>
 
-<!-- CONFIRM DELETE DIALOG -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <h3>Delete Profile?</h3>
@@ -566,8 +470,6 @@
     </div>
   </div>
 </div>
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -577,11 +479,80 @@
     'sb_publishable_uEoVcVB_c-JDJRJZZdHQ3Q_C1wlMoaZ'
   );
 
+  // ── EmailJS config ──
+  const EMAILJS_SERVICE_ID  = 'service_7sh2a9t';
+  const EMAILJS_TEMPLATE_ID = 'template_89iorxh';
+  const EMAILJS_PUBLIC_KEY  = 'l0nVoYn8YbCGx87Nj';
+  let emailJsReady = false;
+  try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); emailJsReady = true; } catch(e) {}
+
+  async function logSaveError(errorObj, context) {
+    const entry = {
+      source:     'dashboard',
+      error_code: errorObj?.code    || 'UNKNOWN',
+      error_msg:  errorObj?.message || String(errorObj) || 'Unknown error',
+      coach_name: context.name    || null,
+      fide_id:    context.fideId  || null,
+      city:       context.city    || null,
+      country:    context.country || null,
+      email:      context.email   || null,
+      step:       context.step    || null,
+      user_agent: navigator.userAgent.substring(0, 200),
+    };
+    try { await sb.from('registration_errors').insert([entry]); } catch(e) {}
+    try {
+      if (emailJsReady && EMAILJS_PUBLIC_KEY !== 'l0nVoYn8YbCGx87Nj') {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email:   'chessconnect.in@gmail.com',
+          subject:    'ChessConnect Dashboard Save Error — ' + entry.error_code,
+          coach_name: entry.coach_name || '—',
+          fide_id:    entry.fide_id    || '—',
+          city:       entry.city       || '—',
+          country:    entry.country    || '—',
+          email:      entry.email      || '—',
+          step:       entry.step       || '—',
+          error_code: entry.error_code,
+          error_msg:  entry.error_msg,
+          user_agent: entry.user_agent,
+          timestamp:  new Date().toISOString(),
+        });
+      }
+    } catch(e) {}
+  }
+
   let currentUser = null;
   let coachProfile = null;
   let selectedMode = '';
   let selectedLevels = [];
   let selectedLanguages = [];
+
+  // ── Country code map (same as reg form) ──
+  const COUNTRY_CODE_MAP = {
+    'India': '+91', 'United States': '+1', 'United Kingdom': '+44',
+    'United Arab Emirates': '+971', 'Canada': '+1', 'Australia': '+61',
+    'Germany': '+49', 'Russia': '+7', 'China': '+86', 'France': '+33',
+    'Spain': '+34', 'Netherlands': '+31', 'Norway': '+47',
+    'Azerbaijan': '+994', 'Armenia': '+374', 'Georgia': '+995',
+    'Ukraine': '+380', 'Poland': '+48', 'Hungary': '+36',
+    'Romania': '+40', 'Bulgaria': '+359', 'Serbia': '+381',
+    'Czech Republic': '+420', 'Turkey': '+90', 'Iran': '+98',
+    'Israel': '+972', 'Egypt': '+20', 'South Africa': '+27',
+    'Nigeria': '+234', 'Bangladesh': '+880', 'Sri Lanka': '+94',
+    'Pakistan': '+92', 'Nepal': '+977', 'Singapore': '+65',
+    'Malaysia': '+60', 'Indonesia': '+62', 'Philippines': '+63',
+    'Vietnam': '+84', 'Japan': '+81', 'South Korea': '+82',
+    'Brazil': '+55', 'Argentina': '+54', 'Mexico': '+52',
+    'Colombia': '+57', 'Peru': '+51', 'Cuba': '+53'
+  };
+
+  function autoSelectWaCode(country) {
+    const code = COUNTRY_CODE_MAP[country];
+    if (!code) return;
+    const sel = document.getElementById('dWaCode');
+    for (let opt of sel.options) {
+      if (opt.value === code) { sel.value = code; break; }
+    }
+  }
 
   // ── Init ──
   window.addEventListener('DOMContentLoaded', async () => {
@@ -606,7 +577,6 @@
 
   async function loadDashboard() {
     showScreen('loadingScreen');
-    // Update nav user info
     const name = currentUser.user_metadata?.full_name || currentUser.email || 'Coach';
     const avatar = currentUser.user_metadata?.avatar_url;
     document.getElementById('dashUserName').textContent = name.split(' ')[0];
@@ -615,73 +585,83 @@
     else avatarEl.textContent = name.charAt(0).toUpperCase();
     document.getElementById('dashUser').style.display = 'flex';
 
-    // Fetch coach profile
     const { data, error } = await sb.from('coaches').select('*').eq('auth_user_id', currentUser.id).single();
-    if (error || !data) {
-      showScreen('noProfileWall');
-      return;
-    }
+    if (error || !data) { showScreen('noProfileWall'); return; }
     coachProfile = data;
     populateForm(data);
     showScreen('dashMain');
   }
 
   function populateForm(p) {
-    document.getElementById('dWhatsapp').value  = p.whatsapp || '';
+    // WhatsApp — split stored value (+91XXXXXXXXXX) into code + number
+    const storedWa = p.whatsapp || '';
+    let waCode = '+91', waNum = storedWa;
+    const codeMatch = storedWa.match(/^(\+\d{1,4})(.*)/);
+    if (codeMatch) { waCode = codeMatch[1]; waNum = codeMatch[2].trim(); }
+    // Set code dropdown
+    const codeSel = document.getElementById('dWaCode');
+    for (let opt of codeSel.options) { if (opt.value === waCode) { codeSel.value = waCode; break; } }
+    document.getElementById('dWhatsapp').value = waNum;
+
     document.getElementById('dCity').value       = p.city || '';
-    document.getElementById('dCountry').value    = p.state || 'India';
+    // FIX: read p.country not p.state
+    document.getElementById('dCountry').value    = p.country || 'India';
     document.getElementById('dBio').value        = p.bio || '';
+    updateBioCount();
     document.getElementById('dExperience').value = p.experience || '';
+    // Fees — split stored fees_currency + fees
     document.getElementById('dFees').value       = p.fees || '';
+    document.getElementById('dFeesCurrency').value = p.fees_currency || 'INR';
     document.getElementById('dTrial').value      = p.trial_available ? 'yes' : 'no';
     document.getElementById('dName').value       = p.full_name || '';
     document.getElementById('dFideId').value     = p.fide_id || '';
-    document.getElementById('dTitle').value      = p.chess_title || 'Unrated';
+    document.getElementById('dTitle').value      = p.chess_title || '—';
     document.getElementById('dRating').value     = p.fide_rating ? `${p.fide_rating} (Classical)` : 'Unrated';
 
-    // Mode pills
-    selectedMode = p.coaching_mode || '';
+    // Mode pills — normalise in-person → Offline
+    selectedMode = (p.coaching_mode || '').replace('in-person','Offline');
     document.querySelectorAll('#dModeGroup .pill').forEach(pill => {
-      pill.classList.toggle('active', pill.dataset.val === selectedMode);
+      pill.classList.toggle('active', pill.dataset.val.toLowerCase() === selectedMode.toLowerCase());
     });
 
-    // Level pills
     selectedLevels = p.levels_taught || [];
     document.querySelectorAll('#dLevelsGroup .pill').forEach(pill => {
       pill.classList.toggle('active', selectedLevels.includes(pill.dataset.val));
     });
 
-    // Language pills
     selectedLanguages = p.languages || [];
     document.querySelectorAll('#dLangsGroup .pill').forEach(pill => {
       pill.classList.toggle('active', selectedLanguages.includes(pill.dataset.val));
     });
 
-    // Status banner
     updateStatusBanner(p.is_live);
     document.getElementById('toggleLiveBtn').textContent = p.is_live ? 'Hide My Profile' : 'Make Profile Live';
 
-    // Profile link bar
     if (p.id) {
       const url = `${location.origin}${location.pathname.replace('dashboard.html','').replace(/\/$/, '')}/coach.html?id=${p.id}`;
       document.getElementById('profileLinkUrl').textContent = url;
       document.getElementById('profileLinkBar').style.display = 'flex';
       document.getElementById('btnViewProfile').dataset.url = url;
     }
-
     livePreview();
   }
 
   function updateStatusBanner(isLive) {
     const banner = document.getElementById('statusBanner');
-    const text = document.getElementById('statusText');
     banner.className = 'status-banner ' + (isLive ? 'live' : 'hidden');
-    text.textContent = isLive
+    document.getElementById('statusText').textContent = isLive
       ? 'Your profile is live. Students can find and contact you.'
       : 'Your profile is hidden. Students cannot see you until you make it live again.';
   }
 
-  // ── Toggle pills ──
+  function updateBioCount() {
+    const bio = document.getElementById('dBio').value.trim();
+    const words = bio === '' ? 0 : bio.split(/\s+/).length;
+    const el = document.getElementById('bioCount');
+    el.textContent = `${words} words${words < 100 ? ' / 100 minimum' : ''}`;
+    el.style.color = words >= 100 ? '#166534' : '#999';
+  }
+
   function toggleMode(el) {
     document.querySelectorAll('#dModeGroup .pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
@@ -700,73 +680,75 @@
     selectedLanguages = selectedLanguages.includes(v) ? selectedLanguages.filter(x => x !== v) : [...selectedLanguages, v];
   }
 
-  // ── Live Preview ──
   function livePreview() {
     if (!coachProfile) return;
     const name = coachProfile.full_name || 'Your Name';
     const initials = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
     document.getElementById('pcPhoto').textContent = initials;
     document.getElementById('pcName').textContent = name;
-
     const titleBadge = document.getElementById('pcTitleBadge');
-    if (coachProfile.chess_title) {
-      titleBadge.textContent = coachProfile.chess_title;
-      titleBadge.style.display = 'block';
-    } else { titleBadge.style.display = 'none'; }
-
+    if (coachProfile.chess_title) { titleBadge.textContent = coachProfile.chess_title; titleBadge.style.display = 'block'; }
+    else { titleBadge.style.display = 'none'; }
     const rating = coachProfile.fide_rating || coachProfile.fide_rapid || coachProfile.fide_blitz;
     document.getElementById('pcRating').textContent = rating ? `FIDE ${coachProfile.fide_rating_type || 'Classical'}: ${rating}` : '';
-
     const bio = document.getElementById('dBio').value.trim();
     const bioEl = document.getElementById('pcBio');
     if (bio) { bioEl.textContent = bio.length > 120 ? bio.substring(0,117) + '...' : bio; bioEl.style.display = 'block'; }
     else { bioEl.style.display = 'none'; }
-
     const tags = document.getElementById('pcTags');
     tags.innerHTML = '';
     if (selectedMode) tags.innerHTML += `<span class="pc-tag">${selectedMode}</span>`;
     selectedLevels.slice(0,3).forEach(l => tags.innerHTML += `<span class="pc-tag">${l}</span>`);
-
     const fees = document.getElementById('dFees').value;
-    document.getElementById('pcFee').textContent = fees ? `$${fees} / hour` : '';
+    const curr = document.getElementById('dFeesCurrency').value;
+    const sym = curr === 'INR' ? '₹' : curr === 'USD' ? '$' : '€';
+    document.getElementById('pcFee').textContent = fees ? `${sym}${fees} / session` : '';
   }
 
-  // ── Save Profile ──
   async function saveProfile() {
     const btn = document.getElementById('saveBtn');
     const text = document.getElementById('saveText');
     const spinner = document.getElementById('saveSpinner');
-    btn.disabled = true;
-    text.textContent = 'Saving...';
-    spinner.classList.add('show');
+    btn.disabled = true; text.textContent = 'Saving...'; spinner.classList.add('show');
+
+    const waCode = document.getElementById('dWaCode').value;
+    const waNum  = document.getElementById('dWhatsapp').value.trim();
 
     const updates = {
-      whatsapp:       document.getElementById('dWhatsapp').value.trim(),
-      city:           document.getElementById('dCity').value.trim(),
-      state:          document.getElementById('dCountry').value,
-      bio:            document.getElementById('dBio').value.trim(),
-      experience:     document.getElementById('dExperience').value,
-      coaching_mode:  selectedMode,
-      levels_taught:  selectedLevels,
-      languages:      selectedLanguages,
-      fees:           document.getElementById('dFees').value ? parseInt(document.getElementById('dFees').value) : null,
+      whatsapp:        waCode + waNum,
+      city:            document.getElementById('dCity').value.trim(),
+      country:         document.getElementById('dCountry').value,  // FIX: save to country not state
+      bio:             document.getElementById('dBio').value.trim(),
+      experience:      document.getElementById('dExperience').value,
+      coaching_mode:   selectedMode,
+      levels_taught:   selectedLevels,
+      languages:       selectedLanguages,
+      fees:            document.getElementById('dFees').value ? parseInt(document.getElementById('dFees').value) : null,
+      fees_currency:   document.getElementById('dFeesCurrency').value,
       trial_available: document.getElementById('dTrial').value === 'yes',
     };
 
     const { error } = await sb.from('coaches').update(updates).eq('id', coachProfile.id);
-    btn.disabled = false;
-    spinner.classList.remove('show');
+    btn.disabled = false; spinner.classList.remove('show');
     if (error) {
       text.textContent = 'Save Changes';
-      showToast('Error saving. Please try again.', 'error');
+      const ctx = {
+        name:    coachProfile.full_name,
+        fideId:  coachProfile.fide_id,
+        city:    document.getElementById('dCity').value,
+        country: document.getElementById('dCountry').value,
+        email:   currentUser?.email,
+        step:    'Dashboard — profile save',
+      };
+      await logSaveError(error, ctx);
+      showSaveError(error.message || 'Unknown error', error.code);
     } else {
       text.textContent = 'Save Changes';
       Object.assign(coachProfile, updates);
-      showToast('Profile updated successfully!', 'success');
+      showToast('Profile updated!', 'success');
     }
   }
 
-  // ── Toggle Live ──
   async function toggleLive() {
     const newState = !coachProfile.is_live;
     const { error } = await sb.from('coaches').update({ is_live: newState }).eq('id', coachProfile.id);
@@ -778,59 +760,59 @@
     }
   }
 
-  // ── Delete ──
   function confirmDelete() { document.getElementById('confirmOverlay').classList.add('show'); }
   function closeConfirm()  { document.getElementById('confirmOverlay').classList.remove('show'); }
 
   async function deleteProfile() {
     closeConfirm();
     const { error } = await sb.from('coaches').delete().eq('id', coachProfile.id);
-    if (!error) {
-      await sb.auth.signOut();
-      window.location.href = 'index.html';
-    } else {
-      showToast('Error deleting profile. Please try again.', 'error');
-    }
+    if (!error) { await sb.auth.signOut(); window.location.href = 'index.html'; }
+    else { showToast('Error deleting profile. Please try again.', 'error'); }
   }
 
-  // ── Auth ──
   async function signInWithGoogle() {
-    await sb.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.href }
-    });
+    await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } });
   }
+  async function signOut() { await sb.auth.signOut(); window.location.href = 'index.html'; }
 
-  async function signOut() {
-    await sb.auth.signOut();
-    window.location.href = 'index.html';
-  }
-
-  // ── Helpers ──
   function showScreen(id) {
     ['loadingScreen','authWall','noProfileWall','dashMain'].forEach(s => {
       const el = document.getElementById(s);
-      if (s === 'dashMain') { el.classList.toggle('visible', s === id); }
-      else { el.style.display = s === id ? 'flex' : 'none'; }
+      if (s === 'dashMain') el.classList.toggle('visible', s === id);
+      else el.style.display = s === id ? 'flex' : 'none';
     });
   }
-
   function showToast(msg, type = '') {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast ' + type;
-    t.classList.add('show');
+    t.textContent = msg; t.className = 'toast ' + type; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // ── MY PROFILE LINK ──
-  function getMyProfileUrl() {
-    return document.getElementById('btnViewProfile')?.dataset.url || '';
+  function showSaveError(msg, code) {
+    const codeStr = code ? `<strong>Error code:</strong> ${code}<br>` : '';
+    let overlay = document.getElementById('dashErrorOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'dashErrorOverlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,20,40,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);';
+      overlay.innerHTML = `
+        <div style="background:#fff;border-radius:16px;padding:2rem;max-width:480px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.25);">
+          <p style="font-size:1rem;font-weight:700;color:#b91c1c;margin-bottom:0.75rem;">⚠️ Save Failed</p>
+          <div id="dashErrorBody" style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:1rem;font-size:0.85rem;color:#7f1d1d;line-height:1.7;margin-bottom:1rem;"></div>
+          <button onclick="document.getElementById('dashErrorOverlay').style.display='none'"
+            style="width:100%;padding:0.75rem;background:#1E73E8;color:#fff;border:none;border-radius:10px;font-size:0.95rem;font-weight:600;cursor:pointer;">
+            OK, I'll contact support
+          </button>
+        </div>`;
+      document.body.appendChild(overlay);
+    }
+    document.getElementById('dashErrorBody').innerHTML =
+      `${codeStr}<strong>Error details:</strong> ${msg}<br><br>` +
+      `Please email us at <a href="mailto:chessconnect.in@gmail.com" style="color:#1E73E8;font-weight:600;">chessconnect.in@gmail.com</a> with this error and we'll fix it within 24 hours.`;
+    overlay.style.display = 'flex';
   }
-  function viewMyProfile() {
-    const url = getMyProfileUrl();
-    if (url) window.open(url, '_blank');
-  }
+  function getMyProfileUrl() { return document.getElementById('btnViewProfile')?.dataset.url || ''; }
+  function viewMyProfile() { const url = getMyProfileUrl(); if (url) window.open(url, '_blank'); }
   function shareMyProfile() {
     const url = getMyProfileUrl();
     const name = coachProfile?.full_name || 'Coach';
