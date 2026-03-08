@@ -1960,7 +1960,7 @@
         <h4>Info</h4>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
-        <a href="/cdn-cgi/l/email-protection#b3d0dbd6c0c0d0dcddddd6d0c79ddaddf3d4ded2dadf9dd0dcde">Contact Us</a>
+        <a href="mailto:chessconnect.in@gmail.com">Contact Us</a>
       </div>
     </div>
   </div>
@@ -1982,7 +1982,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // ── Supabase init ──
   const { createClient } = supabase;
   const sb = createClient(
@@ -2256,7 +2256,7 @@
 
       // Show verified card
       const titleStr = data.title ? `${data.title} · ` : '';
-      const activeStr = '';
+      const activeStr = data.is_active ? '' : ' · Inactive';
       document.getElementById('fideVerifiedSummary').textContent =
         `${data.name} · ${titleStr}${activeRating} ${ratingType} · ${data.country}${activeStr}`;
       document.getElementById('fideProfileLink').href = `https://ratings.fide.com/profile/${fideId}`;
@@ -2551,8 +2551,7 @@
         } else if (error.code === '23505' && error.message.includes('fide_id')) {
           showToast('This FIDE ID is already registered. Please contact us if this is an error.', 'error');
         } else {
-          showToast('Error ' + (error.code || '') + ': ' + (error.message || 'Unknown error'), 'error');
-          console.error('Insert error full:', JSON.stringify(error));
+          showToast('Something went wrong. Please try again.', 'error');
         }
         throw error;
       }
@@ -2560,4 +2559,12 @@
     } catch (err) {
       console.error('Supabase error:', err);
       btn.disabled = false;
-      text.innerHTML = '<span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><pol
+      text.innerHTML = '<span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span> Confirm &amp; Submit';
+      spinner.classList.remove('show');
+    }
+  }
+
+
+</script>
+</body>
+</html>
