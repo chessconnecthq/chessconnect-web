@@ -563,11 +563,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-side-r .hc-side-lbl{transform:rotate(0deg)}
 
 /* Fullscreen landscape — Heritage fills screen */
-@media(orientation:landscape){
-  :fullscreen .hc-body,:-webkit-full-screen .hc-body{width:100vw!important;max-width:100vw!important}
-  :fullscreen .hc-side,:-webkit-full-screen .hc-side{width:max(80px,12vw)!important}
-  :fullscreen .hc-time,:-webkit-full-screen .hc-time{font-size:clamp(3rem,9vw,5rem)!important}
-}
+/* fit-mode handled via JS scale — no CSS stretch needed */
 @keyframes knobGlow{0%,100%{box-shadow:inset 0 0 14px rgba(196,135,58,0.1)}50%{box-shadow:inset 0 0 28px rgba(196,135,58,0.28)}}
 
 /* Center controls */
@@ -707,11 +703,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-side-r .pc-side-lbl{transform:rotate(0deg)}
 
 /* Fullscreen landscape */
-@media(orientation:landscape){
-  :fullscreen .pc-body,:-webkit-full-screen .pc-body{width:100vw!important;max-width:100vw!important}
-  :fullscreen .pc-side,:-webkit-full-screen .pc-side{width:max(80px,11vw)!important}
-  :fullscreen .pc-time,:-webkit-full-screen .pc-time{font-size:clamp(3rem,9vw,5rem)!important}
-}
+/* fit-mode handled via JS scale — no CSS stretch needed */
 
 .pc-body{
   width:min(96vw,580px);flex-shrink:0;
@@ -890,12 +882,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-side-r.active-l .cc-side-dot{background:#EE00FF;border-color:#EE00FF;box-shadow:0 0 8px rgba(238,0,255,0.9),0 0 18px rgba(200,0,255,0.5)}
 
 /* Fullscreen landscape */
-@media(orientation:landscape){
-  :fullscreen .cc-body,:-webkit-full-screen .cc-body{width:100vw!important;max-width:100vw!important}
-  :fullscreen .cc-side,:-webkit-full-screen .cc-side{width:max(80px,11vw)!important}
-  :fullscreen .cc-t1,:-webkit-full-screen .cc-t1,
-  :fullscreen .cc-t2,:-webkit-full-screen .cc-t2{font-size:clamp(3rem,9vw,5rem)!important}
-}
+/* fit-mode handled via JS scale — no CSS stretch needed */
 .chronos-clock::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 18% 50%,rgba(0,100,255,0.055) 0%,transparent 55%),radial-gradient(ellipse at 82% 50%,rgba(200,0,255,0.055) 0%,transparent 55%);pointer-events:none;animation:nebulaB 7s ease infinite alternate}
 @keyframes nebulaB{from{opacity:0.6}to{opacity:1}}
 
@@ -1080,6 +1067,20 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* Fullscreen active state */
 .s3-btn.fs-active{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.12)}
 
+
+/* ── Fit to Screen mode — scale clock to fill viewport ── */
+.clock-view.fit-mode{background:#0a0a0f}
+.clock-view.fit-mode .clock-3d{
+  transform-origin:center center;
+  /* JS sets transform:scale() dynamically */
+  transition:transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
+}
+.clock-view.fit-mode .preset-strip,
+.clock-view.fit-mode .clock-status{
+  opacity:0;pointer-events:none;height:0;overflow:hidden;margin:0;padding:0;
+}
+.clock-view.fit-mode .s3-bar{opacity:0.15}
+.clock-view.fit-mode .s3-bar:hover{opacity:1}
 </style>
 </head>
 <body>
@@ -1817,6 +1818,8 @@ function restartClock() {
 function newGame() {
   if(ticker){clearInterval(ticker);ticker=null;}
   if(isFullscreen) exitFullscreen();
+  // Also clean up fit-mode if active
+  document.querySelectorAll('.clock-view.fit-mode').forEach(v=>{ v.classList.remove('fit-mode'); const w=v.querySelector('.clock-3d'); if(w) w.style.transform=''; });
   releaseWakeLock(); // Screen can sleep again
   document.getElementById('goBanner').classList.remove('show');
   // Reset landscape
@@ -2205,25 +2208,47 @@ function toggleFullscreen() {
 }
 
 function enterFullscreen() {
-  const el = document.documentElement;
-  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
-  if (req) {
-    req.call(el).then(() => {
-      isFullscreen = true;
-      updateFsBtn(true);
-      lockLandscape();
-    }).catch(() => {
-      showFsToast('Fullscreen blocked. Try adding to Home Screen.');
-    });
-  } else {
-    showFsToast('Add to Home Screen for fullscreen on iOS');
-  }
+  const view = document.querySelector('.clock-view.show');
+  if (!view) return;
+  view.classList.add('fit-mode');
+  applyFitScale(view);
+  isFullscreen = true;
+  updateFsBtn(true);
+  // Reapply on resize
+  window._fitResizeHandler = () => applyFitScale(view);
+  window.addEventListener('resize', window._fitResizeHandler);
+}
+
+function applyFitScale(view) {
+  const wrapper = view.querySelector('.clock-3d');
+  if (!wrapper) return;
+  // Reset scale so we can measure natural size
+  wrapper.style.transform = 'scale(1)';
+  const surface = view.querySelector('.clock-surface');
+  if (!surface) return;
+  const naturalW = surface.offsetWidth;
+  const naturalH = surface.offsetHeight;
+  const barH = 46; // topbar height
+  const availW = window.innerWidth;
+  const availH = window.innerHeight - barH;
+  if (!naturalW || !naturalH) return;
+  const scaleX = availW / naturalW;
+  const scaleY = availH / naturalH;
+  const scale = Math.min(scaleX, scaleY) * 0.96; // 4% breathing room
+  wrapper.style.transform = 'scale(' + scale + ')';
 }
 
 function exitFullscreen() {
-  const exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-  if (exit) exit.call(document).catch(() => {});
-  unlockOrientation();
+  const view = document.querySelector('.clock-view.fit-mode');
+  if (view) {
+    view.classList.remove('fit-mode');
+    const wrapper = view.querySelector('.clock-3d');
+    if (wrapper) wrapper.style.transform = '';
+  }
+  if (window._fitResizeHandler) {
+    window.removeEventListener('resize', window._fitResizeHandler);
+    window._fitResizeHandler = null;
+  }
   isFullscreen = false;
   updateFsBtn(false);
 }
@@ -2280,15 +2305,12 @@ function showFsToast(msg) {
   fsToastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
 }
 
+/* OS fullscreen events — kept as safety net */
 document.addEventListener('fullscreenchange', onFsChange);
 document.addEventListener('webkitfullscreenchange', onFsChange);
 function onFsChange() {
   const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
-  if (!isFull && isFullscreen) {
-    isFullscreen = false;
-    updateFsBtn(false);
-    unlockOrientation();
-  }
+  if (!isFull && isFullscreen) { exitFullscreen(); }
 }
 
 // Init default preset selection
