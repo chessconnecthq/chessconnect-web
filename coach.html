@@ -6,8 +6,6 @@
   <title>Chess Coach Profile — ChessConnect</title>
   <meta name="description" content="View chess coach profile on ChessConnect — India's chess coach marketplace."/>
   <meta name="robots" content="index, follow"/>
-
-  <!-- Open Graph (dynamically updated by JS) -->
   <meta property="og:type" content="profile"/>
   <meta property="og:site_name" content="ChessConnect"/>
   <meta property="og:url" id="ogUrl" content="https://chessconnecthq.github.io/chessconnect-web/coaches.html"/>
@@ -15,268 +13,108 @@
   <meta property="og:description" id="ogDesc" content="View chess coach profile on ChessConnect — India's chess coach marketplace."/>
   <meta property="og:image" content="https://chessconnecthq.github.io/chessconnect-web/og-coaches.png"/>
   <meta property="og:locale" content="en_IN"/>
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" id="twTitle" content="Chess Coach Profile — ChessConnect"/>
   <meta name="twitter:description" id="twDesc" content="View chess coach profile on ChessConnect — India's chess coach marketplace."/>
   <meta name="twitter:image" content="https://chessconnecthq.github.io/chessconnect-web/og-coaches.png"/>
-
-  <!-- Canonical (set dynamically) -->
   <link rel="canonical" id="canonicalUrl" href="https://chessconnecthq.github.io/chessconnect-web/coaches.html"/>
-
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     :root {
-      --blue: #1E73E8;
-      --blue-logo: #4285F4;
-      --navy: #102C57;
-      --white: #ffffff;
-      --off-white: #F8FAFF;
-      --gray: #6B7280;
-      --gray-light: #E5E9F2;
-      --green: #10B981;
-      --font-heading: 'Playfair Display', Georgia, serif;
-      --font-body: 'DM Sans', sans-serif;
-      --shadow-sm: 0 1px 3px rgba(16,44,87,0.08);
-      --shadow-md: 0 4px 16px rgba(16,44,87,0.12);
-      --shadow-lg: 0 8px 32px rgba(16,44,87,0.16);
-      --radius: 12px;
+      --blue:#1E73E8; --blue-logo:#4285F4; --navy:#102C57; --white:#fff;
+      --off-white:#F8FAFF; --gray:#6B7280; --gray-light:#E5E9F2; --green:#10B981;
+      --font-heading:'Playfair Display',Georgia,serif; --font-body:'DM Sans',sans-serif;
+      --shadow-sm:0 1px 3px rgba(16,44,87,.08); --shadow-md:0 4px 16px rgba(16,44,87,.12);
+      --shadow-lg:0 8px 32px rgba(16,44,87,.16); --radius:12px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--font-body); color: var(--navy); background: var(--off-white); -webkit-font-smoothing: antialiased; }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%; height: 68px;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--gray-light);
-      box-shadow: var(--shadow-sm);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-body);color:var(--navy);background:var(--off-white);-webkit-font-smoothing:antialiased}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:68px;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-light);box-shadow:var(--shadow-sm)}
+    .nav-logo-wrap{display:flex;flex-direction:column;text-decoration:none;line-height:1}
+    .nav-logo-text{font-family:var(--font-body);font-weight:800;font-size:1.5rem;letter-spacing:-1.2px;display:flex}
+    .nav-logo-tagline{font-size:.65rem;font-weight:500;color:var(--gray);letter-spacing:.04em;margin-top:2px}
+    .chess{color:var(--navy)}.connect{color:var(--blue-logo)}
+    .nav-right{display:flex;gap:.75rem;align-items:center}
+    .btn-ghost{font-family:var(--font-body);font-size:.875rem;font-weight:600;color:var(--navy);background:transparent;border:1.5px solid var(--gray-light);border-radius:8px;padding:.5rem 1.1rem;cursor:pointer;text-decoration:none;transition:border-color .2s,background .2s;display:inline-flex;align-items:center}
+    .btn-ghost:hover{border-color:var(--blue);background:var(--off-white)}
+    .btn-primary{font-family:var(--font-body);font-size:.875rem;font-weight:600;color:var(--white);background:var(--blue);border:none;border-radius:8px;padding:.5rem 1.25rem;cursor:pointer;text-decoration:none;transition:background .2s;display:inline-flex;align-items:center}
+    .btn-primary:hover{background:var(--navy)}
+    .page-wrap{max-width:780px;margin:0 auto;padding:88px 5% 4rem}
+    .breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--gray);margin-bottom:1.5rem}
+    .breadcrumb a{color:var(--blue);text-decoration:none;font-weight:500}
+    .breadcrumb a:hover{text-decoration:underline}
+    .breadcrumb-sep{color:var(--gray-light)}
+    .profile-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-light);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:1.25rem}
+    .profile-header{background:linear-gradient(135deg,var(--blue) 0%,var(--navy) 100%);padding:2rem 2rem 1.75rem;color:white;display:flex;align-items:center;gap:1.5rem}
+    .profile-avatar{width:80px;height:80px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;border:3px solid rgba(255,255,255,.3);overflow:hidden}
+    .profile-avatar img{width:100%;height:100%;object-fit:cover}
+    .profile-header-info{flex:1}
+    .profile-name{font-family:var(--font-heading);font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;line-height:1.2;margin-bottom:.35rem}
+    .profile-meta{font-size:.9rem;opacity:.85;margin-bottom:.6rem}
+    .profile-badges{display:flex;flex-wrap:wrap;gap:.4rem}
+    .badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.15);color:white;font-size:.72rem;font-weight:700;padding:.22rem .6rem;border-radius:100px;border:1px solid rgba(255,255,255,.3);letter-spacing:.03em}
+    .profile-body{padding:1.75rem 2rem}
+    .section-block{margin-bottom:1.75rem}
+    .section-block:last-child{margin-bottom:0}
+    .section-block-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--gray);text-transform:uppercase;margin-bottom:.6rem}
+    .bio-text{font-size:.95rem;color:var(--navy);line-height:1.75}
+    .tag-row{display:flex;flex-wrap:wrap;gap:.45rem}
+    .tag{font-size:.8rem;font-weight:600;background:var(--off-white);color:var(--navy);border:1px solid var(--gray-light);border-radius:100px;padding:.28rem .75rem}
+    .tag-online{background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.25)}
+    .tag-offline{background:rgba(30,115,232,.07);color:var(--blue);border-color:rgba(30,115,232,.2)}
+    .ratings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+    .rating-box{background:var(--off-white);border:1px solid var(--gray-light);border-radius:10px;padding:.9rem 1rem;text-align:center}
+    .rating-box-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;color:var(--gray);text-transform:uppercase;margin-bottom:.25rem}
+    .rating-box-value{font-size:1.4rem;font-weight:800;color:var(--navy);font-family:var(--font-heading)}
+    .rating-box-value.unrated{font-size:.85rem;color:var(--gray);font-family:var(--font-body);font-weight:500}
+    .fee-block{display:flex;align-items:center;justify-content:space-between;background:var(--off-white);border:1px solid var(--gray-light);border-radius:10px;padding:1rem 1.25rem}
+    .fee-amount{font-size:1.3rem;font-weight:800;color:var(--navy)}
+    .fee-label{font-size:.82rem;color:var(--gray);margin-top:.1rem}
+    .demo-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(16,185,129,.1);color:#059669;border:1px solid rgba(16,185,129,.25);border-radius:100px;font-size:.78rem;font-weight:600;padding:.3rem .8rem}
+    .contact-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-light);box-shadow:var(--shadow-md);padding:1.5rem 2rem;margin-bottom:1.25rem}
+    .contact-title{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem}
+    .contact-btns{display:flex;gap:.75rem}
+    .btn-call{flex:1;font-family:var(--font-body);font-size:.95rem;font-weight:600;background:var(--off-white);color:var(--navy);border:1.5px solid var(--gray-light);border-radius:10px;padding:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:background .2s;text-decoration:none}
+    .btn-call:hover{background:var(--gray-light)}
+    .btn-wa{flex:1;font-family:var(--font-body);font-size:.95rem;font-weight:600;background:#25D366;color:white;border:none;border-radius:10px;padding:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:background .2s;text-decoration:none}
+    .btn-wa:hover{background:#1ebe5a}
+    .share-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-light);box-shadow:var(--shadow-sm);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+    .share-card-text{font-size:.88rem;color:var(--gray)}
+    .share-card-text strong{color:var(--navy);display:block;font-size:.95rem;margin-bottom:.2rem}
+    .share-btns{display:flex;gap:.6rem;flex-wrap:wrap}
+    .btn-share{font-family:var(--font-body);font-size:.82rem;font-weight:600;border-radius:8px;padding:.55rem 1rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .2s;border:none}
+    .btn-share-wa{background:#25D366;color:white}
+    .btn-share-wa:hover{background:#1ebe5a}
+    .btn-share-copy{background:var(--off-white);color:var(--navy);border:1.5px solid var(--gray-light)}
+    .btn-share-copy:hover{border-color:var(--blue)}
+    .state-box{text-align:center;padding:5rem 2rem}
+    .state-icon{font-size:3rem;margin-bottom:1rem}
+    .state-box h3{font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
+    .state-box p{font-size:.9rem;color:var(--gray);max-width:320px;margin:0 auto 1.5rem}
+    .fide-link{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:600;color:var(--blue);text-decoration:none;margin-top:.5rem}
+    .fide-link:hover{text-decoration:underline}
+    @media(max-width:600px){
+      .profile-header{flex-direction:column;text-align:center;padding:1.5rem}
+      .profile-badges{justify-content:center}
+      .profile-body{padding:1.25rem}
+      .contact-card{padding:1.25rem}
+      .contact-btns{flex-direction:column}
+      .ratings-grid{gap:.5rem}
+      .rating-box{padding:.7rem .5rem}
+      .rating-box-value{font-size:1.1rem}
+      .share-card{flex-direction:column;align-items:flex-start}
+      .fee-block{flex-direction:column;align-items:flex-start;gap:.5rem}
     }
-    .nav-logo-wrap { display: flex; flex-direction: column; text-decoration: none; line-height: 1; }
-    .nav-logo-text { font-family: var(--font-body); font-weight: 800; font-size: 1.5rem; letter-spacing: -1.2px; display: flex; }
-    .nav-logo-tagline { font-size: 0.65rem; font-weight: 500; color: var(--gray); letter-spacing: 0.04em; margin-top: 2px; }
-    .chess { color: var(--navy); }
-    .connect { color: var(--blue-logo); }
-    .nav-right { display: flex; gap: 0.75rem; align-items: center; }
-    .btn-ghost {
-      font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
-      color: var(--navy); background: transparent;
-      border: 1.5px solid var(--gray-light); border-radius: 8px;
-      padding: 0.5rem 1.1rem; cursor: pointer; text-decoration: none;
-      transition: border-color 0.2s, background 0.2s;
-      display: inline-flex; align-items: center;
-    }
-    .btn-ghost:hover { border-color: var(--blue); background: var(--off-white); }
-    .btn-primary {
-      font-family: var(--font-body); font-size: 0.875rem; font-weight: 600;
-      color: var(--white); background: var(--blue);
-      border: none; border-radius: 8px;
-      padding: 0.5rem 1.25rem; cursor: pointer; text-decoration: none;
-      transition: background 0.2s; display: inline-flex; align-items: center;
-    }
-    .btn-primary:hover { background: var(--navy); }
-
-    /* ── PAGE WRAP ── */
-    .page-wrap {
-      max-width: 780px; margin: 0 auto;
-      padding: 88px 5% 4rem;
-    }
-
-    /* ── BREADCRUMB ── */
-    .breadcrumb {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 0.82rem; color: var(--gray); margin-bottom: 1.5rem;
-    }
-    .breadcrumb a { color: var(--blue); text-decoration: none; font-weight: 500; }
-    .breadcrumb a:hover { text-decoration: underline; }
-    .breadcrumb-sep { color: var(--gray-light); }
-
-    /* ── PROFILE CARD ── */
-    .profile-card {
-      background: var(--white); border-radius: var(--radius);
-      border: 1px solid var(--gray-light); box-shadow: var(--shadow-md);
-      overflow: hidden; margin-bottom: 1.25rem;
-    }
-    .profile-header {
-      background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
-      padding: 2rem 2rem 1.75rem;
-      color: white;
-      display: flex; align-items: center; gap: 1.5rem;
-    }
-    .profile-avatar {
-      width: 80px; height: 80px; border-radius: 50%; flex-shrink: 0;
-      background: rgba(255,255,255,0.18);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; font-weight: 800;
-      border: 3px solid rgba(255,255,255,0.3);
-    }
-    .profile-header-info { flex: 1; }
-    .profile-name {
-      font-family: var(--font-heading);
-      font-size: clamp(1.4rem, 3vw, 1.9rem);
-      font-weight: 800; line-height: 1.2; margin-bottom: 0.35rem;
-    }
-    .profile-meta { font-size: 0.9rem; opacity: 0.85; margin-bottom: 0.6rem; }
-    .profile-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      background: rgba(255,255,255,0.15); color: white;
-      font-size: 0.72rem; font-weight: 700;
-      padding: 0.22rem 0.6rem; border-radius: 100px;
-      border: 1px solid rgba(255,255,255,0.3);
-      letter-spacing: 0.03em;
-    }
-
-    /* ── PROFILE BODY ── */
-    .profile-body { padding: 1.75rem 2rem; }
-    .section-block { margin-bottom: 1.75rem; }
-    .section-block:last-child { margin-bottom: 0; }
-    .section-block-label {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-      color: var(--gray); text-transform: uppercase; margin-bottom: 0.6rem;
-    }
-    .bio-text {
-      font-size: 0.95rem; color: var(--navy); line-height: 1.75;
-    }
-    .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-    .tag {
-      font-size: 0.8rem; font-weight: 600;
-      background: var(--off-white); color: var(--navy);
-      border: 1px solid var(--gray-light); border-radius: 100px;
-      padding: 0.28rem 0.75rem;
-    }
-    .tag-online { background: rgba(16,185,129,0.08); color: #059669; border-color: rgba(16,185,129,0.25); }
-    .tag-offline { background: rgba(30,115,232,0.07); color: var(--blue); border-color: rgba(30,115,232,0.2); }
-
-    /* ── RATINGS GRID ── */
-    .ratings-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
-    }
-    .rating-box {
-      background: var(--off-white); border: 1px solid var(--gray-light);
-      border-radius: 10px; padding: 0.9rem 1rem; text-align: center;
-    }
-    .rating-box-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--gray); text-transform: uppercase; margin-bottom: 0.25rem; }
-    .rating-box-value { font-size: 1.4rem; font-weight: 800; color: var(--navy); font-family: var(--font-heading); }
-    .rating-box-value.unrated { font-size: 0.85rem; color: var(--gray); font-family: var(--font-body); font-weight: 500; }
-
-    /* ── FEE BLOCK ── */
-    .fee-block {
-      display: flex; align-items: center; justify-content: space-between;
-      background: var(--off-white); border: 1px solid var(--gray-light);
-      border-radius: 10px; padding: 1rem 1.25rem;
-    }
-    .fee-amount { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
-    .fee-label { font-size: 0.82rem; color: var(--gray); margin-top: 0.1rem; }
-    .demo-badge {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: rgba(16,185,129,0.1); color: #059669;
-      border: 1px solid rgba(16,185,129,0.25); border-radius: 100px;
-      font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.8rem;
-    }
-
-    /* ── CONTACT CARD ── */
-    .contact-card {
-      background: var(--white); border-radius: var(--radius);
-      border: 1px solid var(--gray-light); box-shadow: var(--shadow-md);
-      padding: 1.5rem 2rem; margin-bottom: 1.25rem;
-    }
-    .contact-title { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
-    .contact-btns { display: flex; gap: 0.75rem; }
-    .btn-call {
-      flex: 1; font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
-      background: var(--off-white); color: var(--navy);
-      border: 1.5px solid var(--gray-light); border-radius: 10px;
-      padding: 0.85rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      transition: background 0.2s; text-decoration: none;
-    }
-    .btn-call:hover { background: var(--gray-light); }
-    .btn-wa {
-      flex: 1; font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
-      background: #25D366; color: white;
-      border: none; border-radius: 10px;
-      padding: 0.85rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      transition: background 0.2s; text-decoration: none;
-    }
-    .btn-wa:hover { background: #1ebe5a; }
-
-    /* ── SHARE CARD ── */
-    .share-card {
-      background: var(--white); border-radius: var(--radius);
-      border: 1px solid var(--gray-light); box-shadow: var(--shadow-sm);
-      padding: 1.25rem 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; flex-wrap: wrap;
-    }
-    .share-card-text { font-size: 0.88rem; color: var(--gray); }
-    .share-card-text strong { color: var(--navy); display: block; font-size: 0.95rem; margin-bottom: 0.2rem; }
-    .share-btns { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-    .btn-share {
-      font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
-      border-radius: 8px; padding: 0.55rem 1rem; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      transition: all 0.2s; border: none;
-    }
-    .btn-share-wa { background: #25D366; color: white; }
-    .btn-share-wa:hover { background: #1ebe5a; }
-    .btn-share-copy { background: var(--off-white); color: var(--navy); border: 1.5px solid var(--gray-light); }
-    .btn-share-copy:hover { border-color: var(--blue); }
-
-    /* ── STATES ── */
-    .state-box { text-align: center; padding: 5rem 2rem; }
-    .state-icon { font-size: 3rem; margin-bottom: 1rem; }
-    .state-box h3 { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
-    .state-box p { font-size: 0.9rem; color: var(--gray); max-width: 320px; margin: 0 auto 1.5rem; }
-
-    /* ── FIDE LINK ── */
-    .fide-link {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.8rem; font-weight: 600; color: var(--blue);
-      text-decoration: none; margin-top: 0.5rem;
-    }
-    .fide-link:hover { text-decoration: underline; }
-
-    /* ── MOBILE ── */
-    @media (max-width: 600px) {
-      .profile-header { flex-direction: column; text-align: center; padding: 1.5rem; }
-      .profile-badges { justify-content: center; }
-      .profile-body { padding: 1.25rem; }
-      .contact-card { padding: 1.25rem; }
-      .contact-btns { flex-direction: column; }
-      .ratings-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-      .rating-box { padding: 0.7rem 0.5rem; }
-      .rating-box-value { font-size: 1.1rem; }
-      .share-card { flex-direction: column; align-items: flex-start; }
-      .fee-block { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-    }
-
-    /* Copy toast */
-    .copy-toast {
-      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      background: var(--navy); color: white;
-      font-size: 0.85rem; font-weight: 600;
-      padding: 0.65rem 1.25rem; border-radius: 100px;
-      box-shadow: var(--shadow-lg); z-index: 999;
-      opacity: 0; transition: opacity 0.3s;
-      pointer-events: none;
-    }
-    .copy-toast.show { opacity: 1; }
+    .copy-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--navy);color:white;font-size:.85rem;font-weight:600;padding:.65rem 1.25rem;border-radius:100px;box-shadow:var(--shadow-lg);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+    .copy-toast.show{opacity:1}
   </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
 <nav>
   <a href="index.html" class="nav-logo-wrap" aria-label="ChessConnect home">
     <div class="nav-logo-text"><span class="chess">Chess</span><span class="connect">Connect</span></div>
@@ -288,36 +126,24 @@
   </div>
 </nav>
 
-<!-- ── PAGE ── -->
 <div class="page-wrap" id="pageWrap">
-  <!-- Loading state -->
   <div id="stateLoading" class="state-box">
     <div class="state-icon">♟️</div>
     <h3>Loading profile...</h3>
     <p>Please wait a moment.</p>
   </div>
-
-  <!-- Error state -->
   <div id="stateError" class="state-box" style="display:none;">
     <div class="state-icon">🔍</div>
     <h3>Profile not found</h3>
     <p>This coach profile may have been removed or the link is incorrect.</p>
-    <a href="coaches.html" class="btn-primary" style="display:inline-flex; margin: 0 auto;">Browse All Coaches</a>
+    <a href="coaches.html" class="btn-primary" style="display:inline-flex;margin:0 auto;">Browse All Coaches</a>
   </div>
-
-  <!-- Profile content -->
   <div id="profileContent" style="display:none;">
-
-    <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="index.html">Home</a>
-      <span class="breadcrumb-sep">›</span>
-      <a href="coaches.html">Find a Coach</a>
-      <span class="breadcrumb-sep">›</span>
+      <a href="index.html">Home</a><span class="breadcrumb-sep">›</span>
+      <a href="coaches.html">Find a Coach</a><span class="breadcrumb-sep">›</span>
       <span id="breadcrumbName">Coach</span>
     </div>
-
-    <!-- Main profile card -->
     <div class="profile-card">
       <div class="profile-header">
         <div class="profile-avatar" id="profileAvatar"></div>
@@ -332,51 +158,30 @@
         </div>
       </div>
       <div class="profile-body">
-
-        <!-- Bio -->
         <div class="section-block" id="bioBlock" style="display:none;">
           <div class="section-block-label">About</div>
           <div class="bio-text" id="profileBio"></div>
         </div>
-
-        <!-- FIDE Ratings -->
         <div class="section-block">
           <div class="section-block-label">FIDE Ratings</div>
           <div class="ratings-grid">
-            <div class="rating-box">
-              <div class="rating-box-label">Classical</div>
-              <div class="rating-box-value" id="ratingClassical">—</div>
-            </div>
-            <div class="rating-box">
-              <div class="rating-box-label">Rapid</div>
-              <div class="rating-box-value" id="ratingRapid">—</div>
-            </div>
-            <div class="rating-box">
-              <div class="rating-box-label">Blitz</div>
-              <div class="rating-box-value" id="ratingBlitz">—</div>
-            </div>
+            <div class="rating-box"><div class="rating-box-label">Classical</div><div class="rating-box-value" id="ratingClassical">—</div></div>
+            <div class="rating-box"><div class="rating-box-label">Rapid</div><div class="rating-box-value" id="ratingRapid">—</div></div>
+            <div class="rating-box"><div class="rating-box-label">Blitz</div><div class="rating-box-value" id="ratingBlitz">—</div></div>
           </div>
         </div>
-
-        <!-- Mode -->
         <div class="section-block" id="modeBlock" style="display:none;">
           <div class="section-block-label">Coaching Mode</div>
           <div class="tag-row" id="profileMode"></div>
         </div>
-
-        <!-- Levels -->
         <div class="section-block" id="levelsBlock" style="display:none;">
           <div class="section-block-label">Teaches</div>
           <div class="tag-row" id="profileLevels"></div>
         </div>
-
-        <!-- Languages -->
         <div class="section-block" id="langsBlock" style="display:none;">
           <div class="section-block-label">Languages</div>
           <div class="tag-row" id="profileLangs"></div>
         </div>
-
-        <!-- Fees -->
         <div class="section-block" id="feesBlock" style="display:none;">
           <div class="section-block-label">Fees</div>
           <div class="fee-block">
@@ -387,16 +192,14 @@
             <div id="demoBadge" style="display:none;">
               <span class="demo-badge">
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                Demo class available
+                Trial class available
               </span>
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- Contact card -->
     <div class="contact-card">
       <div class="contact-title">Contact this Coach</div>
       <div class="contact-btns">
@@ -411,7 +214,6 @@
       </div>
     </div>
 
-    <!-- Share card -->
     <div class="share-card">
       <div class="share-card-text">
         <strong>Share this profile</strong>
@@ -428,8 +230,7 @@
         </button>
       </div>
     </div>
-
-  </div><!-- /profileContent -->
+  </div>
 </div>
 
 <div class="copy-toast" id="copyToast">Link copied!</div>
@@ -441,57 +242,62 @@
 
   let coachData = null;
 
+  // ── FIX V2: FIDE country code → full country name ──
+  const FIDE_COUNTRY_MAP = {
+    'IND':'India','USA':'United States','ENG':'England','GER':'Germany',
+    'RUS':'Russia','CHN':'China','FRA':'France','ESP':'Spain','NED':'Netherlands',
+    'NOR':'Norway','HUN':'Hungary','AZE':'Azerbaijan','ARM':'Armenia','GEO':'Georgia',
+    'UKR':'Ukraine','POL':'Poland','ROM':'Romania','BUL':'Bulgaria','SRB':'Serbia',
+    'CZE':'Czech Republic','SVK':'Slovakia','TUR':'Turkey','IRI':'Iran','ISR':'Israel',
+    'EGY':'Egypt','RSA':'South Africa','NGR':'Nigeria','BAN':'Bangladesh','SRI':'Sri Lanka',
+    'PAK':'Pakistan','NEP':'Nepal','SGP':'Singapore','MAS':'Malaysia','INA':'Indonesia',
+    'PHI':'Philippines','VIE':'Vietnam','JPN':'Japan','KOR':'South Korea','PRK':'North Korea',
+    'BRA':'Brazil','ARG':'Argentina','CUB':'Cuba','PER':'Peru','COL':'Colombia','MEX':'Mexico',
+    'GBR':'United Kingdom','UAE':'United Arab Emirates','CAN':'Canada','AUS':'Australia',
+    'SWE':'Sweden','DEN':'Denmark','FIN':'Finland','BEL':'Belgium','AUT':'Austria',
+    'SUI':'Switzerland','POR':'Portugal','ITA':'Italy','GRE':'Greece','CRO':'Croatia',
+    'SLO':'Slovenia','LTU':'Lithuania','LAT':'Latvia','EST':'Estonia','BLR':'Belarus',
+    'KAZ':'Kazakhstan','UZB':'Uzbekistan','TKM':'Turkmenistan','MGL':'Mongolia',
+    'THA':'Thailand','MMR':'Myanmar','KHM':'Cambodia','LKA':'Sri Lanka'
+  };
+
   window.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-
     if (!id) { showError(); return; }
 
-    const { data, error } = await sb
-      .from('coaches')
-      .select('*')
-      .eq('id', id)
-      .eq('is_live', true)
-      .single();
-
+    const { data, error } = await sb.from('coaches').select('*').eq('id', id).eq('is_live', true).single();
     if (error || !data) { showError(); return; }
 
     coachData = data;
     renderProfile(data);
     trackView();
 
-    // Update page title and meta
     const coachTitle = `${data.full_name} — Chess Coach${data.city ? ' in ' + data.city : ''}${data.chess_title ? ' | ' + data.chess_title : ''} | ChessConnect`;
-    const coachDesc  = `${data.full_name} is a FIDE-rated chess coach${data.city ? ' in ' + data.city : ''}${data.country ? ', ' + data.country : ''}${data.fide_rating ? ' with a classical rating of ' + data.fide_rating : ''}. ${data.bio ? data.bio.substring(0,120) + '...' : 'Contact directly on ChessConnect.'}`;
+    const coachDesc  = `${data.full_name} is a FIDE-rated chess coach${data.city ? ' in ' + data.city : ''}${data.country ? ', ' + (FIDE_COUNTRY_MAP[data.country] || data.country) : ''}${data.fide_rating ? ' with a classical rating of ' + data.fide_rating : ''}. ${data.bio ? data.bio.substring(0,120) + '...' : 'Contact directly on ChessConnect.'}`;
     const pageUrl    = window.location.href;
 
     document.title = coachTitle;
     document.querySelector('meta[name="description"]').content = coachDesc;
-    document.getElementById('canonicalUrl').href     = pageUrl;
-    document.getElementById('ogUrl').content         = pageUrl;
-    document.getElementById('ogTitle').content       = coachTitle;
-    document.getElementById('ogDesc').content        = coachDesc;
-    document.getElementById('twTitle').content       = coachTitle;
-    document.getElementById('twDesc').content        = coachDesc;
+    document.getElementById('canonicalUrl').href = pageUrl;
+    document.getElementById('ogUrl').content     = pageUrl;
+    document.getElementById('ogTitle').content   = coachTitle;
+    document.getElementById('ogDesc').content    = coachDesc;
+    document.getElementById('twTitle').content   = coachTitle;
+    document.getElementById('twDesc').content    = coachDesc;
 
-    // JSON-LD for this coach
     const ld = {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": data.full_name,
-      "jobTitle": `Chess Coach${data.chess_title ? ' (' + data.chess_title + ')' : ''}`,
-      "url": pageUrl,
-      "description": coachDesc,
-      "address": { "@type": "PostalAddress", "addressLocality": data.city || '', "addressCountry": data.country || 'IN' },
-      "knowsAbout": ["Chess", "Chess Coaching", "FIDE Chess"],
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home",         "item": "https://chessconnecthq.github.io/chessconnect-web/" },
-          { "@type": "ListItem", "position": 2, "name": "Find a Coach", "item": "https://chessconnecthq.github.io/chessconnect-web/coaches.html" },
-          { "@type": "ListItem", "position": 3, "name": data.full_name, "item": pageUrl }
-        ]
-      }
+      "@context":"https://schema.org","@type":"Person",
+      "name":data.full_name,
+      "jobTitle":`Chess Coach${data.chess_title ? ' (' + data.chess_title + ')' : ''}`,
+      "url":pageUrl,"description":coachDesc,
+      "address":{"@type":"PostalAddress","addressLocality":data.city||'','addressCountry":data.country||'IN'"},
+      "knowsAbout":["Chess","Chess Coaching","FIDE Chess"],
+      "breadcrumb":{"@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://chessconnecthq.github.io/chessconnect-web/"},
+        {"@type":"ListItem","position":2,"name":"Find a Coach","item":"https://chessconnecthq.github.io/chessconnect-web/coaches.html"},
+        {"@type":"ListItem","position":3,"name":data.full_name,"item":pageUrl}
+      ]}
     };
     const ldScript = document.createElement('script');
     ldScript.type = 'application/ld+json';
@@ -501,29 +307,32 @@
 
   function showError() {
     document.getElementById('stateLoading').style.display = 'none';
-    document.getElementById('stateError').style.display = 'block';
+    document.getElementById('stateError').style.display   = 'block';
   }
 
   function renderProfile(c) {
-    document.getElementById('stateLoading').style.display = 'none';
+    document.getElementById('stateLoading').style.display  = 'none';
     document.getElementById('profileContent').style.display = 'block';
 
-    // Breadcrumb
     document.getElementById('breadcrumbName').textContent = c.full_name || 'Coach';
 
-    // Avatar
-    const initials = (c.full_name || 'CC').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
-    document.getElementById('profileAvatar').textContent = initials;
+    // Avatar: photo or initials
+    const avatarEl = document.getElementById('profileAvatar');
+    if (c.photo_url) {
+      avatarEl.innerHTML = `<img src="${c.photo_url}" alt="${c.full_name || 'Coach'}" onerror="this.parentElement.textContent='${(c.full_name||'CC').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}'"/>`;
+    } else {
+      avatarEl.textContent = (c.full_name || 'CC').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+    }
 
-    // Name
     document.getElementById('profileName').textContent = c.full_name || 'Coach';
 
-    // Meta
-    const exp = c.experience ? `${c.experience} yr${c.experience != 1 ? 's' : ''} experience` : '';
-    const loc = [c.city, c.country].filter(Boolean).join(', ');
+    // ── FIX V2: experience readable (already human-readable now) ──
+    const exp = c.experience ? `${c.experience} experience` : '';
+    // ── FIX V2: country display — map FIDE code ──
+    const countryDisplay = FIDE_COUNTRY_MAP[c.country] || c.country || '';
+    const loc = [c.city, countryDisplay].filter(Boolean).join(', ');
     document.getElementById('profileMeta').textContent = [exp, loc].filter(Boolean).join(' · ');
 
-    // Badges
     const badges = [];
     if (c.chess_title) badges.push(`<span class="badge">${esc(c.chess_title)}</span>`);
     const topRating = c.fide_rating || c.fide_rapid || c.fide_blitz;
@@ -531,20 +340,17 @@
     if (topRating) badges.push(`<span class="badge"><svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.7 5.5 21 7 14 2 9.3 9 8.5 12 2"/></svg> FIDE ${topRating} ${ratingType}</span>`);
     document.getElementById('profileBadges').innerHTML = badges.join('');
 
-    // FIDE link
     if (c.fide_id) {
       const fl = document.getElementById('fideLink');
       fl.href = `https://ratings.fide.com/profile/${c.fide_id}`;
       fl.style.display = 'inline-flex';
     }
 
-    // Bio
     if (c.bio) {
       document.getElementById('profileBio').textContent = c.bio;
       document.getElementById('bioBlock').style.display = 'block';
     }
 
-    // Ratings
     const setRating = (id, val) => {
       const el = document.getElementById(id);
       if (val) { el.textContent = val; }
@@ -554,91 +360,78 @@
     setRating('ratingRapid',     c.fide_rapid);
     setRating('ratingBlitz',     c.fide_blitz);
 
-    // Mode
-    const mode = (c.coaching_mode || '').toLowerCase();
+    // ── FIX V2: coaching mode — normalise 'in-person' → offline ──
+    const mode = (c.coaching_mode || '').toLowerCase().replace('in-person','offline');
     const modeTags = [];
     if (mode.includes('online'))  modeTags.push('<span class="tag tag-online">Online</span>');
     if (mode.includes('offline')) modeTags.push('<span class="tag tag-offline">Offline</span>');
+    if (mode === 'both') { modeTags.push('<span class="tag tag-online">Online</span>'); modeTags.push('<span class="tag tag-offline">Offline</span>'); }
     if (modeTags.length) {
-      document.getElementById('profileMode').innerHTML = modeTags.join('');
+      document.getElementById('profileMode').innerHTML = [...new Set(modeTags)].join('');
       document.getElementById('modeBlock').style.display = 'block';
     }
 
-    // Levels
     const levels = Array.isArray(c.levels_taught) ? c.levels_taught : [];
     if (levels.length) {
       document.getElementById('profileLevels').innerHTML = levels.map(l => `<span class="tag">${esc(l)}</span>`).join('');
       document.getElementById('levelsBlock').style.display = 'block';
     }
 
-    // Languages
     const langs = Array.isArray(c.languages) ? c.languages : [];
     if (langs.length) {
       document.getElementById('profileLangs').innerHTML = langs.map(l => `<span class="tag">${esc(l)}</span>`).join('');
       document.getElementById('langsBlock').style.display = 'block';
     }
 
-    // Fees
     if (c.fees) {
-      document.getElementById('profileFee').textContent = `₹${parseInt(c.fees).toLocaleString('en-IN')}`;
+      // ── FIX V2: currency-aware display ──
+      const currSym = c.fees_currency === 'USD' ? '$' : c.fees_currency === 'EUR' ? '€' : '₹';
+      const feeFormatted = c.fees_currency === 'INR'
+        ? parseInt(c.fees).toLocaleString('en-IN')
+        : parseInt(c.fees).toLocaleString();
+      document.getElementById('profileFee').textContent = `${currSym}${feeFormatted}`;
       document.getElementById('feesBlock').style.display = 'block';
-      if (c.demo_available) document.getElementById('demoBadge').style.display = 'block';
+      // ── FIX V2: use trial_available not demo_available ──
+      if (c.trial_available) document.getElementById('demoBadge').style.display = 'block';
     }
 
-    // Contact buttons
     const phone = c.whatsapp || '';
     const waMsg = encodeURIComponent(`Hi ${c.full_name || 'Coach'}, I found your profile on ChessConnect and would like to know more about your chess coaching.`);
-    document.getElementById('btnCall').href = phone ? `tel:${phone}` : '#';
+    document.getElementById('btnCall').href  = phone ? `tel:${phone}` : '#';
     document.getElementById('btnCall').onclick = () => trackEnquiry('call');
-    document.getElementById('btnWa').href   = phone ? `https://wa.me/${phone.replace(/\D/g,'')}?text=${waMsg}` : '#';
+    document.getElementById('btnWa').href    = phone ? `https://wa.me/${phone.replace(/\D/g,'')}?text=${waMsg}` : '#';
     document.getElementById('btnWa').onclick = () => trackEnquiry('whatsapp');
     if (!phone) {
       document.getElementById('btnCall').style.opacity = '0.4';
       document.getElementById('btnCall').style.pointerEvents = 'none';
-      document.getElementById('btnWa').style.opacity = '0.4';
-      document.getElementById('btnWa').style.pointerEvents = 'none';
+      document.getElementById('btnWa').style.opacity  = '0.4';
+      document.getElementById('btnWa').style.pointerEvents  = 'none';
     }
   }
 
-  // ── ENQUIRY TRACKING ──
   async function trackEnquiry(type) {
     if (!coachData?.id) return;
     try {
-      // Try to get approximate city from IP (best effort, no API key needed)
       let city = null;
-      try {
-        const geo = await fetch('https://ipapi.co/json/');
-        const geoData = await geo.json();
-        city = geoData.city || null;
-      } catch(e) { /* silent fail */ }
-
-      await sb.from('enquiries').insert([{
-        coach_id:     coachData.id,
-        type:         type,
-        student_city: city,
-      }]);
-    } catch(e) { /* silent fail — never block user action */ }
+      try { const geo = await fetch('https://ipapi.co/json/'); const d = await geo.json(); city = d.city || null; } catch(e){}
+      await sb.from('enquiries').insert([{ coach_id: coachData.id, type, student_city: city }]);
+    } catch(e){}
   }
-
-  // Track page view on load
   function trackView() { trackEnquiry('view'); }
 
-  // ── SHARE ──
   function shareOnWhatsApp() {
     const name = coachData?.full_name || 'Chess Coach';
     const url  = window.location.href;
     const msg  = encodeURIComponent(`Check out ${name}'s chess coaching profile on ChessConnect:\n${url}`);
     window.open(`https://wa.me/?text=${msg}`, '_blank');
   }
-
   function copyLink() {
     navigator.clipboard.writeText(window.location.href).then(() => {
-      const toast = document.getElementById('copyToast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2200);
+      const t = document.getElementById('copyToast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
     });
   }
-
   function esc(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
