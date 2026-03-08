@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Free Chess Clock | ChessConnect India</title>
 
 <!-- ═══ SEO META TAGS ═══ -->
@@ -226,7 +226,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cust-sep{color:#D1D5DB;font-size:1rem;font-weight:700}
 .cust-inc{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
 .cust-inc label{font-size:0.5rem;color:#6B7280;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
-.cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #E5E9F2;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center}
+.cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #E5E9F2;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center;font-size:max(1rem,16px)}
 .s2-btns{display:flex;gap:0.55rem;width:100%;margin-top:1rem}
 .back-btn{padding:0.9rem 1.1rem;border-radius:10px;border:1.5px solid #E5E9F2;background:#fff;color:#6B7280;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .back-btn:active{background:#F8FAFF}
@@ -353,12 +353,13 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .tc-cat-label svg{width:14px;height:14px;stroke:#1E73E8;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .tc-row{display:grid;grid-template-columns:1fr 1fr;gap:0.45rem}
 .tc-chip{
-  padding:0.7rem 0.5rem;border-radius:10px;
+  padding:0.85rem 0.5rem;min-height:48px;border-radius:10px;
   border:1.5px solid #E5E9F2;background:#fff;
   color:#102C57;font-family:'DM Sans',sans-serif;
   font-size:0.95rem;font-weight:800;cursor:pointer;
   text-align:center;transition:all 0.18s;
   box-shadow:0 1px 4px rgba(16,44,87,0.06);
+  display:flex;align-items:center;justify-content:center;
 }
 .tc-chip:hover{border-color:#1E73E8;color:#1E73E8;background:#EEF4FF}
 .tc-chip.sel{border-color:#1E73E8;color:#fff;background:#1E73E8;box-shadow:0 4px 12px rgba(30,115,232,0.28)}
@@ -367,36 +368,36 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;max-width:420px;margin-top:0.7rem;background:#fff;border-radius:10px;padding:0.65rem 0.8rem;border:1.5px solid #E5E9F2;box-shadow:0 1px 4px rgba(16,44,87,0.06)}
 .custom-row label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;flex-shrink:0}
 .cust-t{display:flex;align-items:center;gap:3px;flex:1}
-.cust-inp{width:100%;background:transparent;border:none;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;text-align:center}
+.cust-inp{width:100%;background:transparent;border:none;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;text-align:center}
 .cust-sep{color:#E5E9F2;font-size:1rem;font-weight:700}
 .cust-inc{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
 .cust-inc label{font-size:0.5rem;color:#6B7280;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
-.cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #E5E9F2;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center}
+.cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #E5E9F2;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center;font-size:max(1rem,16px)}
 
 .s2-btns{display:flex;gap:0.55rem;width:100%;max-width:420px;margin-top:1rem}
-.back-btn{padding:0.85rem 1.2rem;border-radius:10px;border:1.5px solid #E5E9F2;background:#fff;color:#6B7280;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+.back-btn{padding:0.85rem 1.2rem;min-height:48px;border-radius:10px;border:1.5px solid #E5E9F2;background:#fff;color:#6B7280;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .back-btn:hover{border-color:#1E73E8;color:#1E73E8}
-.launch-btn{flex:1;padding:0.85rem;border-radius:10px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(30,115,232,0.3);transition:all 0.2s;letter-spacing:0.02em}
+.launch-btn{flex:1;padding:0.85rem;min-height:48px;border-radius:10px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(30,115,232,0.3);transition:all 0.2s;letter-spacing:0.02em;-webkit-tap-highlight-color:transparent}
 .launch-btn:hover{background:#102C57;transform:translateY(-1px)}
 
 
-#screen3{position:fixed;inset:0;padding:0;background:#0a0a0f;overflow:hidden;z-index:100;display:flex;flex-direction:column;touch-action:manipulation}
+#screen3{position:fixed;inset:0;padding:0;background:#0a0a0f;overflow:hidden;z-index:100;display:flex;flex-direction:column;touch-action:none}
 
 /* Topbar */
-.s3-bar{position:fixed;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 0.9rem;z-index:100;background:rgba(5,5,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05)}
+.s3-bar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;z-index:100;background:rgba(5,5,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05)}
 .s3-brand{font-size:1.1rem;font-weight:800;letter-spacing:-0.3px;font-family:'DM Sans',sans-serif}
 .s3-brand .chess{color:#ffffff}
 .s3-brand .connect{color:#4285F4}
-.s3-actions{display:flex;gap:5px}
-.s3-btn{width:30px;height:30px;border-radius:7px;border:1px solid #1e1e1e;background:transparent;color:#444;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.18s}
-.s3-btn:hover{border-color:#C4873A;color:#C4873A}
-.s3-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.s3-btn.active-ctrl{border-color:#C4873A;color:#C4873A}
+.s3-actions{display:flex;gap:6px;align-items:center}
+.s3-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.18s;-webkit-tap-highlight-color:transparent}
+.s3-btn:hover{border-color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.13);color:#fff}
+.s3-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.s3-btn.active-ctrl{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.12)}
 
 /* Clock containers */
 .clock-view{
   display:none;flex-direction:column;align-items:center;justify-content:center;
-  position:fixed;inset:0;padding-top:46px;
+  position:fixed;inset:0;padding-top:52px;
 }
 .clock-view.show{display:flex}
 
@@ -447,12 +448,13 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   display:flex;align-items:center;justify-content:center;gap:4px;
   padding:5px 10px;background:rgba(255,255,255,0.03);
   border-radius:8px;flex-wrap:nowrap;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
   scrollbar-width:none;max-width:430px;width:min(96vw,430px);
   margin-top:8px;flex-shrink:0;
 }
 .preset-strip::-webkit-scrollbar{display:none}
 .ps-lbl{font-size:0.48rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;white-space:nowrap;flex-shrink:0}
-.ps-chip{padding:3px 8px;border-radius:5px;border:1.5px solid #444;background:transparent;color:#888;font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s}
+.ps-chip{padding:6px 10px;min-height:36px;border-radius:5px;border:1.5px solid #444;background:transparent;color:#888;font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s;display:inline-flex;align-items:center;-webkit-tap-highlight-color:transparent}
 .ps-chip:hover{border-color:#C4873A;color:#C4873A}
 .ps-chip.sel{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.07)}
 .ps-sep{width:1px;height:14px;background:#1a1a1a;flex-shrink:0;margin:0 2px}
@@ -472,7 +474,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 ═══════════════════════════════════════ */
 .heritage-clock{background:radial-gradient(ellipse at 50% 46%,#2a1208 0%,#120804 40%,#080402 100%)}
 .hc-body{
-  width:min(96vw,580px);flex-shrink:0;
+  width:min(96vw,580px);min-width:280px;flex-shrink:0;
   background:
     repeating-linear-gradient(173deg,transparent 0,transparent 9px,rgba(0,0,0,0.045) 9px,rgba(0,0,0,0.045) 10px),
     linear-gradient(158deg,#A0522D 0%,#7A3A1C 18%,#5A2810 48%,#3C1A08 76%,#2A1206 100%);
@@ -494,13 +496,13 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-corners::after{top:10px;right:13px}
 
 /* Knobs row */
-.hc-top{display:flex;align-items:center;padding:11px 80px 9px;position:relative;z-index:2;gap:8px}
+.hc-top{display:flex;align-items:center;padding:11px max(68px,14vw) 9px;position:relative;z-index:2;gap:8px}
 .hc-knob-col{display:none}
 .hk-lbl{display:none}
 /* DGT-style side panels */
 .hc-side{
   position:absolute;top:0;bottom:0;width:68px;
-  cursor:pointer;touch-action:manipulation;
+  cursor:pointer;touch-action:none;
   -webkit-tap-highlight-color:transparent;user-select:none;
   z-index:10;
   transition:box-shadow 0.08s;
@@ -575,7 +577,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-brand{font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:700;color:rgba(220,175,90,0.92);letter-spacing:0.04em;text-shadow:0 1px 4px rgba(0,0,0,0.6)}
 .hc-ctrls{display:flex;gap:5px}
 .hc-cbtn{
-  padding:5px 11px;border-radius:5px;
+  padding:7px 11px;min-height:36px;border-radius:5px;
   border:1.5px solid rgba(196,135,58,0.55);
   background:rgba(30,15,4,0.75);
   color:rgba(220,175,80,0.95);
@@ -589,7 +591,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-cstatus{font-size:0.62rem;font-family:'DM Sans',sans-serif;color:rgba(220,175,80,0.85);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.7)}
 
 /* Displays */
-.hc-displays{display:flex;padding:0 80px;position:relative;z-index:2;gap:0}
+.hc-displays{display:flex;padding:0 max(68px,14vw);position:relative;z-index:2;gap:0}
 .hc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
 .hc-plbl{font-size:0.62rem;font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(196,135,58,0.55);transition:color 0.3s;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
 .hc-dunit.active .hc-plbl{color:rgba(230,185,80,0.95);text-shadow:0 0 8px rgba(196,135,58,0.3),0 1px 3px rgba(0,0,0,0.5)}
@@ -613,7 +615,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(196,135,58,0.12),transparent);margin:4px 3px;flex-shrink:0}
 
 /* Bottom bar */
-.hc-bot{display:flex;justify-content:center;align-items:center;padding:6px 80px 10px;position:relative;z-index:2}
+.hc-bot{display:flex;justify-content:center;align-items:center;padding:6px max(68px,14vw) 10px;position:relative;z-index:2}
 .hc-roman{font-family:'DM Sans',sans-serif;font-size:0.6rem;color:rgba(160,105,38,0.5);font-weight:700}
 .hc-bname{font-family:'DM Sans',sans-serif;font-style:italic;font-size:0.65rem;color:rgba(180,125,50,0.65);letter-spacing:0.04em;text-align:center}
 .hc-edition{font-size:0.48rem;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:0.14em;color:rgba(150,100,35,0.5);font-weight:700;text-align:center}
@@ -626,7 +628,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* Pro brushed steel side panels */
 .pc-side{
   width:72px;flex-shrink:0;position:absolute;top:0;bottom:0;
-  cursor:pointer;touch-action:manipulation;
+  cursor:pointer;touch-action:none;
   -webkit-tap-highlight-color:transparent;user-select:none;
   z-index:10;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:10px;
@@ -714,7 +716,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 
 .pc-body{
-  width:min(96vw,580px);flex-shrink:0;
+  width:min(96vw,580px);min-width:280px;flex-shrink:0;
   background:linear-gradient(158deg,#3A3A3A 0%,#333333 25%,#2A2A2A 55%,#242424 100%);
   border-radius:14px 14px 10px 10px;
   box-shadow:
@@ -731,7 +733,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);pointer-events:none;border-radius:14px}
 
 /* Lever buttons */
-.pc-top{display:flex;align-items:center;padding:10px 80px 9px;position:relative;z-index:2}
+.pc-top{display:flex;align-items:center;padding:10px max(72px,14vw) 9px;position:relative;z-index:2}
 .pc-lcol{display:none}
 .pc-led-row{display:flex;align-items:center;gap:3px;margin-bottom:1px}
 .pc-led{width:9px;height:9px;border-radius:50%;background:#111;border:1px solid #1e1e1e;transition:all 0.3s}
@@ -774,7 +776,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-cstatus{font-size:0.62rem;font-family:'Share Tech Mono',monospace;color:rgba(200,200,200,0.82);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.7)}
 
 /* Displays */
-.pc-displays{display:flex;padding:0 80px;position:relative;z-index:2}
+.pc-displays{display:flex;padding:0 max(72px,14vw);position:relative;z-index:2}
 .pc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
 /* 4. Player labels */
 .pc-plbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#808080;transition:color 0.3s;font-family:'Share Tech Mono',monospace}
@@ -797,7 +799,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-divider{width:1px;background:linear-gradient(180deg,transparent,#2a2a2a,transparent);margin:4px 3px;flex-shrink:0}
 
 /* 6. Bottom bar */
-.pc-bot{display:flex;justify-content:center;align-items:center;padding:6px 80px 9px;position:relative;z-index:2}
+.pc-bot{display:flex;justify-content:center;align-items:center;padding:6px max(72px,14vw) 9px;position:relative;z-index:2}
 .pc-bname{font-size:0.55rem;font-weight:800;letter-spacing:0.06em;color:rgba(160,160,160,0.6)}
 .pc-tag{font-size:0.48rem;font-family:'Share Tech Mono',monospace;text-transform:uppercase;letter-spacing:0.12em;color:rgba(130,130,130,0.5);font-weight:700}
 .pc-bat{font-size:0.55rem;color:rgba(120,120,120,0.45)}
@@ -810,7 +812,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* Chronos cyan/magenta circuit board side panels */
 .cc-side{
   width:72px;flex-shrink:0;position:absolute;top:0;bottom:0;
-  cursor:pointer;touch-action:manipulation;
+  cursor:pointer;touch-action:none;
   -webkit-tap-highlight-color:transparent;user-select:none;
   z-index:10;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:12px;
@@ -900,7 +902,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 @keyframes nebulaB{from{opacity:0.6}to{opacity:1}}
 
 .cc-body{
-  width:min(96vw,580px);flex-shrink:0;
+  width:min(96vw,580px);min-width:280px;flex-shrink:0;
   background:rgba(7,5,28,0.93);
   border-radius:20px 20px 12px 12px;
   box-shadow:
@@ -948,7 +950,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-ctrls{display:flex;gap:5px}
 /* 2. Buttons */
 .cc-cbtn{
-  padding:5px 11px;border-radius:4px;
+  padding:7px 11px;min-height:36px;border-radius:4px;
   border:1.5px solid rgba(0,200,255,0.5);
   background:rgba(0,10,30,0.75);
   color:rgba(0,230,255,0.92);
@@ -963,7 +965,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-cstatus{font-size:0.6rem;color:rgba(0,220,255,0.82);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;font-family:'Orbitron',sans-serif;text-shadow:0 0 8px rgba(0,200,255,0.3)}
 
 /* Displays */
-.cc-displays{display:flex;padding:0 80px;position:relative;z-index:2}
+.cc-displays{display:flex;padding:0 max(72px,14vw);position:relative;z-index:2}
 .cc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
 /* 4. Player labels */
 .cc-plbl-1{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,200,255,0.45);font-family:'Orbitron',sans-serif;transition:color 0.3s}
@@ -994,7 +996,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(100,0,200,0.3),transparent);margin:4px 3px;flex-shrink:0}
 
 /* 6. Bottom bar */
-.cc-bot{display:flex;justify-content:center;align-items:center;padding:6px 80px 9px;position:relative;z-index:2}
+.cc-bot{display:flex;justify-content:center;align-items:center;padding:6px max(72px,14vw) 9px;position:relative;z-index:2}
 .cc-bname{display:flex;font-family:'Orbitron',sans-serif;font-size:0.52rem;font-weight:700;gap:0}
 .cc-bname span:first-child{color:rgba(0,200,255,0.6)}
 .cc-bname span:last-child{color:rgba(200,0,255,0.55)}
@@ -1006,7 +1008,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 @keyframes rippleA{to{transform:scale(4);opacity:0}}
 
 /* ═══════════ LANDSCAPE ROTATION ═══════════ */
-.s3-btn.rotate-on{border-color:#C4873A;color:#C4873A;}
+.s3-btn.rotate-on{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.12);}
 
 /* ── Rotate guidance toast ── */
 .rotate-toast{
@@ -1033,7 +1035,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   transition:color 0.15s;
 }
 .rotate-toast-close:hover{color:#ccc}
-.gameover{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.82);background:#0c0c0c;border:1.5px solid #222;border-radius:18px;padding:1.8rem 2rem;text-align:center;z-index:500;box-shadow:0 28px 80px rgba(0,0,0,0.85);opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.gameover{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.82);background:#0c0c0c;border:1.5px solid #222;border-radius:18px;padding:1.5rem 1.5rem;text-align:center;z-index:500;box-shadow:0 28px 80px rgba(0,0,0,0.85);opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);width:min(92vw,320px)}
 .gameover.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
 .go-flag{font-size:1.8rem;margin-bottom:0.35rem}
 .go-title{font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:0.18rem}
@@ -1080,8 +1082,50 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* Fullscreen active state */
 :fullscreen #rotateBtn{display:none}
 :-webkit-full-screen #rotateBtn{display:none}
-.s3-btn.fs-active{border-color:#C4873A;color:#C4873A}
+.s3-btn.fs-active{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.12)}
+/* ── Topbar labeled buttons ── */
+.s3-btn-lbl{width:auto!important;padding:0 10px;gap:5px;flex-direction:row}
+.s3-btn-text{font-family:'DM Sans',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.04em;color:inherit;white-space:nowrap}
 
+
+
+/* ── Safe area insets (iPhone notch / home bar) ── */
+@supports(padding:max(0px)){
+  .s3-bar{padding-left:max(1rem,env(safe-area-inset-left));padding-right:max(1rem,env(safe-area-inset-right))}
+  .mob-header{padding-left:max(1.1rem,env(safe-area-inset-left));padding-right:max(1.1rem,env(safe-area-inset-right));padding-top:max(0.9rem,env(safe-area-inset-top))}
+  .mob-content{padding-left:max(1rem,env(safe-area-inset-left));padding-right:max(1rem,env(safe-area-inset-right));padding-bottom:max(2rem,env(safe-area-inset-bottom))}
+  .preset-strip{margin-bottom:max(4px,env(safe-area-inset-bottom))}
+  .clock-view{padding-bottom:env(safe-area-inset-bottom)}
+}
+
+/* ── Small phone (≤380px) — tighter clock spacing ── */
+@media(max-width:380px){
+  .hc-time,.pc-time{font-size:clamp(1.85rem,12vw,2.6rem)!important}
+  .cc-t1,.cc-t2{font-size:clamp(1.6rem,11vw,2.2rem)!important}
+  .hc-side,.cc-side{width:58px!important}
+  .pc-side{width:60px!important}
+  .hc-top,.hc-bot{padding-left:58px!important;padding-right:58px!important}
+  .hc-displays{padding-left:58px!important;padding-right:58px!important}
+  .pc-top,.pc-bot,.pc-displays{padding-left:60px!important;padding-right:60px!important}
+  .cc-displays,.cc-bot{padding-left:60px!important;padding-right:60px!important}
+  .s3-bar{height:46px}
+  .clock-view{padding-top:46px}
+  .go-btns{flex-direction:column;gap:0.4rem}
+  .go-again,.go-new{width:100%}
+}
+
+/* ── Landscape on mobile — shrink clock vertically ── */
+@media(max-height:500px) and (orientation:landscape){
+  .hc-top,.pc-top{padding-top:7px;padding-bottom:6px}
+  .hc-displays,.pc-displays,.cc-displays{gap:0}
+  .hc-disp,.pc-disp{padding:6px 4px 5px}
+  .cc-disp{padding:6px 3px 5px}
+  .hc-bot,.pc-bot,.cc-bot{padding-top:3px;padding-bottom:5px}
+  .preset-strip{margin-top:4px}
+  .clock-status{margin-top:2px}
+  .hc-time,.pc-time{font-size:clamp(1.8rem,7.5vh,2.6rem)!important}
+  .cc-t1,.cc-t2{font-size:clamp(1.6rem,7vh,2.2rem)!important}
+}
 </style>
 </head>
 <body>
@@ -1225,14 +1269,14 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="s3-bar">
     <div class="s3-brand"><span class="chess">Chess</span><span class="connect">Connect</span></div>
     <div class="s3-actions">
-      <button class="s3-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
-        <svg id="fsIcon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
-      </button>
-      <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode">
+
+      <button class="s3-btn s3-btn-lbl" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>
+        <span class="s3-btn-text">Rotate</span>
       </button>
-      <button class="s3-btn" onclick="newGame()" title="Back to clock selection" aria-label="Back to clock selection">
+      <button class="s3-btn s3-btn-lbl" onclick="newGame()" title="Back to clock selection" aria-label="Back to clock selection">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="s3-btn-text">Home</span>
       </button>
     </div>
   </div>
