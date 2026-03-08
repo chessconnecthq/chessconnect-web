@@ -1068,19 +1068,34 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .s3-btn.fs-active{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.12)}
 
 
-/* ── Fit to Screen mode — scale clock to fill viewport ── */
-.clock-view.fit-mode{background:#0a0a0f}
+/* ── Fit to Screen mode ── */
+.fit-mode-active .s3-bar{
+  opacity:0;pointer-events:none;
+  transition:opacity 0.3s;
+}
+.clock-view.fit-mode{
+  background:#0a0a0f;
+  padding-top:0!important;
+}
 .clock-view.fit-mode .clock-3d{
   transform-origin:center center;
-  /* JS sets transform:scale() dynamically */
   transition:transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
 }
 .clock-view.fit-mode .preset-strip,
 .clock-view.fit-mode .clock-status{
   opacity:0;pointer-events:none;height:0;overflow:hidden;margin:0;padding:0;
 }
-.clock-view.fit-mode .s3-bar{opacity:0.15}
-.clock-view.fit-mode .s3-bar:hover{opacity:1}
+/* Tap anywhere on fit-mode to show exit hint */
+.fit-exit-hint{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.15);border-radius:20px;
+  padding:6px 16px;font-family:'DM Sans',sans-serif;
+  font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.7);
+  z-index:9999;pointer-events:none;
+  opacity:0;transition:opacity 0.3s;white-space:nowrap;
+}
+.fit-exit-hint.show{opacity:1}
 </style>
 </head>
 <body>
@@ -1820,6 +1835,7 @@ function newGame() {
   if(isFullscreen) exitFullscreen();
   // Also clean up fit-mode if active
   document.querySelectorAll('.clock-view.fit-mode').forEach(v=>{ v.classList.remove('fit-mode'); const w=v.querySelector('.clock-3d'); if(w) w.style.transform=''; });
+  const s3el=document.getElementById('screen3'); if(s3el) s3el.classList.remove('fit-mode-active');
   releaseWakeLock(); // Screen can sleep again
   document.getElementById('goBanner').classList.remove('show');
   // Reset landscape
@@ -2210,45 +2226,79 @@ function toggleFullscreen() {
 function enterFullscreen() {
   const view = document.querySelector('.clock-view.show');
   if (!view) return;
-  view.classList.add('fit-mode');
-  applyFitScale(view);
-  isFullscreen = true;
-  updateFsBtn(true);
-  // Reapply on resize
-  window._fitResizeHandler = () => applyFitScale(view);
-  window.addEventListener('resize', window._fitResizeHandler);
+
+  // Step 1 — request OS fullscreen (hides status bar, browser UI)
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+  const doFit = () => {
+    // Step 2 — hide topbar, remove clock-view top padding
+    document.getElementById('screen3').classList.add('fit-mode-active');
+    view.classList.add('fit-mode');
+    // Step 3 — scale clock to fill full viewport
+    applyFitScale(view);
+    isFullscreen = true;
+    updateFsBtn(true);
+    // Show exit hint briefly
+    const hint = document.getElementById('fitExitHint');
+    if (hint) {
+      hint.classList.add('show');
+      setTimeout(() => hint.classList.remove('show'), 2800);
+    }
+    // Reapply on resize (orientation change)
+    window._fitResizeHandler = () => applyFitScale(view);
+    window.addEventListener('resize', window._fitResizeHandler);
+  };
+
+  if (req) {
+    req.call(el).then(doFit).catch(doFit); // fallback: still do fit even if OS fullscreen blocked
+  } else {
+    doFit(); // iOS Safari — no OS fullscreen but still hide topbar + scale
+  }
 }
 
 function applyFitScale(view) {
   const wrapper = view.querySelector('.clock-3d');
   if (!wrapper) return;
-  // Reset scale so we can measure natural size
+  // Reset scale to measure natural dimensions
   wrapper.style.transform = 'scale(1)';
   const surface = view.querySelector('.clock-surface');
   if (!surface) return;
-  const naturalW = surface.offsetWidth;
-  const naturalH = surface.offsetHeight;
-  const barH = 46; // topbar height
-  const availW = window.innerWidth;
-  const availH = window.innerHeight - barH;
-  if (!naturalW || !naturalH) return;
-  const scaleX = availW / naturalW;
-  const scaleY = availH / naturalH;
-  const scale = Math.min(scaleX, scaleY) * 0.96; // 4% breathing room
-  wrapper.style.transform = 'scale(' + scale + ')';
+  // Small delay to let layout settle after padding-top:0
+  requestAnimationFrame(() => {
+    const naturalW = surface.offsetWidth;
+    const naturalH = surface.offsetHeight;
+    const availW = window.innerWidth;
+    const availH = window.innerHeight;
+    if (!naturalW || !naturalH) return;
+    const scaleX = availW / naturalW;
+    const scaleY = availH / naturalH;
+    const scale = Math.min(scaleX, scaleY) * 0.94;
+    wrapper.style.transform = 'scale(' + scale + ')';
+  });
 }
 
 function exitFullscreen() {
+  // Restore clock view
   const view = document.querySelector('.clock-view.fit-mode');
   if (view) {
     view.classList.remove('fit-mode');
     const wrapper = view.querySelector('.clock-3d');
     if (wrapper) wrapper.style.transform = '';
   }
+  // Restore topbar
+  const s3 = document.getElementById('screen3');
+  if (s3) s3.classList.remove('fit-mode-active');
+  // Remove resize listener
   if (window._fitResizeHandler) {
     window.removeEventListener('resize', window._fitResizeHandler);
     window._fitResizeHandler = null;
   }
+  // Exit OS fullscreen if active
+  const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+  if (exitFs && (document.fullscreenElement || document.webkitFullscreenElement)) {
+    exitFs.call(document).catch(() => {});
+  }
+  unlockOrientation();
   isFullscreen = false;
   updateFsBtn(false);
 }
@@ -2316,5 +2366,6 @@ function onFsChange() {
 // Init default preset selection
 pickTC(600, 5, '10+5', document.getElementById('tc-10+5'));
 </script>
+<div class="fit-exit-hint" id="fitExitHint">Tap FIT again to exit · Swipe up for browser controls</div>
 </body>
 </html>
