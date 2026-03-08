@@ -660,8 +660,8 @@
         </div>
       </div>
       <select class="filter-select" id="filterTrial" onchange="onFilterChange()">
-        <option value="">Select Demo</option>
-        <option value="yes">Demo Available</option>
+        <option value="">Select Trial</option>
+        <option value="yes">Trial Available</option>
       </select>
       <button class="btn-clear-filters" id="btnClear" onclick="clearFilters()" style="display:none;">✕ Clear</button>
     </div>
@@ -750,10 +750,10 @@
       </div>
     </div>
     <div class="drawer-filter-group">
-      <label class="drawer-filter-label">Demo Class</label>
+      <label class="drawer-filter-label">Trial Class</label>
       <select class="filter-select" id="filterTrialM" onchange="syncFromDrawer()">
-        <option value="">Select Demo</option>
-        <option value="yes">Demo Available</option>
+        <option value="">Select Trial</option>
+        <option value="yes">Trial Available</option>
       </select>
     </div>
   </div>
@@ -1034,7 +1034,7 @@
     if (rating)         add(`Rating: ${rating.replace('-',' – ')}`, `document.getElementById('filterRating').value=''; onFilterChange()`);
     if (country)        add(country,   `document.getElementById('filterCountry').value=''; onFilterChange()`);
     languages.forEach(l => add(l,      `clearOneLang('${l}')`));
-    if (trial)          add('Demo only', `document.getElementById('filterTrial').value=''; onFilterChange()`);
+    if (trial)          add('Trial only', `document.getElementById('filterTrial').value=''; onFilterChange()`);
   }
 
   // ── LANGUAGE MULTI-SELECT HELPERS ──
