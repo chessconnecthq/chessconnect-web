@@ -1096,6 +1096,88 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   opacity:0;transition:opacity 0.3s;white-space:nowrap;
 }
 .fit-exit-hint.show{opacity:1}
+
+/* ══════════════════════════════════════
+   SCREEN 3 — ROTATE YOUR PHONE
+══════════════════════════════════════ */
+.rotate-screen-content{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:0;padding-bottom:1rem;
+  min-height:calc(100vh - 80px);
+}
+.rotate-graphic-wrap{
+  display:flex;flex-direction:column;align-items:center;
+  gap:1rem;margin:1.2rem 0 1rem;
+}
+.rotate-graphic{
+  display:flex;align-items:center;justify-content:center;
+  gap:0.5rem;flex-wrap:nowrap;
+}
+.rotate-phone-svg{
+  width:72px;height:auto;
+  animation:phoneTilt 2.8s ease-in-out infinite;
+  transform-origin:center center;
+  filter:drop-shadow(0 4px 16px rgba(30,115,232,0.25));
+}
+.rotate-arrow-wrap{
+  display:flex;align-items:center;
+}
+.rotate-arrow-svg{
+  width:44px;height:44px;
+  animation:arrowPulse 2.8s ease-in-out infinite;
+}
+.rotate-phone-landscape{
+  width:128px;height:auto;
+  filter:drop-shadow(0 4px 20px rgba(196,135,58,0.3));
+  animation:landscapePop 2.8s ease-in-out infinite;
+}
+@keyframes phoneTilt{
+  0%,15%{transform:rotate(0deg);opacity:1}
+  45%,100%{transform:rotate(90deg);opacity:0.3}
+}
+@keyframes arrowPulse{
+  0%,20%{opacity:0.3;transform:scale(0.95)}
+  50%{opacity:1;transform:scale(1.05)}
+  80%,100%{opacity:0.3;transform:scale(0.95)}
+}
+@keyframes landscapePop{
+  0%,30%{opacity:0.25;transform:scale(0.92)}
+  55%,100%{opacity:1;transform:scale(1)}
+}
+.rotate-status{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 16px;border-radius:20px;
+  border:1.5px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.04);
+  font-family:'DM Sans',sans-serif;font-size:0.75rem;
+  font-weight:600;color:#666;transition:all 0.4s;
+}
+.rotate-status.ready{
+  border-color:rgba(16,185,129,0.5);
+  background:rgba(16,185,129,0.08);
+  color:#10B981;
+}
+.rotate-status-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#444;transition:background 0.4s;
+  flex-shrink:0;
+}
+.rotate-status.ready .rotate-status-dot{
+  background:#10B981;
+  box-shadow:0 0 8px rgba(16,185,129,0.6);
+  animation:dotPulse 1.5s ease infinite;
+}
+.rotate-instructions{
+  display:flex;flex-direction:column;gap:0.6rem;
+  width:100%;max-width:340px;margin:0.2rem 0 0;
+}
+.rotate-tip{
+  display:flex;align-items:flex-start;gap:10px;
+  font-family:'DM Sans',sans-serif;font-size:0.78rem;
+  color:#555;line-height:1.45;
+}
+.rotate-tip svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+
 </style>
 </head>
 <body>
@@ -1110,7 +1192,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="mob-line" id="sl1"></div>
       <div class="mob-step"><div class="mob-dot" id="dot2">2</div><div class="mob-slbl">Time</div></div>
       <div class="mob-line"></div>
-      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Play</div></div>
+      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Rotate</div></div>
+      <div class="mob-line"></div>
+      <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
     </div>
   </div>
   <!-- CONTENT -->
@@ -1178,7 +1262,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="mob-line filled"></div>
       <div class="mob-step active"><div class="mob-dot active">2</div><div class="mob-slbl">Time</div></div>
       <div class="mob-line"></div>
-      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Play</div></div>
+      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Rotate</div></div>
+      <div class="mob-line"></div>
+      <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
     </div>
   </div>
   <!-- CONTENT -->
@@ -1227,12 +1313,106 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
   <div class="s2-btns">
     <button class="back-btn" onclick="goToStep1()">← Back</button>
-    <button class="launch-btn" onclick="launchClock()">Start Clock →</button>
+    <button class="launch-btn" onclick="goToStep3()">Next →</button>
   </div>
   </div><!-- /mob-content -->
 </div>
 
-<!-- ═══════════════ SCREEN 3 — CLOCK ═══════════════ -->
+
+<!-- ═══════════════ SCREEN 3 — ROTATE YOUR PHONE ═══════════════ -->
+<div class="screen hidden" id="screen3rotate">
+  <!-- HEADER -->
+  <div class="mob-header">
+    <div class="mob-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="mob-steps">
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Choose</div></div>
+      <div class="mob-line filled"></div>
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Time</div></div>
+      <div class="mob-line filled"></div>
+      <div class="mob-step active"><div class="mob-dot active">3</div><div class="mob-slbl">Rotate</div></div>
+      <div class="mob-line"></div>
+      <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
+    </div>
+  </div>
+  <!-- CONTENT -->
+  <div class="mob-content rotate-screen-content">
+    <div class="mob-title">Rotate Your Phone</div>
+    <div class="mob-sub">This clock is designed for landscape mode</div>
+
+    <!-- Phone rotation graphic -->
+    <div class="rotate-graphic-wrap">
+      <div class="rotate-graphic" id="rotateGraphic">
+        <!-- Phone SVG -->
+        <svg class="rotate-phone-svg" viewBox="0 0 80 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Phone body -->
+          <rect x="4" y="4" width="72" height="132" rx="10" fill="#1a1a2e" stroke="#1E73E8" stroke-width="2.5"/>
+          <!-- Screen -->
+          <rect x="10" y="18" width="60" height="100" rx="4" fill="#0d0d1a" stroke="#2a2a4a" stroke-width="1"/>
+          <!-- Mini clock display on screen -->
+          <rect x="14" y="38" width="24" height="16" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+          <text x="26" y="50" font-family="monospace" font-size="7" fill="#C4873A" text-anchor="middle">10:00</text>
+          <rect x="42" y="38" width="24" height="16" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+          <text x="54" y="50" font-family="monospace" font-size="7" fill="#C4873A" text-anchor="middle">10:00</text>
+          <text x="40" y="33" font-family="sans-serif" font-size="4.5" fill="#C4873A" text-anchor="middle" letter-spacing="1">CHESS CLOCK</text>
+          <!-- Home bar -->
+          <rect x="30" y="126" width="20" height="3" rx="1.5" fill="#333"/>
+          <!-- Speaker -->
+          <rect x="28" y="9" width="24" height="3" rx="1.5" fill="#333"/>
+          <!-- Camera -->
+          <circle cx="40" cy="10.5" r="1.5" fill="#222"/>
+        </svg>
+        <!-- Curved arrow showing rotation -->
+        <div class="rotate-arrow-wrap">
+          <svg class="rotate-arrow-svg" viewBox="0 0 60 60" fill="none">
+            <path d="M50 10 Q58 30 50 50" stroke="#1E73E8" stroke-width="2.5" stroke-dasharray="5 3" stroke-linecap="round" fill="none" opacity="0.7"/>
+            <polygon points="44,48 54,52 50,42" fill="#1E73E8" opacity="0.8"/>
+          </svg>
+        </div>
+        <!-- Phone in landscape (target state) -->
+        <svg class="rotate-phone-landscape" viewBox="0 0 140 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="132" height="72" rx="10" fill="#1a1a2e" stroke="#1E73E8" stroke-width="2.5"/>
+          <rect x="18" y="10" width="104" height="60" rx="4" fill="#0d0d1a" stroke="#2a2a4a" stroke-width="1"/>
+          <!-- Two clock displays side by side -->
+          <rect x="22" y="22" width="44" height="28" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+          <text x="44" y="40" font-family="monospace" font-size="11" fill="#C4873A" text-anchor="middle">10:00</text>
+          <text x="44" y="17" font-family="sans-serif" font-size="5" fill="#8B6914" text-anchor="middle">PLAYER 1</text>
+          <rect x="74" y="22" width="44" height="28" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+          <text x="96" y="40" font-family="monospace" font-size="11" fill="#C4873A" text-anchor="middle">10:00</text>
+          <text x="96" y="17" font-family="sans-serif" font-size="5" fill="#8B6914" text-anchor="middle">PLAYER 2</text>
+          <!-- Side panels hint -->
+          <rect x="4" y="4" width="14" height="72" rx="10" fill="#2a1208" stroke="#C4873A" stroke-width="1" opacity="0.6"/>
+          <rect x="122" y="4" width="14" height="72" rx="10" fill="#2a1208" stroke="#C4873A" stroke-width="1" opacity="0.6"/>
+          <!-- Home bar -->
+          <rect x="8" y="36" width="3" height="8" rx="1.5" fill="#333"/>
+        </svg>
+      </div>
+
+      <!-- Status indicator — updates when phone is actually rotated -->
+      <div class="rotate-status" id="rotateStatus">
+        <div class="rotate-status-dot" id="rotateStatusDot"></div>
+        <span id="rotateStatusText">Waiting for rotation…</span>
+      </div>
+    </div>
+
+    <div class="rotate-instructions">
+      <div class="rotate-tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Hold your phone horizontally — both players sit across the table
+      </div>
+      <div class="rotate-tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
+        Each player taps their side panel to pass the turn
+      </div>
+    </div>
+
+    <div class="s2-btns" style="margin-top:auto;padding-top:1.2rem">
+      <button class="back-btn" onclick="goToStep2()">← Back</button>
+      <button class="launch-btn" id="startClockBtn" onclick="launchClock()">Start Clock →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN 4 — CLOCK ═══════════════ -->
 <div class="screen hidden" id="screen3">
 
   <!-- Topbar -->
@@ -1757,6 +1937,54 @@ function resetPlayerLabels() {
 
 function goToStep2() { if(theme) show('screen2'); }
 function goToStep1() { show('screen1'); }
+function goToStep3() {
+  // Validate time before proceeding
+  const selChip = document.querySelector('#screen2 .tc-chip.sel');
+  if (!selChip) {
+    const h=Math.max(0,Math.min(9,  Math.floor(Math.abs(parseInt(document.getElementById('ctH').value)||0))));
+    const m=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctM').value)||0))));
+    const s=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctS').value)||0))));
+    const i=Math.max(0,Math.min(300,Math.floor(Math.abs(parseInt(document.getElementById('ctI').value)||0))));
+    const tot=h*3600+m*60+s;
+    if(tot>0){baseTime=tot;inc=i;}
+    else { alert('Please set a valid time (at least 1 second).'); return; }
+  }
+  show('screen3rotate');
+  checkRotateStatus();
+}
+
+function checkRotateStatus() {
+  const isLandscapeNow = window.innerWidth > window.innerHeight;
+  const dot = document.getElementById('rotateStatusDot');
+  const text = document.getElementById('rotateStatusText');
+  const status = document.getElementById('rotateStatus');
+  const graphic = document.getElementById('rotateGraphic');
+  if (!dot || !text || !status) return;
+  if (isLandscapeNow) {
+    status.classList.add('ready');
+    text.textContent = '✓ Phone rotated — ready to play!';
+    if (graphic) graphic.style.opacity = '0.4';
+  } else {
+    status.classList.remove('ready');
+    text.textContent = 'Waiting for rotation…';
+    if (graphic) graphic.style.opacity = '1';
+  }
+}
+
+// Listen for orientation change on rotate screen
+window.addEventListener('resize', () => {
+  if (!document.getElementById('screen3rotate').classList.contains('hidden')) {
+    checkRotateStatus();
+    // Auto-lock landscape when user rotates
+    if (window.innerWidth > window.innerHeight) {
+      try {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      } catch(e) {}
+    }
+  }
+});
 function show(id) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
