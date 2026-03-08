@@ -165,18 +165,18 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-card{border-radius:12px;border:2px solid #E5E9F2;background:#fff;cursor:pointer;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;box-shadow:0 1px 6px rgba(16,44,87,0.06);-webkit-tap-highlight-color:transparent;user-select:none}
 .clock-card:active{transform:scale(0.985)}
 .clock-card.selected{border-color:#1E73E8!important;box-shadow:0 0 0 1px #1E73E8,0 4px 16px rgba(30,115,232,0.12)}
-.card-inner{display:flex;flex-direction:row;align-items:stretch;position:relative;overflow:hidden}
-.card-preview{flex-shrink:0;width:105px;height:100px;overflow:hidden;position:relative}
+.card-inner{display:flex;flex-direction:column;position:relative;overflow:hidden}
+.card-preview{width:100%;height:160px;overflow:hidden;position:relative;flex-shrink:0}
 .preview-scaler{width:428px;transform:scale(0.245);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
 .preview-scaler .hc-body,.preview-scaler .pc-body,.preview-scaler .cc-body{width:428px!important;min-height:343px}
-.card-info{flex:1;padding:0.65rem 0.7rem 0.65rem;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.card-info{padding:0.6rem 0.75rem;display:flex;flex-direction:column;justify-content:center}
 .card-name{font-size:0.88rem;font-weight:800;color:#102C57;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-desc{font-size:0.59rem;color:#6B7280;line-height:1.45}
 .card-check{width:20px;height:20px;border-radius:50%;border:2px solid #E5E9F2;background:#F8FAFF;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;position:absolute;top:0.5rem;right:0.5rem;z-index:5}
 .clock-card.selected .card-check{background:#1E73E8;border-color:#1E73E8}
 .card-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
 .clock-card.selected .card-check svg{opacity:1}
-.card-heritage,.card-pro,.card-chronos,.card-xconnect{--ca:#1E73E8}
+.card-heritage,.card-pro,.card-chronos{--ca:#1E73E8}
 
 /* ── Install App button ── */
 .install-wrap{width:100%;margin-top:0.6rem;display:none}
@@ -253,8 +253,8 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   .mob-content{padding:2rem 1.75rem;flex:1;justify-content:center}
   .mob-title{font-size:1.65rem;margin-bottom:0.3rem}
   .mob-sub{margin-bottom:1.2rem}
-  .clock-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;max-width:580px}
-  .card-preview{width:115px;height:100%;min-height:116px}
+  .clock-cards{max-width:480px}
+  .card-preview{width:100%;height:170px}
   .preview-scaler{transform:scale(0.268)}
   .next-btn{max-width:580px}
   .tc-wrap,.custom-row,.s2-btns{max-width:440px}
@@ -266,7 +266,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   .mob-content{padding:2.5rem 2.5rem}
   .mob-title{font-size:1.9rem}
   .clock-cards{max-width:640px}
-  .card-preview{width:125px}
+  .card-preview{width:100%;height:180px}
   .preview-scaler{transform:scale(0.292)}
   .next-btn{max-width:640px}
 }
@@ -275,12 +275,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-fs-btn,.hc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
 .pc-fs-btn,.pc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
 .cc-fs-btn,.cc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
-.xc-fs-btn,.xc-snd-btn{padding:6px 14px!important;display:inline-flex;align-items:center;justify-content:center}
 /* Muted state — red tint on sound button */
 .hc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
 .pc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
 .cc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
-.xc-snd-btn.muted{border-color:rgba(255,68,68,0.6)!important;color:#FF4444!important}
 
 /* ── HERITAGE MINI CLOCK ── */
 .prev-heritage{background:repeating-linear-gradient(173deg,transparent 0,transparent 6px,rgba(0,0,0,0.04) 6px,rgba(0,0,0,0.04) 7px),linear-gradient(158deg,#A0522D 0%,#6B3010 40%,#3C1A08 80%,#2A1206 100%);display:flex;flex-direction:column;padding:4px 5px 3px;gap:3px;border:1px solid rgba(160,90,35,0.25)}
@@ -381,181 +379,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .launch-btn{flex:1;padding:0.85rem;border-radius:10px;border:none;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(30,115,232,0.3);transition:all 0.2s;letter-spacing:0.02em}
 .launch-btn:hover{background:#102C57;transform:translateY(-1px)}
 
-/* ═══════════ CHESSCONNECT THEME — APPLE PRECISION ═══════════ */
-.xc-body{
-  position:relative;
-  background:linear-gradient(180deg,#FFFFFF 0%,#F5F5F7 100%);
-  border-radius:16px;
-  border:1px solid #D1D5DB;
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.9) inset,
-    0 2px 4px rgba(0,0,0,0.06),
-    0 8px 24px rgba(0,0,0,0.08),
-    0 24px 48px rgba(16,44,87,0.06);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  width:100%;
-}
 
-/* Top bar — logo + status */
-.xc-topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 80px 12px;
-  position:relative;z-index:11;
-  border-bottom:1px solid #E5E9F2;
-  background:linear-gradient(180deg,#FFFFFF,#FAFAFA);
-}
-.xc-logo{font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:-0.3px}
-.xc-logo .chess{color:#102C57}
-.xc-logo .connect{color:#4285F4}
-.xc-status{display:flex;align-items:center;gap:6px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280}
-.xc-dot{width:6px;height:6px;border-radius:50%;background:#1E73E8;opacity:0}
-.xc-dot.active{opacity:1;animation:xc-pulse 1.4s ease-in-out infinite}
-@keyframes xc-pulse{0%,100%{box-shadow:0 0 0 0 rgba(30,115,232,0.5)}50%{box-shadow:0 0 0 4px rgba(30,115,232,0)}}
-
-/* Controls row */
-.xc-controls{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:10px 80px;
-  position:relative;z-index:11;
-  border-bottom:1px solid #E5E9F2;
-}
-.xc-cbtn{
-  padding:6px 18px;border-radius:7px;
-  font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:700;
-  letter-spacing:0.04em;text-transform:uppercase;
-  border:1px solid #E5E9F2;background:#fff;color:#6B7280;
-  cursor:pointer;transition:all 0.15s;
-}
-.xc-cbtn:hover{border-color:#1E73E8;color:#1E73E8;background:#EEF4FF}
-.xc-cbtn.primary{background:#1E73E8;color:#fff;border-color:#1E73E8}
-.xc-cbtn.primary:hover{background:#102C57;border-color:#102C57}
-
-/* Main clock face — two player panels side by side */
-.xc-face{display:flex;position:relative;z-index:1;}
-
-/* Player press button — absolute full-height side panels, same as Heritage/Pro/Chronos */
-.xc-btn{
-  width:72px;flex-shrink:0;
-  position:absolute;top:0;bottom:0;
-  background:linear-gradient(160deg,#163860 0%,#102C57 50%,#0C2244 100%);
-  border:none;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:8px;z-index:10;
-  transition:box-shadow 0.08s;
-  overflow:hidden;touch-action:manipulation;
-  -webkit-tap-highlight-color:transparent;
-}
-#xc-p1btn{
-  left:0;border-radius:16px 0 0 16px;
-  box-shadow:inset -3px 0 8px rgba(0,0,0,0.3),inset 2px 0 4px rgba(255,255,255,0.06);
-}
-#xc-p2btn{
-  right:0;border-radius:0 16px 16px 0;
-  box-shadow:inset 3px 0 8px rgba(0,0,0,0.3),inset -2px 0 4px rgba(255,255,255,0.06);
-}
-/* Press — depresses inward */
-#xc-p1btn:active,#xc-p1btn.pressing{
-  transform:translateX(5px);
-  box-shadow:inset 8px 0 20px rgba(0,0,0,0.5),inset 2px 0 6px rgba(0,0,0,0.4);
-}
-#xc-p2btn:active,#xc-p2btn.pressing{
-  transform:translateX(-5px);
-  box-shadow:inset -8px 0 20px rgba(0,0,0,0.5),inset -2px 0 6px rgba(0,0,0,0.4);
-}
-/* Active state — lighter + blue edge glow */
-.xc-btn.xc-active{background:linear-gradient(160deg,#1a4a7a 0%,#163d6a 50%,#102C57 100%);}
-#xc-p1btn.xc-active{box-shadow:inset -3px 0 8px rgba(0,0,0,0.2),-3px 0 16px rgba(30,115,232,0.3),−1px 0 6px rgba(30,115,232,0.2);}
-#xc-p2btn.xc-active{box-shadow:inset 3px 0 8px rgba(0,0,0,0.2),3px 0 16px rgba(30,115,232,0.3),1px 0 6px rgba(30,115,232,0.2);}
-.xc-btn.inactive-l{filter:brightness(0.55);cursor:not-allowed;}
-.xc-btn-label{
-  font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:800;
-  text-transform:uppercase;letter-spacing:0.32em;
-  color:rgba(255,255,255,0.4);
-  writing-mode:vertical-rl;text-orientation:mixed;
-  position:relative;z-index:1;pointer-events:none;
-}
-.xc-btn.xc-active .xc-btn-label{color:rgba(255,255,255,0.8);}
-/* Fullscreen landscape */
-@media(orientation:landscape){
-  :fullscreen .xc-btn,:-webkit-full-screen .xc-btn{width:max(80px,11vw)!important}
-}
-
-/* Player time panels */
-.xc-panels{flex:1;display:flex;padding:0 72px;box-sizing:border-box;position:relative;z-index:11;}
-.xc-panel{
-  flex:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:28px 16px 24px;
-  position:relative;
-  transition:background 0.2s;
-  cursor:pointer;
-}
-.xc-panel.xc-active{background:#fff}
-.xc-panel.xc-inactive{background:#F8FAFF}
-
-/* Blue accent bar on active panel */
-.xc-accent{
-  position:absolute;top:0;left:0;right:0;height:3px;
-  background:#1E73E8;
-  opacity:0;transition:opacity 0.2s;
-  border-radius:0;
-}
-.xc-panel.xc-active .xc-accent{opacity:1}
-
-/* Player label */
-.xc-plbl{
-  font-family:'DM Sans',sans-serif;font-size:0.55rem;font-weight:800;
-  text-transform:uppercase;letter-spacing:0.14em;
-  color:#9CA3AF;margin-bottom:8px;
-  transition:color 0.2s;
-}
-.xc-panel.xc-active .xc-plbl{color:#1E73E8}
-
-/* Time display */
-.xc-time{
-  font-family:'DM Sans',sans-serif;
-  font-size:3.4rem;font-weight:800;letter-spacing:-2px;
-  line-height:1;
-  color:#D1D5DB;
-  transition:color 0.2s;
-}
-.xc-panel.xc-active .xc-time{color:#102C57}
-.xc-panel.xc-low .xc-time{color:#EF4444!important}
-
-/* Move count */
-.xc-moves{
-  font-family:'DM Sans',sans-serif;font-size:0.58rem;
-  font-weight:600;color:#D1D5DB;
-  margin-top:8px;letter-spacing:0.04em;
-  transition:color 0.2s;
-}
-.xc-panel.xc-active .xc-moves{color:#6B7280}
-
-/* Increment badge */
-.xc-inc{
-  position:absolute;bottom:10px;right:12px;
-  font-size:0.5rem;font-weight:700;color:#9CA3AF;
-  background:#F3F4F6;border-radius:4px;padding:2px 5px;
-  letter-spacing:0.04em;
-}
-.xc-panel.xc-active .xc-inc{background:#EEF4FF;color:#1E73E8}
-
-/* Vertical divider */
-.xc-divider{width:1px;background:#E5E9F2;align-self:stretch;margin:12px 0}
-
-/* Bottom footer */
-.xc-footer{
-  display:flex;align-items:center;justify-content:center;
-  padding:8px 80px;
-  position:relative;z-index:11;
-  border-top:1px solid #E5E9F2;
-  background:linear-gradient(180deg,#FAFAFA,#F5F5F7);
-}
-.xc-edition{font-family:'DM Sans',sans-serif;font-size:0.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#9CA3AF}
-
-/* ═══════════ SCREEN 3 — ACTIVE CLOCK ═══════════ */
 #screen3{position:fixed;inset:0;padding:0;background:#0a0a0f;overflow:hidden;z-index:100;display:flex;flex-direction:column;touch-action:manipulation}
 
 /* Topbar */
@@ -1238,10 +1062,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pro-clock .po-text{color:#ffffff}
 .chronos-clock .pause-overlay{background:rgba(0,0,20,0.82)}
 .chronos-clock .po-text{color:#00EFFF}
-.xconnect-clock .pause-overlay{background:rgba(240,245,255,0.88);backdrop-filter:blur(6px)}
-.xconnect-clock .po-text{color:#102C57}
-.xconnect-clock .po-sub{color:rgba(16,44,87,0.45)}
-.xconnect-clock .po-icon{filter:none}
 
 /* ═══════════ FULLSCREEN TOAST ═══════════ */
 .fs-toast{
@@ -1262,37 +1082,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 :-webkit-full-screen #rotateBtn{display:none}
 .s3-btn.fs-active{border-color:#C4873A;color:#C4873A}
 
-/* ── ChessConnect fullscreen fix — fill edge to edge, no floating card ── */
-:fullscreen #xconnect-clock,
-:fullscreen #xconnect-clock .clock-3d,
-:-webkit-full-screen #xconnect-clock,
-:-webkit-full-screen #xconnect-clock .clock-3d{
-  width:100%!important;max-width:100%!important;
-  height:100%!important;filter:none!important;transform:none!important;
-}
-:fullscreen #xconnect-clock .xc-body,
-:-webkit-full-screen #xconnect-clock .xc-body{
-  border-radius:0!important;border:none!important;
-  box-shadow:none!important;height:100%!important;
-  min-height:100svh!important;background:#fff!important;
-  display:flex!important;flex-direction:column!important;
-}
-:fullscreen #xconnect-clock .xc-btn,
-:-webkit-full-screen #xconnect-clock #xc-p1btn{border-radius:0!important;}
-:fullscreen #xconnect-clock #xc-p2btn,
-:-webkit-full-screen #xconnect-clock #xc-p2btn{border-radius:0!important;}
-:fullscreen #xconnect-clock .xc-face,
-:-webkit-full-screen #xconnect-clock .xc-face{flex:1!important}
-:fullscreen #xconnect-clock .xc-panels,
-:-webkit-full-screen #xconnect-clock .xc-panels{flex:1!important}
-:fullscreen #xconnect-clock .xc-panel,
-:-webkit-full-screen #xconnect-clock .xc-panel{
-  justify-content:center!important;padding:20px 10px!important;
-}
-:fullscreen #xconnect-clock .xc-btn,
-:-webkit-full-screen #xconnect-clock .xc-btn{
-  width:max(80px,11vw)!important;
-}
 </style>
 </head>
 <body>
@@ -1317,212 +1106,205 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="clock-cards">
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:repeating-linear-gradient(170deg,transparent 0,transparent 8px,rgba(0,0,0,0.04) 8px,rgba(0,0,0,0.04) 9px),linear-gradient(155deg,#8B3A1A 0%,#5C2209 35%,#3A1506 65%,#251005 100%);border-radius:8px 0 0 8px;display:flex;flex-direction:column;overflow:hidden;position:relative;">
-          <!-- corner ornaments -->
-          <div style="position:absolute;top:5px;left:6px;color:rgba(210,165,70,0.6);font-size:6px;line-height:1">✦</div>
-          <div style="position:absolute;top:5px;right:6px;color:rgba(210,165,70,0.6);font-size:6px;line-height:1">✦</div>
-          <!-- top row: knob + brand + knob -->
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 8px 4px;position:relative;z-index:1">
-            <!-- left brass knob -->
-            <div style="width:22px;height:22px;border-radius:50%;background:radial-gradient(ellipse at 38% 28%,#EAC855 0%,#C49035 35%,#8A5C12 65%,#5A3808 100%);box-shadow:0 4px 0 #3C2408,0 5px 10px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,230,100,0.5);flex-shrink:0"></div>
-            <!-- center brand -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-              <div style="font-family:'Playfair Display',serif;font-size:5.5px;font-weight:700;color:rgba(220,175,90,0.95);letter-spacing:0.03em;text-shadow:0 1px 3px rgba(0,0,0,0.6)">ChessConnect</div>
-              <div style="display:flex;gap:2px">
-                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(196,135,58,0.55);background:rgba(20,8,2,0.75);color:rgba(220,175,80,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">PAUSE</span>
-                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(196,135,58,0.55);background:rgba(20,8,2,0.75);color:rgba(220,175,80,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">RESTART</span>
+        <div class="card-preview" style="position:relative;overflow:hidden;background:repeating-linear-gradient(170deg,transparent 0,transparent 8px,rgba(0,0,0,0.035) 8px,rgba(0,0,0,0.035) 9px),linear-gradient(155deg,#7A3018 0%,#4E1E08 40%,#2E1004 80%,#1E0A02 100%);">
+          <!-- Corner ornaments -->
+          <div style="position:absolute;top:4px;left:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
+          <div style="position:absolute;top:4px;right:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
+          <div style="position:absolute;bottom:4px;left:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
+          <div style="position:absolute;bottom:4px;right:5px;color:rgba(210,165,70,0.55);font-size:5px;line-height:1;z-index:2">✦</div>
+          <!-- LEFT side panel — rubber ridges -->
+          <div style="position:absolute;left:0;top:0;bottom:0;width:24px;z-index:3;
+            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.06) 0px,rgba(255,255,255,0.06) 1px,transparent 1px,transparent 4px),
+            linear-gradient(90deg,#1A0D05 0%,#2A1508 60%,#1E1008 100%);
+            border-right:1px solid rgba(80,40,10,0.8);
+            box-shadow:inset -2px 0 4px rgba(0,0,0,0.6),2px 0 6px rgba(0,0,0,0.4);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(196,135,58,0.65);font-family:'DM Sans',sans-serif;">PLAYER 1</div>
+          </div>
+          <!-- RIGHT side panel — rubber ridges -->
+          <div style="position:absolute;right:0;top:0;bottom:0;width:24px;z-index:3;
+            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.06) 0px,rgba(255,255,255,0.06) 1px,transparent 1px,transparent 4px),
+            linear-gradient(270deg,#1A0D05 0%,#2A1508 60%,#1E1008 100%);
+            border-left:1px solid rgba(80,40,10,0.8);
+            box-shadow:inset 2px 0 4px rgba(0,0,0,0.6),-2px 0 6px rgba(0,0,0,0.4);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="writing-mode:vertical-rl;transform:rotate(0deg);font-size:3.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(196,135,58,0.65);font-family:'DM Sans',sans-serif;">PLAYER 2</div>
+          </div>
+          <!-- Main body content -->
+          <div style="position:absolute;left:24px;right:24px;top:0;bottom:0;display:flex;flex-direction:column;padding:6px 7px 5px;gap:4px;">
+            <!-- Brand + buttons row -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <div style="font-family:'DM Sans',sans-serif;font-size:5px;font-weight:800;color:rgba(220,175,90,0.92);letter-spacing:0.04em;text-shadow:0 1px 3px rgba(0,0,0,0.6)">ChessConnect</div>
+              <div style="display:flex;gap:2px;">
+                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(196,135,58,0.5);background:rgba(15,6,1,0.8);color:rgba(220,175,80,0.85);font-family:'DM Sans',sans-serif;border-radius:1px;">PAUSE</span>
+                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(196,135,58,0.5);background:rgba(15,6,1,0.8);color:rgba(220,175,80,0.85);font-family:'DM Sans',sans-serif;border-radius:1px;">RESTART</span>
+              </div>
+              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(220,175,80,0.7);font-family:'DM Sans',sans-serif;">TAP TO START</div>
+            </div>
+            <!-- Player labels -->
+            <div style="display:flex;justify-content:space-between;padding:0 2px;">
+              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:rgba(196,135,58,0.5);font-family:'DM Sans',sans-serif;">PLAYER 1</div>
+              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:rgba(196,135,58,0.5);font-family:'DM Sans',sans-serif;">PLAYER 2</div>
+            </div>
+            <!-- Display boxes -->
+            <div style="display:flex;gap:3px;flex:1;">
+              <div style="flex:1;background:#070503;border-radius:3px;border:1px solid rgba(120,75,25,0.5);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.95);">
+                <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:#C4873A;text-shadow:0 0 8px rgba(196,135,58,0.7);line-height:1;letter-spacing:0.04em;">10:00</div>
+                <div style="font-size:2.5px;color:rgba(160,110,45,0.5);font-family:'DM Sans',sans-serif;margin-top:1px;">0 moves</div>
+              </div>
+              <div style="flex:1;background:#070503;border-radius:3px;border:1px solid rgba(120,75,25,0.5);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.95);">
+                <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:#C4873A;text-shadow:0 0 8px rgba(196,135,58,0.7);line-height:1;letter-spacing:0.04em;">10:00</div>
+                <div style="font-size:2.5px;color:rgba(160,110,45,0.5);font-family:'DM Sans',sans-serif;margin-top:1px;">0 moves</div>
               </div>
             </div>
-            <!-- right brass knob -->
-            <div style="width:22px;height:22px;border-radius:50%;background:radial-gradient(ellipse at 38% 28%,#EAC855 0%,#C49035 35%,#8A5C12 65%,#5A3808 100%);box-shadow:0 4px 0 #3C2408,0 5px 10px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,230,100,0.5);flex-shrink:0"></div>
-          </div>
-          <!-- displays -->
-          <div style="display:flex;gap:4px;padding:0 7px;flex:1;align-items:center;position:relative;z-index:1">
-            <div style="flex:1;background:#070503;border-radius:4px;border:1px solid rgba(120,75,25,0.55);padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.9),0 0 8px rgba(196,135,58,0.12)">
-              <div style="font-size:3.5px;color:rgba(196,135,58,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'DM Sans',sans-serif">White</div>
-              <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:#E8C870;text-shadow:0 0 8px rgba(232,200,112,0.7),0 0 18px rgba(232,200,112,0.35);line-height:1.1;letter-spacing:0.04em">10:00</div>
-              <div style="font-size:3px;color:rgba(160,110,45,0.55);font-family:'DM Sans',sans-serif">0 moves</div>
+            <!-- Footer -->
+            <div style="text-align:center;border-top:1px solid rgba(196,135,58,0.15);padding-top:2px;">
+              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(180,125,50,0.5);font-family:'DM Sans',sans-serif;">Heritage Edition · Tournament</div>
             </div>
-            <div style="flex:1;background:#070503;border-radius:4px;border:1px solid rgba(120,75,25,0.55);padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.9),0 0 8px rgba(196,135,58,0.12)">
-              <div style="font-size:3.5px;color:rgba(196,135,58,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'DM Sans',sans-serif">Black</div>
-              <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:#7A5520;text-shadow:none;line-height:1.1;letter-spacing:0.04em">10:00</div>
-              <div style="font-size:3px;color:rgba(160,110,45,0.55);font-family:'DM Sans',sans-serif">0 moves</div>
-            </div>
-          </div>
-          <!-- footer -->
-          <div style="text-align:center;padding:4px 3px 5px;position:relative;z-index:1;border-top:1px solid rgba(196,135,58,0.12)">
-            <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:4px;color:rgba(180,125,50,0.6);letter-spacing:0.04em">Heritage Edition · Tournament</div>
           </div>
         </div>
         <div class="card-info">
           <div class="card-name">Heritage</div>
-          <div class="card-desc">Walnut wood body · Brass dome knobs · Amber digits · Tournament Edition</div>
+          <div class="card-desc">Walnut wood body · Rubber side panels · Amber digits · Tournament Edition</div>
         </div>
         <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
     </div>
     <div class="clock-card card-pro" id="card-pro" onclick="selectClock('pro',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:radial-gradient(ellipse at 50% 40%,#1a1a1a 0%,#0d0d0d 50%,#050505 100%);border-radius:8px 0 0 8px;display:flex;flex-direction:column;overflow:hidden;position:relative;">
-          <!-- carbon grid overlay -->
-          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(255,255,255,0.015) 3px,rgba(255,255,255,0.015) 4px);pointer-events:none"></div>
-          <!-- top row: lever + brand + lever -->
-          <div style="display:flex;align-items:flex-end;justify-content:space-between;padding:8px 8px 4px;position:relative;z-index:1">
-            <!-- left lever + LED -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-              <div style="display:flex;gap:2px;align-items:center">
-                <div style="width:6px;height:6px;border-radius:50%;background:#00E676;box-shadow:0 0 5px rgba(0,230,118,0.9),0 0 10px rgba(0,230,118,0.4)"></div>
-              </div>
-              <div style="width:30px;height:10px;border-radius:3px 3px 2px 2px;background:linear-gradient(158deg,#2a2a2a,#111);box-shadow:0 3px 0 #060606,0 4px 8px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.1)"></div>
-            </div>
-            <!-- center brand -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-              <div style="font-size:5.5px;font-weight:800;color:rgba(210,210,210,0.9);letter-spacing:0.05em;font-family:'DM Sans',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.8)">ChessConnect</div>
-              <div style="display:flex;gap:2px">
-                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(180,180,180,0.4);background:rgba(15,15,15,0.85);color:rgba(200,200,200,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">PAUSE</span>
-                <span style="font-size:3.5px;font-weight:800;padding:1px 4px;border:0.5px solid rgba(180,180,180,0.4);background:rgba(15,15,15,0.85);color:rgba(200,200,200,0.9);font-family:'DM Sans',sans-serif;letter-spacing:0.06em">RESTART</span>
-              </div>
-            </div>
-            <!-- right lever + LED -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-              <div style="display:flex;gap:2px;align-items:center">
-                <div style="width:6px;height:6px;border-radius:50%;background:#FF3A3A;box-shadow:0 0 5px rgba(255,58,58,0.9),0 0 10px rgba(255,58,58,0.4)"></div>
-              </div>
-              <div style="width:30px;height:10px;border-radius:3px 3px 2px 2px;background:linear-gradient(158deg,#2a2a2a,#111);box-shadow:0 3px 0 #060606,0 4px 8px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.1)"></div>
-            </div>
+        <div class="card-preview" style="position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#141414 0%,#080808 50%,#030303 100%);">
+          <!-- carbon fibre overlay -->
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(255,255,255,0.012) 3px,rgba(255,255,255,0.012) 4px);pointer-events:none;z-index:0"></div>
+          <!-- LEFT brushed steel panel -->
+          <div style="position:absolute;left:0;top:0;bottom:0;width:18px;z-index:3;
+            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.07) 0px,rgba(255,255,255,0.07) 1px,transparent 1px,transparent 3px,rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px,transparent 4px,transparent 6px),
+            linear-gradient(160deg,#3A3A3A 0%,#252525 40%,#181818 100%);
+            border-right:1px solid rgba(0,0,0,0.8);
+            box-shadow:inset -2px 0 5px rgba(0,0,0,0.7),-2px 0 8px rgba(255,255,255,0.07);
+            border:0.5px solid rgba(255,255,255,0.1);border-right:1px solid rgba(0,0,0,0.8);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#00E676;box-shadow:0 0 4px rgba(0,230,118,0.9);flex-shrink:0;"></div>
+            <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(200,200,200,0.5);font-family:'Share Tech Mono',monospace;">PLAYER 1</div>
           </div>
-          <!-- displays with scanline effect -->
-          <div style="display:flex;gap:4px;padding:0 7px;flex:1;align-items:center;position:relative;z-index:1">
-            <div style="flex:1;background:#040404;border-radius:4px;border:1px solid #2a2a2a;padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.98);position:relative;overflow:hidden">
-              <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 3px);pointer-events:none"></div>
-              <div style="font-size:3.5px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'Share Tech Mono',monospace">White</div>
-              <div style="font-family:'Share Tech Mono',monospace;font-size:14px;color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.8),0 0 18px rgba(255,255,255,0.3);line-height:1.1;letter-spacing:0.04em">10:00</div>
-              <div style="font-size:3px;color:#444;font-family:'Share Tech Mono',monospace">0 moves</div>
-            </div>
-            <div style="flex:1;background:#040404;border-radius:4px;border:1px solid #2a2a2a;padding:4px 3px;text-align:center;box-shadow:inset 0 3px 8px rgba(0,0,0,0.98);position:relative;overflow:hidden">
-              <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 3px);pointer-events:none"></div>
-              <div style="font-size:3.5px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-family:'Share Tech Mono',monospace">Black</div>
-              <div style="font-family:'Share Tech Mono',monospace;font-size:14px;color:#4a4a4a;text-shadow:none;line-height:1.1;letter-spacing:0.04em">10:00</div>
-              <div style="font-size:3px;color:#444;font-family:'Share Tech Mono',monospace">0 moves</div>
-            </div>
+          <!-- RIGHT brushed steel panel -->
+          <div style="position:absolute;right:0;top:0;bottom:0;width:18px;z-index:3;
+            background:repeating-linear-gradient(0deg,rgba(255,255,255,0.07) 0px,rgba(255,255,255,0.07) 1px,transparent 1px,transparent 3px,rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px,transparent 4px,transparent 6px),
+            linear-gradient(160deg,#3A3A3A 0%,#252525 40%,#181818 100%);
+            border-left:1px solid rgba(0,0,0,0.8);
+            box-shadow:inset 2px 0 5px rgba(0,0,0,0.7),2px 0 8px rgba(255,255,255,0.07);
+            border:0.5px solid rgba(255,255,255,0.1);border-left:1px solid rgba(0,0,0,0.8);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#FF3A3A;box-shadow:0 0 4px rgba(255,58,58,0.9);flex-shrink:0;"></div>
+            <div style="writing-mode:vertical-rl;transform:rotate(0deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(200,200,200,0.5);font-family:'Share Tech Mono',monospace;">PLAYER 2</div>
           </div>
-          <!-- footer -->
-          <div style="text-align:center;padding:4px 3px 5px;position:relative;z-index:1;border-top:1px solid #1a1a1a">
-            <div style="font-size:4px;font-weight:700;color:rgba(130,130,130,0.5);text-transform:uppercase;letter-spacing:0.1em;font-family:'DM Sans',sans-serif">Pro Edition · Tournament</div>
+          <!-- Main body -->
+          <div style="position:absolute;left:24px;right:24px;top:0;bottom:0;display:flex;flex-direction:column;padding:6px 7px 5px;gap:4px;z-index:1;">
+            <!-- Brand row -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <div style="font-size:5px;font-weight:800;color:rgba(210,210,210,0.9);letter-spacing:0.06em;font-family:'Share Tech Mono',monospace;">ChessConnect</div>
+              <div style="display:flex;gap:2px;">
+                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(180,180,180,0.35);background:rgba(10,10,10,0.9);color:rgba(200,200,200,0.85);font-family:'Share Tech Mono',monospace;border-radius:1px;">PAUSE</span>
+                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(180,180,180,0.35);background:rgba(10,10,10,0.9);color:rgba(200,200,200,0.85);font-family:'Share Tech Mono',monospace;border-radius:1px;">RESTART</span>
+              </div>
+              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(200,200,200,0.6);font-family:'Share Tech Mono',monospace;">TAP TO START</div>
+            </div>
+            <!-- Player labels -->
+            <div style="display:flex;justify-content:space-between;padding:0 2px;">
+              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;font-family:'Share Tech Mono',monospace;">PLAYER 1</div>
+              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;font-family:'Share Tech Mono',monospace;">PLAYER 2</div>
+            </div>
+            <!-- Displays -->
+            <div style="display:flex;gap:3px;flex:1;">
+              <div style="flex:1;background:#040404;border-radius:3px;border:1px solid #222;padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.98);">
+                <div style="font-family:'Share Tech Mono',monospace;font-size:22px;font-weight:700;color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.8);line-height:1;letter-spacing:0.04em;">10:00</div>
+                <div style="font-size:2.5px;color:#444;font-family:'Share Tech Mono',monospace;margin-top:1px;">0 moves</div>
+              </div>
+              <div style="flex:1;background:#040404;border-radius:3px;border:1px solid #222;padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 6px rgba(0,0,0,0.98);">
+                <div style="font-family:'Share Tech Mono',monospace;font-size:22px;font-weight:700;color:#4a4a4a;line-height:1;letter-spacing:0.04em;">10:00</div>
+                <div style="font-size:2.5px;color:#444;font-family:'Share Tech Mono',monospace;margin-top:1px;">0 moves</div>
+              </div>
+            </div>
+            <!-- Footer -->
+            <div style="text-align:center;border-top:1px solid #1a1a1a;padding-top:2px;">
+              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(130,130,130,0.45);font-family:'Share Tech Mono',monospace;">Pro Edition · Tournament</div>
+            </div>
           </div>
         </div>
         <div class="card-info">
           <div class="card-name">Pro</div>
-          <div class="card-desc">Matte black · LED indicators · Crisp white digits · Professional Clock</div>
+          <div class="card-desc">Matte black · Brushed steel panels · LED indicators · White digits</div>
         </div>
         <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
     </div>
     <div class="clock-card card-chronos" id="card-chronos" onclick="selectClock('chronos',this)">
       <div class="card-inner">
-        <div class="card-preview" style="background:#04020E;border:1px solid rgba(0,200,255,0.3);position:relative;overflow:hidden;display:flex;flex-direction:column;">
-          <!-- circuit traces -->
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.25" viewBox="0 0 300 160" fill="none">
-            <path d="M0 30 L20 30 L20 15 L60 15" stroke="#00EFFF" stroke-width="1.2"/>
-            <path d="M300 30 L280 30 L280 15 L240 15" stroke="#EE00FF" stroke-width="1.2"/>
-            <path d="M0 130 L20 130 L20 145 L60 145" stroke="#00EFFF" stroke-width="1.2"/>
-            <path d="M300 130 L280 130 L280 145 L240 145" stroke="#EE00FF" stroke-width="1.2"/>
-            <circle cx="20" cy="30" r="3" fill="#00EFFF"/>
-            <circle cx="280" cy="30" r="3" fill="#EE00FF"/>
+        <div class="card-preview" style="position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#0a0820 0%,#04041a 50%,#020208 100%);">
+          <!-- nebula glow -->
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,100,255,0.07) 0%,transparent 55%),radial-gradient(ellipse at 80% 50%,rgba(200,0,255,0.07) 0%,transparent 55%);pointer-events:none;z-index:0"></div>
+          <!-- circuit traces SVG -->
+          <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:0.4" viewBox="0 0 300 110" fill="none" preserveAspectRatio="none">
+            <path d="M0 25 L18 25 L18 14 L45 14" stroke="#00EFFF" stroke-width="0.8"/>
+            <path d="M300 25 L282 25 L282 14 L255 14" stroke="#EE00FF" stroke-width="0.8"/>
+            <path d="M0 85 L18 85 L18 96 L45 96" stroke="#00EFFF" stroke-width="0.8"/>
+            <path d="M300 85 L282 85 L282 96 L255 96" stroke="#EE00FF" stroke-width="0.8"/>
+            <circle cx="18" cy="25" r="1.5" fill="#00EFFF"/>
+            <circle cx="282" cy="25" r="1.5" fill="#EE00FF"/>
           </svg>
-          <!-- top levers -->
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 7px 3px;position:relative;z-index:1">
-            <div style="display:flex;flex-direction:column;gap:2px;align-items:center">
-              <div style="width:18px;height:5px;border-radius:2px;background:linear-gradient(180deg,rgba(0,200,255,0.5),rgba(0,80,160,0.6));box-shadow:0 0 6px rgba(0,200,255,0.6);border:0.5px solid rgba(0,200,255,0.5)"></div>
+          <!-- LEFT cyan panel -->
+          <div style="position:absolute;left:0;top:0;bottom:0;width:18px;z-index:3;
+            background:linear-gradient(160deg,rgba(0,25,45,0.98) 0%,rgba(0,15,35,0.98) 100%);
+            border-right:none;border:0.5px solid rgba(0,200,255,0.4);
+            box-shadow:inset -2px 0 5px rgba(0,0,0,0.8),-2px 0 10px rgba(0,200,255,0.15);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:rgba(0,200,255,0.3);border:0.5px solid rgba(0,200,255,0.5);flex-shrink:0;"></div>
+            <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(0,220,255,0.6);font-family:'Orbitron',sans-serif;">PLAYER 1</div>
+          </div>
+          <!-- RIGHT magenta panel -->
+          <div style="position:absolute;right:0;top:0;bottom:0;width:18px;z-index:3;
+            background:linear-gradient(160deg,rgba(30,0,45,0.98) 0%,rgba(18,0,35,0.98) 100%);
+            border-left:none;border:0.5px solid rgba(200,0,255,0.4);
+            box-shadow:inset 2px 0 5px rgba(0,0,0,0.8),2px 0 10px rgba(200,0,255,0.15);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:rgba(200,0,255,0.3);border:0.5px solid rgba(200,0,255,0.5);flex-shrink:0;"></div>
+            <div style="writing-mode:vertical-rl;transform:rotate(0deg);font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.28em;color:rgba(220,0,255,0.6);font-family:'Orbitron',sans-serif;">PLAYER 2</div>
+          </div>
+          <!-- Main body -->
+          <div style="position:absolute;left:24px;right:24px;top:0;bottom:0;display:flex;flex-direction:column;padding:6px 7px 5px;gap:4px;z-index:2;">
+            <!-- Brand row -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <div style="font-size:5px;font-weight:700;background:linear-gradient(90deg,#00EFFF,#EE00FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.05em;font-family:'Orbitron',sans-serif;">ChessConnect</div>
+              <div style="display:flex;gap:2px;">
+                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.45);color:rgba(0,220,255,0.85);font-family:'Orbitron',sans-serif;border-radius:1px;">PAUSE</span>
+                <span style="font-size:3px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.45);color:rgba(0,220,255,0.85);font-family:'Orbitron',sans-serif;border-radius:1px;">RESTART</span>
+              </div>
+              <div style="font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,220,255,0.55);font-family:'Orbitron',sans-serif;">TAP TO START</div>
             </div>
-            <div style="text-align:center">
-              <div style="font-family:'Orbitron',sans-serif;font-size:5px;font-weight:700;background:linear-gradient(90deg,#00EFFF,#EE00FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.05em">ChessConnect</div>
-              <div style="display:flex;gap:2px;justify-content:center;margin-top:2px">
-                <span style="font-size:3.5px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.5);color:rgba(0,220,255,0.9);font-family:'Orbitron',sans-serif;border-radius:1px">PAUSE</span>
-                <span style="font-size:3.5px;font-weight:800;padding:1px 3px;border:0.5px solid rgba(0,200,255,0.5);color:rgba(0,220,255,0.9);font-family:'Orbitron',sans-serif;border-radius:1px">RESTART</span>
+            <!-- Player labels -->
+            <div style="display:flex;justify-content:space-between;padding:0 2px;">
+              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(0,200,255,0.45);font-family:'Orbitron',sans-serif;">PLAYER 1</div>
+              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(200,0,255,0.45);font-family:'Orbitron',sans-serif;">PLAYER 2</div>
+            </div>
+            <!-- Displays -->
+            <div style="display:flex;gap:3px;flex:1;">
+              <div style="flex:1;background:rgba(0,4,18,0.95);border-radius:3px;border:0.5px solid rgba(0,200,255,0.4);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 5px rgba(0,200,255,0.12);">
+                <div style="font-family:'Orbitron',sans-serif;font-size:21px;font-weight:700;color:#00EFFF;text-shadow:0 0 8px rgba(0,239,255,0.9),0 0 16px rgba(0,239,255,0.5);line-height:1;letter-spacing:0.02em;">10:00</div>
+                <div style="font-size:2.5px;color:rgba(0,200,255,0.4);font-family:'Orbitron',sans-serif;margin-top:1px;">0 moves</div>
+              </div>
+              <div style="flex:1;background:rgba(0,4,18,0.95);border-radius:3px;border:0.5px solid rgba(200,0,255,0.4);padding:3px 2px 2px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 5px rgba(200,0,255,0.12);">
+                <div style="font-family:'Orbitron',sans-serif;font-size:21px;font-weight:700;color:#EE00FF;text-shadow:0 0 8px rgba(238,0,255,0.9),0 0 16px rgba(238,0,255,0.5);line-height:1;letter-spacing:0.02em;">10:00</div>
+                <div style="font-size:2.5px;color:rgba(200,0,255,0.4);font-family:'Orbitron',sans-serif;margin-top:1px;">0 moves</div>
               </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:2px;align-items:center">
-              <div style="width:18px;height:5px;border-radius:2px;background:linear-gradient(180deg,rgba(200,0,255,0.5),rgba(120,0,160,0.6));box-shadow:0 0 6px rgba(200,0,255,0.6);border:0.5px solid rgba(200,0,255,0.5)"></div>
+            <!-- Footer -->
+            <div style="text-align:center;border-top:1px solid rgba(0,200,255,0.12);padding-top:2px;">
+              <div style="font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(80,80,200,0.55);font-family:'Orbitron',sans-serif;">Chronos 2050 Edition · Tournament</div>
             </div>
           </div>
-          <!-- dual displays -->
-          <div style="display:flex;gap:3px;padding:0 5px;flex:1;position:relative;z-index:1;align-items:center">
-            <div style="flex:1;background:rgba(0,4,18,0.95);border:1px solid rgba(0,200,255,0.4);border-radius:3px;padding:3px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 8px rgba(0,200,255,0.15)">
-              <div style="font-size:3.5px;color:rgba(0,200,255,0.5);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:0.1em">White</div>
-              <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#00EFFF;text-shadow:0 0 8px rgba(0,239,255,0.9),0 0 16px rgba(0,239,255,0.5);line-height:1.1">10:00</div>
-              <div style="font-size:3px;color:rgba(0,200,255,0.4);font-family:'Orbitron',sans-serif">0 moves</div>
-            </div>
-            <div style="flex:1;background:rgba(0,4,18,0.95);border:1px solid rgba(200,0,255,0.4);border-radius:3px;padding:3px;text-align:center;box-shadow:inset 0 2px 4px rgba(0,0,0,0.9),0 0 8px rgba(200,0,255,0.15)">
-              <div style="font-size:3.5px;color:rgba(200,0,255,0.5);font-weight:700;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:0.1em">Black</div>
-              <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#EE00FF;text-shadow:0 0 8px rgba(238,0,255,0.9),0 0 16px rgba(238,0,255,0.5);line-height:1.1">10:00</div>
-              <div style="font-size:3px;color:rgba(200,0,255,0.4);font-family:'Orbitron',sans-serif">0 moves</div>
-            </div>
-          </div>
-          <!-- bottom label -->
-          <div style="text-align:center;padding:3px;font-family:'Orbitron',sans-serif;font-size:3.5px;color:rgba(80,80,200,0.6);letter-spacing:0.08em;position:relative;z-index:1;border-top:1px solid rgba(0,200,255,0.15)">CHRONOS 2050 EDITION · TOURNAMENT</div>
         </div>
         <div class="card-info">
           <div class="card-name">Chronos 2050</div>
-          <div class="card-desc">Acrylic body · Neon circuits · Cyan &amp; Magenta · AI-Powered Chronos</div>
-        </div>
-        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-      </div>
-    </div>
-
-    <!-- ChessConnect Theme Card -->
-    <div class="clock-card card-xconnect" id="card-xconnect" onclick="selectClock('xconnect',this)">
-      <div class="card-inner">
-        <div class="card-preview" style="background:#F5F5F7;border-radius:8px 0 0 8px;overflow:hidden;position:relative;display:flex;flex-direction:column;">
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,#fff 0%,#F5F5F7 100%)"></div>
-          <!-- Top bar -->
-          <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:5px 7px 4px;border-bottom:1px solid #E5E9F2;background:linear-gradient(180deg,#fff,#fafafa)">
-            <div style="font-family:'DM Sans',sans-serif;font-size:5px;font-weight:800;letter-spacing:-0.2px"><span style="color:#102C57">Chess</span><span style="color:#4285F4">Connect</span></div>
-            <div style="display:flex;align-items:center;gap:3px">
-              <div style="width:5px;height:5px;border-radius:50%;background:#1E73E8;box-shadow:0 0 5px rgba(30,115,232,0.7)"></div>
-              <span style="font-size:3.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9CA3AF">Live</span>
-            </div>
-          </div>
-          <!-- Controls row -->
-          <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:3px;padding:3px 6px;border-bottom:1px solid #E5E9F2;background:#fafafa">
-            <span style="font-size:3.5px;font-weight:700;padding:1.5px 5px;border:0.5px solid #E5E9F2;background:#fff;color:#6B7280;font-family:'DM Sans',sans-serif;border-radius:2px">Pause</span>
-            <span style="font-size:3.5px;font-weight:700;padding:1.5px 5px;border:0.5px solid #1E73E8;background:#1E73E8;color:#fff;font-family:'DM Sans',sans-serif;border-radius:2px">Restart</span>
-            <span style="display:inline-flex;align-items:center;justify-content:center;padding:1.5px 4px;border:0.5px solid #E5E9F2;background:#fff;border-radius:2px"><svg viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:5px;height:5px"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></span>
-          </div>
-          <!-- Clock face -->
-          <div style="position:relative;z-index:1;display:flex;flex:1;min-height:0">
-            <!-- Left button -->
-            <div style="width:9px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-right:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
-              <div style="width:1px;height:12px;background:#D1D5DB;border-radius:1px"></div>
-            </div>
-            <!-- White panel (active) -->
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3px 2px;background:#fff;position:relative">
-              <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#1E73E8"></div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#1E73E8;margin-bottom:2px">White</div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:800;letter-spacing:-1px;color:#102C57;line-height:1">10:00</div>
-              <div style="font-size:3px;color:#9CA3AF;margin-top:1px;font-weight:600">0 moves</div>
-            </div>
-            <!-- Divider -->
-            <div style="width:1px;background:#E5E9F2;margin:5px 0"></div>
-            <!-- Black panel (inactive) -->
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3px 2px;background:#F8FAFF">
-              <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#9CA3AF;margin-bottom:2px">Black</div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:800;letter-spacing:-1px;color:#D1D5DB;line-height:1">10:00</div>
-              <div style="font-size:3px;color:#D1D5DB;margin-top:1px;font-weight:600">0 moves</div>
-            </div>
-            <!-- Right button -->
-            <div style="width:9px;background:linear-gradient(180deg,#F5F5F7,#EBEBED);border-left:1px solid #E5E9F2;display:flex;align-items:center;justify-content:center">
-              <div style="width:1px;height:12px;background:#D1D5DB;border-radius:1px"></div>
-            </div>
-          </div>
-          <!-- Footer -->
-          <div style="position:relative;z-index:1;text-align:center;padding:3px;border-top:1px solid #E5E9F2;background:linear-gradient(180deg,#fafafa,#F5F5F7)">
-            <div style="font-family:'DM Sans',sans-serif;font-size:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#9CA3AF">Professional Edition</div>
-          </div>
-        </div>
-        <div class="card-info">
-          <div class="card-name" style="color:#102C57">ChessConnect</div>
-          <div class="card-desc">Clean white body · Precision blue accents · Professional Edition</div>
+          <div class="card-desc">Deep space · Cyan &amp; magenta panels · Neon digits · Sci-Fi Edition</div>
         </div>
         <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
@@ -1862,79 +1644,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div><!-- /clock-3d -->
   </div>
 
-  <!-- ── CHESSCONNECT CLOCK ── -->
-  <div class="clock-view xconnect-clock hidden" id="xconnect-clock">
-    <div class="clock-3d" style="width:100%;max-width:520px">
-      <div class="xc-body">
-        <!-- Pause overlay -->
-        <div class="pause-overlay" id="po-xconnect" onclick="togglePause()"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap anywhere to resume</div></div>
-        <!-- Side panels — absolute, anchored to xc-body full height -->
-        <button class="xc-btn" id="xc-p1btn" onclick="pressClock(0)" aria-label="Player 1 clock button">
-          <div class="xc-btn-label" id="xc-slbl1">Player 1</div>
-        </button>
-        <button class="xc-btn" id="xc-p2btn" onclick="pressClock(1)" aria-label="Player 2 clock button">
-          <div class="xc-btn-label" id="xc-slbl2">Player 2</div>
-        </button>
-        <!-- Top bar -->
-        <div class="xc-topbar">
-          <div class="xc-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
-          <div class="xc-status">
-            <div class="xc-dot active" id="xc-dot"></div>
-            <span id="xc-st">Tap to begin</span>
-          </div>
-        </div>
-        <!-- Controls -->
-        <div class="xc-controls">
-          <button class="xc-cbtn" id="xc-pause" onclick="togglePause()" aria-label="Pause game">Pause</button>
-          <button class="xc-cbtn primary" id="xc-restart" onclick="restartClock()" aria-label="Restart game">Restart</button>
-          <button class="xc-cbtn xc-snd-btn" id="xc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
-            <svg id="xc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
-          </button>
-          <button class="xc-cbtn xc-fs-btn" id="xc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
-            <svg id="xc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
-          </button>
-        </div>
-        <!-- Clock face -->
-        <div class="xc-face">
-          <!-- Panels -->
-          <div class="xc-panels">
-            <div class="xc-panel xc-inactive" id="xc-p1unit" onclick="pressClock(0)">
-              <div class="xc-accent"></div>
-              <div class="xc-plbl" id="xc-dlbl1">White</div>
-              <div class="xc-time" id="xc-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
-              <div class="xc-moves" id="xc-m1">0 moves</div>
-              <div class="xc-inc" id="xc-i1"></div>
-            </div>
-            <div class="xc-divider"></div>
-            <div class="xc-panel xc-inactive" id="xc-p2unit" onclick="pressClock(1)">
-              <div class="xc-accent"></div>
-              <div class="xc-plbl" id="xc-dlbl2">Black</div>
-              <div class="xc-time" id="xc-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
-              <div class="xc-moves" id="xc-m2">0 moves</div>
-              <div class="xc-inc" id="xc-i2"></div>
-            </div>
-          </div>
-        </div>
-        <!-- Footer -->
-        <div class="xc-footer">
-          <div class="xc-edition">ChessConnect Professional · Tournament Edition</div>
-        </div>
-      </div>
-      <div class="clock-surface">
-        <div class="preset-strip" id="xc-strip">
-          <div class="ps-chip" onclick="quickTC(60,1,this)">1+1</div>
-          <div class="ps-chip" onclick="quickTC(120,1,this)">2+1</div>
-          <div class="ps-chip" onclick="quickTC(180,2,this)">3+2</div>
-          <div class="ps-chip" onclick="quickTC(300,3,this)">5+3</div>
-          <div class="ps-chip sel" onclick="quickTC(600,5,this)">10+5</div>
-          <div class="ps-chip" onclick="quickTC(900,10,this)">15+10</div>
-          <div class="ps-chip" onclick="quickTC(3600,30,this)">60+30</div>
-          <div class="ps-chip" onclick="quickTC(5400,30,this)">90+30</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div><!-- /screen3 -->
 
 <!-- FULLSCREEN TOAST -->
@@ -2089,13 +1798,12 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* Prefix map */
-const PFX = {heritage:'hc', pro:'pc', chronos:'cc', xconnect:'xc'};
+const PFX = {heritage:'hc', pro:'pc', chronos:'cc'};
 /* Button IDs per theme */
 const BTNS = {
   heritage: ['hk1','hk2'],
   pro:      ['pl1','pl2'],
   chronos:  ['cl1','cl2'],
-  xconnect: ['xc-p1btn','xc-p2btn']
 };
 
 /* ════════════════════════════════
@@ -2193,7 +1901,6 @@ const LBLIDS = {
   heritage: { b:['hc-slbl1','hc-slbl2'], d:['hc-dlbl1','hc-dlbl2'] },
   pro:      { b:['pc-slbl1','pc-slbl2'], d:['pc-dlbl1','pc-dlbl2'] },
   chronos:  { b:['cc-slbl1','cc-slbl2'], d:['cc-dlbl1','cc-dlbl2'] },
-  xconnect: { b:['xc-slbl1','xc-slbl2'], d:['xc-dlbl1','xc-dlbl2'] }
 };
 function setPlayerLabels(whiteIdx) {
   if(!theme||!LBLIDS[theme]) return;
@@ -2253,7 +1960,7 @@ function launchClock() {
 
 function initClockView() {
   // Show correct clock, hide others
-  ['heritage','pro','chronos','xconnect'].forEach(t=>{
+  ['heritage','pro','chronos'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
   document.getElementById(theme+'-clock').classList.add('show');
@@ -2281,7 +1988,7 @@ function restartClock() {
   document.getElementById('goBanner').classList.remove('show');
   stripShow(true);
   setPauseIcon(false);
-  ['heritage','pro','chronos','xconnect'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
 }
 
 function newGame() {
@@ -2294,7 +2001,7 @@ function newGame() {
   document.getElementById('screen3').classList.remove('landscape');
   document.getElementById('rotateBtn').classList.remove('rotate-on');
   dismissRotateToast();
-  ['heritage','pro','chronos','xconnect'].forEach(t=>{
+  ['heritage','pro','chronos'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
   show('screen1');
@@ -2321,7 +2028,7 @@ function quickTC(secs, i, el) {
   document.getElementById('goBanner').classList.remove('show');
   stripShow(true);
   setPauseIcon(false);
-  ['heritage','pro','chronos','xconnect'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
   // Update selected chip highlight across ALL strips
   if(el){
     document.querySelectorAll('.ps-chip').forEach(c=>c.classList.remove('sel'));
@@ -2366,13 +2073,6 @@ function resetBtnUI() {
   const u2=document.getElementById(p+'-p2unit');
   if(u1) u1.className=u1.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
   if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
-  if(theme==='xconnect'){
-    if(u1) u1.classList.add('xc-inactive');
-    if(u2) u2.classList.add('xc-inactive');
-    const b1=document.getElementById('xc-p1btn'); if(b1) b1.classList.remove('xc-active');
-    const b2=document.getElementById('xc-p2btn'); if(b2) b2.classList.remove('xc-active');
-    const dot=document.getElementById('xc-dot'); if(dot) dot.classList.remove('active');
-  }
   setBtnState(1,'inactive'); setBtnState(2,'inactive');
   setClockStatus('Tap to start');
   whiteIdx = -1;
@@ -2386,7 +2086,6 @@ function setBtnState(n, state) {
   const el=document.getElementById(id); if(!el) return;
   el.className=el.className.replace(/\bactive-k\b|\binactive-k\b|\bactive-l\b|\binactive-l\b|\bxc-active\b/g,'').trim();
   if(theme==='heritage') el.classList.add(state==='active'?'active-k':'inactive-k');
-  else if(theme==='xconnect') { if(state==='active') el.classList.add('xc-active'); }
   else el.classList.add(state==='active'?'active-l':'inactive-l');
 }
 
@@ -2405,30 +2104,15 @@ function updateActiveUI() {
   const u1=document.getElementById(p+'-p1unit');
   const u2=document.getElementById(p+'-p2unit');
   const isWhiteToMove = (active === whiteIdx);
-  if(theme==='xconnect'){
-    u1.classList.remove('xc-active','xc-inactive');
-    u2.classList.remove('xc-active','xc-inactive');
-    const dot=document.getElementById('xc-dot');
-    if(active===0){
-      u1.classList.add('xc-active'); u2.classList.add('xc-inactive');
-      setBtnState(1,'active'); setBtnState(2,'inactive');
-      if(dot){dot.style.left='auto';dot.classList.add('active');}
-    } else {
-      u2.classList.add('xc-active'); u1.classList.add('xc-inactive');
-      setBtnState(2,'active'); setBtnState(1,'inactive');
-      if(dot) dot.classList.add('active');
-    }
+  u1.classList.remove('active'); u2.classList.remove('active');
+  if(active===0){
+    u1.classList.add('active');
+    setBtnState(1,'active'); setBtnState(2,'inactive');
+    if(theme==='pro'){setLED(1,true);setLED(2,false);}
   } else {
-    u1.classList.remove('active'); u2.classList.remove('active');
-    if(active===0){
-      u1.classList.add('active');
-      setBtnState(1,'active'); setBtnState(2,'inactive');
-      if(theme==='pro'){setLED(1,true);setLED(2,false);}
-    } else {
-      u2.classList.add('active');
-      setBtnState(2,'active'); setBtnState(1,'inactive');
-      if(theme==='pro'){setLED(2,true);setLED(1,false);}
-    }
+    u2.classList.add('active');
+    setBtnState(2,'active'); setBtnState(1,'inactive');
+    if(theme==='pro'){setLED(2,true);setLED(1,false);}
   }
   setClockStatus(isWhiteToMove ? '♔ White to move' : '♚ Black to move');
   for(let i=0;i<2;i++){
@@ -2445,10 +2129,6 @@ function stripShow(show) {
 /* ════════════════════════════════
    PRESS PLAYER BUTTON
 ════════════════════════════════ */
-function pressClock(idx) {
-  // xconnect panels call this directly with 0-based index
-  pressBtn(idx+1, {clientX:0,clientY:0}, document.getElementById('xc-p'+(idx+1)+'btn'));
-}
 
 function pressBtn(player, e, el) {
   initAudio();
@@ -2508,7 +2188,7 @@ function tick() {
     warnDone[active]=true;
     playWarning();
     const wUnit=document.getElementById(PFX[theme]+'-p'+(active+1)+'unit');
-    if(wUnit) wUnit.classList.add(theme==='xconnect'?'xc-low':'warning');
+    if(wUnit) wUnit.classList.add('warning' || 'warning');
   }
 
   // Tick sound — once per second when under 10s
@@ -2555,7 +2235,7 @@ function togglePause() {
   });
   setPauseIcon(paused);
   // Show/hide pause overlay on active clock body
-  ['heritage','pro','chronos','xconnect'].forEach(id=>{
+  ['heritage','pro','chronos'].forEach(id=>{
     const po=document.getElementById('po-'+id);
     if(po) po.classList.toggle('show', paused);
   });
