@@ -771,7 +771,7 @@
   }
 
   async function signInWithGoogle() {
-    await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } });
+    await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
   }
   async function signOut() { await sb.auth.signOut(); window.location.href = 'index.html'; }
 
