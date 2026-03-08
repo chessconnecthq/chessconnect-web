@@ -1470,7 +1470,7 @@
               <div class="photo-upload" onclick="document.getElementById('photoInput').click()" role="button" tabindex="0" aria-label="Upload profile photo">
                 <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(event)"/>
                 <div class="photo-upload-icon"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span></div>
-                <div class="photo-upload-text">Click to upload · JPG or PNG · Max 5MB</div>
+                <div class="photo-upload-text" id="photo-upload-text">Click to upload · JPG or PNG · Max 5MB</div>
               </div>
               <div class="photo-preview" id="photoPreview"><img id="photoImg" src="" alt="Profile preview"/></div>
             </div>
@@ -2256,7 +2256,7 @@
 
       // Show verified card
       const titleStr = data.title ? `${data.title} · ` : '';
-      const activeStr = data.is_active ? '' : ' · Inactive';
+      const activeStr = '';
       document.getElementById('fideVerifiedSummary').textContent =
         `${data.name} · ${titleStr}${activeRating} ${ratingType} · ${data.country}${activeStr}`;
       document.getElementById('fideProfileLink').href = `https://ratings.fide.com/profile/${fideId}`;
@@ -2338,7 +2338,7 @@
     el.className = 'char-count' + (len >= 100 ? ' ok' : '');
   }
 
-  // ── Photo ──
+  // ── Photo (compressed to max 200KB / 400px) ──
   function handlePhoto(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -2346,8 +2346,30 @@
     photoFile = file;
     const reader = new FileReader();
     reader.onload = ev => {
-      document.getElementById('photoImg').src = ev.target.result;
-      document.getElementById('photoPreview').style.display = 'block';
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 400; // max dimension px
+        let w = img.width, h = img.height;
+        if (w > h && w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        else if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        // Compress: try quality 0.8, reduce until under 200KB
+        let quality = 0.8;
+        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+        while (dataUrl.length > 200 * 1024 * 1.37 && quality > 0.3) {
+          quality -= 0.1;
+          dataUrl = canvas.toDataURL('image/jpeg', quality);
+        }
+        const approxKB = Math.round(dataUrl.length * 0.75 / 1024);
+        document.getElementById('photoImg').src = dataUrl;
+        document.getElementById('photoPreview').style.display = 'block';
+        document.getElementById('photo-upload-text').textContent = `Photo compressed to ~${approxKB}KB ✓`;
+        // Store compressed data URL for later upload
+        photoFile = dataUrl;
+      };
+      img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -2551,8 +2573,9 @@
         } else if (error.code === '23505' && error.message.includes('fide_id')) {
           showToast('This FIDE ID is already registered. Please contact us if this is an error.', 'error');
         } else {
-          showToast('Something went wrong. Please try again.', 'error');
+          showToast('Error ' + (error.code || '') + ': ' + (error.message || 'Unknown error'), 'error');
         }
+        console.error('Insert error full:', JSON.stringify(error));
         throw error;
       }
       document.getElementById('successOverlay').classList.add('show');
