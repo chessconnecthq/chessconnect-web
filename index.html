@@ -91,6 +91,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
       --blue: #1E73E8;
@@ -1478,9 +1480,60 @@
             <!-- WhatsApp -->
             <div class="form-group">
               <label class="form-label" for="whatsapp">WhatsApp Number <span aria-hidden="true">*</span></label>
-              <input class="form-input" type="tel" id="whatsapp" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" autocomplete="tel" required aria-required="true"/>
-              <div class="otp-hint">Our team will reach out on this number to verify your profile.</div>
-              <div class="field-error" id="err-whatsapp" role="alert">Please enter a valid 10-digit WhatsApp number.</div>
+              <div style="display:flex; gap:0.5rem;">
+                <select class="form-select" id="waCountryCode" style="width:130px; flex-shrink:0;" aria-label="Country code">
+                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+971">🇦🇪 +971</option>
+                  <option value="+1">🇨🇦 +1 CA</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+7">🇷🇺 +7</option>
+                  <option value="+86">🇨🇳 +86</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+31">🇳🇱 +31</option>
+                  <option value="+47">🇳🇴 +47</option>
+                  <option value="+994">🇦🇿 +994</option>
+                  <option value="+374">🇦🇲 +374</option>
+                  <option value="+995">🇬🇪 +995</option>
+                  <option value="+380">🇺🇦 +380</option>
+                  <option value="+48">🇵🇱 +48</option>
+                  <option value="+36">🇭🇺 +36</option>
+                  <option value="+40">🇷🇴 +40</option>
+                  <option value="+359">🇧🇬 +359</option>
+                  <option value="+381">🇷🇸 +381</option>
+                  <option value="+420">🇨🇿 +420</option>
+                  <option value="+421">🇸🇰 +421</option>
+                  <option value="+90">🇹🇷 +90</option>
+                  <option value="+98">🇮🇷 +98</option>
+                  <option value="+972">🇮🇱 +972</option>
+                  <option value="+20">🇪🇬 +20</option>
+                  <option value="+27">🇿🇦 +27</option>
+                  <option value="+234">🇳🇬 +234</option>
+                  <option value="+880">🇧🇩 +880</option>
+                  <option value="+94">🇱🇰 +94</option>
+                  <option value="+92">🇵🇰 +92</option>
+                  <option value="+977">🇳🇵 +977</option>
+                  <option value="+65">🇸🇬 +65</option>
+                  <option value="+60">🇲🇾 +60</option>
+                  <option value="+62">🇮🇩 +62</option>
+                  <option value="+63">🇵🇭 +63</option>
+                  <option value="+84">🇻🇳 +84</option>
+                  <option value="+81">🇯🇵 +81</option>
+                  <option value="+82">🇰🇷 +82</option>
+                  <option value="+55">🇧🇷 +55</option>
+                  <option value="+54">🇦🇷 +54</option>
+                  <option value="+52">🇲🇽 +52</option>
+                  <option value="+57">🇨🇴 +57</option>
+                  <option value="+51">🇵🇪 +51</option>
+                  <option value="+53">🇨🇺 +53</option>
+                </select>
+                <input class="form-input" type="tel" id="whatsapp" placeholder="Mobile number" maxlength="15" autocomplete="tel" required aria-required="true" style="flex:1;"/>
+              </div>
+              <div class="otp-hint">Students / Parents will contact you directly on this number.</div>
+              <div class="field-error" id="err-whatsapp" role="alert">Please enter a valid WhatsApp number.</div>
             </div>
 
             <!-- City + Country -->
@@ -1493,7 +1546,7 @@
                 </div>
                 <div class="form-col">
                   <label class="form-label" for="country">Country <span aria-hidden="true">*</span></label>
-                  <select class="form-select" id="country" required aria-required="true">
+                  <select class="form-select" id="country" required aria-required="true" onchange="autoSelectCountryCode(this.value)">
                     <option value="">Select country</option>
                     <option value="India">India</option>
                     <option value="United States">United States</option>
@@ -1563,8 +1616,8 @@
             <!-- Bio -->
             <div class="form-group">
               <label class="form-label" for="bio">About You <span aria-hidden="true">*</span></label>
-              <textarea class="form-textarea" id="bio" placeholder="Tell students about your coaching experience, style, achievements and what makes you unique as a chess coach. Minimum 100 characters." maxlength="500" oninput="updateCharCount()" aria-label="Your coaching bio — minimum 100 characters" aria-required="true"></textarea>
-              <div class="char-count" id="charCount">0 / 100 minimum</div>
+              <textarea class="form-textarea" id="bio" placeholder="Tell students about your coaching experience, style, achievements and what makes you unique. Minimum 100 words." oninput="updateCharCount()" aria-label="Your coaching bio — minimum 100 words" aria-required="true"></textarea>
+              <div class="char-count" id="charCount">0 words / 100 minimum</div>
               <div class="field-error" id="err-bio" role="alert">Bio must be at least 100 characters.</div>
             </div>
 
@@ -1592,11 +1645,12 @@
           <div class="form-group">
             <label class="form-label" for="experience">Years of Experience <span aria-hidden="true">*</span></label>
             <select class="form-select" id="experience" required aria-required="true">
-              <option value="">Select years</option>
-              <option value="1-2 years">1–2 years</option>
-              <option value="3-5 years">3–5 years</option>
-              <option value="6-10 years">6–10 years</option>
-              <option value="10+ years">10+ years</option>
+              <option value="">Select experience</option>
+              <option value="Less than 1 yr">Less than 1 yr</option>
+              <option value="1-3 yrs">1–3 yrs</option>
+              <option value="3-5 yrs">3–5 yrs</option>
+              <option value="5-10 yrs">5–10 yrs</option>
+              <option value="10+ yrs">10+ yrs</option>
             </select>
             <div class="field-error" id="err-experience" role="alert">Please select your experience.</div>
           </div>
@@ -1634,19 +1688,23 @@
 
           <div class="form-group">
             <label class="form-label" for="fees">Fees / Session <small style="font-weight:400;color:var(--gray)">(optional)</small></label>
-            <div class="input-prefix-wrap">
-              <span class="input-prefix">₹</span>
-              <input class="form-input prefix-input" type="number" id="fees" placeholder="e.g. 750" min="0" max="99999" aria-label="Fees per session in rupees (optional)"/>
+            <div style="display:flex; gap:0.5rem;">
+              <select class="form-select" id="feesCurrency" style="width:105px; flex-shrink:0;" aria-label="Currency">
+                <option value="INR">₹ INR</option>
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+              </select>
+              <input class="form-input" type="number" id="fees" placeholder="e.g. 750" min="0" max="99999" aria-label="Fees per session (optional)" style="flex:1;"/>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Demo Class Available? <span aria-hidden="true">*</span></label>
+            <label class="form-label">Trial Class Available? <span aria-hidden="true">*</span></label>
             <div class="radio-group" role="group" aria-label="Demo class availability">
               <label class="radio-label"><input type="radio" name="demo" value="yes" aria-label="Yes, demo class available"/> Yes</label>
               <label class="radio-label"><input type="radio" name="demo" value="no" aria-label="No demo class"/> No</label>
             </div>
-            <div class="field-error" id="err-demo" role="alert">Please select demo class availability.</div>
+            <div class="field-error" id="err-demo" role="alert">Please select trial class availability.</div>
           </div>
 
           <div class="form-nav">
@@ -1990,6 +2048,48 @@
     'sb_publishable_uEoVcVB_c-JDJRJZZdHQ3Q_C1wlMoaZ'
   );
 
+  // ── EmailJS config (fill in after setup — see instructions) ──
+  const EMAILJS_SERVICE_ID  = 'service_7sh2a9t';
+  const EMAILJS_TEMPLATE_ID = 'template_89iorxh';
+  const EMAILJS_PUBLIC_KEY  = 'l0nVoYn8YbCGx87Nj';
+  let emailJsReady = false;
+  try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); emailJsReady = true; } catch(e) {}
+
+  // ── Log error to Supabase + notify admin via email ──
+  async function logRegistrationError(errorObj, context) {
+    const entry = {
+      source:     'registration',
+      error_code: errorObj?.code    || 'UNKNOWN',
+      error_msg:  errorObj?.message || String(errorObj) || 'Unknown error',
+      coach_name: context.name    || null,
+      fide_id:    context.fideId  || null,
+      city:       context.city    || null,
+      country:    context.country || null,
+      email:      context.email   || null,
+      step:       context.step    || null,
+      user_agent: navigator.userAgent.substring(0, 200),
+    };
+    try { await sb.from('registration_errors').insert([entry]); } catch(e) {}
+    try {
+      if (emailJsReady && EMAILJS_PUBLIC_KEY !== 'l0nVoYn8YbCGx87Nj') {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email:   'chessconnect.in@gmail.com',
+          subject:    'ChessConnect Registration Error — ' + entry.error_code,
+          coach_name: entry.coach_name || '—',
+          fide_id:    entry.fide_id    || '—',
+          city:       entry.city       || '—',
+          country:    entry.country    || '—',
+          email:      entry.email      || '—',
+          step:       entry.step       || '—',
+          error_code: entry.error_code,
+          error_msg:  entry.error_msg,
+          user_agent: entry.user_agent,
+          timestamp:  new Date().toISOString(),
+        });
+      }
+    } catch(e) {}
+  }
+
   // ── Auth State ──
   let currentUser = null;
   let authMode = 'register'; // 'register' or 'login'
@@ -2197,6 +2297,37 @@
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 
+  // ── Rich error modal for registration failures ──
+  function showRegistrationError(msg, code) {
+    const codeStr = code ? `<strong>Error code:</strong> ${code}<br>` : '';
+    const html = `
+      <p style="font-size:1rem;font-weight:700;color:#b91c1c;margin-bottom:0.75rem;">⚠️ Something went wrong</p>
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:1rem;font-size:0.85rem;color:#7f1d1d;line-height:1.7;margin-bottom:1rem;">
+        ${codeStr}<strong>Error details:</strong> ${msg}<br><br>
+        Please copy the error details above and email us at<br>
+        <a href="mailto:chessconnect.in@gmail.com" style="color:#1E73E8;font-weight:600;">chessconnect.in@gmail.com</a><br>
+        We will fix it and get back to you within 24 hours.
+      </div>
+      <p style="font-size:0.8rem;color:#6B7280;">Your data has not been lost — please do not refresh the page.</p>`;
+    let overlay = document.getElementById('regErrorOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'regErrorOverlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,20,40,0.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);';
+      const box = document.createElement('div');
+      box.style.cssText = 'background:#fff;border-radius:16px;padding:2rem;max-width:500px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.25);';
+      box.innerHTML = `<div id="regErrorBody"></div>
+        <button onclick="document.getElementById('regErrorOverlay').style.display='none'"
+          style="margin-top:1.25rem;width:100%;padding:0.8rem;background:#1E73E8;color:#fff;border:none;border-radius:10px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">
+          OK, I will contact support
+        </button>`;
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    }
+    document.getElementById('regErrorBody').innerHTML = html;
+    overlay.style.display = 'flex';
+  }
+
   // ── FIDE ID Lookup ──
   async function lookupFide() {
     const fideId = document.getElementById('fideId').value.trim();
@@ -2329,13 +2460,13 @@
     if (!isSelected && idx !== -1) arr.splice(idx, 1);
   }
 
-  // ── Char count ──
+  // ── Char count (word-based: 100 min / 500 max) ──
   function updateCharCount() {
-    const bio = document.getElementById('bio').value;
-    const len = bio.length;
+    const bio = document.getElementById('bio').value.trim();
+    const words = bio === '' ? 0 : bio.split(/\s+/).length;
     const el = document.getElementById('charCount');
-    el.textContent = len < 100 ? `${len} / 100 minimum` : `${len} / 500 characters`;
-    el.className = 'char-count' + (len >= 100 ? ' ok' : '');
+    el.textContent = words < 100 ? `${words} words / 100 minimum` : `${words} words / 500 max`;
+    el.className = 'char-count' + (words >= 100 ? ' ok' : '');
   }
 
   // ── Photo (compressed to max 200KB / 400px) ──
@@ -2485,10 +2616,12 @@
 
     // Fees
     const fees = document.getElementById('fees').value;
+    const currency = document.getElementById('feesCurrency').value;
+    const currSymbol = currency === 'INR' ? '₹' : currency === 'USD' ? '$' : '€';
     const demo = document.querySelector('input[name="demo"]:checked');
-    const demoText = demo && demo.value === 'yes' ? ' · Demo class available' : '';
+    const demoText = demo && demo.value === 'yes' ? ' · Trial class available' : '';
     document.getElementById('previewFees').textContent = fees
-      ? `₹${parseInt(fees).toLocaleString('en-IN')} / session${demoText}`
+      ? `${currSymbol}${parseInt(fees).toLocaleString()} / session${demoText}`
       : `Not specified${demoText}`;
   }
 
@@ -2496,14 +2629,15 @@
     let ok = true;
     if (!fideData) { showError('fideId', true, 'Please verify your FIDE ID first.'); ok = false; } else showError('fideId', false);
     const wa = document.getElementById('whatsapp').value.trim();
-    if (!/^\d{10}$/.test(wa)) { showError('whatsapp', true); ok = false; } else showError('whatsapp', false);
+    if (!/^\d{4,15}$/.test(wa)) { showError('whatsapp', true); ok = false; } else showError('whatsapp', false);
     const city = document.getElementById('city').value.trim();
     if (!city) { showError('city', true); ok = false; } else showError('city', false);
     const state = document.getElementById('country').value;
     if (!state) { showError('country', true); ok = false; } else showError('country', false);
     if (!selectedMode) { showError('mode', true); ok = false; } else showError('mode', false);
     const bio = document.getElementById('bio').value.trim();
-    if (bio.length < 100) { showError('bio', true); ok = false; } else showError('bio', false);
+    const bioWords = bio === '' ? 0 : bio.split(/\s+/).length;
+    if (bioWords < 100) { showError('bio', true); ok = false; } else showError('bio', false);
     return ok;
   }
 
@@ -2550,16 +2684,16 @@
       fide_blitz:       fideData.blitz_rating,
       fide_rating_type: fideData.rating_type,
       country:          fideData.country,
-      whatsapp:         document.getElementById('whatsapp').value.trim(),
+      whatsapp:         (document.getElementById('waCountryCode').value + document.getElementById('whatsapp').value.trim()),
       city:             document.getElementById('city').value.trim(),
-      state:            document.getElementById('country').value,
       coaching_mode:    selectedMode,
       experience:       document.getElementById('experience').value,
       levels_taught:    selectedLevels,
       languages:        cleanLangs,
       bio:              document.getElementById('bio').value.trim(),
       fees:             document.getElementById('fees').value ? parseInt(document.getElementById('fees').value) : null,
-      demo_available:  demoEl ? demoEl.value === 'yes' : false,
+      fees_currency:    document.getElementById('feesCurrency').value,
+      trial_available: demoEl ? demoEl.value === 'yes' : false,
       is_live:          true,
       auth_user_id:     currentUser ? currentUser.id : null,
       email:            currentUser ? currentUser.email : null,
@@ -2568,12 +2702,22 @@
     try {
       const { data, error } = await sb.from('coaches').insert([profileData]).select();
       if (error) {
+        const ctx = {
+          name:    profileData.full_name,
+          fideId:  profileData.fide_id,
+          city:    profileData.city,
+          country: profileData.country,
+          email:   profileData.email,
+          step:    'Submit — Supabase insert',
+        };
+        await logRegistrationError(error, ctx);
+
         if (error.code === '23505' && error.message.includes('whatsapp')) {
-          showToast('This WhatsApp number is already registered. Please contact us if you need help.', 'error');
+          showRegistrationError('This WhatsApp number is already registered.', null);
         } else if (error.code === '23505' && error.message.includes('fide_id')) {
-          showToast('This FIDE ID is already registered. Please contact us if this is an error.', 'error');
+          showRegistrationError('This FIDE ID is already registered.', null);
         } else {
-          showToast('Error ' + (error.code || '') + ': ' + (error.message || 'Unknown error'), 'error');
+          showRegistrationError(error.message || 'Unknown error', error.code);
         }
         console.error('Insert error full:', JSON.stringify(error));
         throw error;
@@ -2587,6 +2731,36 @@
     }
   }
 
+
+  // ── Auto-select WhatsApp country code from Country field ──
+  const COUNTRY_CODE_MAP = {
+    'India': '+91', 'United States': '+1', 'United Kingdom': '+44',
+    'United Arab Emirates': '+971', 'Canada': '+1', 'Australia': '+61',
+    'Germany': '+49', 'Russia': '+7', 'China': '+86', 'France': '+33',
+    'Spain': '+34', 'Netherlands': '+31', 'Norway': '+47',
+    'Azerbaijan': '+994', 'Armenia': '+374', 'Georgia': '+995',
+    'Ukraine': '+380', 'Poland': '+48', 'Hungary': '+36',
+    'Romania': '+40', 'Bulgaria': '+359', 'Serbia': '+381',
+    'Czech Republic': '+420', 'Slovakia': '+421', 'Turkey': '+90',
+    'Iran': '+98', 'Israel': '+972', 'Egypt': '+20',
+    'South Africa': '+27', 'Nigeria': '+234', 'Bangladesh': '+880',
+    'Sri Lanka': '+94', 'Pakistan': '+92', 'Nepal': '+977',
+    'Singapore': '+65', 'Malaysia': '+60', 'Indonesia': '+62',
+    'Philippines': '+63', 'Vietnam': '+84', 'Japan': '+81',
+    'South Korea': '+82', 'Brazil': '+55', 'Argentina': '+54',
+    'Mexico': '+52', 'Colombia': '+57', 'Peru': '+51', 'Cuba': '+53',
+    'Other': ''
+  };
+  function autoSelectCountryCode(country) {
+    const code = COUNTRY_CODE_MAP[country];
+    if (!code) return;
+    const sel = document.getElementById('waCountryCode');
+    if (!sel) return;
+    // Find matching option
+    for (let opt of sel.options) {
+      if (opt.value === code) { sel.value = code; break; }
+    }
+  }
 
 </script>
 </body>
