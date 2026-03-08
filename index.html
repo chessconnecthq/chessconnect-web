@@ -2141,7 +2141,7 @@
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.href
+        redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/index.html'
       }
     });
     if (error) {
@@ -2153,11 +2153,19 @@
 
   // ── Handle auth state on page load ──
   async function initAuth() {
-    const { data: { session } } = await sb.auth.getSession();
+    // Handle OAuth redirect — Supabase exchanges the URL hash for a session
+    const { data: { session }, error } = await sb.auth.getSession();
     if (session) {
       currentUser = session.user;
       await handleAuthenticatedUser();
     } else {
+      // Try exchanging code from URL (PKCE flow on some browsers)
+      const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+      const accessToken = hashParams.get('access_token');
+      if (accessToken) {
+        // Session will be picked up by onAuthStateChange — just wait
+        return;
+      }
       updateNavLoggedOut();
     }
   }
@@ -2166,16 +2174,27 @@
     if (!currentUser) return;
     updateNavLoggedIn(currentUser);
     closeAuthModal();
+
     // Check if coach already has a profile
     try {
-      const { data: existing } = await sb.from('coaches').select('id').eq('auth_user_id', currentUser.id).single();
+      const { data: existing } = await sb
+        .from('coaches')
+        .select('id')
+        .eq('auth_user_id', currentUser.id)
+        .maybeSingle();
+
       if (existing) {
-        // Already registered — redirect to dashboard
+        // Already registered — go to dashboard
         window.location.href = 'dashboard.html';
         return;
       }
-    } catch(e) { /* no profile found — continue to registration */ }
-    // New coach — scroll to form and pre-fill email
+    } catch(e) { /* ignore — treat as new coach */ }
+
+    // New coach — if they clicked Login (not Register), show helpful message
+    if (authMode === 'login') {
+      showToast('No profile found for this account. Please register below.', 'error');
+    }
+    // Scroll to form and pre-fill email
     scrollToRegister();
     const emailField = document.getElementById('coachEmail');
     if (emailField) emailField.value = currentUser.email || '';
