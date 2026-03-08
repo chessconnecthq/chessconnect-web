@@ -585,8 +585,23 @@
     else avatarEl.textContent = name.charAt(0).toUpperCase();
     document.getElementById('dashUser').style.display = 'flex';
 
-    const { data, error } = await sb.from('coaches').select('*').eq('auth_user_id', currentUser.id).single();
-    if (error || !data) { showScreen('noProfileWall'); return; }
+    const { data, error } = await sb.from('coaches').select('*').eq('auth_user_id', currentUser.id).maybeSingle();
+    if (error) {
+      console.error('Dashboard load error:', JSON.stringify(error));
+      // Show error details on screen instead of silent fail
+      document.getElementById('loadingScreen').innerHTML = `
+        <div style="text-align:center;padding:2rem;max-width:480px;">
+          <p style="font-size:1.1rem;font-weight:700;color:#b91c1c;margin-bottom:0.75rem;">⚠️ Could not load profile</p>
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:1rem;font-size:0.85rem;color:#7f1d1d;line-height:1.7;margin-bottom:1rem;text-align:left;">
+            <strong>Error:</strong> ${error.message || JSON.stringify(error)}<br/>
+            <strong>Code:</strong> ${error.code || '—'}<br/><br/>
+            Please share this with us at <a href="mailto:chessconnect.in@gmail.com" style="color:#1E73E8;">chessconnect.in@gmail.com</a>
+          </div>
+          <button onclick="window.location.reload()" style="padding:0.75rem 1.5rem;background:#1E73E8;color:#fff;border:none;border-radius:10px;font-size:0.9rem;font-weight:600;cursor:pointer;">Try Again</button>
+        </div>`;
+      return;
+    }
+    if (!data) { showScreen('noProfileWall'); return; }
     coachProfile = data;
     populateForm(data);
     showScreen('dashMain');
