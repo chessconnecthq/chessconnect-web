@@ -2256,7 +2256,7 @@
 
       // Show verified card
       const titleStr = data.title ? `${data.title} · ` : '';
-      const activeStr = data.is_active ? '' : ' · Inactive';
+      const activeStr = '';
       document.getElementById('fideVerifiedSummary').textContent =
         `${data.name} · ${titleStr}${activeRating} ${ratingType} · ${data.country}${activeStr}`;
       document.getElementById('fideProfileLink').href = `https://ratings.fide.com/profile/${fideId}`;
@@ -2551,8 +2551,9 @@
         } else if (error.code === '23505' && error.message.includes('fide_id')) {
           showToast('This FIDE ID is already registered. Please contact us if this is an error.', 'error');
         } else {
-          showToast('Something went wrong. Please try again.', 'error');
+          showToast('Error ' + (error.code || '') + ': ' + (error.message || 'Unknown error'), 'error');
         }
+        console.error('Insert error full:', JSON.stringify(error));
         throw error;
       }
       document.getElementById('successOverlay').classList.add('show');
