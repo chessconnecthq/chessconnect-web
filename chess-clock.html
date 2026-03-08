@@ -272,9 +272,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 
 /* ── In-clock fullscreen + sound icon buttons ── */
-.hc-fs-btn,.hc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
-.pc-fs-btn,.pc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
-.cc-fs-btn,.cc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.hc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}.hc-fs-btn,.hc-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.pc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}.pc-fs-btn,.pc-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.cc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}.cc-fs-btn,.cc-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
 /* Muted state — red tint on sound button */
 .hc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
 .pc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
@@ -585,7 +585,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 .hc-cbtn:hover{border-color:rgba(220,175,80,0.85);color:#F0D070;background:rgba(60,30,5,0.85);box-shadow:0 2px 10px rgba(196,135,58,0.25),inset 0 1px 0 rgba(255,200,80,0.15)}
 .hc-cbtn:active{transform:translateY(1px)}
-.hc-cbtn.on{border-color:#E8C050;color:#F0D060;background:rgba(80,45,5,0.85);box-shadow:0 2px 10px rgba(196,135,58,0.35),inset 0 1px 0 rgba(255,200,80,0.2)}
+.hc-cbtn.on{border-color:#E8C050;color:#F0D060;background:rgba(80,45,5,0.85);box-shadow:0 2px 10px rgba(196,135,58,0.35),inset 0 1px 0 rgba(255,200,80,0.2)}.hc-rot-btn.rotate-on{border-color:#E8C050!important;color:#F0D060!important;background:rgba(80,45,5,0.85)!important}
 .hc-cstatus{font-size:0.62rem;font-family:'DM Sans',sans-serif;color:rgba(220,175,80,0.85);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.7)}
 
 /* Displays */
@@ -958,7 +958,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 .cc-cbtn:hover{border-color:rgba(0,239,255,0.85);color:#00EFFF;background:rgba(0,20,50,0.85);box-shadow:0 2px 12px rgba(0,200,255,0.2)}
 .cc-cbtn:active{transform:translateY(1px)}
-.cc-cbtn.on{border-color:#00EFFF;color:#00EFFF;background:rgba(0,40,70,0.85);box-shadow:0 2px 14px rgba(0,200,255,0.3),inset 0 1px 0 rgba(0,255,255,0.12)}
+.cc-cbtn.on{border-color:#00EFFF;color:#00EFFF;background:rgba(0,40,70,0.85);box-shadow:0 2px 14px rgba(0,200,255,0.3),inset 0 1px 0 rgba(0,255,255,0.12)}.cc-rot-btn.rotate-on{border-color:#00EFFF!important;color:#00EFFF!important;background:rgba(0,40,70,0.85)!important}.pc-rot-btn.rotate-on{border-color:#D1D1D1!important;color:#fff!important;background:rgba(60,60,60,0.6)!important}
 /* 3. Status text */
 .cc-cstatus{font-size:0.6rem;color:rgba(0,220,255,0.82);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;font-family:'Orbitron',sans-serif;text-shadow:0 0 8px rgba(0,200,255,0.3)}
 
@@ -1078,8 +1078,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .fs-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .fs-toast-icon{font-size:0.9rem}
 /* Fullscreen active state */
-:fullscreen #rotateBtn{display:none}
-:-webkit-full-screen #rotateBtn{display:none}
 .s3-btn.fs-active{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.12)}
 
 </style>
@@ -1226,10 +1224,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     <div class="s3-brand"><span class="chess">Chess</span><span class="connect">Connect</span></div>
     <div class="s3-actions">
 
-      <button class="s3-btn" id="rotateBtn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>
-        Rotate
-      </button>
+
       <button class="s3-btn" onclick="newGame()" title="Back to clock selection" aria-label="Back to clock selection">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Home
@@ -1259,8 +1254,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
             <button class="hc-cbtn hc-snd-btn" id="hc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
               <svg id="hc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
             </button>
-            <button class="hc-cbtn hc-fs-btn" id="hc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
-              <svg id="hc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+            <button class="hc-cbtn hc-fs-btn" id="hc-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
+              <svg id="hc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit
+            </button>
+            <button class="hc-cbtn hc-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
             </button>
           </div>
           <div class="hc-cstatus" id="hc-st">Press side panel to start</div>
@@ -1329,8 +1326,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
             <button class="pc-cbtn pc-snd-btn" id="pc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
               <svg id="pc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
             </button>
-            <button class="pc-cbtn pc-fs-btn" id="pc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
-              <svg id="pc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+            <button class="pc-cbtn pc-fs-btn" id="pc-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
+              <svg id="pc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit
+            </button>
+            <button class="pc-cbtn pc-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
             </button>
           </div>
           <div class="pc-cstatus" id="pc-st">Tap lever to start</div>
@@ -1421,8 +1420,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
             <button class="cc-cbtn cc-snd-btn" id="cc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
               <svg id="cc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
             </button>
-            <button class="cc-cbtn cc-fs-btn" id="cc-fs" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Toggle fullscreen">
-              <svg id="cc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+            <button class="cc-cbtn cc-fs-btn" id="cc-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
+              <svg id="cc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit
+            </button>
+            <button class="cc-cbtn cc-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
             </button>
           </div>
           <div class="cc-cstatus" id="cc-st">Tap lever to start</div>
@@ -1652,23 +1653,23 @@ function toggleRotate() {
     if (canLock) {
       screen.orientation.lock('landscape').then(() => {
         isLandscape = true;
-        document.getElementById('rotateBtn').classList.add('rotate-on');
+        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
       }).catch(() => {
         // Lock failed (iOS Safari, desktop) — fall back to guidance toast
         isLandscape = true;
-        document.getElementById('rotateBtn').classList.add('rotate-on');
+        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
         showRotateToast('Rotate your phone sideways for landscape ↻');
       });
     } else {
       // No lock API at all (iOS Safari) — show guidance
       isLandscape = true;
-      document.getElementById('rotateBtn').classList.add('rotate-on');
+      document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
       showRotateToast('Rotate your phone sideways for landscape ↻');
     }
   } else {
     // — Unlock / go back to portrait —
     isLandscape = false;
-    document.getElementById('rotateBtn').classList.remove('rotate-on');
+    document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
     unlockOrientation();
     // On iOS where we only showed a toast, guide back
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
@@ -1758,7 +1759,7 @@ function launchClock() {
   // Reset landscape on new game
   isLandscape = false;
   document.getElementById('screen3').classList.remove('landscape');
-  document.getElementById('rotateBtn').classList.remove('rotate-on');
+  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
   dismissRotateToast();
   unlockOrientation();
   // Apply values
@@ -1821,7 +1822,7 @@ function newGame() {
   // Reset landscape
   isLandscape=false;
   document.getElementById('screen3').classList.remove('landscape');
-  document.getElementById('rotateBtn').classList.remove('rotate-on');
+  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
   dismissRotateToast();
   ['heritage','pro','chronos'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
