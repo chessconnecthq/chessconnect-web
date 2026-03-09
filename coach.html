@@ -266,7 +266,8 @@
     const id = params.get('id');
     if (!id) { showError(); return; }
 
-    const { data, error } = await sb.from('coaches').select('*').eq('id', id).eq('is_live', true).single();
+    // Cast id to integer since coaches.id is an int4 column
+    const { data, error } = await sb.from('coaches').select('*').eq('id', parseInt(id)).eq('is_live', true).maybeSingle();
     if (error || !data) { showError(); return; }
 
     coachData = data;
@@ -291,7 +292,7 @@
       "name":data.full_name,
       "jobTitle":`Chess Coach${data.chess_title ? ' (' + data.chess_title + ')' : ''}`,
       "url":pageUrl,"description":coachDesc,
-      "address":{"@type":"PostalAddress","addressLocality":data.city||'','addressCountry":data.country||'IN'"},
+      "address":{"@type":"PostalAddress","addressLocality":data.city||''},
       "knowsAbout":["Chess","Chess Coaching","FIDE Chess"],
       "breadcrumb":{"@type":"BreadcrumbList","itemListElement":[
         {"@type":"ListItem","position":1,"name":"Home","item":"https://chessconnecthq.github.io/chessconnect-web/"},
