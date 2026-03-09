@@ -11,6 +11,8 @@
 <meta name="author" content="ChessConnect"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/scoresheet-generator.html"/>
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<meta name="theme-color" content="#1E73E8"/>
 
 <!-- ── OPEN GRAPH (Facebook, WhatsApp, LinkedIn previews) ── -->
 <meta property="og:type" content="website"/>
@@ -393,17 +395,26 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   .mob-preview-btn{display:block}
 }
 
+/* ── PRINT CONTAINER (hidden on screen, shown only when printing) ── */
+#printContainer{display:none}
+
 /* ── PRINT ── */
 @media print{
+  @page { size: A4 portrait; margin: 8mm; }
   body{background:#fff}
-  .nav,.form-col,.preview-header,.mob-tabs{display:none!important}
+  .nav,.form-col,.preview-header,.mob-tabs,.preview-col{display:none!important}
   .page{display:block}
-  .preview-col{max-height:none;position:static;background:#fff;overflow:visible;display:block!important}
-  .preview-area{padding:0;gap:0;display:block}
-  .scoresheet-wrap{display:block;width:100%;page-break-after:always;break-after:page}
+  /* Show the dedicated print container */
+  #printContainer{display:block!important}
+  /* A5: 2-up grid so 4 fit on one A4 page */
+  #printContainer.print-a5{display:grid!important;grid-template-columns:1fr 1fr;gap:4mm}
+  .scoresheet-wrap{display:block;width:100%;break-inside:avoid;page-break-inside:avoid}
+  .scoresheet-wrap:nth-child(2n){page-break-after:always;break-after:page}
   .scoresheet-wrap:last-child{page-break-after:avoid;break-after:avoid}
-  .scoresheet{display:block;box-shadow:none;width:100%;min-height:0;page-break-after:always;break-after:page}
-  .scoresheet:last-child{page-break-after:avoid;break-after:avoid}
+  .scoresheet{display:block;box-shadow:none;width:100%;min-height:0;break-inside:avoid}
+  /* For A5 2-up, override widths to fill grid cell */
+  #printContainer.print-a5 .scoresheet,
+  #printContainer.print-a5 .scoresheet.ss-a5{width:100%;min-width:0}
   .more-card{display:none}
 }
 </style>
@@ -434,7 +445,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
   <!-- MODE -->
   <div class="mode-grid">
-    <div class="mode-card sel-tournament" id="mode-tournament" onclick="setMode('tournament',this)">
+    <div class="mode-card sel-tournament" id="mode-tournament" onclick="setMode('tournament')" role="button" aria-pressed="true" aria-label="Tournament mode">
       <div class="mode-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="11" width="5" height="10" rx="1"/><rect x="9.5" y="6" width="5" height="15" rx="1"/><rect x="17" y="14" width="5" height="7" rx="1"/>
@@ -444,7 +455,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       <div class="mode-desc">Generate scoresheets tailored to your tournament event</div>
       <div class="mode-tick"><svg viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
     </div>
-    <div class="mode-card" id="mode-academy" onclick="setMode('academy',this)">
+    <div class="mode-card" id="mode-academy" onclick="setMode('academy')" role="button" aria-pressed="false" aria-label="Academy mode">
       <div class="mode-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 6c0 0 4-2 10-2s10 2 10 2v14c0 0-4-2-10-2S2 20 2 20V6z"/><line x1="12" y1="4" x2="12" y2="18"/>
@@ -458,21 +469,21 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
   <!-- TOURNAMENT FIELDS -->
   <div class="section-title f-tournament">Tournament Details</div>
-  <div class="fg f-tournament"><label class="fl">Tournament Name</label><input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generate()"/></div>
+  <div class="fg f-tournament"><label class="fl">Tournament Name</label><input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generateDebounced()"/></div>
   <div class="frow f-tournament">
-    <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generateDebounced()"/></div>
     <div class="fg">
       <label class="fl">Date</label>
-      <input class="fi" type="date" id="f-date" oninput="generate()"/>
+      <input class="fi" type="date" id="f-date" oninput="generateDebounced()"/>
       <div class="date-end-row" id="t-date-end-row">
-        <input class="fi" type="date" id="f-date-end" oninput="generate()" style="margin-top:0.35rem"/>
+        <input class="fi" type="date" id="f-date-end" oninput="generateDebounced()" style="margin-top:0.35rem"/>
         <button class="remove-end-date" onclick="removeEndDate('t')" title="Remove end date">✕</button>
       </div>
       <button class="add-end-date" id="t-add-end" onclick="addEndDate('t')">+ Add end date</button>
     </div>
   </div>
   <div class="frow f-tournament">
-    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Balewadi Sports Hall, Pune" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Balewadi Sports Hall, Pune" oninput="generateDebounced()"/></div>
     <div class="fg"><label class="fl">Time Control</label>
       <select class="fs" id="f-tc" onchange="onTcChange('f-tc','tc-custom-wrap')">
         <option selected>15 min + 10 sec</option>
@@ -483,12 +494,12 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
         <option>Custom</option>
       </select>
       <div class="custom-tc-wrap" id="tc-custom-wrap">
-        <input class="fi" id="f-tc-custom" placeholder="e.g. 40 moves in 90 min + 30 min" oninput="generate()" style="margin-top:0.4rem"/>
+        <input class="fi" id="f-tc-custom" placeholder="e.g. 40 moves in 90 min + 30 min" oninput="generateDebounced()" style="margin-top:0.4rem"/>
       </div>
     </div>
   </div>
   <div class="frow f-tournament">
-    <div class="fg"><label class="fl">Organised By</label><input class="fi" id="f-org" placeholder="e.g. Pune Chess Association" oninput="generate()"/></div>
+    <div class="fg"><label class="fl">Organised By</label><input class="fi" id="f-org" placeholder="e.g. Pune Chess Association" oninput="generateDebounced()"/></div>
     <div class="fg"><label class="fl">Total Rounds</label>
       <select class="fs" id="f-rounds" onchange="generate()">
         <option>5</option><option>6</option><option>7</option><option>8</option>
@@ -512,17 +523,17 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
         <span class="logo-upload-text">Click to upload logo</span>
         <span class="logo-upload-hint">PNG, JPG or SVG · displays at 40×40px</span>
       </div>
-      <img id="logoPreviewThumb" class="logo-thumb" style="display:none"/>
+      <img id="logoPreviewThumb" class="logo-thumb" alt="Uploaded academy logo preview" style="display:none"/>
       <button class="logo-remove" id="logoRemoveBtn" style="display:none" onclick="removeLogo(event)">✕ Remove</button>
     </div>
     <input type="file" id="f-acad-logo" accept="image/png,image/jpeg,image/svg+xml" style="display:none" onchange="onLogoUpload(event)"/>
   </div>
 
-  <div class="fg f-academy"><label class="fl">Academy Name</label><input class="fi" id="f-acad-name" placeholder="e.g. Checkmate Chess Academy" oninput="generate()"/></div>
+  <div class="fg f-academy"><label class="fl">Academy Name</label><input class="fi" id="f-acad-name" placeholder="e.g. Checkmate Chess Academy" oninput="generateDebounced()"/></div>
 
   <div class="fg f-academy">
     <label class="fl">Academy Address <span class="opt">(optional)</span></label>
-    <textarea class="fi fta" id="f-acad-address" rows="2" placeholder="e.g. 12, Tilak Road, Sadashiv Peth&#10;Pune, Maharashtra 411030" oninput="generate()"></textarea>
+    <textarea class="fi fta" id="f-acad-address" rows="2" placeholder="e.g. 12, Tilak Road, Sadashiv Peth&#10;Pune, Maharashtra 411030" oninput="generateDebounced()"></textarea>
   </div>
 
   <!-- PAPER SIZE -->
@@ -555,7 +566,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       <div class="tlbl">Print Back Side</div>
       <div class="tsub" id="back-sub">Continuation moves 51–100 + signatures</div>
     </div>
-    <label class="tsw"><input type="checkbox" id="opt-back" onchange="onBackToggle()"/><span class="tsl"></span></label>
+    <label class="tsw" aria-label="Toggle print back side"><input type="checkbox" id="opt-back" onchange="onBackToggle()"/><span class="tsl"></span></label>
   </div>
 
   <!-- PRINT -->
@@ -568,7 +579,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   <!-- FOOTER NOTE -->
   <div class="section-title">Footer Note</div>
   <div class="fg"><label class="fl">Custom Footer Text <span class="opt">(optional)</span></label>
-    <input class="fi" id="f-footer" placeholder="e.g. Write legibly in algebraic notation" oninput="generate()"/>
+    <input class="fi" id="f-footer" placeholder="e.g. Write legibly in algebraic notation" oninput="generateDebounced()"/>
   </div>
 
   <div class="tip" id="printTip">
@@ -587,14 +598,17 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
     <!-- Front / Back toggle -->
     <div class="side-toggle">
-      <button class="side-btn active" id="btn-front" onclick="setSide('front')">Front</button>
-      <button class="side-btn" id="btn-back" onclick="setSide('back')" disabled>Back</button>
+      <button class="side-btn active" id="btn-front" onclick="setSide('front')" aria-label="Preview front side">Front</button>
+      <button class="side-btn" id="btn-back" onclick="setSide('back')" disabled aria-label="Preview back side">Back</button>
     </div>
   </div>
   <div class="preview-area" id="previewArea"></div>
 </div>
 
 </div><!-- /page -->
+
+<!-- Hidden container used only during printing — never shown in UI -->
+<div id="printContainer" style="display:none" aria-hidden="true"></div>
 
 <script>
 let style   = 'classic';
@@ -613,13 +627,16 @@ function moveRanges() {
 function setSize(s, btn) {
   paper = s;
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
+  if (btn) btn.classList.add('sel');
+  else document.getElementById('size-' + s)?.classList.add('sel');
   // Update back-sub label
-  document.getElementById('back-sub').textContent = s === 'a5'
+  const backSub = document.getElementById('back-sub');
+  if (backSub) backSub.textContent = s === 'a5'
     ? 'Continuation moves 31–60 + signatures'
     : 'Continuation moves 51–100 + signatures';
   // Update print tip
-  document.getElementById('printTip').innerHTML = s === 'a5'
+  const printTip = document.getElementById('printTip');
+  if (printTip) printTip.innerHTML = s === 'a5'
     ? '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page fits <strong>4 A5 scoresheets</strong> (2×2). For duplex back sides, use "Print on both sides" if your printer supports it.'
     : '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page fits <strong>2 scoresheets</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.';
   generate();
@@ -628,8 +645,12 @@ function setSize(s, btn) {
 /* ── MODE ── */
 function setMode(m) {
   mode = m;
-  document.getElementById('mode-tournament').className = 'mode-card' + (m==='tournament' ? ' sel-tournament' : '');
-  document.getElementById('mode-academy').className    = 'mode-card' + (m==='academy'    ? ' sel-academy'    : '');
+  const tCard = document.getElementById('mode-tournament');
+  const aCard = document.getElementById('mode-academy');
+  tCard.className = 'mode-card' + (m==='tournament' ? ' sel-tournament' : '');
+  aCard.className = 'mode-card' + (m==='academy'    ? ' sel-academy'    : '');
+  tCard.setAttribute('aria-pressed', m==='tournament' ? 'true' : 'false');
+  aCard.setAttribute('aria-pressed', m==='academy'    ? 'true' : 'false');
   document.getElementById('formInner').className = m === 'academy' ? 'form-inner mode-academy' : 'form-inner';
   document.getElementById('hero').className = m === 'academy' ? 'hero hero-academy' : 'hero hero-tournament';
   const mb = document.getElementById('modeBadge');
@@ -642,7 +663,8 @@ function setMode(m) {
 function setStyle(name, card) {
   style = name;
   document.querySelectorAll('.style-card').forEach(c => c.classList.remove('sel'));
-  card.classList.add('sel');
+  if (card) card.classList.add('sel');
+  else document.querySelector(`.style-card[onclick*="${name}"]`)?.classList.add('sel');
   generate();
 }
 
@@ -660,20 +682,23 @@ function onBackToggle() {
   const backBtn = document.getElementById('btn-back');
   backBtn.disabled = !hasBack;
   if (!hasBack) {
-    setSide('front'); // setSide calls generate() internally
-  } else {
-    generate(); // ensure preview refreshes when back side is turned ON
+    // Switch to front without relying on setSide to call generate()
+    previewSide = 'front';
+    document.getElementById('btn-front').classList.add('active');
+    document.getElementById('btn-back').classList.remove('active');
   }
+  generate(); // always owns the refresh call
 }
 
 /* ── LOGO UPLOAD ── */
 window._acadLogoDataUrl = null;
+window._acadLogoIsSvg   = false;
 
 function onLogoUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Fix 4: MIME type check — reject anything that isn't PNG, JPG, or SVG
+  // MIME type check — reject anything that isn't PNG, JPG, or SVG
   const allowed = ['image/png', 'image/jpeg', 'image/svg+xml'];
   if (!allowed.includes(file.type)) {
     alert('Please upload a PNG, JPG, or SVG file.');
@@ -681,12 +706,24 @@ function onLogoUpload(event) {
     return;
   }
 
-  // Fix 3: File size limit — reject files over 2MB
+  // File extension check — double safety since MIME type can be spoofed
+  const allowedExts = ['.png', '.jpg', '.jpeg', '.svg'];
+  const fileName = file.name.toLowerCase();
+  if (!allowedExts.some(ext => fileName.endsWith(ext))) {
+    alert('Please upload a file with a .png, .jpg, or .svg extension.');
+    event.target.value = '';
+    return;
+  }
+
+  // File size limit — reject files over 2MB
   if (file.size > 2 * 1024 * 1024) {
     alert('Logo file is too large. Please upload an image under 2MB.');
     event.target.value = '';
     return;
   }
+
+  // Flag SVG uploads — we show them in the UI thumb but do NOT inject as <img src> in scoresheet
+  window._acadLogoIsSvg = (file.type === 'image/svg+xml');
 
   const reader = new FileReader();
   reader.onload = e => {
@@ -708,6 +745,7 @@ function onLogoUpload(event) {
 function removeLogo(event) {
   event.stopPropagation();
   window._acadLogoDataUrl = null;
+  window._acadLogoIsSvg   = false;
   document.getElementById('f-acad-logo').value = '';
   document.getElementById('logoPreviewThumb').style.display = 'none';
   document.getElementById('logoUploadInner').style.display = 'flex';
@@ -723,10 +761,14 @@ function addEndDate(prefix) {
   generate();
 }
 function removeEndDate(prefix) {
-  document.getElementById(prefix + '-date-end-row').classList.remove('visible');
-  document.getElementById(prefix + '-add-end').style.display = '';
-  const endId = prefix === 't' ? 'f-date-end' : 'f-acad-date-end';
-  document.getElementById(endId).value = '';
+  const row = document.getElementById(prefix + '-date-end-row');
+  const btn = document.getElementById(prefix + '-add-end');
+  if (!row || !btn) return; // guard: only 't' prefix exists
+  row.classList.remove('visible');
+  btn.style.display = '';
+  // Only tournament has an end-date input; clear it safely
+  const endEl = document.getElementById('f-date-end');
+  if (endEl) endEl.value = '';
   generate();
 }
 
@@ -734,19 +776,32 @@ function removeEndDate(prefix) {
 function onTcChange(selectId, wrapId) {
   const sel  = document.getElementById(selectId);
   const wrap = document.getElementById(wrapId);
-  wrap.classList.toggle('visible', sel.value === 'Custom');
+  if (sel && wrap) wrap.classList.toggle('visible', sel.value === 'Custom');
   generate();
 }
 
 /* ── HELPERS ── */
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
 function v(id)  { return document.getElementById(id)?.value || ''; }
-function chk(id){ return document.getElementById(id)?.checked; }
+function ve(id) { return escapeHtml(v(id)); } // escaped version for innerHTML use
+function chk(id){ return !!document.getElementById(id)?.checked; }
+function safeDate(s) {
+  if (!s) return null;
+  const d = new Date(s + 'T00:00:00');
+  return isNaN(d.getTime()) ? null : d;
+}
 function fmtDate(str, endStr) {
   if (!str) return '';
-  const fmt = s => new Date(s + 'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-  if (endStr) {
-    const start = new Date(str  + 'T00:00:00');
-    const end   = new Date(endStr + 'T00:00:00');
+  const fmt = s => {
+    const d = safeDate(s);
+    return d ? d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '';
+  };
+  const start = safeDate(str);
+  const end   = safeDate(endStr);
+  if (start && end) {
     // Same month+year → "14–16 Mar 2026", else "28 Mar – 2 Apr 2026"
     if (start.getMonth()===end.getMonth() && start.getFullYear()===end.getFullYear()) {
       return `${start.getDate()}–${end.getDate()} ${start.toLocaleDateString('en-IN',{month:'short',year:'numeric'})}`;
@@ -762,10 +817,10 @@ function buildFront(num) {
   const r   = moveRanges();
   const sizeClass = paper === 'a5' ? ' ss-a5' : '';
 
-  const name    = isT ? (v('f-name') || 'Tournament Name') : (v('f-acad-name') || 'Academy Name');
+  const name    = isT ? (ve('f-name') || 'Tournament Name') : (ve('f-acad-name') || 'Academy Name');
   const subline = isT
-    ? `Organised by ${v('f-org')||'Organiser'}${v('f-aicf') ? ' · AICF: '+v('f-aicf') : ''}`
-    : (v('f-acad-address') ? v('f-acad-address').replace(/\n/g,' · ') : '');
+    ? `Organised by ${ve('f-org')||'Organiser'}${v('f-aicf') ? ' · AICF: '+ve('f-aicf') : ''}`
+    : (v('f-acad-address') ? escapeHtml(v('f-acad-address')).replace(/\n/g,' · ') : '');
 
   // Date — tournament only (academy has no date field)
   const dateStart  = isT ? v('f-date') : '';
@@ -774,18 +829,18 @@ function buildFront(num) {
   const dateEnd    = hasEndDate ? v('f-date-end') : '';
   const date       = fmtDate(dateStart, dateEnd);
 
-  const venue   = isT ? v('f-venue') : '';
+  const venue   = isT ? ve('f-venue') : '';
 
   // Time control — use custom text when "Custom" is selected
   const tcSelect  = v('f-tc');
-  const tcCustom  = v('f-tc-custom');
-  const tc        = tcSelect === 'Custom' ? (tcCustom || 'Custom Time Control') : tcSelect;
+  const tcCustom  = ve('f-tc-custom');
+  const tc        = tcSelect === 'Custom' ? (tcCustom.trim() || 'Custom Time Control') : escapeHtml(tcSelect);
 
   const isBW = style === 'bw';
   const tcChip  = isT ? `<div class="ss-chip">${isBW ? '' : '⏱ '}${tc}</div>` : '';
 
-  // Academy logo
-  const logoDataUrl = (!isT && window._acadLogoDataUrl) ? window._acadLogoDataUrl : null;
+  // Academy logo — SVGs are not rendered as <img> to prevent embedded script execution
+  const logoDataUrl = (!isT && window._acadLogoDataUrl && !window._acadLogoIsSvg) ? window._acadLogoDataUrl : null;
   const gi1     = 'Round No.';
   const gi2     = 'Board No. / Table No.';
   const p1Label = '♔ White Player';
@@ -793,7 +848,7 @@ function buildFront(num) {
   const rLbl    = 'FIDE Rating';
   const arbLbl  = 'Arbiter Use Only';
   const arbName = 'Name';
-  const footerNote = v('f-footer') || '';
+  const footerNote = ve('f-footer') || '';
 
   const showMoves  = true;
   const showTime   = false;
@@ -832,7 +887,7 @@ function buildFront(num) {
           <div class="ss-meta-row">
             ${date  ? `<div class="ss-chip">${isBW ? '' : '📅 '}${date}</div>` : ''}
             ${venue ? `<div class="ss-chip">${isBW ? '' : '📍 '}${venue}</div>` : ''}
-            ${tcChip}${isT ? `<div class="ss-chip">${isBW ? '' : '🔄 '}${v('f-rounds')||'9'} Rounds</div>` : ''}
+            ${tcChip}${isT ? `<div class="ss-chip">${isBW ? '' : '🔄 '}${escapeHtml(v('f-rounds'))} Rounds</div>` : ''}
           </div>
         </div>
       </div>
@@ -885,7 +940,7 @@ function buildFront(num) {
     </div>` : ''}
     <div class="ss-footer">
       <div class="ss-footer-note">${footerNote}</div>
-      <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span></div>
+      <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span> <span class="ss-sheet-num" style="font-size:6px;opacity:0.4;margin-left:4px">Sheet #${num}</span></div>
     </div>
   </div>
   </div>`;
@@ -897,7 +952,7 @@ function buildBack(num) {
   const r   = moveRanges();
   const sizeClass = paper === 'a5' ? ' ss-a5' : '';
 
-  const name   = isT ? (v('f-name') || 'Tournament Name') : (v('f-acad-name') || 'Academy Name');
+  const name   = isT ? (ve('f-name') || 'Tournament Name') : (ve('f-acad-name') || 'Academy Name');
   const gi1Val = 'Round No.';
   const gi2Val = 'Board No. / Table No.';
   const arbLbl = 'Arbiter';
@@ -971,6 +1026,11 @@ function buildBack(num) {
 }
 
 /* ── GENERATE (preview) ── */
+let _genTimer = null;
+function generateDebounced() {
+  clearTimeout(_genTimer);
+  _genTimer = setTimeout(generate, 150);
+}
 function generate() {
   const area = document.getElementById('previewArea');
   const hasBack = chk('opt-back');
@@ -980,13 +1040,20 @@ function generate() {
 
 /* ── PRINT ── */
 function printSheets() {
-  const area = document.getElementById('previewArea');
+  const pc = document.getElementById('printContainer');
   const hasBack = chk('opt-back');
-  area.innerHTML = buildFront(1) + (hasBack ? buildBack(1) : '');
-  setTimeout(() => {
-    window.print();
-    generate();
-  }, 300);
+  // Build into the hidden print container — preview is untouched
+  pc.innerHTML = buildFront(1) + (hasBack ? buildBack(1) : '');
+  pc.classList.toggle('print-a5', paper === 'a5');
+  // requestAnimationFrame waits for the browser to finish rendering before opening print dialog
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.print();
+      // Clean up print container after printing
+      pc.innerHTML = '';
+      pc.classList.remove('print-a5');
+    });
+  });
 }
 
 /* ── MOBILE TAB SWITCH ── */
@@ -1006,6 +1073,8 @@ function switchTab(tab) {
 
 // Init
 generate();
+// Fix #7: sync mobile tab state on first load so form is visible
+switchTab('form');
 </script>
 </body>
 </html>
