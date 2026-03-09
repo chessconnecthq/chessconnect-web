@@ -51,6 +51,26 @@
 }
 </script>
 
+<!-- Early stubs — prevent ReferenceError if Cloudflare or slow networks delay main script -->
+<script>
+function generateDebounced(){}
+function generate(){}
+function setMode(){}
+function setSide(){}
+function setSize(){}
+function setStyle(){}
+function setTitleSize(){}
+function setTitleStyle(){}
+function onTcChange(){}
+function onBackToggle(){}
+function onLogoUpload(){}
+function removeLogo(){}
+function addEndDate(){}
+function removeEndDate(){}
+function printSheets(){}
+function switchTab(){}
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -212,6 +232,21 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .mob-preview-btn{display:none;width:100%;margin-top:0.5rem;padding:0.72rem;border:2px solid var(--blue);border-radius:var(--rs);background:transparent;color:var(--blue);font-family:var(--font-b);font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s}
 .mob-preview-btn:hover{background:rgba(30,115,232,0.06)}
 .tip{background:#EFF6FF;border:1px solid #DBEAFE;border-radius:var(--rs);padding:0.7rem 0.85rem;margin-top:0.75rem;font-size:0.72rem;color:#1E40AF;line-height:1.6}
+/* ── THANK YOU TOAST ── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:var(--navy);color:#fff;padding:0.75rem 1.1rem;border-radius:var(--rs);font-family:var(--font-b);font-size:0.82rem;font-weight:600;box-shadow:0 8px 24px rgba(16,44,87,0.22);display:flex;align-items:flex-start;gap:0.6rem;max-width:300px;line-height:1.45;pointer-events:none;opacity:0;transform:translateY(12px);transition:opacity 0.3s ease,transform 0.3s ease}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.toast-body{}
+.toast-title{font-weight:800;font-size:0.84rem;margin-bottom:0.15rem}
+.toast-sub{font-size:0.74rem;opacity:0.8;font-weight:500}
+
+/* ── FEEDBACK CARD ── */
+.feedback-card{margin-top:1rem;padding:0.85rem 1rem;background:#F0F7FF;border:1.5px solid #DBEAFE;border-radius:var(--rs);display:flex;flex-direction:column;gap:0.5rem}
+.feedback-card-text{font-size:0.78rem;color:#374151;line-height:1.5}
+.feedback-card-text strong{color:var(--navy)}
+.feedback-email-btn{display:inline-flex;align-items:center;gap:0.35rem;padding:0.42rem 0.85rem;background:var(--navy);color:#fff;border-radius:var(--rs);font-family:var(--font-b);font-size:0.75rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;align-self:flex-start}
+.feedback-email-btn:hover{opacity:0.85}
+.feedback-email-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tip strong{font-weight:700}
 
 /* ── RIGHT PREVIEW ── */
@@ -657,6 +692,18 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <strong>💡 Tip:</strong> In the print dialog, set paper to <strong>A4</strong>. Each page = <strong>1 scoresheet</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.
   </div>
 
+  <!-- FEEDBACK -->
+  <div class="feedback-card">
+    <div class="feedback-card-text">
+      <strong>Have feedback or spotted an issue?</strong><br/>
+      Noticed something off while generating your scoresheet, or have a suggestion to improve it? We'd love to hear from you.
+    </div>
+    <a class="feedback-email-btn" href="/cdn-cgi/l/email-protection#03606b667070606c6d6d6660772d6a6d43646e626a6f2d606c6e3c707661696660773e50606c7166706b6666772344666d667162776c71234566666761626068">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+      <span class="__cf_email__" data-cfemail="016269647272626e6f6f6462752f686f41666c60686d2f626e6c">[email&#160;protected]</span>
+    </a>
+  </div>
+
 </div>
 </div>
 
@@ -678,10 +725,19 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 </div><!-- /page -->
 
+<!-- Thank you toast -->
+<div class="toast" id="thankYouToast" aria-live="polite">
+  <div class="toast-icon">✅</div>
+  <div class="toast-body">
+    <div class="toast-title">Scoresheet ready!</div>
+    <div class="toast-sub">Thank you for using ChessConnect ♟️</div>
+  </div>
+</div>
+
 <!-- Hidden container used only during printing — never shown in UI -->
 <div id="printContainer" style="display:none" aria-hidden="true"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 let style   = 'classic';
 let mode    = 'tournament';
 let paper   = 'a4';
@@ -726,6 +782,14 @@ function setSize(s, btn) {
 }
 
 /* ── MODE ── */
+/* ── THANK YOU TOAST ── */
+function showToast() {
+  const t = document.getElementById('thankYouToast');
+  if (!t) return;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
 function setMode(m) {
   mode = m;
   const tCard = document.getElementById('mode-tournament');
@@ -1179,6 +1243,7 @@ function printSheets() {
   // Give browser one RAF + 150ms to fully render injected HTML before opening print dialog
   requestAnimationFrame(() => {
     setTimeout(() => {
+      showToast();
       window.print();
     }, 150);
   });
@@ -1192,17 +1257,4 @@ function switchTab(tab) {
   const tp = document.getElementById('tab-preview');
   if (tab === 'form') {
     fc.classList.add('mob-visible'); pc.classList.remove('mob-visible');
-    tf.classList.add('active');      tp.classList.remove('active');
-  } else {
-    pc.classList.add('mob-visible'); fc.classList.remove('mob-visible');
-    tp.classList.add('active');      tf.classList.remove('active');
-  }
-}
-
-// Init
-generate();
-// Fix #7: sync mobile tab state on first load so form is visible
-switchTab('form');
-</script>
-</body>
-</html>
+    tf.classList.add('active');      tp.classList.remove('active'
