@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -406,15 +406,9 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   .page{display:block}
   /* Show the dedicated print container */
   #printContainer{display:block!important}
-  /* A5: 2-up grid so 4 fit on one A4 page */
-  #printContainer.print-a5{display:grid!important;grid-template-columns:1fr 1fr;gap:4mm}
-  .scoresheet-wrap{display:block;width:100%;break-inside:avoid;page-break-inside:avoid}
-  .scoresheet-wrap:nth-child(2n){page-break-after:always;break-after:page}
+  .scoresheet-wrap{display:block;width:100%;break-inside:avoid;page-break-inside:avoid;page-break-after:always;break-after:page}
   .scoresheet-wrap:last-child{page-break-after:avoid;break-after:avoid}
   .scoresheet{display:block;box-shadow:none;width:100%;min-height:0;break-inside:avoid}
-  /* For A5 2-up, override widths to fill grid cell */
-  #printContainer.print-a5 .scoresheet,
-  #printContainer.print-a5 .scoresheet.ss-a5{width:100%;min-width:0}
   .more-card{display:none}
 }
 </style>
@@ -541,11 +535,11 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   <div class="size-grid">
     <div class="size-btn sel" id="size-a4" onclick="setSize('a4',this)">
       <div class="size-btn-name">A4</div>
-      <div class="size-btn-desc">50 moves · 2 per page</div>
+      <div class="size-btn-desc">50 moves · 1 per page</div>
     </div>
     <div class="size-btn" id="size-a5" onclick="setSize('a5',this)">
       <div class="size-btn-name">A5</div>
-      <div class="size-btn-desc">30 moves · 4 per page</div>
+      <div class="size-btn-desc">30 moves · 1 per page</div>
     </div>
   </div>
 
@@ -583,7 +577,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   </div>
 
   <div class="tip" id="printTip">
-    <strong>💡 Tip:</strong> In the print dialog, select <strong>"Save as PDF"</strong> and set paper to <strong>A4</strong>. Each A4 page = 2 scoresheets. 20 sheets = 10 pages.
+    <strong>💡 Tip:</strong> In the print dialog, set paper to <strong>A4</strong>. Each page = <strong>1 scoresheet</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.
   </div>
 
 </div>
@@ -637,8 +631,8 @@ function setSize(s, btn) {
   // Update print tip
   const printTip = document.getElementById('printTip');
   if (printTip) printTip.innerHTML = s === 'a5'
-    ? '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page fits <strong>4 A5 scoresheets</strong> (2×2). For duplex back sides, use "Print on both sides" if your printer supports it.'
-    : '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each A4 page fits <strong>2 scoresheets</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.';
+    ? '<strong>💡 Tip:</strong> Set paper to <strong>A5</strong> in the print dialog. Each page = 1 scoresheet. For duplex back sides, use "Print on both sides" if your printer supports it.'
+    : '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each page = 1 scoresheet. For duplex back sides, use "Print on both sides" if your printer supports it.';
   generate();
 }
 
@@ -1044,14 +1038,12 @@ function printSheets() {
   const hasBack = chk('opt-back');
   // Build into the hidden print container — preview is untouched
   pc.innerHTML = buildFront(1) + (hasBack ? buildBack(1) : '');
-  pc.classList.toggle('print-a5', paper === 'a5');
   // requestAnimationFrame waits for the browser to finish rendering before opening print dialog
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       window.print();
       // Clean up print container after printing
       pc.innerHTML = '';
-      pc.classList.remove('print-a5');
     });
   });
 }
