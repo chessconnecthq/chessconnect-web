@@ -7,6 +7,8 @@
   <meta name="robots" content="noindex, nofollow"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -126,6 +128,56 @@
     .fees-input-row { display: flex; gap: 0.5rem; }
     .fees-input-row select { width: 110px; flex-shrink: 0; padding: 0.7rem 0.5rem; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.9rem; color: var(--text); background: #fafbfd; font-family: inherit; }
     .fees-input-row input { flex: 1; }
+    /* Profile Strength Ring */
+    .strength-bar { background: #fff; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 12px rgba(30,115,232,0.06); border: 1px solid var(--border); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .strength-ring-wrap { position: relative; width: 90px; height: 90px; flex-shrink: 0; }
+    .strength-ring-wrap svg { transform: rotate(-90deg); }
+    .strength-ring-bg { fill: none; stroke: #e8f1fd; stroke-width: 8; }
+    .strength-ring-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease, stroke 0.4s; }
+    .strength-ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .strength-ring-pct { font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1; }
+    .strength-ring-sub { font-size: 0.6rem; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
+    .strength-info { flex: 1; min-width: 200px; }
+    .strength-title { font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 0.4rem; }
+    .strength-label { font-size: 0.78rem; font-weight: 600; color: var(--sub); margin-bottom: 0.5rem; }
+    .strength-tips { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+    .strength-tip { font-size: 0.8rem; color: var(--sub); display: flex; align-items: center; gap: 0.4rem; }
+    .strength-tip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; flex-shrink: 0; }
+    .strength-tip.done { color: #166534; }
+    .strength-tip.done::before { background: #22c55e; }
+    /* Photo upload */
+    .photo-upload-wrap { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+    .photo-preview { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--dark), var(--blue)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: #fff; overflow: hidden; border: 3px solid var(--light-blue); flex-shrink: 0; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-upload-btns { display: flex; flex-direction: column; gap: 0.5rem; }
+    .btn-upload { font-family: inherit; font-size: 0.85rem; font-weight: 600; padding: 0.5rem 1rem; background: var(--blue); color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; }
+    .btn-upload:hover { background: #1560c8; }
+    .btn-remove-photo { font-family: inherit; font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem; background: #fff; color: var(--red); border: 1.5px solid #fca5a5; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: none; }
+    .btn-remove-photo:hover { background: #fef2f2; }
+    .photo-hint { font-size: 0.75rem; color: #999; margin-top: 0.25rem; }
+    .upload-progress { display: none; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--sub); margin-top: 0.4rem; }
+    .upload-progress.show { display: flex; }
+    .upload-bar-wrap { flex: 1; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .upload-bar { height: 100%; background: var(--blue); border-radius: 4px; transition: width 0.3s; width: 0%; }
+    /* Photo review badge */
+    .photo-review-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.75rem; border-radius: 20px; margin-top: 0.5rem; }
+    /* Crop modal */
+    .crop-overlay { position: fixed; inset: 0; background: rgba(10,20,40,0.85); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
+    .crop-overlay.show { display: flex; }
+    .crop-box { background: #fff; border-radius: 16px; padding: 1.5rem; max-width: 480px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
+    .crop-box h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.4rem; }
+    .crop-box p { font-size: 0.82rem; color: var(--sub); margin-bottom: 1rem; }
+    .crop-preview-wrap { width: 100%; height: 300px; overflow: hidden; border-radius: 10px; background: #000; margin-bottom: 1rem; }
+    .crop-preview-wrap img { max-width: 100%; }
+    .crop-btns { display: flex; gap: 0.75rem; }
+    .btn-crop-confirm { flex: 1; padding: 0.75rem; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-crop-confirm:hover { background: #1560c8; }
+    .btn-crop-cancel { padding: 0.75rem 1.25rem; background: var(--gray); color: var(--text); border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+    /* Social link input with icon prefix */
+    .link-input-row { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; background: #fafbfd; transition: border-color 0.2s; }
+    .link-input-row:focus-within { border-color: var(--blue); background: #fff; }
+    .link-input-icon { padding: 0 0.75rem; color: var(--sub); font-size: 0.8rem; font-weight: 600; white-space: nowrap; border-right: 1px solid var(--border); background: #f0f4fa; height: 100%; display: flex; align-items: center; min-height: 42px; }
+    .link-input-row input { flex: 1; padding: 0.7rem 0.9rem; border: none; font-size: 0.9rem; color: var(--text); background: transparent; font-family: inherit; outline: none; }
   </style>
 </head>
 <body>
@@ -154,7 +206,7 @@
     <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
     Continue with Google
   </button>
-  <p style="font-size:0.82rem;color:#999;margin-top:0.5rem;">Not a coach yet? <a href="index.html" style="color:#1E73E8;">List yourself free</a></p>
+  <p style="font-size:0.82rem;color:#999;margin-top:0.5rem;">Not a coach yet? <a href="index.html" style="color:#1E73E8;">List Your Profile</a></p>
 </div>
 
 <div class="auth-wall" id="noProfileWall" style="display:none;">
@@ -190,6 +242,28 @@
       <button class="btn-link-action btn-link-copy" onclick="copyMyProfileLink()">
         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Link
       </button>
+    </div>
+  </div>
+
+  <!-- PROFILE STRENGTH RING -->
+  <div class="strength-bar" id="strengthBar">
+    <div class="strength-ring-wrap">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <circle class="strength-ring-bg" cx="45" cy="45" r="38"/>
+        <circle class="strength-ring-fill" id="strengthRingFill" cx="45" cy="45" r="38"
+          stroke="#1E73E8"
+          stroke-dasharray="238.76"
+          stroke-dashoffset="238.76"/>
+      </svg>
+      <div class="strength-ring-label">
+        <span class="strength-ring-pct" id="strengthPct">0%</span>
+        <span class="strength-ring-sub">Profile</span>
+      </div>
+    </div>
+    <div class="strength-info">
+      <div class="strength-title" id="strengthTitle">Build your profile</div>
+      <div class="strength-label" id="strengthLabel">Complete these to attract more students:</div>
+      <ul class="strength-tips" id="strengthTips"></ul>
     </div>
   </div>
 
@@ -317,7 +391,7 @@
         <h3>About You</h3>
         <div class="form-row">
           <label>Bio</label>
-          <textarea id="dBio" placeholder="Tell students about your coaching style, experience and achievements... (100 words minimum)" oninput="livePreview(); updateBioCount();"></textarea>
+          <textarea id="dBio" placeholder="Tell students about your coaching style, experience and achievements... (100 words minimum)" oninput="livePreview(); updateBioCount(); updateStrength();"></textarea>
           <div id="bioCount" style="font-size:0.75rem;color:#999;margin-top:0.3rem;text-align:right;">0 words</div>
         </div>
         <div class="form-row">
@@ -387,7 +461,7 @@
                 <option value="USD">$ USD</option>
                 <option value="EUR">€ EUR</option>
               </select>
-              <input type="number" id="dFees" placeholder="e.g. 750" min="1" max="99999" oninput="livePreview()"/>
+              <input type="number" id="dFees" placeholder="e.g. 750" min="1" max="99999" oninput="livePreview(); updateStrength();"/>
             </div>
           </div>
           <div class="form-row" style="margin-bottom:0;">
@@ -398,6 +472,90 @@
             </select>
           </div>
         </div>
+      </div>
+
+      <!-- Profile Photo -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>Profile Photo</h3>
+        <div class="photo-upload-wrap">
+          <div class="photo-preview" id="photoPreview">?</div>
+          <div class="photo-upload-btns">
+            <button class="btn-upload" onclick="document.getElementById('photoFileInput').click()">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Photo
+            </button>
+            <button class="btn-remove-photo" id="btnRemovePhoto" onclick="removePhoto()">Remove Photo</button>
+            <p class="photo-hint">JPG or PNG · Max 400KB</p>
+          </div>
+        </div>
+        <input type="file" id="photoFileInput" accept="image/jpeg,image/png,image/jpg" style="display:none;" onchange="handlePhotoUpload(this)"/>
+        <div class="upload-progress" id="uploadProgress">
+          <div class="upload-bar-wrap"><div class="upload-bar" id="uploadBar"></div></div>
+          <span id="uploadStatus">Uploading...</span>
+        </div>
+        <div id="photoReviewBadge" class="photo-review-badge" style="display:none;">
+          ⏳ Photo under review — visible to you only until approved
+        </div>
+
+      </div>
+
+      <!-- Online Presence -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>Online Presence</h3>
+        <div class="form-row">
+          <label>Google Business Profile</label>
+          <div class="link-input-row">
+            <span class="link-input-icon">🔍 Google</span>
+            <input type="url" id="dGoogleProfileUrl" placeholder="https://g.page/your-business or maps link"/>
+          </div>
+          <p style="font-size:0.75rem;color:#999;margin-top:0.3rem;">Students can see your Google reviews from this link.</p>
+        </div>
+        <div class="form-row">
+          <label>Website</label>
+          <div class="link-input-row">
+            <span class="link-input-icon">🌐 https://</span>
+            <input type="url" id="dWebsiteUrl" placeholder="yourwebsite.com"/>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row" style="margin-bottom:0;">
+            <label>Chess.com Profile</label>
+            <div class="link-input-row">
+              <span class="link-input-icon">♟</span>
+              <input type="url" id="dChessComUrl" placeholder="chess.com/member/username"/>
+            </div>
+          </div>
+          <div class="form-row" style="margin-bottom:0;">
+            <label>Lichess Profile</label>
+            <div class="link-input-row">
+              <span class="link-input-icon">♞</span>
+              <input type="url" id="dLichessUrl" placeholder="lichess.org/@/username"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:1rem;">
+          <label>YouTube Channel <span style="font-size:0.72rem;color:#999;font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+          <div class="link-input-row">
+            <span class="link-input-icon">▶ YouTube</span>
+            <input type="url" id="dYoutubeUrl" placeholder="youtube.com/@yourchannel"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credentials -->
+      <div class="dash-card" style="margin-bottom:1.5rem;">
+        <h3>Credentials & Achievements</h3>
+        <div class="form-row">
+          <label>Achievements</label>
+          <textarea id="dAchievements" placeholder="e.g. State Champion 2019, National Under-17 Runner-up, Trained 5 FIDE-rated players..." style="min-height:80px;" oninput="updateStrength()"></textarea>
+        </div>
+        <div class="form-row">
+          <label>Certifications</label>
+          <textarea id="dCertifications" placeholder="e.g. AICF Coach License No. XXXXX, FIDE Trainer Certificate..." style="min-height:80px;" oninput="updateStrength()"></textarea>
+        </div>
+        <p style="font-size:0.75rem;color:#999;border-top:1px solid var(--border);padding-top:0.75rem;line-height:1.5;">
+          ⚠️ Information above is provided by the coach. ChessConnect does not verify achievements, certifications, or any external profile claims.
+        </p>
       </div>
 
       <!-- FIDE Info (read only) -->
@@ -459,6 +617,24 @@
     </div>
   </div>
 </main>
+
+<!-- CROP MODAL -->
+<div class="crop-overlay" id="cropOverlay">
+  <div class="crop-box">
+    <h3>Crop Your Photo</h3>
+    <p>Drag to adjust the crop area. Your photo will be saved as a circle.</p>
+    <div class="crop-preview-wrap">
+      <img id="cropImage" src="" alt="Crop preview"/>
+    </div>
+    <div class="crop-btns">
+      <button class="btn-crop-cancel" onclick="closeCropModal()">Cancel</button>
+      <button class="btn-crop-confirm" onclick="confirmCrop()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>
+        Use This Photo
+      </button>
+    </div>
+  </div>
+</div>
 
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
@@ -619,8 +795,7 @@
     document.getElementById('dWhatsapp').value = waNum;
 
     document.getElementById('dCity').value       = p.city || '';
-    // FIX: read p.country not p.state
-    document.getElementById('dCountry').value    = p.country || 'India';
+        document.getElementById('dCountry').value    = p.country || 'India';
     document.getElementById('dBio').value        = p.bio || '';
     updateBioCount();
     document.getElementById('dExperience').value = p.experience || '';
@@ -658,7 +833,32 @@
       document.getElementById('profileLinkBar').style.display = 'flex';
       document.getElementById('btnViewProfile').dataset.url = url;
     }
+
+    // New fields — note: approved photo_url is managed by admin only
+    document.getElementById('dGoogleProfileUrl').value  = p.google_profile_url || '';
+    document.getElementById('dWebsiteUrl').value        = p.website_url || '';
+    document.getElementById('dChessComUrl').value       = p.chess_com_url || '';
+    document.getElementById('dLichessUrl').value        = p.lichess_url || '';
+    document.getElementById('dYoutubeUrl').value        = p.youtube_url || '';
+    document.getElementById('dAchievements').value      = p.achievements || '';
+    document.getElementById('dCertifications').value    = p.certifications || '';
+
+    // Photo preview — show pending if exists, else approved
+    const displayPhoto = p.photo_pending_url || p.photo_url;
+    if (displayPhoto) {
+      renderPhotoPreview(displayPhoto);
+      document.getElementById('btnRemovePhoto').style.display = 'inline-flex';
+      if (p.photo_pending_url && !p.photo_reviewed) {
+        document.getElementById('photoReviewBadge').style.display = 'flex';
+      }
+    } else {
+      const name = p.full_name || '?';
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+      document.getElementById('photoPreview').textContent = initials;
+    }
+
     livePreview();
+    updateStrength();
   }
 
   function updateStatusBanner(isLive) {
@@ -681,25 +881,30 @@
     document.querySelectorAll('#dModeGroup .pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
     selectedMode = el.dataset.val;
-    livePreview();
+    livePreview(); updateStrength();
   }
   function toggleLevel(el) {
     el.classList.toggle('active');
     const v = el.dataset.val;
     selectedLevels = selectedLevels.includes(v) ? selectedLevels.filter(x => x !== v) : [...selectedLevels, v];
-    livePreview();
+    livePreview(); updateStrength();
   }
   function toggleLang(el) {
     el.classList.toggle('active');
     const v = el.dataset.val;
     selectedLanguages = selectedLanguages.includes(v) ? selectedLanguages.filter(x => x !== v) : [...selectedLanguages, v];
+    updateStrength();
   }
 
   function livePreview() {
     if (!coachProfile) return;
     const name = coachProfile.full_name || 'Your Name';
-    const initials = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-    document.getElementById('pcPhoto').textContent = initials;
+    // Only update photo preview if it hasn't already been set to an image
+    const pcPhoto = document.getElementById('pcPhoto');
+    if (!pcPhoto.querySelector('img')) {
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+      pcPhoto.textContent = initials;
+    }
     document.getElementById('pcName').textContent = name;
     const titleBadge = document.getElementById('pcTitleBadge');
     if (coachProfile.chess_title) { titleBadge.textContent = coachProfile.chess_title; titleBadge.style.display = 'block'; }
@@ -730,18 +935,27 @@
     const waNum  = document.getElementById('dWhatsapp').value.trim();
 
     const updates = {
-      whatsapp:        waCode + waNum,
-      city:            document.getElementById('dCity').value.trim(),
-      country:         document.getElementById('dCountry').value,  // FIX: save to country not state
-      bio:             document.getElementById('dBio').value.trim(),
-      experience:      document.getElementById('dExperience').value,
-      coaching_mode:   selectedMode,
-      levels_taught:   selectedLevels,
-      languages:       selectedLanguages,
-      fees:            document.getElementById('dFees').value ? parseInt(document.getElementById('dFees').value) : null,
-      fees_currency:   document.getElementById('dFeesCurrency').value,
-      trial_available: document.getElementById('dTrial').value === 'yes',
+      whatsapp:           waCode + waNum,
+      city:               document.getElementById('dCity').value.trim(),
+      country:            document.getElementById('dCountry').value,
+      bio:                document.getElementById('dBio').value.trim(),
+      experience:         document.getElementById('dExperience').value,
+      coaching_mode:      selectedMode,
+      levels_taught:      selectedLevels,
+      languages:          selectedLanguages,
+      fees:               document.getElementById('dFees').value ? parseInt(document.getElementById('dFees').value) : null,
+      fees_currency:      document.getElementById('dFeesCurrency').value,
+      trial_available:    document.getElementById('dTrial').value === 'yes',
+      google_profile_url: document.getElementById('dGoogleProfileUrl').value.trim() || null,
+      website_url:        document.getElementById('dWebsiteUrl').value.trim() || null,
+      chess_com_url:      document.getElementById('dChessComUrl').value.trim() || null,
+      lichess_url:        document.getElementById('dLichessUrl').value.trim() || null,
+      youtube_url:        document.getElementById('dYoutubeUrl').value.trim() || null,
+      achievements:       document.getElementById('dAchievements').value.trim() || null,
+      certifications:     document.getElementById('dCertifications').value.trim() || null,
     };
+    // photo_url is intentionally excluded — it is only set by admin approval
+    // photo_pending_url is set directly by the upload flow, not via saveProfile
 
     const { error } = await sb.from('coaches').update(updates).eq('id', coachProfile.id);
     btn.disabled = false; spinner.classList.remove('show');
@@ -826,6 +1040,201 @@
       `Please email us at <a href="mailto:chessconnect.in@gmail.com" style="color:#1E73E8;font-weight:600;">chessconnect.in@gmail.com</a> with this error and we'll fix it within 24 hours.`;
     overlay.style.display = 'flex';
   }
+  // ── Photo helpers ──
+  let cropper = null;
+
+  function renderPhotoPreview(url) {
+    const prev = document.getElementById('photoPreview');
+    prev.innerHTML = `<img src="${url}" alt="Profile photo" onerror="this.parentElement.textContent='?'"/>`;
+    const pcPhoto = document.getElementById('pcPhoto');
+    if (pcPhoto) pcPhoto.innerHTML = `<img src="${url}" alt="Profile photo" onerror="this.parentElement.textContent='?'"/>`;
+  }
+
+  function handlePhotoUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const allowed = ['image/jpeg','image/jpg','image/png'];
+    if (!allowed.includes(file.type)) {
+      showToast('Please upload a JPG or PNG image.', 'error'); input.value = ''; return;
+    }
+    if (file.size > 400 * 1024) {
+      showToast('Image must be under 400KB. Please compress and retry.', 'error'); input.value = ''; return;
+    }
+    // Open crop modal
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const cropImg = document.getElementById('cropImage');
+      cropImg.src = e.target.result;
+      document.getElementById('cropOverlay').classList.add('show');
+      // Destroy old cropper if exists
+      if (cropper) { cropper.destroy(); cropper = null; }
+      cropImg.onload = () => {
+        cropper = new Cropper(cropImg, {
+          aspectRatio: 1,
+          viewMode: 1,
+          dragMode: 'move',
+          autoCropArea: 0.85,
+          restore: false,
+          guides: false,
+          center: true,
+          highlight: false,
+          cropBoxMovable: true,
+          cropBoxResizable: true,
+          toggleDragModeOnDblclick: false,
+        });
+      };
+    };
+    reader.readAsDataURL(file);
+    input.value = '';
+  }
+
+  function closeCropModal() {
+    document.getElementById('cropOverlay').classList.remove('show');
+    if (cropper) { cropper.destroy(); cropper = null; }
+  }
+
+  async function confirmCrop() {
+    if (!cropper) return;
+    const btn = document.querySelector('.btn-crop-confirm');
+    btn.textContent = 'Uploading...'; btn.disabled = true;
+
+    // Get cropped canvas as blob
+    const canvas = cropper.getCroppedCanvas({ width: 400, height: 400, imageSmoothingQuality: 'high' });
+    canvas.toBlob(async (blob) => {
+      closeCropModal();
+      const prog = document.getElementById('uploadProgress');
+      const bar  = document.getElementById('uploadBar');
+      const stat = document.getElementById('uploadStatus');
+      prog.classList.add('show'); bar.style.width = '30%'; stat.textContent = 'Uploading...';
+
+      const fileName = `coach_${coachProfile.id}_${Date.now()}.jpg`;
+      const { data, error } = await sb.storage.from('coach-photos').upload(fileName, blob, {
+        cacheControl: '3600', upsert: true, contentType: 'image/jpeg'
+      });
+      bar.style.width = '80%';
+      if (error) {
+        prog.classList.remove('show'); bar.style.width = '0%';
+        showToast('Upload failed: ' + error.message, 'error');
+        btn.textContent = 'Use This Photo'; btn.disabled = false;
+        return;
+      }
+      const { data: urlData } = sb.storage.from('coach-photos').getPublicUrl(fileName);
+      const publicUrl = urlData.publicUrl;
+      bar.style.width = '100%'; stat.textContent = 'Done!';
+      setTimeout(() => { prog.classList.remove('show'); bar.style.width = '0%'; }, 1200);
+
+      // Save to photo_pending_url, reset photo_reviewed
+      await sb.from('coaches').update({
+        photo_pending_url: publicUrl,
+        photo_reviewed: false
+      }).eq('id', coachProfile.id);
+
+      coachProfile.photo_pending_url = publicUrl;
+      coachProfile.photo_reviewed = false;
+
+      // Show pending preview
+      renderPhotoPreview(publicUrl);
+      document.getElementById('btnRemovePhoto').style.display = 'inline-flex';
+      document.getElementById('photoReviewBadge').style.display = 'flex';
+
+      btn.textContent = 'Use This Photo'; btn.disabled = false;
+      updateStrength();
+      showToast('Photo uploaded! It will appear publicly once reviewed.', 'success');
+    }, 'image/jpeg', 0.9);
+  }
+
+  async function removePhoto() {
+    // Clear both pending and approved photo
+    await sb.from('coaches').update({
+      photo_url: null,
+      photo_pending_url: null,
+      photo_reviewed: false
+    }).eq('id', coachProfile.id);
+    coachProfile.photo_url = null;
+    coachProfile.photo_pending_url = null;
+
+    const name = coachProfile?.full_name || '?';
+    const initials = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+    document.getElementById('photoPreview').textContent = initials;
+    const pcPhoto = document.getElementById('pcPhoto');
+    if (pcPhoto) pcPhoto.textContent = initials;
+    document.getElementById('btnRemovePhoto').style.display = 'none';
+    document.getElementById('photoReviewBadge').style.display = 'none';
+    updateStrength();
+    showToast('Photo removed.', 'success');
+  }
+
+  // ── Profile Strength Ring ──
+  function updateStrength() {
+    if (!coachProfile) return;
+
+    const p = coachProfile;
+    const photoUrl   = coachProfile.photo_pending_url || coachProfile.photo_url;
+    const bio        = document.getElementById('dBio').value.trim();
+    const bioWords   = bio === '' ? 0 : bio.split(/\s+/).length;
+    const fees       = document.getElementById('dFees').value;
+    const whatsapp   = document.getElementById('dWhatsapp').value.trim();
+    const google     = document.getElementById('dGoogleProfileUrl').value.trim();
+    const chesscom   = document.getElementById('dChessComUrl').value.trim();
+    const lichess    = document.getElementById('dLichessUrl').value.trim();
+    const website    = document.getElementById('dWebsiteUrl').value.trim();
+    const achieve    = document.getElementById('dAchievements').value.trim();
+    const certs      = document.getElementById('dCertifications').value.trim();
+    const mode       = selectedMode;
+    const trial      = document.getElementById('dTrial').value;
+    const langs      = selectedLanguages;
+
+    const checks = [
+      { done: !!photoUrl,                   pts: 15, label: 'Add a profile photo' },
+      { done: bioWords >= 100,              pts: 10, label: 'Complete your bio (100+ words)' },
+      { done: !!fees,                        pts: 10, label: 'Add your session fees' },
+      { done: !!whatsapp,                   pts: 10, label: 'Add your WhatsApp number' },
+      { done: !!google,                     pts: 10, label: 'Add your Google Business Profile link' },
+      { done: !!(chesscom || lichess),      pts: 8,  label: 'Add Chess.com or Lichess profile' },
+      { done: !!website,                    pts: 7,  label: 'Add your website' },
+      { done: !!achieve,                    pts: 7,  label: 'Add your achievements' },
+      { done: !!certs,                      pts: 6,  label: 'Add certifications' },
+      { done: !!mode,                       pts: 5,  label: 'Select coaching mode' },
+      { done: trial === 'yes',              pts: 5,  label: 'Offer a trial class' },
+      { done: langs.length >= 2,            pts: 4,  label: 'Add languages you teach in' },
+    ];
+
+    const total   = checks.reduce((s, c) => s + c.pts, 0);        // 97
+    const earned  = checks.filter(c => c.done).reduce((s, c) => s + c.pts, 0);
+    const pct     = Math.min(100, Math.round((earned / total) * 100));
+
+    // Ring
+    const circumference = 238.76;
+    const offset = circumference - (circumference * pct / 100);
+    const fill   = document.getElementById('strengthRingFill');
+    fill.style.strokeDashoffset = offset;
+    fill.style.stroke = pct >= 80 ? '#22c55e' : pct >= 50 ? '#1E73E8' : '#f59e0b';
+
+    document.getElementById('strengthPct').textContent = pct + '%';
+    document.getElementById('strengthPct').style.color = pct >= 80 ? '#166534' : pct >= 50 ? '#1E73E8' : '#b45309';
+
+    // Title
+    const titleEl = document.getElementById('strengthTitle');
+    if (pct === 100) titleEl.textContent = '🏆 Profile complete!';
+    else if (pct >= 80) titleEl.textContent = '🌟 Strong profile';
+    else if (pct >= 50) titleEl.textContent = '👍 Good progress';
+    else titleEl.textContent = '🚀 Build your profile';
+
+    // Tips — show top 3 incomplete
+    const tipsEl  = document.getElementById('strengthTips');
+    const labelEl = document.getElementById('strengthLabel');
+    const pending = checks.filter(c => !c.done);
+    if (pending.length === 0) {
+      labelEl.textContent = 'You have a complete profile — great work!';
+      tipsEl.innerHTML = '';
+    } else {
+      labelEl.textContent = 'Complete these to attract more students:';
+      tipsEl.innerHTML = pending.slice(0, 3).map(c =>
+        `<li class="strength-tip">${c.label} <span style="font-size:0.72rem;color:#1E73E8;font-weight:700;margin-left:auto;">+${c.pts}pts</span></li>`
+      ).join('');
+    }
+  }
+
   function getMyProfileUrl() { return document.getElementById('btnViewProfile')?.dataset.url || ''; }
   function viewMyProfile() { const url = getMyProfileUrl(); if (url) window.open(url, '_blank'); }
   function shareMyProfile() {
