@@ -111,6 +111,39 @@
     }
     .copy-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--navy);color:white;font-size:.85rem;font-weight:600;padding:.65rem 1.25rem;border-radius:100px;box-shadow:var(--shadow-lg);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
     .copy-toast.show{opacity:1}
+    /* Online presence links */
+    .presence-grid{display:flex;flex-wrap:wrap;gap:.6rem}
+    .presence-link{display:inline-flex;align-items:center;gap:.45rem;font-size:.82rem;font-weight:600;color:var(--navy);background:var(--off-white);border:1px solid var(--gray-light);border-radius:8px;padding:.4rem .85rem;text-decoration:none;transition:all .2s}
+    .presence-link:hover{border-color:var(--blue);color:var(--blue);background:#f0f7ff}
+    .presence-link.google{border-color:rgba(66,133,244,.3);color:#4285F4;background:rgba(66,133,244,.05)}
+    .presence-link.google:hover{background:rgba(66,133,244,.1)}
+    /* Credentials */
+    .cred-block{background:var(--off-white);border:1px solid var(--gray-light);border-radius:10px;padding:1rem 1.25rem;margin-bottom:.75rem}
+    .cred-block:last-child{margin-bottom:0}
+    .cred-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--gray);text-transform:uppercase;margin-bottom:.4rem}
+    .cred-text{font-size:.9rem;color:var(--navy);line-height:1.65;white-space:pre-line}
+    .disclaimer-note{font-size:.75rem;color:var(--gray);border-top:1px solid var(--gray-light);padding-top:.75rem;margin-top:.75rem;line-height:1.5}
+    .fide-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:.5rem;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.75);text-decoration:none;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:.2rem .65rem;transition:all .2s}
+    .fide-link:hover{color:#fff;border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.1)}
+    /* Report profile */
+    .report-link{display:block;text-align:center;margin-top:2rem;font-size:.78rem;color:var(--gray);}
+    .report-link a{color:var(--gray);text-decoration:none;border-bottom:1px dashed var(--gray-light);}
+    .report-link a:hover{color:#dc2626;border-color:#dc2626;}
+    /* Report modal */
+    .report-overlay{position:fixed;inset:0;background:rgba(10,20,40,0.65);z-index:9999;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(3px)}
+    .report-overlay.show{display:flex}
+    .report-box{background:#fff;border-radius:16px;padding:1.75rem;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.25)}
+    .report-box h3{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.25rem}
+    .report-box p{font-size:.82rem;color:var(--gray);margin-bottom:1rem;line-height:1.5}
+    .report-field{margin-bottom:0.85rem}
+    .report-field label{display:block;font-size:.75rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+    .report-field select,.report-field input,.report-field textarea{width:100%;padding:.65rem .85rem;border:1.5px solid var(--gray-light);border-radius:8px;font-size:.88rem;font-family:var(--font-body);color:var(--navy);background:#fafbfd;transition:border-color .2s}
+    .report-field select:focus,.report-field input:focus,.report-field textarea:focus{outline:none;border-color:var(--blue)}
+    .report-field textarea{resize:vertical;min-height:70px}
+    .report-btns{display:flex;gap:.65rem;margin-top:1.1rem}
+    .btn-report-submit{flex:1;padding:.75rem;background:#dc2626;color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:background .2s}
+    .btn-report-submit:hover{background:#b91c1c}
+    .btn-report-cancel{padding:.75rem 1.1rem;background:var(--off-white);color:var(--navy);border:1.5px solid var(--gray-light);border-radius:10px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:var(--font-body)}
   </style>
 </head>
 <body>
@@ -197,6 +230,28 @@
             </div>
           </div>
         </div>
+        <!-- Online Presence -->
+        <div class="section-block" id="presenceBlock" style="display:none;">
+          <div class="section-block-label">Online Presence</div>
+          <div class="presence-grid" id="presenceLinks"></div>
+        </div>
+        <!-- Credentials -->
+        <div class="section-block" id="credsBlock" style="display:none;">
+          <div class="section-block-label">Credentials & Achievements</div>
+          <div id="achieveBlock" style="display:none;">
+            <div class="cred-block">
+              <div class="cred-label">Achievements</div>
+              <div class="cred-text" id="profileAchievements"></div>
+            </div>
+          </div>
+          <div id="certBlock" style="display:none;">
+            <div class="cred-block">
+              <div class="cred-label">Certifications</div>
+              <div class="cred-text" id="profileCertifications"></div>
+            </div>
+          </div>
+          <p class="disclaimer-note">⚠️ Information above is provided by the coach. ChessConnect does not verify achievements, certifications, or any external profile claims.</p>
+        </div>
       </div>
     </div>
 
@@ -229,6 +284,43 @@
           Copy Link
         </button>
       </div>
+    </div>
+
+    <!-- Report link -->
+    <div class="report-link">
+      <a href="#" onclick="openReportModal(); return false;">🚩 Report this profile</a>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="report-overlay" id="reportOverlay">
+  <div class="report-box">
+    <h3>Report this Profile</h3>
+    <p>Help us keep ChessConnect trustworthy. We review every report within 24–48 hours.</p>
+    <div class="report-field">
+      <label>Reason</label>
+      <select id="reportReason">
+        <option value="">Select a reason...</option>
+        <option value="Fake profile">Fake profile / impersonation</option>
+        <option value="Wrong FIDE ID">Wrong or stolen FIDE ID</option>
+        <option value="Inappropriate photo">Inappropriate profile photo</option>
+        <option value="False credentials">False achievements or certifications</option>
+        <option value="Spam">Spam or irrelevant content</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="report-field">
+      <label>Details <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+      <textarea id="reportDetails" placeholder="Tell us more about what you noticed..."></textarea>
+    </div>
+    <div class="report-field">
+      <label>Your email <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional — so we can follow up)</span></label>
+      <input type="email" id="reportEmail" placeholder="your@email.com"/>
+    </div>
+    <div class="report-btns">
+      <button class="btn-report-cancel" onclick="closeReportModal()">Cancel</button>
+      <button class="btn-report-submit" id="reportSubmitBtn" onclick="submitReport()">Submit Report</button>
     </div>
   </div>
 </div>
@@ -392,8 +484,54 @@
         : parseInt(c.fees).toLocaleString();
       document.getElementById('profileFee').textContent = `${currSym}${feeFormatted}`;
       document.getElementById('feesBlock').style.display = 'block';
-      // ── FIX V2: use trial_available not demo_available ──
-      if (c.trial_available) document.getElementById('demoBadge').style.display = 'block';
+            if (c.trial_available) document.getElementById('demoBadge').style.display = 'block';
+    }
+
+    // ── Online Presence ──
+    const presenceLinks = [];
+    if (c.google_profile_url) presenceLinks.push(
+      `<a href="${c.google_profile_url}" target="_blank" rel="noopener" class="presence-link google">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Google Profile &amp; Reviews
+      </a>`
+    );
+    if (c.website_url) presenceLinks.push(
+      `<a href="${c.website_url}" target="_blank" rel="noopener" class="presence-link">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Website
+      </a>`
+    );
+    if (c.chess_com_url) presenceLinks.push(
+      `<a href="${c.chess_com_url}" target="_blank" rel="noopener" class="presence-link">♟ Chess.com</a>`
+    );
+    if (c.lichess_url) presenceLinks.push(
+      `<a href="${c.lichess_url}" target="_blank" rel="noopener" class="presence-link">♞ Lichess</a>`
+    );
+    if (c.youtube_url) presenceLinks.push(
+      `<a href="${c.youtube_url}" target="_blank" rel="noopener" class="presence-link">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="#ff0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.5C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+        YouTube
+      </a>`
+    );
+    if (presenceLinks.length) {
+      document.getElementById('presenceLinks').innerHTML = presenceLinks.join('');
+      document.getElementById('presenceBlock').style.display = 'block';
+    }
+
+    // ── Credentials ──
+    let hasCredentials = false;
+    if (c.achievements) {
+      document.getElementById('profileAchievements').textContent = c.achievements;
+      document.getElementById('achieveBlock').style.display = 'block';
+      hasCredentials = true;
+    }
+    if (c.certifications) {
+      document.getElementById('profileCertifications').textContent = c.certifications;
+      document.getElementById('certBlock').style.display = 'block';
+      hasCredentials = true;
+    }
+    if (hasCredentials) {
+      document.getElementById('credsBlock').style.display = 'block';
     }
 
     const phone = c.whatsapp || '';
@@ -433,6 +571,43 @@
       setTimeout(() => t.classList.remove('show'), 2200);
     });
   }
+
+  // ── Report profile ──
+  function openReportModal() {
+    document.getElementById('reportReason').value = '';
+    document.getElementById('reportDetails').value = '';
+    document.getElementById('reportEmail').value = '';
+    document.getElementById('reportOverlay').classList.add('show');
+  }
+  function closeReportModal() {
+    document.getElementById('reportOverlay').classList.remove('show');
+  }
+  async function submitReport() {
+    const reason = document.getElementById('reportReason').value;
+    if (!reason) { alert('Please select a reason.'); return; }
+    const btn = document.getElementById('reportSubmitBtn');
+    btn.textContent = 'Submitting...'; btn.disabled = true;
+    try {
+      await sb.from('profile_reports').insert([{
+        coach_id:       coachData?.id || null,
+        coach_name:     coachData?.full_name || null,
+        reason:         reason,
+        details:        document.getElementById('reportDetails').value.trim() || null,
+        reporter_email: document.getElementById('reportEmail').value.trim() || null,
+        status:         'pending',
+      }]);
+      closeReportModal();
+      const t = document.getElementById('copyToast');
+      t.textContent = '✓ Report submitted. Thank you.';
+      t.classList.add('show');
+      setTimeout(() => { t.classList.remove('show'); t.textContent = 'Link copied!'; }, 3000);
+    } catch(e) {
+      alert('Failed to submit report. Please email us at chessconnect.in@gmail.com');
+    } finally {
+      btn.textContent = 'Submit Report'; btn.disabled = false;
+    }
+  }
+
   function esc(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
