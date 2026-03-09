@@ -585,7 +585,7 @@
     <div class="mobile-nav-divider"></div>
     <a href="index.html#register">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      List Yourself Free
+      List Your Profile
     </a>
   </div>
 </div>
@@ -1005,8 +1005,8 @@
         return rb - ra;
       }
       if (sort === 'newest') return 0; // already sorted by created_at
-      if (sort === 'fee_low') return (a.fee || 0) - (b.fee || 0);
-      if (sort === 'fee_high') return (b.fee || 0) - (a.fee || 0);
+      if (sort === 'fee_low') return (a.fees || 0) - (b.fees || 0);
+      if (sort === 'fee_high') return (b.fees || 0) - (a.fees || 0);
       if (sort === 'az') return (a.name || '').localeCompare(b.name || '');
       return 0;
     });
@@ -1134,8 +1134,8 @@
     if (mode.includes('offline')) modeTags.push('<span class="tag tag-offline">Offline</span>');
 
     const currSym = c.fees_currency === 'USD' ? '$' : c.fees_currency === 'EUR' ? '€' : '₹';
-    const feeNum = c.fees_currency === 'INR' || !c.fees_currency ? parseInt(c.fees||c.fee).toLocaleString('en-IN') : parseInt(c.fees||c.fee).toLocaleString();
-    const feeText = (c.fees||c.fee) ? `${currSym}${feeNum} / session` : 'Contact for fees';
+    const feeNum = c.fees_currency === 'INR' || !c.fees_currency ? parseIntc.fees.toLocaleString('en-IN') : parseIntc.fees.toLocaleString();
+    const feeText = c.fees ? `${currSym}${feeNum} / session` : 'Contact for fees';
     const trialBadge = c.trial_available ? '<span class="trial-badge">Trial available</span>' : '';
 
     const waHref   = c.whatsapp ? `https://wa.me/${c.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Hi, I found you on ChessConnect and would like to know more about your chess coaching.`)}` : '#';
