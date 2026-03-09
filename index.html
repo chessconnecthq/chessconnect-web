@@ -2031,9 +2031,13 @@
 <div class="success-overlay" id="successOverlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
   <div class="success-modal">
     <div class="success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="52" height="52" fill="none" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg></div>
-    <h2 id="successTitle">Profile Submitted!</h2>
+    <h2 id="successTitle">🎉 Profile Submitted!</h2>
     <p>Your profile is now live! Students worldwide can find and contact you directly on ChessConnect.</p>
-    <button class="btn-primary" onclick="closeSuccess()" aria-label="Close confirmation message">Got It</button>
+    <div style="background:#f0f7ff;border:1px solid #c7dffe;border-radius:10px;padding:0.9rem 1.1rem;margin-bottom:1.25rem;text-align:left;">
+      <p style="font-size:0.85rem;color:#102C57;font-weight:600;margin-bottom:0.3rem;">💡 Build a stronger profile</p>
+      <p style="font-size:0.82rem;color:#5a6a7a;line-height:1.6;margin-bottom:0;">Log in to your dashboard anytime to add your photo, Google Business link, Chess.com profile, achievements and certifications — the more complete your profile, the more students will find and trust you.</p>
+    </div>
+    <button class="btn-primary" onclick="closeSuccess()" aria-label="Close confirmation message">Got It — Open Dashboard</button>
   </div>
 </div>
 
@@ -2363,7 +2367,7 @@
     try {
       // Timeout after 10 seconds
       const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000));
-      const queryPromise = sb.from('fide_players').select('fide_id, name, title, rating, rapid_rating, blitz_rating, country, is_active').eq('fide_id', fideId).single();
+      const queryPromise = sb.from('fide_players').select('fide_id, name, title, rating, rapid_rating, blitz_rating, country').eq('fide_id', fideId).single();
       const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
 
       if (error || !data) {
@@ -2401,7 +2405,6 @@
         country:      data.country,
         rating_display: `${activeRating} (${ratingType})`,
         rating_type:  ratingType,
-        is_active:    data.is_active,
       };
 
       // Show verified card
