@@ -306,7 +306,6 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-bw .ss-subline{font-size:7px;color:#555;margin-bottom:7px;font-style:italic}
 .ss-bw .ss-meta-row{display:flex;gap:7px;flex-wrap:wrap}
 .ss-bw .ss-chip{background:#efefef;border:1px solid #aaa;border-radius:3px;padding:2px 6px;font-size:6.5px;font-weight:700;color:#111}
-.ss-bw .ss-sheet-num{color:rgba(0,0,0,0.3)}
 .ss-bw .ss-players{border-bottom:1px solid #bbb}
 .ss-bw .ss-player:first-child{border-right:1px solid #bbb}
 .ss-bw .ss-player-color{color:#444}
@@ -390,10 +389,9 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 /* ── FOOTER ── */
 .ss-footer{background:#F8FAFF;border-top:1px solid #e5e9f2;padding:5px 16px;display:flex;align-items:center;justify-content:space-between;margin-top:auto}
-.ss-footer-brand{font-size:7px;font-weight:800;letter-spacing:-0.2px}
+.ss-footer-brand{font-size:9px;font-weight:800;letter-spacing:-0.2px}
 .ss-footer-chess{color:#102C57}.ss-footer-connect{color:#4285F4}
-.ss-minimal .ss-sheet-num,.ss-bw .ss-sheet-num{color:rgba(16,44,87,0.35)}
-.ss-footer-note{font-size:5.5px;color:#9CA3AF;flex:1;text-align:center}
+.ss-footer-note{font-size:8px;color:#9CA3AF;flex:1;text-align:center}
 
 /* ── MOBILE ── */
 @media(max-width:900px){
@@ -419,7 +417,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
 /* ── PRINT ── */
 @media print{
-  @page { size: A4 portrait; margin: 8mm; }
+  @page { margin: 8mm; }
   body{background:#fff}
   .nav,.form-col,.preview-header,.mob-tabs,.preview-col{display:none!important}
   .page{display:block}
@@ -1061,7 +1059,7 @@ function buildFront(num) {
     </div>` : ''}
     <div class="ss-footer">
       <div class="ss-footer-note">${footerNote}</div>
-      <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span> <span class="ss-sheet-num" style="font-size:6px;opacity:0.4;margin-left:4px">Sheet #${num}</span></div>
+      <div class="ss-footer-brand"><span class="ss-footer-chess">Chess</span><span class="ss-footer-connect">Connect</span></div>
     </div>
   </div>
   </div>`;
@@ -1104,7 +1102,7 @@ function buildBack(num) {
     <div class="ss-back-bar">
       <div>
         <div class="ss-back-bar-title">${name}</div>
-        <div>Continuation · Moves ${moveLabel} · Sheet #${num}</div>
+        <div>Continuation · Moves ${moveLabel}</div>
       </div>
       <div class="ss-back-bar-chips">
         <div class="ss-back-bar-chip">${gi1Val} ____</div>
@@ -1161,17 +1159,28 @@ function generate() {
 
 /* ── PRINT ── */
 function printSheets() {
-  const pc = document.getElementById('printContainer');
+  const pc      = document.getElementById('printContainer');
   const hasBack = chk('opt-back');
-  // Build into the hidden print container — preview is untouched
-  pc.innerHTML = buildFront(1) + (hasBack ? buildBack(1) : '');
-  // requestAnimationFrame waits for the browser to finish rendering before opening print dialog
+  const pageSize = paper === 'a5' ? 'A5' : 'A4';
+
+  // Inject a dynamic @page rule so browser uses the correct paper size
+  const pageStyle = `<style>@page{size:${pageSize} portrait;margin:8mm}</style>`;
+
+  // Build content — front always, back only if toggle is on
+  pc.innerHTML = pageStyle + buildFront(1) + (hasBack ? buildBack(1) : '');
+
+  // Clean up after the print dialog is closed
+  const cleanup = () => {
+    pc.innerHTML = '';
+    window.removeEventListener('afterprint', cleanup);
+  };
+  window.addEventListener('afterprint', cleanup);
+
+  // Give browser one RAF + 150ms to fully render injected HTML before opening print dialog
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       window.print();
-      // Clean up print container after printing
-      pc.innerHTML = '';
-    });
+    }, 150);
   });
 }
 
