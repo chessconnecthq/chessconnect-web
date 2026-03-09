@@ -51,7 +51,7 @@
 }
 </script>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --blue:#1E73E8;--navy:#102C57;--navy2:#1a3d73;
@@ -176,7 +176,24 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .sp-bw{background:#fff;color:#111;border:1.5px solid #111}
 .style-name{font-size:0.7rem;font-weight:700;color:var(--navy)}
 
-/* ── TOGGLE ROWS ── */
+/* ── TITLE FONT CONTROLS ── */
+.font-controls{display:flex;flex-direction:column;gap:0.45rem;margin-top:0.3rem;margin-bottom:0.8rem}
+.font-controls-row{display:flex;align-items:center;gap:0.4rem}
+.font-controls-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--gray);width:36px;flex-shrink:0}
+.font-select{flex:1;font-family:var(--font-b);font-size:0.78rem;color:var(--navy);background:var(--white);border:1.5px solid var(--gl);border-radius:var(--rs);padding:0.38rem 0.55rem;outline:none;transition:border-color 0.2s;cursor:pointer}
+.font-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,115,232,0.07)}
+.size-pills{display:flex;gap:0.3rem}
+.size-pill{padding:0.3rem 0.55rem;border:1.5px solid var(--gl);border-radius:var(--rs);background:var(--white);font-family:var(--font-b);font-size:0.72rem;font-weight:700;color:var(--gray);cursor:pointer;transition:all 0.18s;line-height:1}
+.size-pill:hover{border-color:var(--blue);color:var(--blue)}
+.size-pill.sel{border-color:var(--blue);background:rgba(30,115,232,0.06);color:var(--blue)}
+.style-pills{display:flex;gap:0.3rem}
+.style-pill{width:30px;height:26px;border:1.5px solid var(--gl);border-radius:var(--rs);background:var(--white);font-family:var(--font-b);font-size:0.78rem;font-weight:700;color:var(--gray);cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;line-height:1}
+.style-pill:hover{border-color:var(--blue);color:var(--blue)}
+.style-pill.sel{border-color:var(--blue);background:rgba(30,115,232,0.06);color:var(--blue)}
+.style-pill.pill-bold{font-weight:800}
+.style-pill.pill-italic{font-style:italic}
+
+
 .trow{display:flex;align-items:center;justify-content:space-between;padding:0.52rem 0;border-bottom:1px solid var(--gl)}
 .trow:last-child{border-bottom:none}
 .tlbl{font-size:0.8rem;font-weight:500;color:var(--navy)}
@@ -335,6 +352,8 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-pi-label{font-size:6px;font-weight:600;color:#9CA3AF;white-space:nowrap;flex-shrink:0}
 .ss-pi-line{flex:1;border-bottom:1px solid #CBD5E1;height:14px}
 
+.ss-chip-placeholder{opacity:0.45;font-style:italic;font-weight:500 !important}
+
 /* ── GAME INFO BAR ── */
 .ss-gameinfo{display:flex;border-bottom:1px solid #e5e9f2;background:#F8FAFF}
 .ss-gi-item{flex:1;padding:6px 10px;border-right:1px solid #e5e9f2;font-size:6px}
@@ -463,7 +482,37 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 
   <!-- TOURNAMENT FIELDS -->
   <div class="section-title f-tournament">Tournament Details</div>
-  <div class="fg f-tournament"><label class="fl">Tournament Name</label><input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generateDebounced()"/></div>
+  <div class="fg f-tournament">
+    <label class="fl">Tournament Name</label>
+    <input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generateDebounced()"/>
+    <!-- Title Font Controls -->
+    <div class="font-controls" style="margin-top:0.5rem;margin-bottom:0">
+      <div class="font-controls-row">
+        <span class="font-controls-label">Font</span>
+        <select class="font-select" id="f-title-font" onchange="generate()">
+          <option value="'Playfair Display',serif">Playfair Display</option>
+          <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+          <option value="'DM Sans',sans-serif">DM Sans</option>
+          <option value="'Oswald',sans-serif">Oswald</option>
+        </select>
+      </div>
+      <div class="font-controls-row">
+        <span class="font-controls-label">Size</span>
+        <div class="size-pills">
+          <button class="size-pill" onclick="setTitleSize('11px',this)">S</button>
+          <button class="size-pill sel" onclick="setTitleSize('14px',this)">M</button>
+          <button class="size-pill" onclick="setTitleSize('17px',this)">L</button>
+          <button class="size-pill" onclick="setTitleSize('20px',this)">XL</button>
+        </div>
+        <span class="font-controls-label" style="width:auto;margin-left:0.6rem">Style</span>
+        <div class="style-pills">
+          <button class="style-pill pill-bold sel" title="Bold" onclick="setTitleStyle('bold',this)">B</button>
+          <button class="style-pill pill-italic" title="Italic" onclick="setTitleStyle('italic',this)"><i>I</i></button>
+          <button class="style-pill" title="Normal" onclick="setTitleStyle('normal',this)">N</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="frow f-tournament">
     <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generateDebounced()"/></div>
     <div class="fg">
@@ -523,7 +572,37 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     <input type="file" id="f-acad-logo" accept="image/png,image/jpeg,image/svg+xml" style="display:none" onchange="onLogoUpload(event)"/>
   </div>
 
-  <div class="fg f-academy"><label class="fl">Academy Name</label><input class="fi" id="f-acad-name" placeholder="e.g. Checkmate Chess Academy" oninput="generateDebounced()"/></div>
+  <div class="fg f-academy">
+    <label class="fl">Academy Name</label>
+    <input class="fi" id="f-acad-name" placeholder="e.g. Checkmate Chess Academy" oninput="generateDebounced()"/>
+    <!-- Title Font Controls (Academy) -->
+    <div class="font-controls" style="margin-top:0.5rem;margin-bottom:0">
+      <div class="font-controls-row">
+        <span class="font-controls-label">Font</span>
+        <select class="font-select" id="f-acad-title-font" onchange="generate()">
+          <option value="'Playfair Display',serif">Playfair Display</option>
+          <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+          <option value="'DM Sans',sans-serif">DM Sans</option>
+          <option value="'Oswald',sans-serif">Oswald</option>
+        </select>
+      </div>
+      <div class="font-controls-row">
+        <span class="font-controls-label">Size</span>
+        <div class="size-pills" id="acad-size-pills">
+          <button class="size-pill" onclick="setTitleSize('11px',this,'acad')">S</button>
+          <button class="size-pill sel" onclick="setTitleSize('14px',this,'acad')">M</button>
+          <button class="size-pill" onclick="setTitleSize('17px',this,'acad')">L</button>
+          <button class="size-pill" onclick="setTitleSize('20px',this,'acad')">XL</button>
+        </div>
+        <span class="font-controls-label" style="width:auto;margin-left:0.6rem">Style</span>
+        <div class="style-pills" id="acad-style-pills">
+          <button class="style-pill pill-bold sel" title="Bold" onclick="setTitleStyle('bold',this,'acad')">B</button>
+          <button class="style-pill pill-italic" title="Italic" onclick="setTitleStyle('italic',this,'acad')"><i>I</i></button>
+          <button class="style-pill" title="Normal" onclick="setTitleStyle('normal',this,'acad')">N</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="fg f-academy">
     <label class="fl">Academy Address <span class="opt">(optional)</span></label>
@@ -610,6 +689,18 @@ let mode    = 'tournament';
 let paper   = 'a4';
 let previewSide = 'front';
 
+// Title font state — tournament
+let titleFont  = "'Playfair Display',serif";
+let titleSize  = '14px';
+let titleWeight = '800';
+let titleStyle  = 'normal';
+
+// Title font state — academy
+let acadTitleFont   = "'Playfair Display',serif";
+let acadTitleSize   = '14px';
+let acadTitleWeight = '800';
+let acadTitleStyle  = 'normal';
+
 /* ── MOVE RANGES by paper ── */
 function moveRanges() {
   return paper === 'a5'
@@ -662,7 +753,36 @@ function setStyle(name, card) {
   generate();
 }
 
-/* ── SIDE TOGGLE ── */
+/* ── TITLE FONT CONTROLS ── */
+function setTitleSize(size, btn, scope) {
+  const isAcad = scope === 'acad';
+  if (isAcad) acadTitleSize = size;
+  else titleSize = size;
+  // Update pill selection within the same pills container
+  btn.closest('.size-pills').querySelectorAll('.size-pill').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  generate();
+}
+
+function setTitleStyle(s, btn, scope) {
+  const isAcad = scope === 'acad';
+  if (s === 'bold') {
+    if (isAcad) { acadTitleWeight = '800'; acadTitleStyle = 'normal'; }
+    else        { titleWeight = '800'; titleStyle = 'normal'; }
+  } else if (s === 'italic') {
+    if (isAcad) { acadTitleWeight = '400'; acadTitleStyle = 'italic'; }
+    else        { titleWeight = '400'; titleStyle = 'italic'; }
+  } else {
+    if (isAcad) { acadTitleWeight = '400'; acadTitleStyle = 'normal'; }
+    else        { titleWeight = '400'; titleStyle = 'normal'; }
+  }
+  // Update style pill selection within same container
+  btn.closest('.style-pills').querySelectorAll('.style-pill').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  generate();
+}
+
+
 function setSide(side) {
   previewSide = side;
   document.getElementById('btn-front').classList.toggle('active', side === 'front');
@@ -811,9 +931,9 @@ function buildFront(num) {
   const r   = moveRanges();
   const sizeClass = paper === 'a5' ? ' ss-a5' : '';
 
-  const name    = isT ? (ve('f-name') || 'Tournament Name') : (ve('f-acad-name') || 'Academy Name');
+  const name    = isT ? (ve('f-name') || '<span class="ss-chip-placeholder">Tournament Name</span>') : (ve('f-acad-name') || '<span class="ss-chip-placeholder">Academy Name</span>');
   const subline = isT
-    ? `Organised by ${ve('f-org')||'Organiser'}${v('f-aicf') ? ' · AICF: '+ve('f-aicf') : ''}`
+    ? `Organised by ${ve('f-org')||'<span class="ss-chip-placeholder">Organiser</span>'}${v('f-aicf') ? ' · AICF: '+ve('f-aicf') : ''}`
     : (v('f-acad-address') ? escapeHtml(v('f-acad-address')).replace(/\n/g,' · ') : '');
 
   // Date — tournament only (academy has no date field)
@@ -833,7 +953,14 @@ function buildFront(num) {
   const isBW = style === 'bw';
   const tcChip  = isT ? `<div class="ss-chip">${isBW ? '' : '⏱ '}${tc}</div>` : '';
 
-  // Academy logo — SVGs are not rendered as <img> to prevent embedded script execution
+  // Title font — read from state (tournament or academy)
+  const tFont   = isT ? titleFont   : acadTitleFont;
+  const tSize   = isT ? titleSize   : acadTitleSize;
+  const tWeight = isT ? titleWeight : acadTitleWeight;
+  const tStyle  = isT ? titleStyle  : acadTitleStyle;
+  // Read font family from select (may differ from state if user just changed it)
+  const fontSelectId = isT ? 'f-title-font' : 'f-acad-title-font';
+  const activeFontFamily = document.getElementById(fontSelectId)?.value || tFont;
   const logoDataUrl = (!isT && window._acadLogoDataUrl && !window._acadLogoIsSvg) ? window._acadLogoDataUrl : null;
   const gi1     = 'Round No.';
   const gi2     = 'Board No. / Table No.';
@@ -874,13 +1001,13 @@ function buildFront(num) {
           : `<div class="ss-logo-placeholder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${(style==='minimal'||style==='bw') ? '#94A3B8' : '#fff'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>`)
           : ''}
         <div class="ss-header-text">
-          <div class="ss-event">${name}</div>
+          <div class="ss-event" style="font-family:${activeFontFamily};font-size:${tSize};font-weight:${tWeight};font-style:${tStyle}">${name}</div>
           ${!isT && !v('f-acad-address')
-            ? `<div class="ss-subline ss-address-placeholder">Academy address will appear here</div>`
+            ? `<div class="ss-subline ss-address-placeholder">[Academy address]</div>`
             : (subline ? `<div class="ss-subline">${subline}</div>` : '')}
           <div class="ss-meta-row">
-            ${date  ? `<div class="ss-chip">${isBW ? '' : '📅 '}${date}</div>` : ''}
-            ${venue ? `<div class="ss-chip">${isBW ? '' : '📍 '}${venue}</div>` : ''}
+            ${isT ? `<div class="ss-chip${date ? '' : ' ss-chip-placeholder'}">${isBW ? '' : '📅 '}${date || 'Date'}</div>` : ''}
+            ${isT ? `<div class="ss-chip${venue ? '' : ' ss-chip-placeholder'}">${isBW ? '' : '📍 '}${venue || 'Venue'}</div>` : ''}
             ${tcChip}${isT ? `<div class="ss-chip">${isBW ? '' : '🔄 '}${escapeHtml(v('f-rounds'))} Rounds</div>` : ''}
           </div>
         </div>
@@ -946,7 +1073,7 @@ function buildBack(num) {
   const r   = moveRanges();
   const sizeClass = paper === 'a5' ? ' ss-a5' : '';
 
-  const name   = isT ? (ve('f-name') || 'Tournament Name') : (ve('f-acad-name') || 'Academy Name');
+  const name   = isT ? (ve('f-name') || '[Tournament Name]') : (ve('f-acad-name') || '[Academy Name]');
   const gi1Val = 'Round No.';
   const gi2Val = 'Board No. / Table No.';
   const arbLbl = 'Arbiter';
