@@ -220,6 +220,12 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .toast-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
 .toast-title{font-weight:800;font-size:0.84rem;margin-bottom:0.15rem}
 .toast-sub{font-size:0.74rem;opacity:0.8;font-weight:500}
+.btn-row{display:flex;gap:0.5rem;margin-top:1rem}
+.btn-row .gen-btn{margin-top:0;flex:1}
+.wa-btn{flex-shrink:0;padding:0.82rem 1rem;border:none;border-radius:var(--rs);background:#25D366;color:#fff;font-family:var(--font-b);font-size:0.82rem;font-weight:800;cursor:pointer;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;gap:0.4rem;white-space:nowrap;text-decoration:none}
+.wa-btn:hover{opacity:0.88}
+.wa-btn svg{width:16px;height:16px;fill:#fff;flex-shrink:0}
+
 /* ── FEEDBACK CARD ── */
 .feedback-card{margin-top:1rem;padding:0.85rem 1rem;background:#F0F7FF;border:1.5px solid #DBEAFE;border-radius:var(--rs);display:flex;flex-direction:column;gap:0.5rem}
 .feedback-card-text{font-size:0.78rem;color:#374151;line-height:1.5}
@@ -371,7 +377,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .ss-chip-placeholder{opacity:0.45;font-style:italic;font-weight:500 !important}
 
 /* ── GAME INFO BAR ── */
-.ss-gameinfo{display:flex;border-bottom:1px solid #e5e9f2;background:#F8FAFF}
+.ss-gameinfo{display:flex;border-bottom:1px solid #e5e9f2;background:#fff}
 .ss-gi-item{flex:1;padding:6px 10px;border-right:1px solid #e5e9f2;font-size:6px}
 .ss-gi-item:last-child{border-right:none}
 .ss-gi-label{font-weight:700;color:#444;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}
@@ -385,11 +391,11 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .moves-tbl th:last-child{border-right:none}
 .moves-tbl td{font-size:7.5px;padding:0;border-bottom:1px solid #CBD5E1;border-right:1px solid #CBD5E1;height:14px;vertical-align:middle}
 .moves-tbl td:last-child{border-right:none}
-.moves-tbl td.mn{width:22px;font-size:6.5px;font-weight:700;color:#555;padding:0 3px;font-family:'DM Mono',monospace;background:#FAFBFF;text-align:center}
+.moves-tbl td.mn{width:22px;font-size:6.5px;font-weight:700;color:#555;padding:0 3px;font-family:'DM Mono',monospace;background:#fff;text-align:center}
 .moves-tbl td.mv{padding:0 4px;font-family:'DM Mono',monospace;min-width:55px}
 .moves-tbl td.mt{padding:0 3px;font-family:'DM Mono',monospace;width:26px}
-.moves-tbl tr:nth-child(even) td{background:#F8FAFF}
-.moves-tbl tr:nth-child(even) td.mn{background:#F0F4FF}
+.moves-tbl tr:nth-child(even) td{background:#fff}
+.moves-tbl tr:nth-child(even) td.mn{background:#fff}
 
 /* ── RESULT ── */
 .ss-result{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid #102C57;margin:4px 12px 0}
@@ -499,7 +505,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   <div class="section-title f-tournament">Tournament Details</div>
   <div class="fg f-tournament">
     <label class="fl">Tournament Name</label>
-    <input class="fi" id="f-name" placeholder="e.g. Pune Open 2026" oninput="generateDebounced()"/>
+    <input class="fi" id="f-name" placeholder="e.g. Mumbai Open 2026" oninput="generateDebounced()"/>
     <!-- Title Font Controls -->
     <div class="font-controls" style="margin-top:0.5rem;margin-bottom:0">
       <div class="font-controls-row">
@@ -528,8 +534,9 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       </div>
     </div>
   </div>
+  <!-- Row 1: Organised By + Date (both mandatory) -->
   <div class="frow f-tournament">
-    <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generateDebounced()"/></div>
+    <div class="fg"><label class="fl">Organised By</label><input class="fi" id="f-org" placeholder="e.g. Checkmate Academy, Mumbai" oninput="generateDebounced()"/></div>
     <div class="fg">
       <label class="fl">Date</label>
       <input class="fi" type="date" id="f-date" oninput="generateDebounced()"/>
@@ -540,11 +547,23 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       <button class="add-end-date" id="t-add-end" onclick="addEndDate('t')">+ Add end date</button>
     </div>
   </div>
+  <!-- Row 2: Total Rounds + Venue (both optional) -->
   <div class="frow f-tournament">
-    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. Balewadi Sports Hall, Pune" oninput="generateDebounced()"/></div>
-    <div class="fg"><label class="fl">Time Control</label>
+    <div class="fg"><label class="fl">Total Rounds <span class="opt">(optional)</span></label>
+      <select class="fs" id="f-rounds" onchange="generate()">
+        <option value="" selected>Select rounds</option>
+        <option>5</option><option>6</option><option>7</option><option>8</option>
+        <option>9</option><option>10</option><option>11</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Venue <span class="opt">(optional)</span></label><input class="fi" id="f-venue" placeholder="e.g. The Taj Mahal Palace, Mumbai" oninput="generateDebounced()"/></div>
+  </div>
+  <!-- Row 3: Time Control + AICF Code (both optional) -->
+  <div class="frow f-tournament">
+    <div class="fg"><label class="fl">Time Control <span class="opt">(optional)</span></label>
       <select class="fs" id="f-tc" onchange="onTcChange('f-tc','tc-custom-wrap')">
-        <option selected>15 min + 10 sec</option>
+        <option value="" selected>Select time control</option>
+        <option>15 min + 10 sec</option>
         <option>30 min + 30 sec</option>
         <option>10 min + 5 sec</option>
         <option>90 min + 30 sec</option>
@@ -555,15 +574,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
         <input class="fi" id="f-tc-custom" placeholder="e.g. 40 moves in 90 min + 30 min" oninput="generateDebounced()" style="margin-top:0.4rem"/>
       </div>
     </div>
-  </div>
-  <div class="frow f-tournament">
-    <div class="fg"><label class="fl">Organised By</label><input class="fi" id="f-org" placeholder="e.g. Pune Chess Association" oninput="generateDebounced()"/></div>
-    <div class="fg"><label class="fl">Total Rounds</label>
-      <select class="fs" id="f-rounds" onchange="generate()">
-        <option>5</option><option>6</option><option>7</option><option>8</option>
-        <option selected>9</option><option>10</option><option>11</option>
-      </select>
-    </div>
+    <div class="fg"><label class="fl">AICF Code <span class="opt">(optional)</span></label><input class="fi" id="f-aicf" placeholder="412088/MH/2026" oninput="generateDebounced()"/></div>
   </div>
 
   <!-- ACADEMY FIELDS -->
@@ -658,10 +669,16 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   </div>
 
   <!-- PRINT -->
-  <button class="gen-btn" id="downloadBtn" onclick="downloadPDF()">
-    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    Download PDF
-  </button>
+  <div class="btn-row">
+    <button class="gen-btn" id="downloadBtn" onclick="downloadPDF()">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download PDF
+    </button>
+    <a class="wa-btn" id="waShareBtn" href="#" target="_blank" title="Share on WhatsApp">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Share
+    </a>
+  </div>
   <button class="mob-preview-btn" onclick="switchTab('preview')">👁 View Preview</button>
 
   <!-- FOOTER NOTE -->
@@ -729,8 +746,8 @@ function removeEndDate(){}
 <div class="toast" id="thankYouToast" aria-live="polite">
   <div class="toast-icon">✅</div>
   <div class="toast-body">
-    <div class="toast-title">Scoresheet ready!</div>
-    <div class="toast-sub">Thank you for using ChessConnect ♟️</div>
+    <div class="toast-title">Your PDF is downloading!</div>
+    <div class="toast-sub">Thank you for using ChessConnect Scoresheet Generator ♟️</div>
   </div>
 </div>
 
@@ -996,13 +1013,16 @@ function buildFront(num) {
 
   const venue   = isT ? ve('f-venue') : '';
 
-  // Time control — use custom text when "Custom" is selected
+  // Time control — use custom text when "Custom" is selected, hide if blank
   const tcSelect  = v('f-tc');
   const tcCustom  = ve('f-tc-custom');
   const tc        = tcSelect === 'Custom' ? (tcCustom.trim() || 'Custom Time Control') : escapeHtml(tcSelect);
-
   const isBW = style === 'bw';
-  const tcChip  = isT ? `<div class="ss-chip">${isBW ? '' : '⏱ '}${tc}</div>` : '';
+  const tcChip  = isT && tc ? `<div class="ss-chip">${isBW ? '' : '⏱ '}${tc}</div>` : '';
+
+  // Rounds — hide chip if blank option selected
+  const roundsVal = v('f-rounds');
+  const roundsChip = isT && roundsVal ? `<div class="ss-chip">${isBW ? '' : '🔄 '}${escapeHtml(roundsVal)} Rounds</div>` : '';
 
   // Title font — read from state (tournament or academy)
   const tFont   = isT ? titleFont   : acadTitleFont;
@@ -1059,7 +1079,7 @@ function buildFront(num) {
           <div class="ss-meta-row">
             ${isT ? `<div class="ss-chip${date ? '' : ' ss-chip-placeholder'}">${isBW ? '' : '📅 '}${date || 'Date'}</div>` : ''}
             ${isT ? `<div class="ss-chip${venue ? '' : ' ss-chip-placeholder'}">${isBW ? '' : '📍 '}${venue || 'Venue'}</div>` : ''}
-            ${tcChip}${isT ? `<div class="ss-chip">${isBW ? '' : '🔄 '}${escapeHtml(v('f-rounds'))} Rounds</div>` : ''}
+            ${tcChip}${roundsChip}
           </div>
         </div>
       </div>
@@ -1301,6 +1321,12 @@ generate();
   if (btn) {
     const u = ['chessconnect.in', 'gmail.com'].join('@');
     btn.href = 'mailto:' + u + '?subject=Scoresheet%20Generator%20Feedback';
+  }
+  const waBtn = document.getElementById('waShareBtn');
+  if (waBtn) {
+    const toolUrl = 'https://chessconnecthq.github.io/chessconnect-web/scoresheet-generator.html';
+    const msg = encodeURIComponent('♟️ Generate free professional chess scoresheets for your tournament!\n\nTry the ChessConnect Scoresheet Generator — free, instant, printable PDF:\n' + toolUrl);
+    waBtn.href = 'https://wa.me/?text=' + msg;
   }
 })();
 </script>
