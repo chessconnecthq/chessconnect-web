@@ -581,7 +581,7 @@
             <input type="text" id="dRating" readonly/>
           </div>
         </div>
-        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7e1d161b0d0d1d1110101b1d0a5017103e19131f1712501d1113">[email&#160;protected]</a></p>
+        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at chessconnect.in@gmail.com</p>
       </div>
 
       <button class="btn-save" id="saveBtn" onclick="saveProfile()">
@@ -590,7 +590,7 @@
       </button>
 
       <div class="dash-card danger-zone">
-        <h3>Visibility Settings</h3>
+        <h3>Danger Zone</h3>
         <p style="font-size:0.85rem;color:#5a6a7a;margin-bottom:0.5rem;">Hide your profile temporarily or delete it permanently.</p>
         <button class="btn-danger" id="toggleLiveBtn" onclick="toggleLive()">Hide My Profile</button>
         <a href="analytics.html" style="font-family:'Segoe UI',Arial,sans-serif;font-size:0.85rem;font-weight:600;background:none;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.9rem;color:var(--sub);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.2s;margin-top:0.5rem;">
@@ -648,7 +648,7 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   const { createClient } = supabase;
   const sb = createClient(
     'https://ipslahlvworwgzbgxppc.supabase.co',
@@ -731,25 +731,21 @@
   }
 
   // ── Init ──
-  // onAuthStateChange is the single source of truth.
-  // It fires on page load (INITIAL_SESSION) which covers both:
-  //   • fresh visits with no session → shows authWall
-  //   • returns from Google OAuth redirect → picks up the new session
-  // This avoids the race condition where DOMContentLoaded resolves before
-  // the OAuth session cookie is written, causing a false "no session" state.
-  let dashboardLoaded = false;
-
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session) {
-      if (dashboardLoaded) return; // prevent double-load
-      dashboardLoaded = true;
+  window.addEventListener('DOMContentLoaded', async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
       currentUser = session.user;
       await loadDashboard();
-    } else if (event === 'INITIAL_SESSION' && !session) {
-      // No session at all — show login wall
+    } else {
       showScreen('authWall');
+    }
+  });
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session && !currentUser) {
+      currentUser = session.user;
+      await loadDashboard();
     } else if (event === 'SIGNED_OUT') {
-      dashboardLoaded = false;
       currentUser = null;
       showScreen('authWall');
     }
@@ -765,25 +761,7 @@
     else avatarEl.textContent = name.charAt(0).toUpperCase();
     document.getElementById('dashUser').style.display = 'flex';
 
-    // Safety timeout — if Supabase takes >12s, show a friendly error
-    let timedOut = false;
-    const timeoutId = setTimeout(() => {
-      timedOut = true;
-      document.getElementById('loadingScreen').innerHTML = `
-        <div style="text-align:center;padding:2rem;max-width:480px;">
-          <p style="font-size:1.1rem;font-weight:700;color:#b91c1c;margin-bottom:0.75rem;">⚠️ Taking too long</p>
-          <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:1rem;font-size:0.85rem;color:#7f1d1d;line-height:1.7;margin-bottom:1rem;">
-            Could not reach the server. Check your connection and try again.<br/><br/>
-            If this keeps happening, email us at <a href="mailto:chessconnect.in@gmail.com" style="color:#1E73E8;">chessconnect.in@gmail.com</a>
-          </div>
-          <button onclick="window.location.reload()" style="padding:0.75rem 1.5rem;background:#1E73E8;color:#fff;border:none;border-radius:10px;font-size:0.9rem;font-weight:600;cursor:pointer;">Try Again</button>
-        </div>`;
-    }, 12000);
-
     const { data, error } = await sb.from('coaches').select('*').eq('auth_user_id', currentUser.id).maybeSingle();
-    clearTimeout(timeoutId);
-    if (timedOut) return; // page already shows timeout message
-
     if (error) {
       console.error('Dashboard load error:', JSON.stringify(error));
       // Show error details on screen instead of silent fail
@@ -1024,17 +1002,7 @@
   async function signInWithGoogle() {
     await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
   }
-  async function signOut() {
-    try {
-      const btn = document.querySelector('.btn-signout');
-      if (btn) { btn.textContent = 'Signing out...'; btn.disabled = true; }
-      await sb.auth.signOut();
-    } catch(e) {
-      console.warn('signOut error (ignored):', e);
-    } finally {
-      window.location.href = 'index.html';
-    }
-  }
+  async function signOut() { await sb.auth.signOut(); window.location.href = 'index.html'; }
 
   function showScreen(id) {
     ['loadingScreen','authWall','noProfileWall','dashMain'].forEach(s => {
@@ -1280,4 +1248,11 @@
     navigator.clipboard.writeText(url).then(() => {
       const btn = document.querySelector('.btn-link-copy');
       const orig = btn.innerHTML;
-      btn.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 1
+      btn.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      btn.style.color = '#166534'; btn.style.borderColor = '#22c55e';
+      setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
