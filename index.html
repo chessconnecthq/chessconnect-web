@@ -92,7 +92,6 @@
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
       --blue: #1E73E8;
@@ -1070,8 +1069,8 @@
   }
   .auth-modal-close:hover { color: #333; }
   .auth-logo { margin-bottom: 1.2rem; }
-  .auth-title { font-size: 1.4rem; font-weight: 700; color: #102C57; margin: 0 0 0.4rem; }
-  .auth-sub { font-size: 0.92rem; color: #666; margin: 0 0 1.6rem; line-height: 1.5; }
+  .auth-title { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin: 0 0 0.4rem; }
+  .auth-sub { font-size: 0.92rem; color: var(--gray); margin: 0 0 1.6rem; line-height: 1.5; }
   .auth-google-btn {
     display: flex; align-items: center; justify-content: center; gap: 0.75rem;
     width: 100%; padding: 0.85rem 1.5rem;
@@ -1193,7 +1192,7 @@
     <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close">&times;</button>
     <!-- Logo -->
     <div class="auth-logo">
-      <span style="color:#102C57;font-family:Arial,sans-serif;font-weight:700;font-size:1.3rem;">Chess</span><span style="color:#4285F4;font-family:Arial,sans-serif;font-weight:700;font-size:1.3rem;">Connect</span>
+      <span style="color:var(--navy);font-family:Arial,sans-serif;font-weight:700;font-size:1.3rem;">Chess</span><span style="color:var(--blue-logo);font-family:Arial,sans-serif;font-weight:700;font-size:1.3rem;">Connect</span>
     </div>
     <!-- Title changes based on mode -->
     <h2 class="auth-title" id="authTitle">Join as a Coach</h2>
@@ -1228,6 +1227,10 @@
     <div class="stat">
       <div class="stat-number">3 min</div>
       <div class="stat-label">To go live</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">0%</div>
+      <div class="stat-label">Commission</div>
     </div>
     <div class="stat">
       <div class="stat-number">Global</div>
@@ -1612,7 +1615,7 @@
               <label class="form-label" for="bio">About You <span aria-hidden="true">*</span></label>
               <textarea class="form-textarea" id="bio" placeholder="Tell students about your coaching experience, style, achievements and what makes you unique. Minimum 100 words." oninput="updateCharCount()" aria-label="Your coaching bio — minimum 100 words" aria-required="true"></textarea>
               <div class="char-count" id="charCount">0 words / 100 minimum</div>
-              <div class="field-error" id="err-bio" role="alert">Bio must be at least 100 characters.</div>
+              <div class="field-error" id="err-bio" role="alert">Bio must be at least 100 words.</div>
             </div>
 
           </div><!-- end profileFields -->
@@ -1741,7 +1744,7 @@
             <div class="sample-body">
               <div class="sample-section">
                 <div class="sample-section-label">About</div>
-                <p id="previewBio" style="font-size:0.9rem; color:var(--dark); line-height:1.6;">—</p>
+                <p id="previewBio" style="font-size:0.9rem; color:var(--navy); line-height:1.6;">—</p>
               </div>
               <div class="sample-section">
                 <div class="sample-section-label">Teaches</div>
@@ -1757,7 +1760,7 @@
               </div>
               <div class="sample-section" id="previewFeesSection">
                 <div class="sample-section-label">Fees</div>
-                <p id="previewFees" style="font-size:0.9rem; color:var(--dark);">—</p>
+                <p id="previewFees" style="font-size:0.9rem; color:var(--navy);">—</p>
               </div>
             </div>
             <div class="sample-ctas">
@@ -2028,7 +2031,7 @@
     <h2 id="successTitle">🎉 Profile Submitted!</h2>
     <p>Your profile is now live! Students worldwide can find and contact you directly on ChessConnect.</p>
     <div style="background:#f0f7ff;border:1px solid #c7dffe;border-radius:10px;padding:0.9rem 1.1rem;margin-bottom:1.25rem;text-align:left;">
-      <p style="font-size:0.85rem;color:#102C57;font-weight:600;margin-bottom:0.3rem;">💡 Build a stronger profile</p>
+      <p style="font-size:0.85rem;color:var(--navy);font-weight:600;margin-bottom:0.3rem;">💡 Build a stronger profile</p>
       <p style="font-size:0.82rem;color:#5a6a7a;line-height:1.6;margin-bottom:0;">Log in to your dashboard anytime to add your photo, Google Business link, Chess.com profile, achievements and certifications — the more complete your profile, the more students will find and trust you.</p>
     </div>
     <button class="btn-primary" onclick="closeSuccess()" aria-label="Close confirmation message">Got It — Open Dashboard</button>
@@ -2069,7 +2072,7 @@
     };
     try { await sb.from('registration_errors').insert([entry]); } catch(e) {}
     try {
-      if (emailJsReady && EMAILJS_PUBLIC_KEY !== 'l0nVoYn8YbCGx87Nj') {
+      if (emailJsReady) {
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
           to_email:   'chessconnect.in@gmail.com',
           subject:    'ChessConnect Registration Error — ' + entry.error_code,
@@ -2149,25 +2152,6 @@
     }
   }
 
-  // ── Handle auth state on page load ──
-  async function initAuth() {
-    // Handle OAuth redirect — Supabase exchanges the URL hash for a session
-    const { data: { session }, error } = await sb.auth.getSession();
-    if (session) {
-      currentUser = session.user;
-      await handleAuthenticatedUser();
-    } else {
-      // Try exchanging code from URL (PKCE flow on some browsers)
-      const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
-      const accessToken = hashParams.get('access_token');
-      if (accessToken) {
-        // Session will be picked up by onAuthStateChange — just wait
-        return;
-      }
-      updateNavLoggedOut();
-    }
-  }
-
   async function handleAuthenticatedUser() {
     if (!currentUser) return;
     updateNavLoggedIn(currentUser);
@@ -2192,10 +2176,8 @@
     if (authMode === 'login') {
       showToast('No profile found for this account. Please register below.', 'error');
     }
-    // Scroll to form and pre-fill email
+    // Scroll to form
     scrollToRegister();
-    const emailField = document.getElementById('coachEmail');
-    if (emailField) emailField.value = currentUser.email || '';
   }
 
   function updateNavLoggedIn(user) {
@@ -2231,14 +2213,13 @@
   async function signOutCoach() {
     const menu = document.getElementById('coachDropdownMenu');
     if (menu) menu.style.display = 'none';
-    await sb.auth.signOut();
-    currentUser = null;
-    updateNavLoggedOut();
+    try { await sb.auth.signOut(); } catch(e) {}
+    finally { currentUser = null; updateNavLoggedOut(); }
   }
 
   // ── Listen for auth state changes ──
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session && !currentUser) {
+    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
       currentUser = session.user;
       await handleAuthenticatedUser();
     } else if (event === 'SIGNED_OUT') {
@@ -2246,9 +2227,6 @@
       updateNavLoggedOut();
     }
   });
-
-  // Run on page load
-  window.addEventListener('DOMContentLoaded', initAuth);
 
   // ── State ──
   let currentStep = 1;
@@ -2292,11 +2270,6 @@
   // ── Scroll to register ──
   function scrollToRegister() {
     document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // ── Scroll to sample (for Find a Coach) ──
-  function scrollToSample() {
-    document.getElementById('sample').scrollIntoView({ behavior: 'smooth' });
   }
 
   // ── Animate on scroll ──
@@ -2714,6 +2687,22 @@
       auth_user_id:     currentUser ? currentUser.id : null,
       email:            currentUser ? currentUser.email : null,
     };
+
+    // Upload photo if provided — store as photo_pending_url (awaits admin review)
+    if (photoFile && currentUser) {
+      try {
+        const ext = photoFile.name ? photoFile.name.split('.').pop() : 'jpg';
+        const path = `${currentUser.id}/pending.${ext}`;
+        const { error: uploadError } = await sb.storage
+          .from('coach-photos')
+          .upload(path, photoFile, { upsert: true, contentType: photoFile.type || 'image/jpeg' });
+        if (!uploadError) {
+          const { data: urlData } = sb.storage.from('coach-photos').getPublicUrl(path);
+          profileData.photo_pending_url = urlData.publicUrl;
+          profileData.photo_reviewed = false;
+        }
+      } catch(e) { /* non-fatal — profile still submits without photo */ }
+    }
 
     try {
       const { data, error } = await sb.from('coaches').insert([profileData]).select();
