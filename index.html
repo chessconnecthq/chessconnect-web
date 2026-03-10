@@ -1230,10 +1230,6 @@
       <div class="stat-label">To go live</div>
     </div>
     <div class="stat">
-      <div class="stat-number">0%</div>
-      <div class="stat-label">Commission</div>
-    </div>
-    <div class="stat">
       <div class="stat-number">Global</div>
       <div class="stat-label">Reach</div>
     </div>
@@ -2016,7 +2012,7 @@
         <h4>Info</h4>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
-        <a href="mailto:chessconnect.in@gmail.com">Contact Us</a>
+        <a href="/cdn-cgi/l/email-protection#d9bab1bcaaaabab6b7b7bcbaadf7b0b799beb4b8b0b5f7bab6b4">Contact Us</a>
       </div>
     </div>
   </div>
@@ -2042,7 +2038,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── Supabase init ──
   const { createClient } = supabase;
   const sb = createClient(
@@ -2154,23 +2150,10 @@
   }
 
   // ── Handle auth state on page load ──
-  async function initAuth() {
-    // Handle OAuth redirect — Supabase exchanges the URL hash for a session
-    const { data: { session }, error } = await sb.auth.getSession();
-    if (session) {
-      currentUser = session.user;
-      await handleAuthenticatedUser();
-    } else {
-      // Try exchanging code from URL (PKCE flow on some browsers)
-      const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
-      const accessToken = hashParams.get('access_token');
-      if (accessToken) {
-        // Session will be picked up by onAuthStateChange — just wait
-        return;
-      }
-      updateNavLoggedOut();
-    }
-  }
+  // onAuthStateChange is the single source of truth.
+  // INITIAL_SESSION fires on every page load — covers both fresh visits and
+  // OAuth redirect returns. Avoids race condition with getSession().
+  let authInitDone = false;
 
   async function handleAuthenticatedUser() {
     if (!currentUser) return;
@@ -2235,24 +2218,31 @@
   async function signOutCoach() {
     const menu = document.getElementById('coachDropdownMenu');
     if (menu) menu.style.display = 'none';
-    await sb.auth.signOut();
-    currentUser = null;
-    updateNavLoggedOut();
+    try {
+      await sb.auth.signOut();
+    } catch(e) {
+      console.warn('signOut error (ignored):', e);
+    } finally {
+      currentUser = null;
+      updateNavLoggedOut();
+    }
   }
 
-  // ── Listen for auth state changes ──
+  // ── Listen for auth state changes (single source of truth) ──
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session && !currentUser) {
+    if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session) {
+      if (authInitDone) return;
+      authInitDone = true;
       currentUser = session.user;
       await handleAuthenticatedUser();
+    } else if (event === 'INITIAL_SESSION' && !session) {
+      updateNavLoggedOut();
     } else if (event === 'SIGNED_OUT') {
+      authInitDone = false;
       currentUser = null;
       updateNavLoggedOut();
     }
   });
-
-  // Run on page load
-  window.addEventListener('DOMContentLoaded', initAuth);
 
   // ── State ──
   let currentStep = 1;
@@ -2784,11 +2774,4 @@
 
   // ── Close success overlay ──
   function closeSuccess() {
-    document.getElementById('successOverlay').classList.remove('show');
-    // Scroll to top and reset form
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-</script>
-</body>
-</html>
+    document.getElementById('success
