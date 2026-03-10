@@ -219,11 +219,12 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .tc-chip{padding:0.85rem 0.5rem;border-radius:10px;border:1.5px solid #E5E9F2;background:#fff;color:#102C57;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;text-align:center;transition:all 0.15s;box-shadow:0 1px 4px rgba(16,44,87,0.06);-webkit-tap-highlight-color:transparent}
 .tc-chip:active{transform:scale(0.96)}
 .tc-chip.sel{border-color:#1E73E8;color:#fff;background:#1E73E8;box-shadow:0 4px 12px rgba(30,115,232,0.28)}
-.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;margin-top:0.7rem;background:#fff;border-radius:10px;padding:0.8rem 0.9rem;border:1.5px solid #E5E9F2;box-shadow:0 1px 4px rgba(16,44,87,0.06)}
+.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;margin-top:0.7rem;background:#fff;border-radius:10px;padding:0.8rem 0.9rem;border:1.5px solid #E5E9F2;box-shadow:0 1px 4px rgba(16,44,87,0.06);transition:border-color 0.18s,box-shadow 0.18s}
+.custom-row.custom-active{border-color:#1E73E8;box-shadow:0 0 0 1px #1E73E8,0 4px 16px rgba(30,115,232,0.12)}
 .custom-row label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;flex-shrink:0}
 .cust-t{display:flex;align-items:center;gap:3px;flex:1}
 .cust-inp{width:100%;background:transparent;border:none;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;text-align:center}
-.cust-sep{color:#D1D5DB;font-size:1rem;font-weight:700}
+.cust-sep{color:#6B7280;font-size:1rem;font-weight:700}
 .cust-inc{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
 .cust-inc label{font-size:0.5rem;color:#6B7280;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
 .cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #E5E9F2;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center}
@@ -364,11 +365,11 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .tc-chip.sel{border-color:#1E73E8;color:#fff;background:#1E73E8;box-shadow:0 4px 12px rgba(30,115,232,0.28)}
 
 /* Custom row */
-.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;max-width:420px;margin-top:0.7rem;background:#fff;border-radius:10px;padding:0.65rem 0.8rem;border:1.5px solid #E5E9F2;box-shadow:0 1px 4px rgba(16,44,87,0.06)}
+.custom-row{display:flex;align-items:center;gap:0.6rem;width:100%;max-width:420px;margin-top:0.7rem;background:#fff;border-radius:10px;padding:0.65rem 0.8rem;border:1.5px solid #E5E9F2;box-shadow:0 1px 4px rgba(16,44,87,0.06);transition:border-color 0.18s,box-shadow 0.18s}
 .custom-row label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#6B7280;flex-shrink:0}
 .cust-t{display:flex;align-items:center;gap:3px;flex:1}
 .cust-inp{width:100%;background:transparent;border:none;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;text-align:center}
-.cust-sep{color:#E5E9F2;font-size:1rem;font-weight:700}
+.cust-sep{color:#6B7280;font-size:1rem;font-weight:700}
 .cust-inc{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
 .cust-inc label{font-size:0.5rem;color:#6B7280;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
 .cust-inc input{width:48px;background:transparent;border:none;border-bottom:1.5px solid #E5E9F2;outline:none;color:#102C57;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-align:center}
@@ -1113,36 +1114,61 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 /* ══════════════════════════════════════
    SCREEN 3 — ROTATE YOUR PHONE
+   Compact centred card — fits portrait AND landscape
 ══════════════════════════════════════ */
-.rotate-screen-content{
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:0;
-  padding:0.6rem 0 0.8rem;
+#screen3rotate{
+  background:#0a0a0f;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  min-height:100dvh;padding:1rem;
 }
-.rotate-graphic-wrap{
-  display:flex;flex-direction:column;align-items:center;
-  gap:0.45rem;margin:0.5rem 0 0.4rem;
+.rotate-card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px;
+  padding:1.4rem 1.6rem 1.2rem;
+  width:100%;max-width:380px;
+  display:flex;flex-direction:column;
+  align-items:center;gap:0.7rem;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  backdrop-filter:blur(12px);
 }
+/* Step bar inside card */
+.rotate-card .mob-steps{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:0.2rem;
+}
+/* Title + sub */
+.rotate-card-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:700;
+  color:#fff;text-align:center;line-height:1.25;
+  margin:0;
+}
+.rotate-card-sub{
+  font-size:0.62rem;color:rgba(255,255,255,0.4);
+  letter-spacing:0.1em;text-transform:uppercase;
+  text-align:center;margin:0;
+}
+/* Graphic row — horizontal, compact */
 .rotate-graphic{
   display:flex;align-items:center;justify-content:center;
-  gap:0.3rem;flex-wrap:nowrap;
+  gap:0.5rem;flex-wrap:nowrap;margin:0.2rem 0;
 }
 .rotate-phone-svg{
-  width:50px;height:auto;
+  width:38px;height:auto;
   animation:phoneTilt 2.8s ease-in-out infinite;
   transform-origin:center center;
-  filter:drop-shadow(0 4px 16px rgba(30,115,232,0.25));
+  filter:drop-shadow(0 4px 16px rgba(30,115,232,0.35));
 }
-.rotate-arrow-wrap{
-  display:flex;align-items:center;
-}
+.rotate-arrow-wrap{display:flex;align-items:center;}
 .rotate-arrow-svg{
-  width:32px;height:32px;
+  width:26px;height:26px;
   animation:arrowPulse 2.8s ease-in-out infinite;
 }
 .rotate-phone-landscape{
-  width:96px;height:auto;
-  filter:drop-shadow(0 4px 20px rgba(196,135,58,0.3));
+  width:72px;height:auto;
+  filter:drop-shadow(0 4px 20px rgba(196,135,58,0.4));
   animation:landscapePop 2.8s ease-in-out infinite;
 }
 @keyframes phoneTilt{
@@ -1158,12 +1184,13 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   0%,30%{opacity:0.25;transform:scale(0.92)}
   55%,100%{opacity:1;transform:scale(1)}
 }
+/* Status badge */
 .rotate-status{
   display:flex;align-items:center;gap:8px;
   padding:5px 14px;border-radius:20px;
-  border:1.5px solid rgba(255,255,255,0.08);
+  border:1.5px solid rgba(255,255,255,0.1);
   background:rgba(255,255,255,0.04);
-  font-family:'DM Sans',sans-serif;font-size:0.72rem;
+  font-family:'DM Sans',sans-serif;font-size:0.7rem;
   font-weight:600;color:#666;transition:all 0.4s;
 }
 .rotate-status.ready{
@@ -1173,19 +1200,60 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 .rotate-status-dot{
   width:7px;height:7px;border-radius:50%;
-  background:#444;transition:background 0.4s;
-  flex-shrink:0;
+  background:#444;transition:background 0.4s;flex-shrink:0;
 }
 .rotate-status.ready .rotate-status-dot{
   background:#10B981;
   box-shadow:0 0 8px rgba(16,185,129,0.6);
   animation:dotPulse 1.5s ease infinite;
 }
+/* Buttons row */
+.rotate-card .s2-btns{
+  width:100%;margin-top:0.2rem;
+}
+/* Landscape — even more compact */
+@media(max-height:420px){
+  .rotate-card{padding:0.9rem 1.4rem;gap:0.45rem}
+  .rotate-card-title{font-size:1rem}
+  .rotate-phone-svg{width:28px}
+  .rotate-phone-landscape{width:56px}
+  .rotate-arrow-svg{width:20px;height:20px}
+}
 
-/* Tighter title/sub on rotate screen */
-#screen3rotate .mob-title{font-size:1.15rem;margin-bottom:0.1rem}
-#screen3rotate .mob-sub{margin-bottom:0.2rem}
-#screen3rotate .s2-btns{margin-top:0.5rem;padding-top:0}
+/* ── WhatsApp share button (Screen 1) ── */
+.wa-share-btn{
+  width:100%;padding:0.75rem;border-radius:12px;
+  border:1.5px solid #25D366;background:#fff;
+  color:#128C7E;font-family:'DM Sans',sans-serif;
+  font-size:0.88rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  gap:0.5rem;letter-spacing:0.01em;margin-top:0.6rem;
+  transition:all 0.2s;box-shadow:0 2px 8px rgba(37,211,102,0.12);
+  -webkit-tap-highlight-color:transparent;
+  text-decoration:none;
+}
+.wa-share-btn:active{background:#F0FFF4;transform:scale(0.98)}
+.wa-share-btn svg{width:18px;height:18px;flex-shrink:0}
+
+/* ── Feedback card (Screen 1) ── */
+.s1-feedback{
+  width:100%;margin-top:0.7rem;
+  padding:0.85rem 0.9rem;border-radius:12px;
+  background:#fff;border:1.5px solid #E5E9F2;
+  box-shadow:0 1px 6px rgba(16,44,87,0.06);
+}
+.s1-feedback-title{
+  font-size:0.72rem;font-weight:800;color:#102C57;
+  margin-bottom:0.3rem;line-height:1.4;
+}
+.s1-feedback-body{
+  font-size:0.65rem;color:#6B7280;
+  line-height:1.55;margin-bottom:0.45rem;
+}
+.s1-feedback-email{
+  font-size:0.72rem;font-weight:700;
+  color:#1E73E8;letter-spacing:0.01em;
+}
 
 </style>
 </head>
@@ -1258,6 +1326,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       </div>
     </div>
   </div>
+
+  <!-- WhatsApp Share -->
+  <a class="wa-share-btn" id="clockWaBtn" href="#" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    Share with Chess Community
+  </a>
+
+  <!-- Feedback card -->
+  <div class="s1-feedback">
+    <div class="s1-feedback-title">Have feedback or spotted an issue?</div>
+    <div class="s1-feedback-body">Tried the clock in a tournament or practice session and have a suggestion, or noticed something off? We'd love to hear from you.</div>
+    <div class="s1-feedback-email" id="clockFeedbackEmail"></div>
+  </div>
+
   </div><!-- /mob-content -->
 </div>
 
@@ -1330,9 +1414,8 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 <!-- ═══════════════ SCREEN 3 — ROTATE YOUR PHONE ═══════════════ -->
 <div class="screen hidden" id="screen3rotate">
-  <!-- HEADER -->
-  <div class="mob-header">
-    <div class="mob-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+  <div class="rotate-card">
+    <!-- Step progress -->
     <div class="mob-steps">
       <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Choose</div></div>
       <div class="mob-line filled"></div>
@@ -1342,67 +1425,56 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <div class="mob-line"></div>
       <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
     </div>
-  </div>
-  <!-- CONTENT -->
-  <div class="mob-content rotate-screen-content">
-    <div class="mob-title">Rotate Your Phone</div>
-    <div class="mob-sub">This clock is designed for landscape mode</div>
 
-    <!-- Phone rotation graphic -->
-    <div class="rotate-graphic-wrap">
-      <div class="rotate-graphic" id="rotateGraphic">
-        <!-- Phone SVG -->
-        <svg class="rotate-phone-svg" viewBox="0 0 80 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Phone body -->
-          <rect x="4" y="4" width="72" height="132" rx="10" fill="#1a1a2e" stroke="#1E73E8" stroke-width="2.5"/>
-          <!-- Screen -->
-          <rect x="10" y="18" width="60" height="100" rx="4" fill="#0d0d1a" stroke="#2a2a4a" stroke-width="1"/>
-          <!-- Mini clock display on screen -->
-          <rect x="14" y="38" width="24" height="16" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
-          <text x="26" y="50" font-family="monospace" font-size="7" fill="#C4873A" text-anchor="middle">10:00</text>
-          <rect x="42" y="38" width="24" height="16" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
-          <text x="54" y="50" font-family="monospace" font-size="7" fill="#C4873A" text-anchor="middle">10:00</text>
-          <text x="40" y="33" font-family="sans-serif" font-size="4.5" fill="#C4873A" text-anchor="middle" letter-spacing="1">CHESS CLOCK</text>
-          <!-- Home bar -->
-          <rect x="30" y="126" width="20" height="3" rx="1.5" fill="#333"/>
-          <!-- Speaker -->
-          <rect x="28" y="9" width="24" height="3" rx="1.5" fill="#333"/>
-          <!-- Camera -->
-          <circle cx="40" cy="10.5" r="1.5" fill="#222"/>
-        </svg>
-        <!-- Curved arrow showing rotation -->
-        <div class="rotate-arrow-wrap">
-          <svg class="rotate-arrow-svg" viewBox="0 0 60 60" fill="none">
-            <path d="M50 10 Q58 30 50 50" stroke="#1E73E8" stroke-width="2.5" stroke-dasharray="5 3" stroke-linecap="round" fill="none" opacity="0.7"/>
-            <polygon points="44,48 54,52 50,42" fill="#1E73E8" opacity="0.8"/>
-          </svg>
-        </div>
-        <!-- Phone in landscape (target state) -->
-        <svg class="rotate-phone-landscape" viewBox="0 0 140 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="132" height="72" rx="10" fill="#1a1a2e" stroke="#1E73E8" stroke-width="2.5"/>
-          <rect x="18" y="10" width="104" height="60" rx="4" fill="#0d0d1a" stroke="#2a2a4a" stroke-width="1"/>
-          <!-- Two clock displays side by side -->
-          <rect x="22" y="22" width="44" height="28" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
-          <text x="44" y="40" font-family="monospace" font-size="11" fill="#C4873A" text-anchor="middle">10:00</text>
-          <text x="44" y="17" font-family="sans-serif" font-size="5" fill="#8B6914" text-anchor="middle">PLAYER 1</text>
-          <rect x="74" y="22" width="44" height="28" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
-          <text x="96" y="40" font-family="monospace" font-size="11" fill="#C4873A" text-anchor="middle">10:00</text>
-          <text x="96" y="17" font-family="sans-serif" font-size="5" fill="#8B6914" text-anchor="middle">PLAYER 2</text>
-          <!-- Side panels hint -->
-          <rect x="4" y="4" width="14" height="72" rx="10" fill="#2a1208" stroke="#C4873A" stroke-width="1" opacity="0.6"/>
-          <rect x="122" y="4" width="14" height="72" rx="10" fill="#2a1208" stroke="#C4873A" stroke-width="1" opacity="0.6"/>
-          <!-- Home bar -->
-          <rect x="8" y="36" width="3" height="8" rx="1.5" fill="#333"/>
+    <!-- Title -->
+    <div class="rotate-card-title">Rotate Your Phone</div>
+    <div class="rotate-card-sub">This clock is designed for landscape mode</div>
+
+    <!-- Graphic -->
+    <div class="rotate-graphic" id="rotateGraphic">
+      <!-- Portrait phone -->
+      <svg class="rotate-phone-svg" viewBox="0 0 80 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="72" height="132" rx="10" fill="#1a1a2e" stroke="#1E73E8" stroke-width="2.5"/>
+        <rect x="10" y="18" width="60" height="100" rx="4" fill="#0d0d1a" stroke="#2a2a4a" stroke-width="1"/>
+        <rect x="14" y="38" width="24" height="16" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+        <text x="26" y="50" font-family="monospace" font-size="7" fill="#C4873A" text-anchor="middle">10:00</text>
+        <rect x="42" y="38" width="24" height="16" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+        <text x="54" y="50" font-family="monospace" font-size="7" fill="#C4873A" text-anchor="middle">10:00</text>
+        <text x="40" y="33" font-family="sans-serif" font-size="4.5" fill="#C4873A" text-anchor="middle" letter-spacing="1">CHESS CLOCK</text>
+        <rect x="30" y="126" width="20" height="3" rx="1.5" fill="#333"/>
+        <rect x="28" y="9" width="24" height="3" rx="1.5" fill="#333"/>
+        <circle cx="40" cy="10.5" r="1.5" fill="#222"/>
+      </svg>
+      <!-- Arrow -->
+      <div class="rotate-arrow-wrap">
+        <svg class="rotate-arrow-svg" viewBox="0 0 60 60" fill="none">
+          <path d="M50 10 Q58 30 50 50" stroke="#1E73E8" stroke-width="2.5" stroke-dasharray="5 3" stroke-linecap="round" fill="none" opacity="0.7"/>
+          <polygon points="44,48 54,52 50,42" fill="#1E73E8" opacity="0.8"/>
         </svg>
       </div>
-
-      <!-- Status indicator — updates when phone is actually rotated -->
-      <div class="rotate-status" id="rotateStatus">
-        <div class="rotate-status-dot" id="rotateStatusDot"></div>
-        <span id="rotateStatusText">Waiting for rotation…</span>
-      </div>
+      <!-- Landscape phone -->
+      <svg class="rotate-phone-landscape" viewBox="0 0 140 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="132" height="72" rx="10" fill="#1a1a2e" stroke="#1E73E8" stroke-width="2.5"/>
+        <rect x="18" y="10" width="104" height="60" rx="4" fill="#0d0d1a" stroke="#2a2a4a" stroke-width="1"/>
+        <rect x="22" y="22" width="44" height="28" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+        <text x="44" y="40" font-family="monospace" font-size="11" fill="#C4873A" text-anchor="middle">10:00</text>
+        <text x="44" y="17" font-family="sans-serif" font-size="5" fill="#8B6914" text-anchor="middle">PLAYER 1</text>
+        <rect x="74" y="22" width="44" height="28" rx="2" fill="#111" stroke="#C4873A" stroke-width="0.8"/>
+        <text x="96" y="40" font-family="monospace" font-size="11" fill="#C4873A" text-anchor="middle">10:00</text>
+        <text x="96" y="17" font-family="sans-serif" font-size="5" fill="#8B6914" text-anchor="middle">PLAYER 2</text>
+        <rect x="4" y="4" width="14" height="72" rx="10" fill="#2a1208" stroke="#C4873A" stroke-width="1" opacity="0.6"/>
+        <rect x="122" y="4" width="14" height="72" rx="10" fill="#2a1208" stroke="#C4873A" stroke-width="1" opacity="0.6"/>
+        <rect x="8" y="36" width="3" height="8" rx="1.5" fill="#333"/>
+      </svg>
     </div>
 
+    <!-- Status -->
+    <div class="rotate-status" id="rotateStatus">
+      <div class="rotate-status-dot" id="rotateStatusDot"></div>
+      <span id="rotateStatusText">Waiting for rotation…</span>
+    </div>
+
+    <!-- Buttons -->
     <div class="s2-btns">
       <button class="back-btn" onclick="goToStep2()">← Back</button>
       <button class="launch-btn" id="startClockBtn" onclick="launchClock()">Start Clock →</button>
@@ -1869,8 +1941,9 @@ function toggleRotate() {
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
     if (!isPortrait) {
       showRotateToast('Rotate your phone upright to return to portrait ↺');
+    } else {
+      dismissRotateToast();
     }
-    dismissRotateToast();
   }
 }
 
@@ -1936,15 +2009,17 @@ function resetPlayerLabels() {
 function goToStep2() { if(theme) show('screen2'); }
 function goToStep1() { show('screen1'); }
 function goToStep3() {
-  // Validate time before proceeding
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
-  if (!selChip) {
+  if (selChip) {
+    // preset already applied via pickTC — baseTime/inc already set
+  } else {
+    // Read custom inputs
     const h=Math.max(0,Math.min(9,  Math.floor(Math.abs(parseInt(document.getElementById('ctH').value)||0))));
     const m=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctM').value)||0))));
     const s=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctS').value)||0))));
     const i=Math.max(0,Math.min(300,Math.floor(Math.abs(parseInt(document.getElementById('ctI').value)||0))));
     const tot=h*3600+m*60+s;
-    if(tot>0){baseTime=tot;inc=i;}
+    if(tot>0){ baseTime=tot; inc=i; }
     else { alert('Please set a valid time (at least 1 second).'); return; }
   }
   show('screen3rotate');
@@ -2004,23 +2079,22 @@ function launchClock() {
   document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
   dismissRotateToast();
   unlockOrientation();
-  // Apply values
-  baseTime = baseTime; // already set via pickTC or custom
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
-  if (!selChip) {
-    // Sanitize: force integer, clamp to valid range, reject non-numeric
+  if (selChip) {
+    // preset already applied via pickTC — baseTime/inc already correct
+  } else {
+    // Read custom inputs
     const h=Math.max(0,Math.min(9,  Math.floor(Math.abs(parseInt(document.getElementById('ctH').value)||0))));
     const m=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctM').value)||0))));
     const s=Math.max(0,Math.min(59, Math.floor(Math.abs(parseInt(document.getElementById('ctS').value)||0))));
     const i=Math.max(0,Math.min(300,Math.floor(Math.abs(parseInt(document.getElementById('ctI').value)||0))));
     const tot=h*3600+m*60+s;
-    // Zero-second guard: must be at least 1 second total
-    if(tot>0){baseTime=tot;inc=i;}
+    if(tot>0){ baseTime=tot; inc=i; }
     else { alert('Please set a valid time (at least 1 second).'); return; }
   }
   initClockView();
   show('screen3');
-  requestWakeLock(); // Keep screen on during game
+  requestWakeLock();
 }
 
 function initClockView() {
@@ -2036,6 +2110,14 @@ function initClockView() {
   updateDisplays();
   resetBtnUI();
   document.getElementById('goBanner').classList.remove('show');
+  // Sync preset strip — highlight matching chip or clear all if custom time
+  const selChip = document.querySelector('#screen2 .tc-chip.sel');
+  document.querySelectorAll('.ps-chip').forEach(c=>c.classList.remove('sel'));
+  if(selChip){
+    document.querySelectorAll('.ps-chip').forEach(c=>{
+      if(c.textContent.trim()===selChip.textContent.trim()) c.classList.add('sel');
+    });
+  }
   // Show preset strip
   stripShow(true);
   // Reset pause button
@@ -2051,6 +2133,14 @@ function restartClock() {
   updateDisplays();
   resetBtnUI();
   document.getElementById('goBanner').classList.remove('show');
+  // Sync preset strip — highlight matching chip or clear all if custom time
+  const selChip = document.querySelector('#screen2 .tc-chip.sel');
+  document.querySelectorAll('.ps-chip').forEach(c=>c.classList.remove('sel'));
+  if(selChip){
+    document.querySelectorAll('.ps-chip').forEach(c=>{
+      if(c.textContent.trim()===selChip.textContent.trim()) c.classList.add('sel');
+    });
+  }
   stripShow(true);
   setPauseIcon(false);
   ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
@@ -2072,6 +2162,9 @@ function newGame() {
   ['heritage','pro','chronos'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
+  // Clear custom row highlight so Screen 2 looks clean on return
+  const cr = document.querySelector('.custom-row');
+  if(cr) cr.classList.remove('custom-active');
   show('screen1');
 }
 
@@ -2086,7 +2179,23 @@ function pickTC(secs, i, key, el) {
   document.getElementById('ctM').value=Math.floor((secs%3600)/60);
   document.getElementById('ctS').value=secs%60;
   document.getElementById('ctI').value=i;
+  // Preset selected — remove custom active highlight
+  const cr=document.querySelector('.custom-row');
+  if(cr) cr.classList.remove('custom-active');
 }
+
+/* ── Custom input: typing deselects all presets ── */
+['ctH','ctM','ctS','ctI'].forEach(function(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('input', function(){
+    // Deselect all preset chips
+    document.querySelectorAll('.tc-chip').forEach(c=>c.classList.remove('sel'));
+    // Highlight the custom row
+    const cr=document.querySelector('.custom-row');
+    if(cr) cr.classList.add('custom-active');
+  });
+});
 function quickTC(secs, i, el) {
   baseTime=secs; inc=i;
   if(ticker){clearInterval(ticker);ticker=null;}
@@ -2142,7 +2251,8 @@ function resetBtnUI() {
   if(u1) u1.className=u1.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
   if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
   setBtnState(1,'inactive'); setBtnState(2,'inactive');
-  setClockStatus('Tap to start');
+  const statusHint = theme==='heritage' ? 'Press side panel to start' : 'Tap side panel to start';
+  setClockStatus(statusHint);
   whiteIdx = -1;
   resetPlayerLabels();
   if(theme==='pro'){setLED(1,false);setLED(2,false);}
@@ -2256,7 +2366,7 @@ function tick() {
     warnDone[active]=true;
     playWarning();
     const wUnit=document.getElementById(PFX[theme]+'-p'+(active+1)+'unit');
-    if(wUnit) wUnit.classList.add('warning' || 'warning');
+    if(wUnit) wUnit.classList.add('warning');
   }
 
   // Tick sound — once per second when under 10s
@@ -2591,6 +2701,26 @@ function onFsChange() {
 
 // Init default preset selection
 pickTC(600, 5, '10+5', document.getElementById('tc-10+5'));
+
+// ── Screen 1: WhatsApp share + feedback email (Cloudflare-safe) ──
+(function() {
+  const waBtn = document.getElementById('clockWaBtn');
+  if (waBtn) {
+    const toolUrl = 'https://chessconnecthq.github.io/chessconnect-web/chess-clock.html';
+    const msg = encodeURIComponent(
+      '\uD83D\uDD50 Professional chess clock for tournaments & practice!\n' +
+      '3 beautiful themes \u2014 Heritage, Pro & Chronos 2050\n' +
+      'Works on mobile, no download needed.\n' +
+      'Try it here: ' + toolUrl
+    );
+    waBtn.href = 'https://wa.me/?text=' + msg;
+  }
+  const emailEl = document.getElementById('clockFeedbackEmail');
+  if (emailEl) {
+    const u = ['chessconnect.in', 'gmail.com'].join('@');
+    emailEl.textContent = u;
+  }
+})();
 </script>
 <div class="fit-exit-hint" id="fitExitHint">Tap FIT again to exit · Swipe up for browser controls</div>
 </body>
