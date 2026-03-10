@@ -1271,7 +1271,7 @@ switchTab('form');
 generate();
 
 // Build feedback email href via JS so Cloudflare cannot obfuscate it
-
+(function() {
   const btn = document.getElementById('feedbackEmailBtn');
   if (btn) {
     const u = ['chessconnect.in', 'gmail.com'].join('@');
