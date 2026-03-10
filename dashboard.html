@@ -731,20 +731,14 @@
   }
 
   // ── Init ──
-  window.addEventListener('DOMContentLoaded', async () => {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session) {
-      currentUser = session.user;
-      await loadDashboard();
-    } else {
-      showScreen('authWall');
-    }
-  });
-
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session && !currentUser) {
-      currentUser = session.user;
-      await loadDashboard();
+    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+      if (!currentUser) {
+        currentUser = session.user;
+        await loadDashboard();
+      }
+    } else if (event === 'INITIAL_SESSION' && !session) {
+      showScreen('authWall');
     } else if (event === 'SIGNED_OUT') {
       currentUser = null;
       showScreen('authWall');
@@ -1002,7 +996,7 @@
   async function signInWithGoogle() {
     await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
   }
-  async function signOut() { await sb.auth.signOut(); window.location.href = 'index.html'; }
+  async function signOut() { try { await sb.auth.signOut(); } catch(e) {} finally { window.location.href = 'index.html'; } }
 
   function showScreen(id) {
     ['loadingScreen','authWall','noProfileWall','dashMain'].forEach(s => {
