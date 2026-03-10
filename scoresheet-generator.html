@@ -676,7 +676,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       <strong>Have feedback or spotted an issue?</strong><br/>
       Noticed something off while generating your scoresheet, or have a suggestion to improve it? We'd love to hear from you.
     </div>
-    <a class="feedback-email-btn" href="mailto:chessconnect.in@gmail.com?subject=Scoresheet Generator Feedback">
+    <a class="feedback-email-btn" id="feedbackEmailBtn" href="#">
       <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
       chessconnect.in@gmail.com
     </a>
@@ -704,7 +704,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 </div><!-- /page -->
 
 <!-- Early stubs — prevent ReferenceError if Cloudflare delays main script -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function generateDebounced(){}
 function generate(){}
 function setMode(){}
@@ -719,8 +719,6 @@ function onLogoUpload(){}
 function removeLogo(){}
 function addEndDate(){}
 function removeEndDate(){}
-function printSheets(){}
-function switchTab(){}
 </script>
 
 <!-- Thank you toast -->
@@ -780,14 +778,6 @@ function setSize(s, btn) {
 }
 
 /* ── MODE ── */
-/* ── THANK YOU TOAST ── */
-function showToast() {
-  const t = document.getElementById('thankYouToast');
-  if (!t) return;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4000);
-}
-
 function setMode(m) {
   mode = m;
   const tCard = document.getElementById('mode-tournament');
@@ -1262,10 +1252,26 @@ function switchTab(tab) {
   }
 }
 
-// Init
-generate();
-// Fix #7: sync mobile tab state on first load so form is visible
+/* ── THANK YOU TOAST ── */
+function showToast() {
+  const t = document.getElementById('thankYouToast');
+  if (!t) return;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// Init — switchTab first so mobile shows form, then generate preview
 switchTab('form');
+generate();
+
+// Build feedback email href via JS so Cloudflare cannot obfuscate it
+(function() {
+  const btn = document.getElementById('feedbackEmailBtn');
+  if (btn) {
+    const u = ['chessconnect.in', 'gmail.com'].join('@');
+    btn.href = 'mailto:' + u + '?subject=Scoresheet%20Generator%20Feedback';
+  }
+})();
 </script>
 </body>
 </html>
