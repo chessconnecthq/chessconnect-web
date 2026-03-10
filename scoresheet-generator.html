@@ -52,6 +52,8 @@
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script data-cfasync="false" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script data-cfasync="false" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
   --blue:#1E73E8;--navy:#102C57;--navy2:#1a3d73;
@@ -656,9 +658,9 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   </div>
 
   <!-- PRINT -->
-  <button class="gen-btn" onclick="printSheets()">
-    <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-    Print / Save as PDF
+  <button class="gen-btn" id="downloadBtn" onclick="downloadPDF()">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Download PDF
   </button>
   <button class="mob-preview-btn" onclick="switchTab('preview')">👁 View Preview</button>
 
@@ -669,7 +671,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   </div>
 
   <div class="tip" id="printTip">
-    <strong>💡 Tip:</strong> In the print dialog, set paper to <strong>A4</strong>. Each page = <strong>1 scoresheet</strong>. For duplex back sides, use "Print on both sides" if your printer supports it.
+    <strong>💡 Tip:</strong> Click <strong>Download PDF</strong> to save your scoresheet. Print the downloaded PDF from any device at <strong>A4</strong> size for best results.
   </div>
 
   <!-- FEEDBACK -->
@@ -732,9 +734,6 @@ function removeEndDate(){}
   </div>
 </div>
 
-<!-- Hidden container used only during printing — never shown in UI -->
-<div id="printContainer" style="display:none" aria-hidden="true"></div>
-
 <script data-cfasync="false">
 let style   = 'classic';
 let mode    = 'tournament';
@@ -774,8 +773,8 @@ function setSize(s, btn) {
   // Update print tip
   const printTip = document.getElementById('printTip');
   if (printTip) printTip.innerHTML = s === 'a5'
-    ? '<strong>💡 Tip:</strong> Set paper to <strong>A5</strong> in the print dialog. Each page = 1 scoresheet. For duplex back sides, use "Print on both sides" if your printer supports it.'
-    : '<strong>💡 Tip:</strong> Set paper to <strong>A4</strong> in the print dialog. Each page = 1 scoresheet. For duplex back sides, use "Print on both sides" if your printer supports it.';
+    ? '<strong>💡 Tip:</strong> Click <strong>Download PDF</strong> to save your scoresheet. Print the downloaded PDF at <strong>A5</strong> size for best results.'
+    : '<strong>💡 Tip:</strong> Click <strong>Download PDF</strong> to save your scoresheet. Print the downloaded PDF at <strong>A4</strong> size for best results.';
   generate();
 }
 
@@ -1211,36 +1210,62 @@ function generate() {
   area.innerHTML = showing === 'back' && hasBack ? buildBack(1) : buildFront(1);
 }
 
-/* ── PRINT ── */
-function printSheets() {
-  const pc      = document.getElementById('printContainer');
-  const hasBack = chk('opt-back');
-  const pageSize = paper === 'a5' ? 'A5' : 'A4';
+/* ── DOWNLOAD PDF ── */
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const hasBack  = chk('opt-back');
+  const isA5     = paper === 'a5';
+  const pageW    = isA5 ? 148 : 210; // mm
+  const pageH    = isA5 ? 210 : 297;
+  const btn      = document.getElementById('downloadBtn');
 
-  // Inject a dynamic @page rule so browser uses the correct paper size
-  const pageStyle = `<style>@page{size:${pageSize} portrait;margin:8mm}</style>`;
+  // Show loading state
+  btn.textContent = '⏳ Generating PDF…';
+  btn.disabled = true;
 
-  // Build content — front always, back only if toggle is on
-  pc.innerHTML = pageStyle + buildFront(1) + (hasBack ? buildBack(1) : '');
+  try {
+    // Build a temporary render container off-screen
+    const container = document.createElement('div');
+    container.style.cssText = 'position:fixed;left:-9999px;top:0;z-index:-1;background:#fff';
+    container.innerHTML = buildFront(1) + (hasBack ? buildBack(1) : '');
+    document.body.appendChild(container);
 
-  // Clean up after the print dialog is closed
-  const cleanup = () => {
-    pc.innerHTML = '';
-    window.removeEventListener('afterprint', cleanup);
-  };
-  window.addEventListener('afterprint', cleanup);
+    // Wait for fonts and images to render
+    await new Promise(r => setTimeout(r, 600));
 
-  // Give browser 400ms to fully render injected HTML before opening print dialog
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      if (pc.innerHTML.trim() === '') {
-        alert('Scoresheet failed to generate. Please try again.');
-        return;
-      }
-      showToast();
-      window.print();
-    }, 400);
-  });
+    const sheets = container.querySelectorAll('.scoresheet');
+    const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format: isA5 ? 'a5' : 'a4' });
+
+    for (let i = 0; i < sheets.length; i++) {
+      if (i > 0) pdf.addPage(isA5 ? 'a5' : 'a4', 'portrait');
+      const canvas = await html2canvas(sheets[i], {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      });
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgW = pageW;
+      const imgH = (canvas.height / canvas.width) * imgW;
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgW, Math.min(imgH, pageH));
+    }
+
+    document.body.removeChild(container);
+
+    // Build filename from tournament/academy name
+    const sheetName = (mode === 'tournament' ? v('f-name') : v('f-acad-name')) || 'scoresheet';
+    const safeName  = sheetName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    pdf.save(`${safeName}_scoresheet.pdf`);
+
+    showToast();
+  } catch(err) {
+    console.error('PDF generation error:', err);
+    alert('PDF generation failed. Please try again.');
+  } finally {
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF';
+    btn.disabled = false;
+  }
 }
 
 /* ── MOBILE TAB SWITCH ── */
