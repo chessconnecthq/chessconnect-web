@@ -254,6 +254,8 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
   page-break-after:always;
   position:relative;
   display:flex;flex-direction:column;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
 }
 /* A5 scoresheet — narrower, taller (full A5 portrait) */
 .scoresheet.ss-a5{width:480px;min-height:679px}
@@ -431,14 +433,14 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 /* ── PRINT ── */
 @media print{
   @page { margin: 8mm; }
-  body{background:#fff}
+  body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .nav,.form-col,.preview-header,.mob-tabs,.preview-col{display:none!important}
   .page{display:block}
   /* Show the dedicated print container */
   #printContainer{display:block!important}
   .scoresheet-wrap{display:block;width:100%;break-inside:avoid;page-break-inside:avoid;page-break-after:always;break-after:page}
   .scoresheet-wrap:last-child{page-break-after:avoid;break-after:avoid}
-  .scoresheet{display:block;box-shadow:none;width:100%;min-height:0;break-inside:avoid}
+  .scoresheet{display:block;box-shadow:none;width:100%;min-height:0;break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .more-card{display:none}
 }
 </style>
@@ -678,7 +680,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
     <a class="feedback-email-btn" id="feedbackEmailBtn" href="#">
       <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
-      chessconnect.in@gmail.com
+      <span class="__cf_email__" data-cfemail="3f5c575a4c4c5c5051515a5c4b1156517f58525e5653115c5052">[email&#160;protected]</span>
     </a>
   </div>
 
@@ -704,7 +706,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 </div><!-- /page -->
 
 <!-- Early stubs — prevent ReferenceError if Cloudflare delays main script -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false">
 function generateDebounced(){}
 function generate(){}
 function setMode(){}
@@ -733,7 +735,7 @@ function removeEndDate(){}
 <!-- Hidden container used only during printing — never shown in UI -->
 <div id="printContainer" style="display:none" aria-hidden="true"></div>
 
-<script>
+<script data-cfasync="false">
 let style   = 'classic';
 let mode    = 'tournament';
 let paper   = 'a4';
@@ -1228,12 +1230,16 @@ function printSheets() {
   };
   window.addEventListener('afterprint', cleanup);
 
-  // Give browser one RAF + 150ms to fully render injected HTML before opening print dialog
+  // Give browser 400ms to fully render injected HTML before opening print dialog
   requestAnimationFrame(() => {
     setTimeout(() => {
+      if (pc.innerHTML.trim() === '') {
+        alert('Scoresheet failed to generate. Please try again.');
+        return;
+      }
       showToast();
       window.print();
-    }, 150);
+    }, 400);
   });
 }
 
@@ -1265,7 +1271,7 @@ switchTab('form');
 generate();
 
 // Build feedback email href via JS so Cloudflare cannot obfuscate it
-(function() {
+
   const btn = document.getElementById('feedbackEmailBtn');
   if (btn) {
     const u = ['chessconnect.in', 'gmail.com'].join('@');
