@@ -2255,33 +2255,23 @@
   let fideData = null; // { fide_id, name, title, rating, rapid_rating, blitz_rating, country, rating_display, rating_type }
 
   // ── Mobile menu ──
-  const hamburger = document.getElementById('hamburger');
-  const mobileNav = document.getElementById('mobileNav');
   let menuOpen = false;
 
   function toggleMenu() {
     menuOpen = !menuOpen;
-    hamburger.classList.toggle('open', menuOpen);
-    hamburger.setAttribute('aria-expanded', menuOpen);
-    mobileNav.classList.toggle('open', menuOpen);
+    document.getElementById('hamburger').classList.toggle('open', menuOpen);
+    document.getElementById('hamburger').setAttribute('aria-expanded', menuOpen);
+    document.getElementById('mobileNav').classList.toggle('open', menuOpen);
     document.body.style.overflow = menuOpen ? 'hidden' : '';
   }
 
   function closeMenu() {
     menuOpen = false;
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    mobileNav.classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
+    document.getElementById('mobileNav').classList.remove('open');
     document.body.style.overflow = '';
   }
-
-  window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
-
-  // ── Nav scroll ──
-  window.addEventListener('scroll', () => {
-    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
-  });
 
   // ── Scroll to register ──
   function scrollToRegister() {
@@ -2294,10 +2284,20 @@
   }
 
   // ── Animate on scroll ──
+  // Script is at bottom of body so DOM is ready — run inline like original
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
+  }, { threshold: 0 });
   document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+  // ── Nav scroll ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // ── Resize / keyboard ──
+  window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
 
   // ── Toast ──
   function showToast(msg, type = '') {
