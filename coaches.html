@@ -798,7 +798,7 @@
 <script>
   const SUPABASE_URL = 'https://ipslahlvworwgzbgxppc.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwc2xhaGx2d29yd2d6Ymd4cHBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MjU5NDQsImV4cCI6MjA4ODMwMTk0NH0.P-Fogs9AckDvlImncV_F2JS3UIxZFHg8rOy6HYBQ888';
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: 'cc-auth', flowType: 'pkce' } });
 
   const PER_PAGE = 12;
   let allCoaches = [];
@@ -963,25 +963,25 @@
 
     filtered = allCoaches.filter(c => {
       if (q) {
-        const name = (c.name || '').toLowerCase();
+        const name = (c.full_name || '').toLowerCase();
         const city = (c.city || '').toLowerCase();
         if (!name.includes(q) && !city.includes(q)) return false;
       }
       if (mode) {
-        const m = (c.mode || '').toLowerCase();
+        const m = (c.coaching_mode || '').toLowerCase();
         if (mode === 'online'  && !m.includes('online'))  return false;
         if (mode === 'offline' && !m.includes('offline')) return false;
         if (mode === 'both'    && !(m.includes('online') && m.includes('offline'))) return false;
       }
       if (level) {
-        const levels = c.levels || [];
+        const levels = c.levels_taught || [];
         if (!levels.some(l => l.toLowerCase().includes(level.toLowerCase()))) return false;
       }
       if (title) {
-        if ((c.fide_title || '') !== title) return false;
+        if ((c.chess_title || '') !== title) return false;
       }
       if (rating) {
-        const r = Math.max(c.fide_rating || 0, c.rapid_rating || 0, c.blitz_rating || 0);
+        const r = Math.max(c.fide_rating || 0, c.fide_rapid || 0, c.fide_blitz || 0);
         if (rating === '2600+') {
           if (r < 2600) return false;
         } else {
@@ -1121,17 +1121,17 @@
 
   // ── RENDER CARD ──
   function renderCard(c) {
-    const initials = (c.name || 'CC').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
-    const rating = c.fide_rating || c.rapid_rating || c.blitz_rating || 0;
-    const ratingType = c.fide_rating ? 'Classical' : c.rapid_rating ? 'Rapid' : c.blitz_rating ? 'Blitz' : '';
-    const levels  = Array.isArray(c.levels) ? c.levels : [];
+    const initials = (c.full_name || 'CC').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+    const rating = c.fide_rating || c.fide_rapid || c.fide_blitz || 0;
+    const ratingType = c.fide_rating ? 'Classical' : c.fide_rapid ? 'Rapid' : c.fide_blitz ? 'Blitz' : '';
+    const levels  = Array.isArray(c.levels_taught) ? c.levels_taught : [];
     const langs   = Array.isArray(c.languages) ? c.languages : [];
-    const mode    = (c.mode || '').toLowerCase();
+    const mode    = (c.coaching_mode || '').toLowerCase();
     const exp     = c.experience ? `${c.experience} yr${c.experience !== 1 ? 's' : ''} exp` : '';
     const location = [c.city, c.country].filter(Boolean).join(', ');
 
     const badges = [];
-    if (c.fide_title) badges.push(`<span class="badge">${c.fide_title}</span>`);
+    if (c.chess_title) badges.push(`<span class="badge">${c.chess_title}</span>`);
     if (rating)       badges.push(`<span class="badge"><svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.7 5.5 21 7 14 2 9.3 9 8.5 12 2"/></svg> FIDE ${rating}${ratingType ? ' ' + ratingType : ''}</span>`);
 
     const modeTags = [];
@@ -1139,13 +1139,13 @@
     if (mode.includes('offline')) modeTags.push('<span class="tag tag-offline">Offline</span>');
 
     const currSym = c.fees_currency === 'USD' ? '$' : c.fees_currency === 'EUR' ? '€' : '₹';
-    const feeNum = c.fees_currency === 'INR' || !c.fees_currency ? parseIntc.fees.toLocaleString('en-IN') : parseIntc.fees.toLocaleString();
+    const feeNum = c.fees ? (c.fees_currency === 'INR' || !c.fees_currency ? parseInt(c.fees).toLocaleString('en-IN') : parseInt(c.fees).toLocaleString()) : '';
     const feeText = c.fees ? `${currSym}${feeNum} / session` : 'Contact for fees';
     const trialBadge = c.trial_available ? '<span class="trial-badge">Trial available</span>' : '';
 
     const waHref   = c.whatsapp ? `https://wa.me/${c.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Hi, I found you on ChessConnect and would like to know more about your chess coaching.`)}` : '#';
-    const callHref = c.phone ? `tel:${c.phone}` : '#';
-    const hasContact = c.whatsapp || c.phone;
+    const callHref = c.whatsapp ? `tel:${c.whatsapp}` : '#';
+    const hasContact = c.whatsapp;
 
     const cardLink = `coach.html?id=${c.id}`;
     return `
@@ -1154,7 +1154,7 @@
       <div class="card-header">
         <div class="card-avatar">${initials}</div>
         <div class="card-header-info">
-          <div class="card-name">${escHtml(c.name || c.full_name || 'Coach')}</div>
+          <div class="card-name">${escHtml(c.full_name || 'Coach')}</div>
           <div class="card-meta">${[exp, location].filter(Boolean).join(' · ')}</div>
           <div class="card-badges">${badges.join('')}</div>
         </div>
@@ -1175,7 +1175,7 @@
           View Profile
         </a>
         ${hasContact ? `
-          <button class="btn-card-call" onclick="handleCall('${escAttr(c.phone)}')" ${!c.phone ? 'disabled style="opacity:0.4"' : ''}>
+          <button class="btn-card-call" onclick="handleCall('${escAttr(c.whatsapp)}')" ${!c.whatsapp ? 'disabled style="opacity:0.4"' : ''}>
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.5a19.79 19.79 0 01-3-8.56A2 2 0 012.48 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
             Call
           </button>
