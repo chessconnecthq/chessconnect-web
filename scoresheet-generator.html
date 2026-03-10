@@ -699,7 +699,7 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
     </div>
     <a class="feedback-email-btn" id="feedbackEmailBtn" href="#">
       <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
-      <span class="__cf_email__" data-cfemail="3f5c575a4c4c5c5051515a5c4b1156517f58525e5653115c5052">[email&#160;protected]</span>
+      <span id="feedbackEmailText"></span>
     </a>
   </div>
 
@@ -1318,10 +1318,10 @@ generate();
 // Build feedback email href via JS so Cloudflare cannot obfuscate it
 (function() {
   const btn = document.getElementById('feedbackEmailBtn');
-  if (btn) {
-    const u = ['chessconnect.in', 'gmail.com'].join('@');
-    btn.href = 'mailto:' + u + '?subject=Scoresheet%20Generator%20Feedback';
-  }
+  const emailSpan = document.getElementById('feedbackEmailText');
+  const u = ['chessconnect.in', 'gmail.com'].join('@');
+  if (btn) btn.href = 'mailto:' + u + '?subject=Scoresheet%20Generator%20Feedback';
+  if (emailSpan) emailSpan.textContent = u;
   const waBtn = document.getElementById('waShareBtn');
   if (waBtn) {
     const toolUrl = 'https://chessconnecthq.github.io/chessconnect-web/scoresheet-generator.html';
