@@ -252,6 +252,39 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 .side-btn:disabled{opacity:0.35;cursor:not-allowed}
 
 .preview-badge{font-size:0.68rem;font-weight:700;color:var(--green);background:#ECFDF5;border:1px solid #BBF7D0;padding:0.2rem 0.6rem;border-radius:100px;white-space:nowrap}
+/* ── ZOOM BAR ── */
+.zoom-bar{display:flex;align-items:center;gap:0.35rem;flex-shrink:0}
+.zbtn{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--gl);background:var(--white);color:var(--navy);font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;line-height:1;flex-shrink:0}
+.zbtn:hover{border-color:var(--blue);color:var(--blue);background:rgba(30,115,232,0.05)}
+.zlbl{font-size:0.7rem;font-weight:700;color:var(--gray);min-width:36px;text-align:center}
+
+/* ── WELCOME SCREEN ── */
+#welcomeScreen{position:fixed;inset:0;background:linear-gradient(135deg,#0f1b35 0%,#1a3a6b 60%,#1e3a5f 100%);z-index:1000;display:flex;flex-direction:column;overflow-y:auto;justify-content:space-between}
+#welcomeScreen.ws-hidden{display:none}
+.ws-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;flex-shrink:0}
+.ws-logo{font-family:var(--font-b);font-size:1.2rem;font-weight:800;letter-spacing:-0.5px}
+.ws-logo .chess{color:#fff}.ws-logo .connect{color:#4285F4}
+.ws-skip{font-size:0.75rem;color:rgba(255,255,255,0.5);cursor:pointer;text-decoration:underline;background:none;border:none;font-family:var(--font-b)}
+.ws-skip:hover{color:rgba(255,255,255,0.85)}
+.ws-hero{text-align:center;padding:2.5rem 2rem 1.5rem;flex-shrink:0}
+.ws-badge{display:inline-block;background:rgba(66,133,244,0.2);color:#7eb8f7;border:1px solid rgba(66,133,244,0.35);border-radius:100px;font-size:0.7rem;font-weight:700;letter-spacing:0.5px;padding:0.3rem 0.85rem;margin-bottom:0.9rem;text-transform:uppercase}
+.ws-h1{font-family:var(--font-h);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:800;color:#fff;line-height:1.12;margin-bottom:0.75rem}
+.ws-h1 span{color:#4285F4}
+.ws-sub{font-size:0.9rem;color:rgba(255,255,255,0.65);max-width:480px;margin:0 auto;line-height:1.6}
+.ws-features{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;max-width:680px;width:100%;margin:0 auto;padding:0 1.5rem}
+.ws-feat{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.1rem 1.2rem;text-align:left;transition:background 0.2s}
+.ws-feat-title{font-size:0.8rem;font-weight:800;color:#fff;margin-bottom:0.25rem;letter-spacing:-0.1px}
+.ws-feat-desc{font-size:0.72rem;color:rgba(255,255,255,0.5);line-height:1.5}
+.ws-stats{display:flex;justify-content:center;gap:2.5rem;padding:0.5rem 2rem}
+.ws-stat{text-align:center}
+.ws-stat-num{font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:#fff;line-height:1}
+.ws-stat-lbl{font-size:0.68rem;color:rgba(255,255,255,0.45);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.05em}
+.ws-footer{display:flex;flex-direction:column;align-items:center;gap:0.6rem;padding:1.5rem 2rem 2rem;flex-shrink:0}
+.ws-start{background:#4285F4;color:#fff;border:none;border-radius:12px;padding:1rem 3.2rem;font-family:var(--font-b);font-size:1.05rem;font-weight:800;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.55rem;letter-spacing:-0.2px;box-shadow:0 4px 24px rgba(66,133,244,0.35)}
+.ws-start:hover{background:#2563eb;transform:translateY(-2px);box-shadow:0 8px 32px rgba(66,133,244,0.5)}
+.ws-start-note{font-size:0.72rem;color:rgba(255,255,255,0.35)}
+.ws-divider{width:100%;max-width:680px;border:none;border-top:1px solid rgba(255,255,255,0.08);margin:0.5rem auto}
+
 
 
 /* ══ SCORESHEET BASE ══ */
@@ -455,11 +488,79 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
 </head>
 <body>
 
+<!-- ══ WELCOME SCREEN ══ -->
+<div id="welcomeScreen" class="ws-hidden">
+  <div class="ws-nav">
+    <div class="ws-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <button class="ws-skip" onclick="skipWelcome()">Skip &rarr;</button>
+  </div>
+
+  <div class="ws-hero">
+    <div class="ws-badge">&#10022; No signup &middot; Instant PDF</div>
+    <h1 class="ws-h1">Generate professional<br/><span>scoresheets in seconds</span></h1>
+    <p class="ws-sub">Choose Tournament or Academy mode, configure your details, and download a print-ready A4 or A5 PDF scoresheet.</p>
+  </div>
+
+  <div class="ws-stats">
+    <div class="ws-stat">
+      <div class="ws-stat-num">2</div>
+      <div class="ws-stat-lbl">Modes</div>
+    </div>
+    <div class="ws-stat">
+      <div class="ws-stat-num">5</div>
+      <div class="ws-stat-lbl">Design Styles</div>
+    </div>
+    <div class="ws-stat">
+      <div class="ws-stat-num">A4/A5</div>
+      <div class="ws-stat-lbl">Print-Ready PDF</div>
+    </div>
+  </div>
+
+  <hr class="ws-divider"/>
+
+  <div class="ws-features">
+    <div class="ws-feat">
+      <div class="ws-feat-title">Tournament Mode</div>
+      <div class="ws-feat-desc">Name, organiser, date range, venue, rounds, time control and AICF code</div>
+    </div>
+    <div class="ws-feat">
+      <div class="ws-feat-title">Academy Mode</div>
+      <div class="ws-feat-desc">Academy name, address and optional logo for custom branded scoresheets</div>
+    </div>
+    <div class="ws-feat">
+      <div class="ws-feat-title">Paper Size</div>
+      <div class="ws-feat-desc">A4 with 50 moves per side, or A5 with 30 moves per side — both print-ready</div>
+    </div>
+    <div class="ws-feat">
+      <div class="ws-feat-title">5 Design Styles</div>
+      <div class="ws-feat-desc">Classic, Minimal, Academy, Warm and Black &amp; White — pick the one that fits</div>
+    </div>
+    <div class="ws-feat">
+      <div class="ws-feat-title">Back Side Support</div>
+      <div class="ws-feat-desc">Toggle on the back side for continuation moves 51&ndash;100 plus arbiter signatures</div>
+    </div>
+    <div class="ws-feat">
+      <div class="ws-feat-title">Title Typography</div>
+      <div class="ws-feat-desc">Choose font, size and style for the tournament or academy name on the scoresheet</div>
+    </div>
+  </div>
+
+  <div class="ws-footer">
+    <button class="ws-start" onclick="startGenerating()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Start Generating &rarr;
+    </button>
+    <div class="ws-start-note">No signup required &mdash; works entirely in your browser</div>
+  </div>
+</div>
+
 <nav class="nav">
   <a href="index.html" class="nlogo"><span class="chess">Chess</span><span class="connect">Connect</span></a>
   <span class="ntag">Scoresheet Generator</span>
   <a href="index.html" class="nback">← Back to Home</a>
 </nav>
+
+<div id="app">
 
 <div class="mob-tabs">
   <button class="mob-tab active" id="tab-form" onclick="switchTab('form')">⚙ Configure</button>
@@ -713,16 +814,27 @@ body{font-family:var(--font-b);background:var(--off);color:var(--navy);-webkit-f
       <div class="preview-title">Live Preview</div>
       <span class="preview-mode-badge tournament" id="modeBadge">Tournament</span>
     </div>
-    <!-- Front / Back toggle -->
-    <div class="side-toggle">
-      <button class="side-btn active" id="btn-front" onclick="setSide('front')" aria-label="Preview front side">Front</button>
-      <button class="side-btn" id="btn-back" onclick="setSide('back')" disabled aria-label="Preview back side">Back</button>
+    <div style="display:flex;align-items:center;gap:0.6rem">
+      <!-- Front / Back toggle -->
+      <div class="side-toggle">
+        <button class="side-btn active" id="btn-front" onclick="setSide('front')" aria-label="Preview front side">Front</button>
+        <button class="side-btn" id="btn-back" onclick="setSide('back')" disabled aria-label="Preview back side">Back</button>
+      </div>
+      <!-- Zoom -->
+      <div class="zoom-bar">
+        <button class="zbtn" onclick="zoomPreview(-1)" title="Zoom out">&minus;</button>
+        <span class="zlbl" id="zoomLbl">90%</span>
+        <button class="zbtn" onclick="zoomPreview(1)" title="Zoom in">+</button>
+        <button class="zbtn" onclick="zoomReset()" title="Reset zoom" style="font-size:0.6rem;width:32px">Reset</button>
+      </div>
     </div>
   </div>
-  <div class="preview-area" id="previewArea"></div>
+  <div class="preview-area" id="previewArea"><div id="previewInner"></div></div>
 </div>
 
 </div><!-- /page -->
+
+</div><!-- /app -->
 
 <!-- Early stubs — prevent ReferenceError if Cloudflare delays main script -->
 <script data-cfasync="false">
@@ -1217,6 +1329,36 @@ function buildBack(num) {
   </div>`;
 }
 
+
+// ── ZOOM ──
+const ZOOM_STEPS = [50, 60, 70, 80, 90, 100, 110, 120, 130, 150];
+let zoomIdx = 4; // default 90%
+function applyZoom() {
+  const pct = ZOOM_STEPS[zoomIdx];
+  const inner = document.getElementById('previewInner');
+  if (inner) { inner.style.transform = 'scale(' + (pct/100) + ')'; inner.style.transformOrigin = 'top center'; }
+  const lbl = document.getElementById('zoomLbl');
+  if (lbl) lbl.textContent = pct + '%';
+}
+function zoomPreview(dir) {
+  zoomIdx = Math.max(0, Math.min(ZOOM_STEPS.length - 1, zoomIdx + dir));
+  applyZoom();
+}
+function zoomReset() {
+  zoomIdx = 4;
+  applyZoom();
+}
+
+// ── WELCOME SCREEN ──
+function startGenerating() {
+  document.getElementById('welcomeScreen').classList.add('ws-hidden');
+  document.getElementById('app').style.display = '';
+  generate();
+}
+function skipWelcome() {
+  startGenerating();
+}
+
 /* ── GENERATE (preview) ── */
 let _genTimer = null;
 function generateDebounced() {
@@ -1224,10 +1366,11 @@ function generateDebounced() {
   _genTimer = setTimeout(generate, 150);
 }
 function generate() {
-  const area = document.getElementById('previewArea');
+  const inner = document.getElementById('previewInner');
+  if (!inner) return;
   const hasBack = chk('opt-back');
   const showing = previewSide;
-  area.innerHTML = showing === 'back' && hasBack ? buildBack(1) : buildFront(1);
+  inner.innerHTML = showing === 'back' && hasBack ? buildBack(1) : buildFront(1);
 }
 
 /* ── DOWNLOAD PDF ── */
@@ -1311,9 +1454,11 @@ function showToast() {
   setTimeout(() => t.classList.remove('show'), 4000);
 }
 
-// Init — switchTab first so mobile shows form, then generate preview
+// Init
 switchTab('form');
-generate();
+document.getElementById('welcomeScreen').classList.remove('ws-hidden');
+document.getElementById('app').style.display = 'none';
+applyZoom();
 
 // Build feedback email href via JS so Cloudflare cannot obfuscate it
 (function() {
