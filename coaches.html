@@ -808,41 +808,29 @@
   // ── INIT ──
   window.addEventListener('DOMContentLoaded', async () => {
     await loadCoaches();
-    // Auth state is handled by onAuthStateChange above (INITIAL_SESSION event)
+    await checkAuth();
   });
 
   // ── AUTH ──
-  // onAuthStateChange handles INITIAL_SESSION on page load (no getSession race condition)
-  sb.auth.onAuthStateChange((event, session) => {
-    if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session?.user) {
-      updateNavLoggedIn(session.user);
-    } else if (event === 'SIGNED_OUT' || (event === 'INITIAL_SESSION' && !session)) {
-      updateNavLoggedOut();
-    }
-  });
+  async function checkAuth() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) updateNavLoggedIn(session.user);
+  }
   function updateNavLoggedIn(user) {
     const firstName = (user.user_metadata?.full_name || user.email || 'Coach').split(' ')[0];
     document.getElementById('btnLoginNav').style.display = 'none';
     document.getElementById('coachDropdown').style.display = 'inline-flex';
     document.getElementById('navUserName').textContent = firstName;
   }
-  function updateNavLoggedOut() {
-    document.getElementById('coachDropdown').style.display = 'none';
-    document.getElementById('btnLoginNav').style.display = 'inline-flex';
-  }
   function toggleDropdown() {
     const menu = document.getElementById('coachDropdownMenu');
     menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
   }
   async function signOutCoach() {
+    await sb.auth.signOut();
+    document.getElementById('coachDropdown').style.display = 'none';
+    document.getElementById('btnLoginNav').style.display = 'inline-flex';
     document.getElementById('coachDropdownMenu').style.display = 'none';
-    try {
-      await sb.auth.signOut();
-    } catch(e) {
-      console.warn('signOut error (ignored):', e);
-    } finally {
-      updateNavLoggedOut();
-    }
   }
 
   // ── MOBILE NAV ──
