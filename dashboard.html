@@ -732,13 +732,18 @@
 
   // ── Init ──
   sb.auth.onAuthStateChange(async (event, session) => {
-    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+    if (event === 'INITIAL_SESSION') {
+      if (session?.user) {
+        currentUser = session.user;
+        await loadDashboard();
+      } else {
+        showScreen('authWall');
+      }
+    } else if (event === 'SIGNED_IN') {
       if (!currentUser) {
         currentUser = session.user;
         await loadDashboard();
       }
-    } else if (event === 'INITIAL_SESSION' && !session) {
-      showScreen('authWall');
     } else if (event === 'SIGNED_OUT') {
       currentUser = null;
       showScreen('authWall');
