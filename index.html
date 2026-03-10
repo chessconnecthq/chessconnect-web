@@ -1230,6 +1230,10 @@
       <div class="stat-label">To go live</div>
     </div>
     <div class="stat">
+      <div class="stat-number">0%</div>
+      <div class="stat-label">Commission</div>
+    </div>
+    <div class="stat">
       <div class="stat-number">Global</div>
       <div class="stat-label">Reach</div>
     </div>
@@ -2012,7 +2016,7 @@
         <h4>Info</h4>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
-        <a href="/cdn-cgi/l/email-protection#d9bab1bcaaaabab6b7b7bcbaadf7b0b799beb4b8b0b5f7bab6b4">Contact Us</a>
+        <a href="mailto:chessconnect.in@gmail.com">Contact Us</a>
       </div>
     </div>
   </div>
@@ -2038,7 +2042,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // ── Supabase init ──
   const { createClient } = supabase;
   const sb = createClient(
@@ -2150,10 +2154,23 @@
   }
 
   // ── Handle auth state on page load ──
-  // onAuthStateChange is the single source of truth.
-  // INITIAL_SESSION fires on every page load — covers both fresh visits and
-  // OAuth redirect returns. Avoids race condition with getSession().
-  let authInitDone = false;
+  async function initAuth() {
+    // Handle OAuth redirect — Supabase exchanges the URL hash for a session
+    const { data: { session }, error } = await sb.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      await handleAuthenticatedUser();
+    } else {
+      // Try exchanging code from URL (PKCE flow on some browsers)
+      const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+      const accessToken = hashParams.get('access_token');
+      if (accessToken) {
+        // Session will be picked up by onAuthStateChange — just wait
+        return;
+      }
+      updateNavLoggedOut();
+    }
+  }
 
   async function handleAuthenticatedUser() {
     if (!currentUser) return;
@@ -2218,31 +2235,24 @@
   async function signOutCoach() {
     const menu = document.getElementById('coachDropdownMenu');
     if (menu) menu.style.display = 'none';
-    try {
-      await sb.auth.signOut();
-    } catch(e) {
-      console.warn('signOut error (ignored):', e);
-    } finally {
-      currentUser = null;
-      updateNavLoggedOut();
-    }
+    await sb.auth.signOut();
+    currentUser = null;
+    updateNavLoggedOut();
   }
 
-  // ── Listen for auth state changes (single source of truth) ──
+  // ── Listen for auth state changes ──
   sb.auth.onAuthStateChange(async (event, session) => {
-    if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session) {
-      if (authInitDone) return;
-      authInitDone = true;
+    if (event === 'SIGNED_IN' && session && !currentUser) {
       currentUser = session.user;
       await handleAuthenticatedUser();
-    } else if (event === 'INITIAL_SESSION' && !session) {
-      updateNavLoggedOut();
     } else if (event === 'SIGNED_OUT') {
-      authInitDone = false;
       currentUser = null;
       updateNavLoggedOut();
     }
   });
+
+  // Run on page load
+  window.addEventListener('DOMContentLoaded', initAuth);
 
   // ── State ──
   let currentStep = 1;
@@ -2255,23 +2265,33 @@
   let fideData = null; // { fide_id, name, title, rating, rapid_rating, blitz_rating, country, rating_display, rating_type }
 
   // ── Mobile menu ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
   let menuOpen = false;
 
   function toggleMenu() {
     menuOpen = !menuOpen;
-    document.getElementById('hamburger').classList.toggle('open', menuOpen);
-    document.getElementById('hamburger').setAttribute('aria-expanded', menuOpen);
-    document.getElementById('mobileNav').classList.toggle('open', menuOpen);
+    hamburger.classList.toggle('open', menuOpen);
+    hamburger.setAttribute('aria-expanded', menuOpen);
+    mobileNav.classList.toggle('open', menuOpen);
     document.body.style.overflow = menuOpen ? 'hidden' : '';
   }
 
   function closeMenu() {
     menuOpen = false;
-    document.getElementById('hamburger').classList.remove('open');
-    document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
-    document.getElementById('mobileNav').classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileNav.classList.remove('open');
     document.body.style.overflow = '';
   }
+
+  window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
+
+  // ── Nav scroll ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+  });
 
   // ── Scroll to register ──
   function scrollToRegister() {
@@ -2284,20 +2304,10 @@
   }
 
   // ── Animate on scroll ──
-  // Script is at bottom of body so DOM is ready — run inline like original
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0 });
+  }, { threshold: 0.1 });
   document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-
-  // ── Nav scroll ──
-  window.addEventListener('scroll', () => {
-    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
-  });
-
-  // ── Resize / keyboard ──
-  window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
 
   // ── Toast ──
   function showToast(msg, type = '') {
@@ -2774,4 +2784,11 @@
 
   // ── Close success overlay ──
   function closeSuccess() {
-    document.getElementById('success
+    document.getElementById('successOverlay').classList.remove('show');
+    // Scroll to top and reset form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+</script>
+</body>
+</html>
