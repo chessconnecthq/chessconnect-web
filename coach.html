@@ -21,6 +21,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- ── GOOGLE ANALYTICS 4 ── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HB4X5E6HH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HB4X5E6HH');
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
@@ -550,6 +560,23 @@
 
   async function trackEnquiry(type) {
     if (!coachData?.id) return;
+
+    // ── GA: Fire event for every student interaction ──
+    const gaEventMap = {
+      'view':      'coach_profile_view',
+      'whatsapp':  'coach_whatsapp_click',
+      'call':      'coach_call_click'
+    };
+    if (gaEventMap[type]) {
+      gtag('event', gaEventMap[type], {
+        event_category: 'Coach Enquiry',
+        event_label:    coachData.full_name || 'Unknown Coach',
+        coach_id:       String(coachData.id),
+        coach_city:     coachData.city || '',
+        coach_title:    coachData.chess_title || 'Unrated'
+      });
+    }
+
     try {
       let city = null;
       try { const geo = await fetch('https://ipapi.co/json/'); const d = await geo.json(); city = d.city || null; } catch(e){}
@@ -559,6 +586,12 @@
   function trackView() { trackEnquiry('view'); }
 
   function shareOnWhatsApp() {
+    // ── GA: Track profile share ──
+    gtag('event', 'coach_profile_share', {
+      event_category: 'Share',
+      event_label:    coachData?.full_name || 'Unknown Coach',
+      share_method:   'whatsapp'
+    });
     const name = coachData?.full_name || 'Chess Coach';
     const url  = window.location.href;
     const msg  = encodeURIComponent(`Check out ${name}'s chess coaching profile on ChessConnect:\n${url}`);
