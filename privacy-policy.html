@@ -4,76 +4,53 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Privacy Policy – ChessConnect</title>
-  <meta name="description" content="ChessConnect Privacy Policy — how we collect, use, and protect your personal data under India's DPDP Act 2023."/>
+  <meta name="description" content="ChessConnect Privacy Policy — how we collect, use, and protect your personal data. Compliant with GDPR (EU), India's DPDP Act 2023, and applicable global privacy laws."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/privacy-policy.html"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <meta name="robots" content="index,follow"/>
+
+  <!-- ── GOOGLE ANALYTICS 4 ── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HB4X5E6HH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HB4X5E6HH');
+  </script>
+
   <style>
     :root {
-      --blue: #1E73E8;
-      --blue-logo: #4285F4;
-      --navy: #102C57;
-      --navy-light: #1a3d73;
-      --white: #ffffff;
-      --off-white: #F8FAFF;
-      --gray: #6B7280;
-      --gray-light: #E5E9F2;
-      --green: #10B981;
-      --font-heading: 'Playfair Display', Georgia, serif;
-      --font-body: 'DM Sans', sans-serif;
-      --radius: 12px;
+      --blue: #1E73E8; --blue-logo: #4285F4; --navy: #102C57; --navy-light: #1a3d73;
+      --white: #ffffff; --off-white: #F8FAFF; --gray: #6B7280; --gray-light: #E5E9F2;
+      --green: #10B981; --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif; --radius: 12px;
       --shadow-sm: 0 1px 3px rgba(16,44,87,0.08);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-body); color: var(--navy); background: var(--white); line-height: 1.7; -webkit-font-smoothing: antialiased; }
-
-    /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%; height: 64px;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--gray-light);
-    }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 64px; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-light); }
     .nav-logo-wrap { display: flex; flex-direction: column; text-decoration: none; line-height: 1; }
     .nav-logo-text { font-family: var(--font-body); font-weight: 800; font-size: 1.4rem; letter-spacing: -1.2px; display: flex; }
     .nav-logo-tagline { font-size: 0.62rem; font-weight: 500; color: var(--gray); letter-spacing: 0.04em; margin-top: 1px; }
-    .chess { color: var(--navy); }
-    .connect { color: var(--blue-logo); }
+    .chess { color: var(--navy); } .connect { color: var(--blue-logo); }
     .nav-back { font-size: 0.875rem; font-weight: 600; color: var(--blue); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; transition: opacity 0.2s; }
     .nav-back:hover { opacity: 0.75; }
-
-    /* HERO */
-    .page-hero {
-      background: linear-gradient(160deg, #EEF4FF 0%, #F8FAFF 60%, #fff 100%);
-      padding: 4rem 5% 3rem;
-      border-bottom: 1px solid var(--gray-light);
-    }
+    .page-hero { background: linear-gradient(160deg, #EEF4FF 0%, #F8FAFF 60%, #fff 100%); padding: 4rem 5% 3rem; border-bottom: 1px solid var(--gray-light); }
     .page-hero-inner { max-width: 800px; margin: 0 auto; }
-    .page-badge {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: rgba(30,115,232,0.08); color: var(--blue);
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.35rem 0.85rem; border-radius: 100px;
-      border: 1px solid rgba(30,115,232,0.15); margin-bottom: 1rem;
-    }
+    .page-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(30,115,232,0.08); color: var(--blue); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 0.85rem; border-radius: 100px; border: 1px solid rgba(30,115,232,0.15); margin-bottom: 1rem; }
     .page-hero h1 { font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: var(--navy); margin-bottom: 0.75rem; line-height: 1.2; }
     .page-hero-meta { font-size: 0.875rem; color: var(--gray); display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .page-hero-meta span { display: flex; align-items: center; gap: 0.3rem; }
-
-    /* LAYOUT */
     .page-layout { display: grid; grid-template-columns: 220px 1fr; gap: 3rem; max-width: 1000px; margin: 0 auto; padding: 3rem 5% 5rem; align-items: start; }
     @media (max-width: 768px) { .page-layout { grid-template-columns: 1fr; } .toc { display: none; } }
-
-    /* TOC */
     .toc { position: sticky; top: 84px; }
     .toc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); margin-bottom: 0.75rem; }
     .toc a { display: block; font-size: 0.82rem; font-weight: 500; color: var(--gray); text-decoration: none; padding: 0.3rem 0; border-left: 2px solid var(--gray-light); padding-left: 0.75rem; transition: color 0.2s, border-color 0.2s; }
     .toc a:hover { color: var(--blue); border-color: var(--blue); }
-
-    /* CONTENT */
     .content section { margin-bottom: 3rem; }
     .content h2 { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--navy); margin-bottom: 1rem; padding-top: 0.5rem; }
     .content h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin: 1.25rem 0 0.5rem; }
@@ -81,24 +58,11 @@
     .content ul { padding-left: 1.25rem; margin-bottom: 0.85rem; }
     .content ul li { font-size: 0.95rem; color: #374151; margin-bottom: 0.4rem; line-height: 1.7; }
     .content a { color: var(--blue); text-decoration: underline; }
-
-    /* Highlight box */
-    .highlight-box {
-      background: rgba(30,115,232,0.05); border: 1.5px solid rgba(30,115,232,0.15);
-      border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
-    }
+    .highlight-box { background: rgba(30,115,232,0.05); border: 1.5px solid rgba(30,115,232,0.15); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
     .highlight-box p { margin: 0; font-size: 0.9rem; color: var(--navy); font-weight: 500; }
-
-    .warn-box {
-      background: rgba(245,158,11,0.06); border: 1.5px solid rgba(245,158,11,0.2);
-      border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
-    }
+    .warn-box { background: rgba(245,158,11,0.06); border: 1.5px solid rgba(245,158,11,0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
     .warn-box p { margin: 0; font-size: 0.9rem; color: #92400e; }
-
-    /* Divider */
     .content-divider { border: none; border-top: 1px solid var(--gray-light); margin: 2rem 0; }
-
-    /* FOOTER */
     footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 2rem 5%; text-align: center; font-size: 0.82rem; }
     footer a { color: rgba(255,255,255,0.8); text-decoration: none; margin: 0 0.75rem; }
     footer a:hover { color: white; }
@@ -109,7 +73,7 @@
 </head>
 <body>
 
-<nav>
+<nav role="navigation" aria-label="Main navigation">
   <a href="index.html" class="nav-logo-wrap" aria-label="ChessConnect home">
     <span class="nav-logo-text"><span class="chess">Chess</span><span class="connect">Connect</span></span>
     <span class="nav-logo-tagline">Connecting the Chess World</span>
@@ -124,14 +88,13 @@
     <div class="page-hero-meta">
       <span>Effective: 1 March 2026</span>
       <span>Last updated: March 2026</span>
-      <span>Governed by Indian Law</span>
+      <span>Global Platform</span>
     </div>
   </div>
 </div>
 
 <div class="page-layout">
 
-  <!-- TABLE OF CONTENTS -->
   <aside class="toc" aria-label="Table of contents">
     <div class="toc-title">On this page</div>
     <a href="#overview">Overview</a>
@@ -141,31 +104,43 @@
     <a href="#data-storage">Data Storage</a>
     <a href="#sharing">Data Sharing</a>
     <a href="#your-rights">Your Rights</a>
+    <a href="#international">International Users</a>
     <a href="#children">Children</a>
     <a href="#security">Security</a>
     <a href="#changes">Policy Changes</a>
     <a href="#contact">Contact Us</a>
   </aside>
 
-  <!-- CONTENT -->
   <main class="content" aria-label="Privacy policy content">
 
     <section id="overview">
       <h2>Overview</h2>
       <div class="highlight-box">
-        <p>ChessConnect ("we", "us", "our") is committed to protecting your personal data. This policy explains what data we collect, why we collect it, and how we protect it — in plain language.</p>
+        <p>ChessConnect ("we", "us", "our") is committed to protecting your personal data. This policy explains what data we collect, why we collect it, and how we protect it — in plain language, for users anywhere in the world.</p>
       </div>
-      <p>This Privacy Policy applies to all users of ChessConnect, including chess coaches who register on our platform and students or parents who browse coach profiles. By using ChessConnect, you agree to the terms of this policy.</p>
-      <p>We operate in compliance with India's <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong>. ChessConnect acts as a <strong>"Data Fiduciary"</strong> under the Digital Personal Data Protection Act, 2023, and is responsible for determining the purpose and means of processing your personal data.</p>
-      <p>ChessConnect is a <strong>directory platform</strong> connecting independent coaches and students. We do not supervise, control, or guarantee the services provided by listed coaches.</p>
+      <p>This Privacy Policy applies to all users of ChessConnect worldwide — chess coaches who register on our platform, and students or parents who browse coach profiles. By using ChessConnect, you agree to the terms of this policy.</p>
+      <p>ChessConnect is a <strong>global platform</strong> headquartered in India. We comply with India's <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> as our primary framework. For users in the European Union or European Economic Area, we additionally comply with the <strong>General Data Protection Regulation (GDPR)</strong>. For users in other jurisdictions, we apply the privacy principles most relevant to applicable local laws to the extent reasonably practicable.</p>
+      <p>ChessConnect is a <strong>directory platform</strong> connecting independent coaches and students worldwide. We do not supervise, control, or guarantee the services provided by any listed coach.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="lawful-basis">
       <h2>Lawful Basis for Processing</h2>
-      <p>We process your personal data based on your <strong>explicit consent</strong> given at the time of registration. By submitting the registration form, you consent to the collection and use of your data as described in this policy.</p>
-      <p>You may withdraw this consent at any time by contacting us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a>. Withdrawing consent will result in your profile being deactivated and your data being scheduled for deletion.</p>
+
+      <h3>For Users in India (DPDP Act 2023)</h3>
+      <p>We process your personal data based on your <strong>explicit consent</strong> given at the time of registration. By submitting the registration form, you consent to the collection and use of your data as described in this policy. ChessConnect acts as a <strong>"Data Fiduciary"</strong> under the DPDP Act, 2023, and is responsible for determining the purpose and means of processing your personal data.</p>
+
+      <h3>For Users in the EU / EEA (GDPR)</h3>
+      <p>Under GDPR, we rely on the following legal bases depending on the type of processing:</p>
+      <ul>
+        <li><strong>Consent</strong> — for coach registration, public profile display, and contact data publication</li>
+        <li><strong>Legitimate interests</strong> — for platform security, abuse prevention, and analytics (e.g. understanding how visitors use the site via Google Analytics, where our interests do not override your rights)</li>
+        <li><strong>Legal obligation</strong> — where we are required to process or retain data by applicable law</li>
+      </ul>
+
+      <h3>Withdrawing Consent</h3>
+      <p>You may withdraw consent at any time by contacting us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a>. Withdrawing consent will result in your profile being deactivated and your data being scheduled for deletion within 30 days.</p>
     </section>
 
     <hr class="content-divider"/>
@@ -173,29 +148,57 @@
     <section id="data-collected">
       <h2>Data We Collect</h2>
 
-      <h3>From Coaches (Registration)</h3>
+      <h3>From Coaches (at Registration)</h3>
+      <p>When a coach registers on ChessConnect, we collect the following. Unless noted, this data is displayed publicly on the coach's profile:</p>
       <ul>
-        <li><strong>Full name</strong> — for your public profile</li>
-        <li><strong>WhatsApp number</strong> — for verification and direct student contact</li>
-        <li><strong>City</strong> — for location-based discovery</li>
-        <li><strong>Coaching details</strong> — mode, experience, levels taught, languages</li>
-        <li><strong>FIDE ID and rating</strong> — if applicable, for credibility badge</li>
-        <li><strong>Profile photo</strong> — optional, displayed on your public profile</li>
-        <li><strong>Bio and fees</strong> — displayed on your public profile</li>
+        <li><strong>Full name</strong> — auto-filled from the FIDE player database via your FIDE ID</li>
+        <li><strong>FIDE ID, classical/rapid/blitz rating, chess title, and country</strong> — verified from our FIDE database for credibility display</li>
+        <li><strong>Google account email address</strong> — collected via Google OAuth sign-in for account authentication only; not displayed publicly</li>
+        <li><strong>WhatsApp number (with country code)</strong> — displayed publicly on your profile to enable direct student contact</li>
+        <li><strong>City</strong> — for location-based discovery by students</li>
+        <li><strong>Coaching mode</strong> — Online, Offline, or Both</li>
+        <li><strong>Years of experience, levels taught, languages spoken</strong> — displayed on your public profile</li>
+        <li><strong>Bio</strong> — minimum 100 words, displayed publicly</li>
+        <li><strong>Fees per session and currency</strong> — optional; displayed publicly if provided</li>
+        <li><strong>Trial class availability</strong> — displayed on your public profile</li>
+        <li><strong>Profile photo</strong> — optional; uploaded for admin review before being shown publicly</li>
+        <li><strong>Achievements and certifications</strong> — optional; displayed on your public profile</li>
+        <li><strong>Chess.com URL, Lichess URL, YouTube channel URL</strong> — optional; displayed as links on your public profile</li>
+        <li><strong>Personal website URL</strong> — optional; displayed as a link on your public profile</li>
+        <li><strong>Google profile URL</strong> — optional; collected via Google OAuth and may be displayed on your profile</li>
+        <li><strong>Pincode / postal code</strong> — optional; used internally for location accuracy, not displayed publicly</li>
       </ul>
 
-      <h3>From All Visitors (Automatically)</h3>
+      <h3>From Students and All Visitors (Automatically)</h3>
+      <p>When any visitor browses ChessConnect, we automatically collect:</p>
       <ul>
-        <li><strong>Browser type and device</strong> — for compatibility</li>
-        <li><strong>Pages visited and time spent</strong> — for improving the platform</li>
+        <li><strong>Browser type, device type, and operating system</strong> — for compatibility and security</li>
+        <li><strong>Pages visited, session duration, and navigation patterns</strong> — via Google Analytics 4, for improving the platform</li>
+        <li><strong>General location (country and city level)</strong> — derived from IP address by Google Analytics; no precise location is collected</li>
         <li><strong>IP address</strong> — for security and abuse prevention</li>
       </ul>
 
-      <h3>Cookies &amp; Analytics</h3>
-      <p>We may use essential cookies and analytics tools to improve website performance and understand how visitors use our platform. These do not collect sensitive personal data. If we introduce third-party analytics tools (such as Google Analytics) in the future, this policy will be updated accordingly.</p>
+      <h3>Student Enquiry Data</h3>
+      <p>When a student taps the WhatsApp or Call button on a coach profile, or simply views a profile, we log an enquiry event. This includes:</p>
+      <ul>
+        <li>The type of interaction (view, WhatsApp tap, or call tap)</li>
+        <li>The coach whose profile was interacted with</li>
+        <li><strong>Approximate city</strong> of the student — detected via <a href="https://ipapi.co" target="_blank" rel="noopener">ipapi.co</a> based on IP address</li>
+        <li>Timestamp of the interaction</li>
+      </ul>
+      <p>This data is shown to coaches in their dashboard analytics so they can see where their student enquiries are coming from. No student name or identity is collected.</p>
+
+      <h3>Google Analytics 4</h3>
+      <p>We use <strong>Google Analytics 4</strong> across all pages of ChessConnect. Google Analytics collects anonymised usage data including pages visited, session duration, device type, country, and general behaviour patterns. This data is processed by Google LLC and governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. We use this data solely to understand how the platform is used and to improve it. We do not use Google Analytics for advertising or remarketing.</p>
+
+      <h3>Cookies</h3>
+      <p>ChessConnect may use cookies or similar browser technologies to improve site functionality and understand usage patterns. Google Analytics places cookies on your device to distinguish visitors and track sessions. These cookies do not contain personally identifiable information. You can control or disable cookies through your browser settings, though doing so may affect your experience on the platform.</p>
+
+      <h3>Google Fonts</h3>
+      <p>We load fonts from Google Fonts to display text on ChessConnect. When a page loads, your browser connects to Google's servers. Google may log your IP address as part of this process. This is governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</p>
 
       <div class="warn-box">
-        <p>Note: We do not collect payment information. ChessConnect is currently free for coaches. All fee transactions happen directly between coaches and students — we are not involved.</p>
+        <p>We do not collect payment information. ChessConnect is currently free for coaches to list. All fee arrangements happen directly between coaches and students — we are not involved in any financial transaction.</p>
       </div>
     </section>
 
@@ -205,58 +208,95 @@
       <h2>How We Use Your Data</h2>
       <p>We use your data only for the purposes listed below:</p>
       <ul>
-        <li>To create and display your public coach profile</li>
-        <li>To verify your identity before activating your profile</li>
-        <li>To contact you on WhatsApp for profile verification or platform updates</li>
+        <li>To create and display your public coach profile to students worldwide</li>
+        <li>To authenticate your identity securely via Google OAuth</li>
+        <li>To verify your FIDE credentials against our FIDE player database</li>
+        <li>To contact you via email for profile-related support or important platform updates</li>
         <li>To prevent spam, fake profiles, and abuse on the platform</li>
-        <li>To improve ChessConnect's features and user experience</li>
-        <li>To comply with legal obligations under Indian law</li>
+        <li>To understand platform usage and improve ChessConnect's features</li>
+        <li>To provide coaches with analytics on how many students viewed, called, or WhatsApp-messaged their profile</li>
+        <li>To comply with legal obligations under applicable law in any jurisdiction where we operate</li>
       </ul>
-      <p>We do <strong>not</strong> use your data for advertising, profiling, or sell it to any third party.</p>
+      <p>We do <strong>not</strong> use your data for advertising, sell it to any third party, or use it to build personal profiles for commercial purposes.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="data-storage">
-      <h2>Data Storage</h2>
-      <p>Your data is stored securely using <strong>Supabase</strong>, a cloud database platform with servers located outside India (currently in the Asia-Pacific region). By using ChessConnect, you consent to this cross-border data transfer.</p>
-      <p>We retain your data for as long as your profile is active on ChessConnect. If you request deletion, we will remove your data within <strong>30 days</strong>. Please note that backup copies of data may persist for up to <strong>60 additional days</strong> before permanent deletion from all systems.</p>
+      <h2>Data Storage &amp; International Transfers</h2>
+      <p>Your data is stored securely using <strong>Supabase</strong>, a cloud database platform. Supabase infrastructure may be hosted in regions including Asia-Pacific and the United States. By using ChessConnect, you consent to your data being stored and processed in these regions.</p>
+      <p><strong>Google Analytics</strong> data is stored and processed by Google LLC on servers located in the United States and other countries where Google operates. Google LLC participates in applicable data transfer frameworks. For EU/EEA users, Google provides Standard Contractual Clauses (SCCs) as the cross-border transfer mechanism.</p>
+      <p>For EU/EEA users specifically: any transfer of your personal data outside the EEA to Supabase is conducted under appropriate safeguards, including Standard Contractual Clauses where applicable.</p>
+      <p>We retain your data for as long as your profile is active on ChessConnect. If you request deletion, we will remove your data within <strong>30 days</strong>. Backup copies may persist for up to <strong>60 additional days</strong> before permanent deletion from all systems.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="sharing">
       <h2>Data Sharing</h2>
-      <p>Your <strong>public profile data</strong> (name, city, coaching details, bio, photo, fees) is visible to anyone who visits ChessConnect. Your <strong>WhatsApp number</strong> is also displayed publicly on your approved profile so students can contact you directly.</p>
+      <p>Your <strong>public profile data</strong> (name, city, country, FIDE details, coaching details, bio, photo, fees, social links) is visible to anyone who visits ChessConnect anywhere in the world. Your <strong>WhatsApp number</strong> is displayed publicly on your approved profile so students globally can contact you directly.</p>
 
       <div class="warn-box">
-        <p>Note: By submitting your WhatsApp number during registration, you expressly consent to its public display on your coach profile for the purpose of enabling direct student contact. If you wish to remove it at any time, contact us and we will deactivate your profile promptly.</p>
+        <p>By submitting your WhatsApp number during registration, you expressly consent to its public display on your coach profile for the purpose of enabling direct student contact worldwide. If you wish to remove it at any time, contact us and we will deactivate your profile promptly.</p>
       </div>
 
-      <p>We do not share your data with any third-party companies, advertisers, or data brokers. We may share data with law enforcement if required by Indian law.</p>
+      <h3>Third-Party Service Providers</h3>
+      <p>We share limited data with the following third-party services solely to operate ChessConnect:</p>
+      <ul>
+        <li><strong>Supabase</strong> — database, file storage, and authentication infrastructure</li>
+        <li><strong>Google LLC</strong> — authentication (Google OAuth sign-in), analytics (Google Analytics 4), and web fonts (Google Fonts)</li>
+        <li><strong>ipapi.co</strong> — IP-based city-level geolocation used when students interact with contact buttons; no precise location is collected</li>
+        <li><strong>EmailJS</strong> — used internally to send error notification emails to the ChessConnect admin; no user data is sent via EmailJS</li>
+      </ul>
+      <p>We do not share your data with advertisers or data brokers. We may disclose data to law enforcement or government authorities where required by applicable law in the jurisdiction of the request.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="your-rights">
-      <h2>Your Rights (DPDP Act 2023)</h2>
-      <p>Under India's Digital Personal Data Protection Act 2023, you have the following rights:</p>
+      <h2>Your Rights</h2>
+
+      <h3>All Users — Global</h3>
+      <p>Regardless of where you are located, you have the right to:</p>
       <ul>
-        <li><strong>Right to access</strong> — Request a copy of the data we hold about you</li>
-        <li><strong>Right to correction</strong> — Ask us to correct inaccurate data</li>
-        <li><strong>Right to erasure</strong> — Request deletion of your data and profile</li>
-        <li><strong>Right to withdraw consent</strong> — You may withdraw consent at any time, which will result in your profile being deactivated</li>
-        <li><strong>Right to grievance redressal</strong> — Raise a complaint with us directly</li>
+        <li><strong>Access</strong> — Request a copy of the personal data we hold about you</li>
+        <li><strong>Correction</strong> — Ask us to correct any inaccurate data</li>
+        <li><strong>Erasure</strong> — Request deletion of your profile and all personal data</li>
+        <li><strong>Withdraw consent</strong> — At any time, which will result in profile deactivation and scheduled data deletion</li>
       </ul>
-      <p>To exercise any of these rights, contact us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a>. We will respond within <strong>72 hours</strong>.</p>
-      <p>In accordance with the DPDP Act, 2023, if your complaint remains unresolved after contacting us, you may escalate it to the <strong>Data Protection Board of India</strong> once it is constituted and operational.</p>
+
+      <h3>Users in India (DPDP Act 2023)</h3>
+      <ul>
+        <li><strong>Right to grievance redressal</strong> — Raise a complaint with us directly and we will respond within 72 hours</li>
+        <li>If your complaint remains unresolved, you may escalate to the <strong>Data Protection Board of India</strong> once it is constituted and operational</li>
+      </ul>
+
+      <h3>Users in the EU / EEA (GDPR)</h3>
+      <p>In addition to the global rights above, EU/EEA users have:</p>
+      <ul>
+        <li><strong>Right to data portability</strong> — Receive your personal data in a structured, machine-readable format</li>
+        <li><strong>Right to object</strong> — Object to processing based on legitimate interests</li>
+        <li><strong>Right to restrict processing</strong> — Ask us to limit how we use your data pending a dispute</li>
+        <li><strong>Right to lodge a complaint</strong> — With your national data protection supervisory authority (e.g. the ICO in the UK, CNIL in France, or your respective EU authority)</li>
+      </ul>
+
+      <p>To exercise any of these rights, email us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a>. We will respond within <strong>72 hours</strong> for general requests and within <strong>30 days</strong> for formal data subject access requests as required under GDPR.</p>
+    </section>
+
+    <hr class="content-divider"/>
+
+    <section id="international">
+      <h2>International Users</h2>
+      <p>ChessConnect is open to coaches and students from any country. By accessing ChessConnect from outside India, you acknowledge that your data will be transferred to and processed in India and other regions where our infrastructure operates (including the United States via Google and Supabase).</p>
+      <p>We take reasonable steps to ensure your data is protected consistently regardless of where you are located. If you have specific concerns about cross-border data handling from your jurisdiction, please reach out to us and we will address them directly.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="children">
       <h2>Children's Privacy</h2>
-      <p>ChessConnect does not knowingly collect personal data from children under the age of 18 without verifiable parental consent. Coach registrations are for adults only. If you believe a minor has submitted data without consent, please contact us immediately.</p>
+      <p>ChessConnect does not knowingly collect personal data from children under the age of 13 without verifiable parental or guardian consent. Coach registrations are intended for adults (18+). Students browsing the platform may include minors, but we do not require minors to submit any personal data to view coach profiles.</p>
+      <p>If you believe a child has submitted personal data without appropriate consent, contact us immediately at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a> and we will delete the data promptly.</p>
     </section>
 
     <hr class="content-divider"/>
@@ -265,27 +305,32 @@
       <h2>Security</h2>
       <p>We implement reasonable technical and organisational measures to protect your data, including:</p>
       <ul>
-        <li>Row Level Security (RLS) on our database — profiles are not publicly visible until manually approved by our team</li>
-        <li>HTTPS encryption on all data transmissions</li>
-        <li>No profile goes live without manual verification by the ChessConnect team</li>
+        <li><strong>Row Level Security (RLS)</strong> on our Supabase database — all data is protected at the database level and profiles are invisible to the public until reviewed and approved</li>
+        <li><strong>HTTPS encryption</strong> on all data transmissions across the platform</li>
+        <li><strong>Google OAuth authentication</strong> — we never store or handle passwords ourselves</li>
+        <li><strong>Photo review process</strong> — profile photos are manually reviewed by our team before being made publicly visible</li>
+        <li><strong>Manual profile verification</strong> — no coach profile goes live without a review by the ChessConnect team</li>
+        <li><strong>Soft delete</strong> — deleted profiles are immediately hidden from public view while data is being permanently removed</li>
       </ul>
-      <p>However, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security but are committed to best practices.</p>
+      <p>No method of data transmission over the internet is 100% secure. We cannot guarantee absolute security, but we are committed to continuously improving our practices.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="changes">
       <h2>Policy Changes</h2>
-      <p>We may update this Privacy Policy from time to time. When we do, we will update the "Last updated" date at the top of this page. If changes are significant, we will notify registered coaches via WhatsApp.</p>
-      <p>As ChessConnect evolves and introduces new features — such as payments, student accounts, subscriptions, or analytics tools — this policy may be expanded to reflect additional data practices. We will always notify you of material changes before they take effect.</p>
+      <p>We may update this Privacy Policy from time to time. When we do, the "Last updated" date at the top of this page will be revised. For significant changes, we will notify registered coaches by email.</p>
+      <p>As ChessConnect grows globally — adding new regions, features such as payments, student accounts, subscriptions, or additional tools — this policy will be expanded accordingly. We will always notify you of material changes before they take effect. Your continued use of ChessConnect after any update constitutes acceptance of the revised policy.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="contact">
       <h2>Contact Us</h2>
-      <p>For any privacy-related questions, requests, or grievances:</p>
+      <p>For any privacy-related questions, data requests, or grievances:</p>
       <ul>
         <li><strong>Email:</strong> <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a></li>
-        <li><strong>Website:</strong> <a href="https://chessconnecthq.github.io/chessconnect-web">chessconnecthq.github.io/chessconnect-web</a></li>
-        <li><strong>Grievance Officer:</strong> ChessConnect Team, Pune, India</li>
+        <li><strong>Platform:</strong> <a href="https://chessconnecthq.github.io/chessconnect-web/">ChessConnect</a></li>
+        <li><strong>Response time:</strong> We aim to respond to all privacy requests within 72 hours</li>
+      </ul>
+      <p>For EU/EEA users
