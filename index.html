@@ -89,6 +89,60 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- ── GOOGLE ANALYTICS 4 ── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HB4X5E6HH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HB4X5E6HH');
+
+    // ── ChessConnect Custom Event Helpers ──
+    // Call these anywhere in the page to track important actions
+
+    // Track when someone clicks "Find a Coach" button
+    function ga_findCoach(location) {
+      gtag('event', 'find_coach_click', {
+        event_category: 'Navigation',
+        event_label: location || 'unknown'
+      });
+    }
+
+    // Track when someone starts the coach registration form
+    function ga_startRegistration() {
+      gtag('event', 'registration_start', {
+        event_category: 'Coach Registration',
+        event_label: 'Step 1 started'
+      });
+    }
+
+    // Track when a coach successfully submits their profile
+    function ga_registrationComplete(coachName, city) {
+      gtag('event', 'registration_complete', {
+        event_category: 'Coach Registration',
+        event_label: coachName || 'Unknown',
+        event_value: city || ''
+      });
+    }
+
+    // Track when someone opens the auth/login modal
+    function ga_openAuth(mode) {
+      gtag('event', 'auth_modal_open', {
+        event_category: 'Authentication',
+        event_label: mode || 'login'
+      });
+    }
+
+    // Track tool clicks from the tools section
+    function ga_toolClick(toolName) {
+      gtag('event', 'tool_click', {
+        event_category: 'Free Tools',
+        event_label: toolName
+      });
+    }
+  </script>
+
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -2046,7 +2100,7 @@
         <h4>Info</h4>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
-        <a href="mailto:chessconnect.in@gmail.com">Contact Us</a>
+        <a href="/cdn-cgi/l/email-protection#73101b160000101c1d1d1610075d1a1d33141e121a1f5d101c1e">Contact Us</a>
       </div>
     </div>
   </div>
@@ -2072,7 +2126,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── Supabase init ──
   const { createClient } = supabase;
   const sb = createClient(
@@ -2774,6 +2828,10 @@
         console.error('Insert error full:', JSON.stringify(error));
         throw error;
       }
+      // ── GA: Track successful coach registration ──
+      if (typeof ga_registrationComplete === 'function') {
+        ga_registrationComplete(profileData.full_name, profileData.city);
+      }
       document.getElementById('successOverlay').classList.add('show');
     } catch (err) {
       console.error('Supabase error:', err);
@@ -2816,11 +2874,4 @@
 
   // ── Close success overlay ──
   function closeSuccess() {
-    document.getElementById('successOverlay').classList.remove('show');
-    // Scroll to top and reset form
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-</script>
-</body>
-</html>
+    document.getElementById('success
