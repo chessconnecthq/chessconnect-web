@@ -53,6 +53,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- ── GOOGLE ANALYTICS 4 ── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HB4X5E6HH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HB4X5E6HH');
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -1175,11 +1185,11 @@
           View Profile
         </a>
         ${hasContact ? `
-          <button class="btn-card-call" onclick="handleCall('${escAttr(c.whatsapp)}')" ${!c.whatsapp ? 'disabled style="opacity:0.4"' : ''}>
+          <button class="btn-card-call" onclick="handleCall('${escAttr(c.whatsapp)}', '${escAttr(c.full_name)}')" ${!c.whatsapp ? 'disabled style="opacity:0.4"' : ''}>
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.5a19.79 19.79 0 01-3-8.56A2 2 0 012.48 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
             Call
           </button>
-          <a class="btn-card-wa" href="${waHref}" target="_blank" rel="noopener" ${!c.whatsapp ? 'style="opacity:0.4;pointer-events:none"' : ''}>
+          <a class="btn-card-wa" href="${waHref}" target="_blank" rel="noopener" onclick="handleWaClick('${escAttr(c.full_name)}')" ${!c.whatsapp ? 'style="opacity:0.4;pointer-events:none"' : ''}>
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
             WhatsApp
           </a>
@@ -1219,8 +1229,27 @@
   }
 
   // ── HANDLE CALL ──
-  function handleCall(phone) {
+  function handleCall(phone, coachName) {
+    // ── GA: Track call click from listing page ──
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'coach_call_click', {
+        event_category: 'Coach Enquiry',
+        event_label:    coachName || 'Unknown',
+        event_source:   'coaches_listing'
+      });
+    }
     if (phone) window.location.href = `tel:${phone}`;
+  }
+
+  // ── HANDLE WHATSAPP from listing page ──
+  function handleWaClick(coachName) {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'coach_whatsapp_click', {
+        event_category: 'Coach Enquiry',
+        event_label:    coachName || 'Unknown',
+        event_source:   'coaches_listing'
+      });
+    }
   }
 
   // ── HELPERS ──
