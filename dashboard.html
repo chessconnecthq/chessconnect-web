@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Coach Dashboard | ChessConnect</title>
   <meta name="robots" content="noindex, nofollow"/>
+
+  <!-- ── GOOGLE ANALYTICS 4 ── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HB4X5E6HH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    // Dashboard is coach-only — exclude from remarketing audiences
+    gtag('config', 'G-1HB4X5E6HH', { 'allow_ad_personalization_signals': false });
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
@@ -644,7 +655,7 @@
             <input type="text" id="dRating" readonly/>
           </div>
         </div>
-        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at chessconnect.in@gmail.com</p>
+        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="beddd6dbcdcdddd1d0d0dbddca90d7d0fed9d3dfd7d290ddd1d3">[email&#160;protected]</a></p>
       </div>
 
       <button class="btn-save" id="saveBtn" onclick="saveProfile()">
@@ -773,7 +784,7 @@
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <h3>Delete Profile?</h3>
-    <p>Your profile will be hidden and deactivated. You can recover it by emailing us at chessconnect.in@gmail.com within 30 days.</p>
+    <p>Your profile will be hidden and deactivated. You can recover it by emailing us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfdcd7daccccdcd0d1d1dadccb91d6d1ffd8d2ded6d391dcd0d2">[email&#160;protected]</a> within 30 days.</p>
     <div class="confirm-btns">
       <button class="btn-cancel-confirm" onclick="closeConfirm()">Cancel</button>
       <button class="btn-delete-confirm" onclick="deleteProfile()">Yes, Delete</button>
@@ -782,7 +793,7 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const { createClient } = supabase;
   const sb = createClient(
     'https://ipslahlvworwgzbgxppc.supabase.co',
@@ -1525,13 +1536,4 @@
     }).join('');
   }
 
-  function an_timeAgo(date) {
-    const d=Math.floor((Date.now()-date)/1000);
-    if (d<60) return `${d}s ago`; if (d<3600) return `${Math.floor(d/60)}m ago`;
-    if (d<86400) return `${Math.floor(d/3600)}h ago`; return `${Math.floor(d/86400)}d ago`;
-  }
-
-  window.addEventListener('resize', () => { if (an_loaded) an_renderChart(an_getFiltered()); });
-</script>
-</body>
-</html>
+  function an_t
