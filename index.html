@@ -1090,6 +1090,15 @@
   #btnCoachLogin .icon { display: inline-flex; align-items: center; margin-right: 4px; vertical-align: middle; }
   /* ── COACH DROPDOWN ── */
   .coach-dropdown { position: relative; }
+  .cs-dropdown { position: relative; }
+  .cs-dropdown-trigger { display: flex; align-items: center; gap: 0.35rem; cursor: pointer; font-size: 0.95rem; color: var(--navy); opacity: 0.75; background: none; border: none; font-family: inherit; transition: opacity 0.2s; padding: 0; }
+  .cs-dropdown-trigger:hover { opacity: 1; }
+  .cs-badge { font-size: 0.6rem; font-weight: 700; background: var(--blue); color: #fff; border-radius: 100px; padding: 0.1rem 0.45rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .cs-dropdown-menu { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--border, #e0e8f0); border-radius: 12px; box-shadow: 0 8px 24px rgba(30,115,232,0.12); min-width: 180px; z-index: 999; overflow: hidden; animation: dropIn 0.15s ease; display: none; }
+  .cs-dropdown-menu.open { display: block; }
+  .cs-dropdown-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.75rem 1rem; font-size: 0.88rem; font-weight: 500; color: #1a2a3a; text-decoration: none; transition: background 0.15s; }
+  .cs-dropdown-item:hover { background: #f5f7fa; }
+  .cs-item-badge { font-size: 0.58rem; font-weight: 700; background: rgba(30,115,232,0.1); color: var(--blue); border-radius: 100px; padding: 0.1rem 0.4rem; text-transform: uppercase; letter-spacing: 0.04em; margin-left: auto; }
   .coach-dropdown-trigger { display: flex; align-items: center; gap: 0.35rem; }
   .coach-dropdown-menu {
     position: absolute; top: calc(100% + 8px); right: 0;
@@ -1123,8 +1132,25 @@
     <a href="#how-it-works">How It Works</a>
     <a href="coaches.html">Find a Coach</a>
     <a href="#tools">Tools</a>
-    <a href="tournaments.html">Tournaments</a>
-    <a href="careers.html">Careers</a>
+    <div class="cs-dropdown" id="csDropdown">
+      <button class="cs-dropdown-trigger" onclick="toggleCsDropdown()" aria-haspopup="true" aria-expanded="false" id="csDropdownTrigger">
+        Coming Soon
+        <span class="cs-badge">2</span>
+        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="cs-dropdown-menu" id="csDropdownMenu">
+        <a href="tournaments.html" class="cs-dropdown-item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M17 3H7l-2 7h12L15 3z"/><path d="M5 10c0 3.87 3.13 7 7 7s7-3.13 7-7"/></svg>
+          Tournaments
+          <span class="cs-item-badge">Soon</span>
+        </a>
+        <a href="careers.html" class="cs-dropdown-item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+          Careers
+          <span class="cs-item-badge">Soon</span>
+        </a>
+      </div>
+    </div>
     <a href="#register">List Yourself</a>
   </div>
   <div class="nav-ctas">
@@ -1181,11 +1207,11 @@
       </a>
       <a href="tournaments.html" onclick="closeMenu()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M17 3H7l-2 7h12L15 3z"/><path d="M5 10c0 3.87 3.13 7 7 7s7-3.13 7-7"/></svg>
-        Tournaments
+        Tournaments <span style="font-size:0.62rem;font-weight:700;background:rgba(30,115,232,0.1);color:#1E73E8;border-radius:100px;padding:0.1rem 0.45rem;margin-left:auto;">Soon</span>
       </a>
       <a href="careers.html" onclick="closeMenu()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-        Careers
+        Careers <span style="font-size:0.62rem;font-weight:700;background:rgba(30,115,232,0.1);color:#1E73E8;border-radius:100px;padding:0.1rem 0.45rem;margin-left:auto;">Soon</span>
       </a>
     </div>
     <div class="mobile-nav-divider"></div>
@@ -2203,6 +2229,21 @@
     if (btnLogin) btnLogin.style.display = 'inline-flex';
     if (dropdown) dropdown.style.display = 'none';
   }
+
+  function toggleCsDropdown() {
+    const menu = document.getElementById('csDropdownMenu');
+    const trigger = document.getElementById('csDropdownTrigger');
+    const isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open', !isOpen);
+    trigger.setAttribute('aria-expanded', !isOpen);
+  }
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('csDropdown');
+    if (dd && !dd.contains(e.target)) {
+      document.getElementById('csDropdownMenu').classList.remove('open');
+      document.getElementById('csDropdownTrigger').setAttribute('aria-expanded', 'false');
+    }
+  });
 
   function toggleDropdown() {
     const menu = document.getElementById('coachDropdownMenu');
