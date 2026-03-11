@@ -4,71 +4,53 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Terms of Service – ChessConnect</title>
-  <meta name="description" content="ChessConnect Terms of Service — rules and guidelines for using our chess coach marketplace platform."/>
+  <meta name="description" content="ChessConnect Terms of Service — rules and guidelines for using our global chess coach marketplace platform."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/terms.html"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <meta name="robots" content="index,follow"/>
+
+  <!-- ── GOOGLE ANALYTICS 4 ── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HB4X5E6HH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HB4X5E6HH');
+  </script>
+
   <style>
     :root {
-      --blue: #1E73E8;
-      --blue-logo: #4285F4;
-      --navy: #102C57;
-      --navy-light: #1a3d73;
-      --white: #ffffff;
-      --off-white: #F8FAFF;
-      --gray: #6B7280;
-      --gray-light: #E5E9F2;
-      --green: #10B981;
-      --font-heading: 'Playfair Display', Georgia, serif;
-      --font-body: 'DM Sans', sans-serif;
-      --radius: 12px;
+      --blue: #1E73E8; --blue-logo: #4285F4; --navy: #102C57; --navy-light: #1a3d73;
+      --white: #ffffff; --off-white: #F8FAFF; --gray: #6B7280; --gray-light: #E5E9F2;
+      --green: #10B981; --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif; --radius: 12px;
       --shadow-sm: 0 1px 3px rgba(16,44,87,0.08);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-body); color: var(--navy); background: var(--white); line-height: 1.7; -webkit-font-smoothing: antialiased; }
-
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%; height: 64px;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--gray-light);
-    }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 64px; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-light); }
     .nav-logo-wrap { display: flex; flex-direction: column; text-decoration: none; line-height: 1; }
     .nav-logo-text { font-family: var(--font-body); font-weight: 800; font-size: 1.4rem; letter-spacing: -1.2px; display: flex; }
     .nav-logo-tagline { font-size: 0.62rem; font-weight: 500; color: var(--gray); letter-spacing: 0.04em; margin-top: 1px; }
-    .chess { color: var(--navy); }
-    .connect { color: var(--blue-logo); }
+    .chess { color: var(--navy); } .connect { color: var(--blue-logo); }
     .nav-back { font-size: 0.875rem; font-weight: 600; color: var(--blue); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; transition: opacity 0.2s; }
     .nav-back:hover { opacity: 0.75; }
-
-    .page-hero {
-      background: linear-gradient(160deg, #EEF4FF 0%, #F8FAFF 60%, #fff 100%);
-      padding: 4rem 5% 3rem;
-      border-bottom: 1px solid var(--gray-light);
-    }
+    .page-hero { background: linear-gradient(160deg, #EEF4FF 0%, #F8FAFF 60%, #fff 100%); padding: 4rem 5% 3rem; border-bottom: 1px solid var(--gray-light); }
     .page-hero-inner { max-width: 800px; margin: 0 auto; }
-    .page-badge {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: rgba(30,115,232,0.08); color: var(--blue);
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.35rem 0.85rem; border-radius: 100px;
-      border: 1px solid rgba(30,115,232,0.15); margin-bottom: 1rem;
-    }
+    .page-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(30,115,232,0.08); color: var(--blue); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 0.85rem; border-radius: 100px; border: 1px solid rgba(30,115,232,0.15); margin-bottom: 1rem; }
     .page-hero h1 { font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: var(--navy); margin-bottom: 0.75rem; line-height: 1.2; }
     .page-hero-meta { font-size: 0.875rem; color: var(--gray); display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .page-hero-meta span { display: flex; align-items: center; gap: 0.3rem; }
-
     .page-layout { display: grid; grid-template-columns: 220px 1fr; gap: 3rem; max-width: 1000px; margin: 0 auto; padding: 3rem 5% 5rem; align-items: start; }
     @media (max-width: 768px) { .page-layout { grid-template-columns: 1fr; } .toc { display: none; } }
-
     .toc { position: sticky; top: 84px; }
     .toc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); margin-bottom: 0.75rem; }
     .toc a { display: block; font-size: 0.82rem; font-weight: 500; color: var(--gray); text-decoration: none; padding: 0.3rem 0; border-left: 2px solid var(--gray-light); padding-left: 0.75rem; transition: color 0.2s, border-color 0.2s; }
     .toc a:hover { color: var(--blue); border-color: var(--blue); }
-
     .content section { margin-bottom: 3rem; }
     .content h2 { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--navy); margin-bottom: 1rem; padding-top: 0.5rem; }
     .content h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin: 1.25rem 0 0.5rem; }
@@ -76,21 +58,11 @@
     .content ul { padding-left: 1.25rem; margin-bottom: 0.85rem; }
     .content ul li { font-size: 0.95rem; color: #374151; margin-bottom: 0.4rem; line-height: 1.7; }
     .content a { color: var(--blue); text-decoration: underline; }
-
-    .highlight-box {
-      background: rgba(30,115,232,0.05); border: 1.5px solid rgba(30,115,232,0.15);
-      border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
-    }
+    .highlight-box { background: rgba(30,115,232,0.05); border: 1.5px solid rgba(30,115,232,0.15); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
     .highlight-box p { margin: 0; font-size: 0.9rem; color: var(--navy); font-weight: 500; }
-
-    .warn-box {
-      background: rgba(245,158,11,0.06); border: 1.5px solid rgba(245,158,11,0.2);
-      border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
-    }
+    .warn-box { background: rgba(245,158,11,0.06); border: 1.5px solid rgba(245,158,11,0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
     .warn-box p { margin: 0; font-size: 0.9rem; color: #92400e; }
-
     .content-divider { border: none; border-top: 1px solid var(--gray-light); margin: 2rem 0; }
-
     footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 2rem 5%; text-align: center; font-size: 0.82rem; }
     footer a { color: rgba(255,255,255,0.8); text-decoration: none; margin: 0 0.75rem; }
     footer a:hover { color: white; }
@@ -101,7 +73,7 @@
 </head>
 <body>
 
-<nav>
+<nav role="navigation" aria-label="Main navigation">
   <a href="index.html" class="nav-logo-wrap" aria-label="ChessConnect home">
     <span class="nav-logo-text"><span class="chess">Chess</span><span class="connect">Connect</span></span>
     <span class="nav-logo-tagline">Connecting the Chess World</span>
@@ -116,7 +88,7 @@
     <div class="page-hero-meta">
       <span>Effective: 1 March 2026</span>
       <span>Last updated: March 2026</span>
-      <span>Governed by Indian Law</span>
+      <span>Global Platform</span>
     </div>
   </div>
 </div>
@@ -135,6 +107,8 @@
     <a href="#disclaimer">Disclaimer</a>
     <a href="#indemnity">Indemnification</a>
     <a href="#liability">Liability</a>
+    <a href="#intellectual-property">Intellectual Property</a>
+    <a href="#changes">Changes to Terms</a>
     <a href="#termination">Termination</a>
     <a href="#governing-law">Governing Law</a>
     <a href="#force-majeure">Force Majeure</a>
@@ -146,19 +120,20 @@
     <section id="agreement">
       <h2>Agreement to Terms</h2>
       <div class="highlight-box">
-        <p>By accessing or using ChessConnect, you agree to be bound by these Terms of Service. If you do not agree, please do not use our platform.</p>
+        <p>By accessing or using ChessConnect from anywhere in the world, you agree to be bound by these Terms of Service. If you do not agree, please do not use our platform.</p>
       </div>
-      <p>These Terms of Service ("Terms") govern your use of ChessConnect ("Platform", "we", "us", "our"), a chess coach marketplace operated in India. These Terms apply to all visitors, coaches, and any other users of the Platform.</p>
+      <p>These Terms of Service ("Terms") govern your use of ChessConnect ("Platform", "we", "us", "our"), a global chess coach marketplace operated from India. These Terms apply to all visitors, coaches, and any other users of the Platform, regardless of country of access.</p>
+      <p>By using ChessConnect, you confirm that you are either at least 18 years of age, or that you are a minor accessing the platform with parental or guardian knowledge for the purpose of finding a chess coach.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="platform">
       <h2>The Platform</h2>
-      <p>ChessConnect is a marketplace that connects individual chess coaches with students and parents across India. We provide a platform for coaches to list their profiles and for students to discover and contact coaches directly. The platform is operated from Pune, Maharashtra, India.</p>
-      <p><strong>ChessConnect is not a party to any coaching arrangement.</strong> We do not provide chess coaching services ourselves. All coaching sessions, fees, and agreements are solely between coaches and their students.</p>
+      <p>ChessConnect is a <strong>global directory platform</strong> that connects individual chess coaches with students and parents worldwide. Coaches list their profiles; students discover and contact coaches directly. The platform is operated from Pune, Maharashtra, India.</p>
+      <p><strong>ChessConnect is not a party to any coaching arrangement.</strong> We do not provide chess coaching services ourselves. All coaching sessions, fees, scheduling, and agreements are solely between coaches and their students. Transactions happen entirely outside our platform.</p>
       <p>The platform is provided on an <strong>"as is"</strong> and <strong>"as available"</strong> basis without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or uninterrupted availability.</p>
-      <p>Currently, ChessConnect is in <strong>Phase 1</strong> — supporting individual chess coaches only. Academy listings and tournament features are not yet available. ChessConnect reserves the right to introduce paid features, subscriptions, or transaction-based services in future phases of the platform.</p>
+      <p>Currently, ChessConnect is in <strong>Phase 1</strong> — supporting individual chess coaches only. Academy listings and tournament features are planned for future phases. ChessConnect reserves the right to introduce paid features, subscriptions, or transaction-based services in the future, at which point these Terms will be updated accordingly.</p>
     </section>
 
     <hr class="content-divider"/>
@@ -168,12 +143,14 @@
       <p>To list yourself as a coach on ChessConnect, you must:</p>
       <ul>
         <li>Be at least 18 years of age</li>
+        <li>Sign in using a valid <strong>Google account</strong> (Google OAuth is our only authentication method)</li>
         <li>Provide accurate and truthful information during registration</li>
         <li>Own or have authorised access to the WhatsApp number you register with</li>
         <li>Submit to manual verification by the ChessConnect team before your profile goes live</li>
+        <li>Be the legitimate holder of any FIDE ID and credentials you submit</li>
       </ul>
       <p>Profile activation is at the sole discretion of ChessConnect. We reserve the right to reject or deactivate any profile without notice.</p>
-      <p>One WhatsApp number may only be associated with one coach profile. Duplicate registrations will be removed.</p>
+      <p>One Google account may only be linked to one coach profile. One WhatsApp number may only be associated with one coach profile. Duplicate registrations will be removed immediately.</p>
     </section>
 
     <hr class="content-divider"/>
@@ -182,14 +159,16 @@
       <h2>Coach Obligations</h2>
       <p>As a registered coach on ChessConnect, you agree to:</p>
       <ul>
-        <li>Keep your profile information accurate and up to date</li>
-        <li>Only claim FIDE ratings and credentials that genuinely belong to you</li>
-        <li>Respond to student inquiries in a professional and timely manner</li>
-        <li>Conduct coaching sessions ethically and professionally</li>
+        <li>Keep your profile information accurate, current, and truthful at all times</li>
+        <li>Only claim FIDE ratings, titles, and credentials that genuinely belong to you</li>
+        <li>Respond to student enquiries in a professional and timely manner</li>
+        <li>Conduct coaching sessions ethically, professionally, and lawfully</li>
         <li>Not use ChessConnect to promote services unrelated to chess coaching</li>
-        <li>Inform us if your contact details change so students can reach you</li>
-        <li>Not solicit students to move off-platform for reasons that circumvent our terms</li>
+        <li>Inform us promptly if your contact details change so students can continue to reach you</li>
+        <li>Not engage in conduct that could harm ChessConnect's reputation or other coaches on the platform</li>
       </ul>
+      <p>Coaches listed on ChessConnect are independent professionals. You are solely responsible for the coaching services you provide, any agreements you make with students, all applicable taxes in your jurisdiction, and compliance with any local regulations governing tutoring or coaching services in your country.</p>
+      <p>Nothing in these Terms creates an employment, partnership, agency, franchise, or joint venture relationship between ChessConnect and any coach listed on the platform.</p>
     </section>
 
     <hr class="content-divider"/>
@@ -198,17 +177,20 @@
       <h2>Prohibited Conduct</h2>
       <p>The following are strictly prohibited on ChessConnect:</p>
       <ul>
-        <li>Submitting false, misleading, or fraudulent information</li>
+        <li>Submitting false, misleading, or fraudulent information in your profile</li>
         <li>Claiming FIDE credentials, ratings, or titles that do not belong to you</li>
-        <li>Impersonating another coach or person</li>
-        <li>Uploading offensive, inappropriate, or copyrighted photos</li>
+        <li>Impersonating another coach, person, or entity</li>
+        <li>Uploading offensive, inappropriate, or copyrighted photos you do not own</li>
         <li>Using the platform for spam, scams, or solicitation unrelated to chess coaching</li>
-        <li>Attempting to scrape, harvest, or collect data from other coaches' profiles</li>
+        <li>Attempting to scrape, harvest, or systematically collect data from coach profiles</li>
+        <li>Using automated tools, bots, scripts, or data mining techniques to extract information from the platform without our prior written permission</li>
         <li>Interfering with the platform's security, integrity, or functionality</li>
         <li>Creating multiple profiles for the same individual</li>
+        <li>Using automated bots, crawlers, or scripts to access the platform</li>
+        <li>Attempting to circumvent any security or verification measures on the platform</li>
       </ul>
       <div class="warn-box">
-        <p>Note: Violation of any of the above may result in immediate and permanent removal of your profile without notice or refund.</p>
+        <p>Violation of any of the above may result in immediate and permanent removal of your profile. ChessConnect reserves the right to report fraudulent activity to relevant authorities in any jurisdiction.</p>
       </div>
     </section>
 
@@ -216,9 +198,10 @@
 
     <section id="content">
       <h2>Your Content</h2>
-      <p>By submitting content to ChessConnect (including your bio, photo, and profile details), you grant us a non-exclusive, royalty-free licence to display that content on our platform for the purpose of connecting you with students.</p>
-      <p>You retain ownership of your content. We will not use your content for advertising or sell it to third parties.</p>
-      <p>You are solely responsible for the accuracy and legality of the content you submit. ChessConnect does not verify the accuracy of all coach claims beyond our basic manual review.</p>
+      <p>By submitting content to ChessConnect (including your bio, photo, profile details, links, and any other information), you grant us a <strong>non-exclusive, royalty-free, worldwide licence</strong> to display that content on our platform for the purpose of connecting you with students globally.</p>
+      <p>You retain full ownership of your content. We will not use your content for advertising, sell it to third parties, or use it for any purpose beyond operating ChessConnect.</p>
+      <p>You warrant that all content you submit is accurate, does not infringe the intellectual property rights of any third party, and complies with applicable law in your jurisdiction.</p>
+      <p>ChessConnect does not verify the accuracy of all coach claims beyond our basic manual review process. We are not responsible for inaccurate or misleading information submitted by coaches.</p>
     </section>
 
     <hr class="content-divider"/>
@@ -227,30 +210,34 @@
       <h2>Moderation &amp; Approval</h2>
       <p>All coach profiles are reviewed manually by the ChessConnect team before being made public. We reserve the right to:</p>
       <ul>
-        <li>Approve or reject any profile submission</li>
+        <li>Approve or reject any profile submission at our sole discretion</li>
         <li>Edit profile content to correct formatting or remove inappropriate material</li>
         <li>Suspend or permanently remove profiles that violate these Terms</li>
         <li>Remove profiles reported by users for legitimate concerns</li>
+        <li>Remove profiles that have been inactive or unreachable for an extended period</li>
       </ul>
-      <p>Moderation decisions are final. If you believe your profile was removed in error, contact us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a>.</p>
+      <p>Moderation decisions are final. If you believe your profile was removed in error, contact us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a> and we will review your case.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="disclaimer">
       <h2>Disclaimer</h2>
-      <p>ChessConnect provides a discovery platform only. We do not:</p>
+      <p>ChessConnect is a <strong>discovery platform only</strong>. We do not:</p>
       <ul>
         <li>Guarantee the quality, competence, or suitability of any coach listed</li>
-        <li>Verify every credential, rating, or claim made by coaches beyond our basic review</li>
-        <li>Take responsibility for the outcome of any coaching arrangement</li>
-        <li>Mediate disputes between coaches and students</li>
+        <li>Verify every credential, rating, or claim made by coaches beyond our basic manual review</li>
+        <li>Take responsibility for the outcome or quality of any coaching arrangement</li>
+        <li>Mediate or arbitrate disputes between coaches and students</li>
+        <li>Guarantee the availability or response time of any listed coach</li>
       </ul>
-      <p>Students and parents are responsible for conducting their own due diligence before engaging any coach. We strongly recommend an initial trial session before committing to ongoing coaching.</p>
-      <p>The platform is provided on an "as is" and "as available" basis. We make no warranty that the platform will be uninterrupted, error-free, or free of viruses or other harmful components. Use of the platform is entirely at your own risk.</p>
+      <p>Students, parents, and guardians are solely responsible for conducting their own due diligence before engaging any coach. We strongly recommend an initial trial session before committing to ongoing coaching.</p>
+      <p><strong>No background checks:</strong> ChessConnect does not conduct criminal background checks, identity verification beyond basic profile review, or any other vetting of coaches. Users are solely responsible for evaluating the suitability and safety of any coach they engage.</p>
+      <p><strong>Minor students:</strong> If the student is a minor, the parent or legal guardian is responsible for supervising the coaching relationship and all communications with the coach. ChessConnect is not responsible for the safety or supervision of any minor in a coaching arrangement.</p>
+      <p><strong>Off-platform communications:</strong> ChessConnect does not monitor or control any communications that occur outside the platform, including but not limited to WhatsApp messages, phone calls, emails, or video sessions between coaches and students. We are not responsible for the content of such communications.</p>
+      <p><strong>No guarantee of results:</strong> ChessConnect does not guarantee any improvement in chess skill, rating gains, tournament performance, or training outcomes of any kind. Results depend entirely on the coach and student involved.</p>
+      <p>The platform is provided on an "as is" and "as available" basis. We make no warranty that the platform will be uninterrupted, error-free, or free of harmful components. Use of the platform is entirely at your own risk.</p>
     </section>
-
-    <hr class="content-divider"/>
 
     <hr class="content-divider"/>
 
@@ -260,10 +247,11 @@
       <ul>
         <li>Your breach of these Terms of Service</li>
         <li>Your misuse of the ChessConnect platform</li>
-        <li>Any dispute between you and another user (coach or student)</li>
+        <li>Any dispute between you and another user (coach or student) in any jurisdiction</li>
         <li>Any claim related to coaching services you provide through the platform</li>
         <li>Any false, misleading, or fraudulent information you submit</li>
         <li>Your violation of any applicable law or third-party rights</li>
+        <li>Any claim arising from your coaching activities, including claims by students or parents</li>
       </ul>
       <p>This indemnification obligation will survive termination of your use of the platform.</p>
     </section>
@@ -272,37 +260,62 @@
 
     <section id="liability">
       <h2>Limitation of Liability</h2>
-      <p>To the maximum extent permitted by applicable Indian law, ChessConnect shall not be liable for:</p>
+      <p>To the maximum extent permitted by applicable law, ChessConnect shall not be liable for:</p>
       <ul>
-        <li>Any indirect, incidental, or consequential damages arising from use of the platform</li>
-        <li>Loss of data, revenue, or reputation resulting from platform downtime or errors</li>
-        <li>The conduct or actions of any coach or student on the platform</li>
+        <li>Any indirect, incidental, special, or consequential damages arising from use of the platform</li>
+        <li>Loss of data, revenue, reputation, or opportunity resulting from platform downtime or errors</li>
+        <li>The conduct or actions of any coach or student on or off the platform</li>
         <li>Disputes arising from coaching arrangements made through the platform</li>
+        <li>Any claim arising from cross-border use of the platform</li>
       </ul>
-      <p>Our total liability to any user shall not exceed the amount paid (if any) by that user to ChessConnect in the preceding 12 months. As ChessConnect is currently a free platform, this amount is nil for most users.</p>
+      <p>Our total liability to any user shall not exceed the amount paid (if any) by that user to ChessConnect in the preceding 12 months. As ChessConnect is currently a free platform, this amount is nil for all users.</p>
+      <p>Some jurisdictions do not allow the exclusion of certain implied warranties or limitation of liability for incidental or consequential damages, so the above limitations may not apply to you in full. In such cases, our liability is limited to the maximum extent permitted by your applicable local law.</p>
+    </section>
+
+    <hr class="content-divider"/>
+
+    <section id="intellectual-property">
+      <h2>Intellectual Property</h2>
+      <p>All website design, branding, logos, software code, and platform content — excluding user-submitted coach profiles — are the intellectual property of ChessConnect and are protected by applicable copyright and trademark laws.</p>
+      <p>You may not copy, reproduce, distribute, modify, reverse-engineer, or use any part of ChessConnect's design or codebase without our prior written permission. Any unauthorised use may result in legal action.</p>
+      <p>You retain full ownership of the content you submit to your coach profile. By submitting it, you grant ChessConnect a non-exclusive, royalty-free, worldwide licence to display it on the platform solely for the purpose of connecting you with students.</p>
+    </section>
+
+    <hr class="content-divider"/>
+
+    <section id="changes">
+      <h2>Changes to These Terms</h2>
+      <p>We may update these Terms from time to time to reflect platform changes, legal requirements, or operational needs. Updated Terms will be posted on this page with a revised "Last Updated" date at the top.</p>
+      <p>For significant changes, we will make reasonable efforts to notify registered coaches via email. Your continued use of ChessConnect after any changes constitutes your acceptance of the revised Terms.</p>
+      <p>We recommend checking this page periodically. The current version always supersedes any previous versions.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="termination">
       <h2>Termination</h2>
-      <p>You may request removal of your coach profile at any time by contacting us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a>. We will deactivate and delete your profile within 30 days of a verified request.</p>
-      <p>We reserve the right to terminate or suspend any account at our discretion, particularly in cases of Terms violation, fraudulent activity, or abuse of the platform.</p>
+      <p>You may request removal of your coach profile at any time by contacting us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a>. We will deactivate and delete your profile within <strong>30 days</strong> of a verified request.</p>
+      <p>We reserve the right to terminate or suspend any account at our discretion, without notice, particularly in cases of Terms violation, fraudulent activity, impersonation, or abuse of the platform.</p>
+      <p>Upon termination, your public profile will be immediately hidden. Your personal data will be handled in accordance with our <a href="privacy-policy.html">Privacy Policy</a>.</p>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="governing-law">
       <h2>Governing Law</h2>
-      <p>These Terms are governed by and construed in accordance with the laws of India. Any disputes arising from these Terms or use of ChessConnect shall be subject to the exclusive jurisdiction of the courts of <strong>Pune, Maharashtra, India</strong>.</p>
+      <p>These Terms are governed by and construed in accordance with the <strong>laws of India</strong>. The primary dispute resolution forum is the courts of <strong>Pune, Maharashtra, India</strong>.</p>
       <p>These Terms are subject to applicable Indian legislation including the Information Technology Act 2000, the Digital Personal Data Protection Act 2023, and the Consumer Protection Act 2019.</p>
+      <p>For users accessing ChessConnect from outside India: you acknowledge that this platform is operated from India and that Indian law governs your use of it. Nothing in these Terms limits your statutory rights under the mandatory consumer protection or data protection laws of your own country where those laws cannot be contractually excluded.</p>
+      <div class="warn-box">
+        <p>If you are an EU/EEA resident, your rights under applicable EU consumer protection and data protection law (including GDPR) remain unaffected by the choice of Indian governing law above.</p>
+      </div>
     </section>
 
     <hr class="content-divider"/>
 
     <section id="force-majeure">
       <h2>Force Majeure</h2>
-      <p>ChessConnect shall not be liable for any failure or delay in performance arising from causes beyond our reasonable control, including but not limited to acts of God, natural disasters, government orders, internet or server outages, power failures, civil unrest, or any other event outside our direct control.</p>
+      <p>ChessConnect shall not be liable for any failure or delay in performance arising from causes beyond our reasonable control, including but not limited to: acts of God, natural disasters, government orders, internet or server outages, power failures, civil unrest, cyberattacks on our infrastructure providers, or any other event outside our direct control.</p>
       <p>In such circumstances, our obligations under these Terms will be suspended for the duration of the event.</p>
     </section>
 
@@ -310,9 +323,10 @@
 
     <section id="contact">
       <h2>Contact Us</h2>
-      <p>For any questions about these Terms, or to report a violation:</p>
+      <p>For any questions about these Terms, to report a violation, or to request profile removal:</p>
       <ul>
         <li><strong>Email:</strong> <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a></li>
-        <li><strong>Website:</strong> <a href="https://chessconnecthq.github.io/chessconnect-web">chessconnecthq.github.io/chessconnect-web</a></li>
+        <li><strong>Platform:</strong> <a href="https://chessconnecthq.github.io/chessconnect-web/">ChessConnect</a></li>
+        <li><strong>Response time:</strong> We aim to respond within 72 hours</li>
       </ul>
-      <p>We aim to respond to all qu
+    </section>
