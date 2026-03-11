@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ChessConnect Tournament Hub | Upcoming Chess Tournaments in India — Coming Soon</title>
+<meta name="description" content="ChessConnect Tournament Hub is coming soon. Find upcoming FIDE rated, state and district chess tournaments across India, all in one place."/>
+<meta name="author" content="ChessConnect"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://chessconnecthq.github.io/chessconnect-web/tournaments.html"/>
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<meta name="theme-color" content="#102C57"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="ChessConnect Tournament Hub — Coming Soon"/>
+<meta property="og:description" content="Upcoming chess tournaments across India — FIDE rated, state, district and open events. All in one place. Coming soon."/>
+<meta property="og:url" content="https://chessconnecthq.github.io/chessconnect-web/tournaments.html"/>
+<meta property="og:site_name" content="ChessConnect"/>
+<meta property="og:locale" content="en_IN"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ChessConnect Tournament Hub — Coming Soon"/>
+<meta name="twitter:description" content="Upcoming chess tournaments across India. Coming soon."/>
+<meta name="twitter:site" content="@chessconnecthq"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#1E73E8;--navy:#102C57;--navy2:#1a3d73;
+  --white:#fff;--off:#F0F4FF;--gray:#6B7280;--gl:#E5E9F2;
+  --font-h:'Playfair Display',serif;--font-b:'DM Sans',sans-serif;
+  --r:12px;--rs:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font-b);-webkit-font-smoothing:antialiased;background:var(--white);color:var(--navy)}
+.nav{background:var(--white);border-bottom:1px solid var(--gl);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(16,44,87,0.06);}
+.nlogo-wrap{display:flex;flex-direction:column;gap:1px;text-decoration:none}
+.nlogo{font-weight:800;font-size:1.3rem;letter-spacing:-0.5px;line-height:1}
+.chess{color:var(--navy)}.connect{color:#4285F4}
+.nlogo-sub{font-size:0.62rem;color:var(--gray);font-weight:500}
+.nback{font-size:0.82rem;font-weight:600;color:var(--gray);text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem;transition:color 0.2s;border:1.5px solid var(--gl);border-radius:8px;padding:0.42rem 0.9rem;}
+.nback:hover{color:var(--blue);border-color:rgba(30,115,232,0.35);background:#F8FAFF}
+.nback svg{transition:transform 0.2s}
+.nback:hover svg{transform:translateX(-2px)}
+.hero{background:linear-gradient(160deg,#EEF3FF 0%,#e6edfe 45%,#f5f7ff 100%);padding:5.5rem 5% 4.5rem;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--gl);}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(30,115,232,0.13) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 60% at 10% 50%,rgba(30,115,232,0.07) 0%,transparent 70%),radial-gradient(ellipse 45% 55% at 90% 25%,rgba(66,133,244,0.06) 0%,transparent 70%);pointer-events:none;}
+.hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(30,115,232,0.08);color:var(--blue);border:1px solid rgba(30,115,232,0.2);border-radius:100px;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;padding:0.32rem 0.9rem;margin-bottom:1.6rem;text-transform:uppercase;animation:fadeUp 0.5s ease both;}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:pulse 2s ease infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.75)}}
+h1.headline{font-family:var(--font-h);font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:800;color:var(--navy);line-height:1.08;letter-spacing:-1.5px;margin-bottom:1.1rem;animation:fadeUp 0.5s ease 0.1s both;}
+h1.headline span{color:#4285F4;font-style:italic}
+.sub{font-size:1.05rem;color:var(--gray);max-width:460px;margin:0 auto 2.2rem;line-height:1.7;animation:fadeUp 0.5s ease 0.18s both;}
+.cta-row{display:flex;align-items:center;justify-content:center;gap:0.85rem;flex-wrap:wrap;margin-bottom:3.2rem;animation:fadeUp 0.5s ease 0.26s both;}
+.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;border-radius:10px;padding:0.85rem 0;width:220px;font-family:var(--font-b);font-size:0.92rem;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:-0.1px;}
+.btn-primary{background:var(--blue);color:#fff;border:2px solid var(--blue)}
+.btn-primary:hover{background:#1a65d4;border-color:#1a65d4;transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,115,232,0.3)}
+.btn-secondary{background:var(--blue);color:#fff;border:2px solid var(--blue);animation:flashPulse 2s ease infinite}
+.btn-secondary:hover{background:#1a65d4;border-color:#1a65d4;transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,115,232,0.3);animation:none}
+@keyframes flashPulse{0%,100%{box-shadow:0 0 0 0 rgba(30,115,232,0.6)}50%{box-shadow:0 0 0 10px rgba(30,115,232,0)}}
+.stats{display:flex;align-items:center;justify-content:center;gap:3rem;animation:fadeUp 0.5s ease 0.34s both;}
+.stat-num{font-family:var(--font-h);font-size:2rem;font-weight:800;color:var(--navy);line-height:1;margin-bottom:0.15rem;}
+.stat-num .accent{color:#4285F4}
+.stat-lbl{font-size:0.67rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.07em;font-weight:600}
+.stat-sep{width:1px;height:38px;background:var(--gl);flex-shrink:0}
+.cta-strip{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);padding:4rem 5%;text-align:center;}
+.cta-strip-eyebrow{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:0.55rem;}
+.cta-strip-title{font-family:var(--font-h);font-size:clamp(1.4rem,3vw,2rem);font-weight:800;color:#fff;margin-bottom:0.55rem;}
+.cta-strip-sub{font-size:0.88rem;color:rgba(255,255,255,0.5);max-width:380px;margin:0 auto 2rem;line-height:1.65;}
+.cta-strip-btn{display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:var(--navy);border:none;border-radius:10px;padding:0.85rem 2.2rem;font-family:var(--font-b);font-size:0.92rem;font-weight:800;text-decoration:none;transition:all 0.2s;letter-spacing:-0.1px;}
+.cta-strip-btn:hover{background:#f0f4ff;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.2)}
+.footer{background:var(--white);border-top:1px solid var(--gl);padding:1.2rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
+.footer-brand{font-size:0.88rem;font-weight:800;letter-spacing:-0.3px;text-decoration:none}
+.footer-note{font-size:0.72rem;color:var(--gray)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.hero{padding:4rem 5% 3rem}.stats{gap:1.5rem}}
+@media(max-width:440px){.stat-sep{display:none}.stats{gap:1.2rem}.cta-row{flex-direction:column;align-items:stretch}.btn-primary,.btn-secondary{justify-content:center}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="https://chessconnecthq.github.io/chessconnect-web/" class="nlogo-wrap">
+    <div class="nlogo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="nlogo-sub">Connecting the Chess World</div>
+  </a>
+  <a href="https://chessconnecthq.github.io/chessconnect-web/" class="nback">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Home
+  </a>
+</nav>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Coming Soon</div>
+    <h1 class="headline">Every chess tournament,<br/><span>in one place</span></h1>
+    <p class="sub">Whether you&rsquo;re a beginner or a rated player, find tournaments at every level across India.</p>
+    <div class="cta-row">
+      <a href="https://chessconnecthq.github.io/chessconnect-web/" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Back to ChessConnect
+      </a>
+      <a href="https://chessconnecthq.github.io/chessconnect-web/#tools" class="btn-secondary">
+        Explore our Tools
+      </a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">All</div><div class="stat-lbl">Levels Welcome</div></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><div class="stat-num">India</div><div class="stat-lbl">Wide</div></div>
+    </div>
+  </div>
+</section>
+<section class="cta-strip">
+  <div class="cta-strip-eyebrow">We&rsquo;re building it</div>
+  <div class="cta-strip-title">Check back soon</div>
+  <p class="cta-strip-sub">ChessConnect Tournament Hub is on its way. In the meantime, explore our free tools for tournament organisers.</p>
+  <a href="https://chessconnecthq.github.io/chessconnect-web/" class="cta-strip-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Go to ChessConnect
+  </a>
+</section>
+<footer class="footer">
+  <a href="https://chessconnecthq.github.io/chessconnect-web/" class="footer-brand"><span class="chess">Chess</span><span class="connect">Connect</span></a>
+  <div class="footer-note">Tournament Hub &mdash; coming soon</div>
+</footer>
+</body>
+</html>
