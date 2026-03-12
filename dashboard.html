@@ -17,7 +17,6 @@
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   <style>
@@ -806,8 +805,7 @@
   const EMAILJS_TEMPLATE_ID = 'template_89iorxh';
   const EMAILJS_PUBLIC_KEY  = 'l0nVoYn8YbCGx87Nj';
   let emailJsReady = false;
-  try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); emailJsReady = true; } catch(e) {}
-
+  
   async function logSaveError(errorObj, context) {
     const entry = {
       source:     'dashboard',
