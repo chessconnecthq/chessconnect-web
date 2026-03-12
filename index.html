@@ -1181,7 +1181,7 @@
       </div>
     </div>
     <button class="btn-ghost" id="btnLoginNav" onclick="openAuthModal('login')" aria-label="Coach login">Coach Login</button>
-    <button class="btn-primary" onclick="openAuthModal('register')" aria-label="List yourself as a coach">List Yourself</button>
+    <button class="btn-primary" onclick="currentUser ? scrollToRegister() : openAuthModal('register')" aria-label="List yourself as a coach">List Yourself</button>
   </div>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open navigation menu" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -1263,7 +1263,7 @@
     <button class="btn-hero-secondary" onclick="window.location.href='coaches.html'" aria-label="Find a chess coach">Find a Coach</button>
     <div class="pulse-wrap">
       <div class="pulse-ring" aria-hidden="true"></div>
-      <button class="btn-hero-primary" onclick="openAuthModal('register')" aria-label="List your profile as a chess coach"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> List Your Profile</button>
+      <button class="btn-hero-primary" onclick="currentUser ? scrollToRegister() : openAuthModal('register')" aria-label="List your profile as a chess coach"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> List Your Profile</button>
     </div>
   </div>
   <div class="hero-stats" aria-label="Platform highlights">
