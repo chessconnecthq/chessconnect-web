@@ -2259,10 +2259,10 @@
   });
 
   async function signOutCoach() {
-    const menu = document.getElementById('coachDropdownMenu');
-    if (menu) menu.style.display = 'none';
-    try { await sb.auth.signOut(); } catch(e) {}
-    finally { currentUser = null; updateNavLoggedOut(); }
+    await sb.auth.signOut();
+    currentUser = null;
+    updateNavLoggedOut();
+    window.location.reload();
   }
 
   // ── Listen for auth state changes ──
