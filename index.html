@@ -778,17 +778,16 @@
     /* Custom SVG icon area */
     .tool-icon-wrap {
       width: 56px; height: 56px;
-      background: var(--off-white);
-      border: 1.5px solid var(--gray-light);
+      background: transparent;
+      border: none;
       border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 1.25rem;
-      transition: background 0.25s, border-color 0.25s;
+      transition: background 0.25s;
       flex-shrink: 0;
     }
     .tool-card:hover .tool-icon-wrap {
-      background: rgba(30,115,232,0.06);
-      border-color: rgba(30,115,232,0.2);
+      background: transparent;
     }
     .tool-icon-wrap svg {
       width: 28px; height: 28px;
