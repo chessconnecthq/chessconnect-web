@@ -1102,7 +1102,7 @@
   .cs-dropdown-trigger { display: flex; align-items: center; gap: 0.35rem; cursor: pointer; font-size: 0.95rem; color: var(--navy); opacity: 0.75; background: none; border: none; font-family: inherit; transition: opacity 0.2s; padding: 0; }
   .cs-dropdown-trigger:hover { opacity: 1; }
   .cs-badge { font-size: 0.6rem; font-weight: 700; background: var(--blue); color: #fff; border-radius: 100px; padding: 0.1rem 0.45rem; letter-spacing: 0.04em; text-transform: uppercase; }
-  .cs-dropdown-menu { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--border, #e0e8f0); border-radius: 12px; box-shadow: 0 8px 24px rgba(30,115,232,0.12); min-width: 180px; z-index: 999; overflow: hidden; animation: dropIn 0.15s ease; display: none; }
+  .cs-dropdown-menu { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--border, #e0e8f0); border-radius: 12px; box-shadow: 0 8px 24px rgba(30,115,232,0.12); min-width: 180px; z-index: 999; overflow: hidden; animation: dropInCentered 0.15s ease;
   .cs-dropdown-menu.open { display: block; }
   .cs-dropdown-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.75rem 1rem; font-size: 0.88rem; font-weight: 500; color: #1a2a3a; text-decoration: none; transition: background 0.15s; }
   .cs-dropdown-item:hover { background: #f5f7fa; }
@@ -1113,9 +1113,9 @@
     background: #fff; border: 1px solid var(--border, #e0e8f0);
     border-radius: 12px; box-shadow: 0 8px 24px rgba(30,115,232,0.12);
     min-width: 170px; z-index: 999; overflow: hidden;
-    animation: dropIn 0.15s ease;
+    animation: dropInCentered 0.15s ease; display: none; }
   }
-  @keyframes dropIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes dropIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } } @keyframes dropInCentered { from { opacity:0; transform:translateX(-50%) translateY(-6px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
   .dropdown-item {
     display: flex; align-items: center; gap: 0.6rem;
     padding: 0.75rem 1rem; font-size: 0.88rem; font-weight: 500;
