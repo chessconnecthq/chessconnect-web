@@ -1223,7 +1223,7 @@
     </div>
     <div class="mobile-nav-divider"></div>
     <div class="mobile-nav-ctas">
-      <button class="btn-primary" onclick="closeMenu(); openAuthModal('register');">List Your Profile</button>
+      <button class="btn-primary" onclick="closeMenu(); currentUser ? scrollToRegister() : openAuthModal('register');">List Your Profile</button>
       <button class="btn-ghost" onclick="closeMenu(); openAuthModal('login');">Coach Login</button>
     </div>
   </div>
