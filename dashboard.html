@@ -5,18 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Coach Dashboard | ChessConnect</title>
   <meta name="robots" content="noindex, nofollow"/>
-
-  <!-- ── GOOGLE ANALYTICS 4 ── -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HB4X5E6HH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    // Dashboard is coach-only — exclude from remarketing audiences
-    gtag('config', 'G-1HB4X5E6HH', { 'allow_ad_personalization_signals': false });
-  </script>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   <style>
@@ -114,7 +104,7 @@
     .pc-fee { text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--dark); border-top: 1px solid var(--border); padding-top: 0.8rem; }
     .pc-live-badge { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.78rem; color: #166534; background: #dcfce7; border-radius: 20px; padding: 0.3rem 0.8rem; margin-top: 0.7rem; }
     .danger-zone { margin-top: 1.5rem; }
-    .danger-zone h3 { color: var(--dark); }
+    .danger-zone h3 { color: var(--red); border-bottom-color: #fecaca; }
     .btn-danger { width: 100%; padding: 0.75rem; background: #fff; color: var(--red); border: 1.5px solid #fca5a5; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
     .btn-danger:hover { background: #fef2f2; border-color: var(--red); }
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a2a3a; color: #fff; padding: 0.85rem 1.5rem; border-radius: 12px; font-size: 0.9rem; font-weight: 500; z-index: 9999; transition: transform 0.3s ease; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
@@ -188,56 +178,6 @@
     .link-input-row:focus-within { border-color: var(--blue); background: #fff; }
     .link-input-icon { padding: 0 0.75rem; color: var(--sub); font-size: 0.8rem; font-weight: 600; white-space: nowrap; border-right: 1px solid var(--border); background: #f0f4fa; height: 100%; display: flex; align-items: center; min-height: 42px; }
     .link-input-row input { flex: 1; padding: 0.7rem 0.9rem; border: none; font-size: 0.9rem; color: var(--text); background: transparent; font-family: inherit; outline: none; }
-    /* ── TABS ── */
-    .dash-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 2rem; }
-    .dash-tab { font-family: inherit; font-size: 0.95rem; font-weight: 600; color: var(--sub); background: none; border: none; border-bottom: 3px solid transparent; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; margin-bottom: -2px; display: flex; align-items: center; gap: 0.5rem; }
-    .dash-tab:hover { color: var(--blue); }
-    .dash-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-    /* ── ANALYTICS ── */
-    .an-time-filter { display: flex; gap: 0.4rem; margin-bottom: 1.75rem; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0.3rem; width: fit-content; }
-    .an-time-btn { font-family: inherit; font-size: 0.82rem; font-weight: 600; background: none; border: none; border-radius: 7px; padding: 0.45rem 1rem; cursor: pointer; color: var(--sub); transition: all 0.18s; }
-    .an-time-btn.active { background: var(--blue); color: white; }
-    .an-time-btn:hover:not(.active) { color: var(--text); background: var(--gray); }
-    .an-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-    .an-stat-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 12px rgba(30,115,232,0.06); display: flex; flex-direction: column; gap: 0.5rem; position: relative; overflow: hidden; }
-    .an-stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; }
-    .an-stat-card.an-views::before { background: var(--blue); }
-    .an-stat-card.an-wa::before { background: #25D366; }
-    .an-stat-card.an-calls::before { background: #F59E0B; }
-    .an-stat-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sub); display: flex; align-items: center; gap: 0.4rem; }
-    .an-stat-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .an-stat-value { font-size: 2.2rem; font-weight: 800; color: var(--text); line-height: 1; }
-    .an-stat-sub { font-size: 0.75rem; color: var(--sub); }
-    .an-section-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(30,115,232,0.06); margin-bottom: 1.25rem; }
-    .an-section-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
-    .an-chart-wrap { position: relative; height: 180px; }
-    .an-chart-canvas { width: 100%; height: 100%; }
-    .an-chart-empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; color: var(--sub); }
-    .an-chart-empty p { font-size: 0.82rem; }
-    .an-chart-legend { display: flex; gap: 1.25rem; margin-top: 1rem; flex-wrap: wrap; }
-    .an-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--sub); font-weight: 500; }
-    .an-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .an-bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-    .an-cities-list { display: flex; flex-direction: column; gap: 0.6rem; }
-    .an-city-row { display: flex; align-items: center; gap: 0.75rem; }
-    .an-city-rank { font-size: 0.75rem; font-weight: 700; color: var(--sub); width: 18px; text-align: center; }
-    .an-city-name { font-size: 0.88rem; font-weight: 600; color: var(--text); flex: 1; }
-    .an-city-bar-wrap { flex: 2; height: 6px; background: var(--gray); border-radius: 100px; overflow: hidden; }
-    .an-city-bar { height: 100%; background: var(--blue); border-radius: 100px; transition: width 0.6s ease; }
-    .an-city-count { font-size: 0.78rem; font-weight: 700; color: var(--sub); width: 28px; text-align: right; }
-    .an-enquiry-list { display: flex; flex-direction: column; }
-    .an-enquiry-row { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); gap: 1rem; }
-    .an-enquiry-row:last-child { border-bottom: none; }
-    .an-enquiry-type { display: flex; align-items: center; gap: 0.6rem; }
-    .an-badge { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; padding: 0.22rem 0.6rem; border-radius: 100px; }
-    .an-badge-view { background: rgba(30,115,232,0.1); color: var(--blue); }
-    .an-badge-wa { background: rgba(37,211,102,0.1); color: #16a34a; }
-    .an-badge-call { background: rgba(245,158,11,0.1); color: #d97706; }
-    .an-enquiry-time { font-size: 0.75rem; color: var(--sub); white-space: nowrap; }
-    .an-empty { text-align: center; padding: 2rem; color: var(--sub); font-size: 0.85rem; }
-    @media (max-width: 640px) { .an-stats-grid { grid-template-columns: 1fr; } .an-bottom-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -278,22 +218,9 @@
 
 <main class="dash-main" id="dashMain">
   <div class="dash-header">
-    <h1>My Dashboard</h1>
-    <p>Manage your profile and track your enquiries.</p>
+    <h1>My Coach Profile</h1>
+    <p>Edit your details below. Changes go live immediately.</p>
   </div>
-  <!-- TABS -->
-  <div class="dash-tabs">
-    <button class="dash-tab active" id="tabBtnProfile" onclick="switchTab('profile')">
-      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-1a8 8 0 0116 0v1"/></svg>
-      My Profile
-    </button>
-    <button class="dash-tab" id="tabBtnAnalytics" onclick="switchTab('analytics')">
-      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      My Analytics
-    </button>
-  </div>
-  <!-- PROFILE TAB -->
-  <div class="tab-panel active" id="panelProfile">
 
   <div id="statusBanner" class="status-banner live">
     <div class="status-dot"></div>
@@ -654,7 +581,7 @@
             <input type="text" id="dRating" readonly/>
           </div>
         </div>
-        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at <a href="/cdn-cgi/l/email-protection#711219140202121e1f1f1412055f181f31161c10181d5f121e1c"><span class="__cf_email__" data-cfemail="56353e33252535393838333522783f3816313b373f3a7835393b">[email&#160;protected]</span></a></p>
+        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at chessconnect.in@gmail.com</p>
       </div>
 
       <button class="btn-save" id="saveBtn" onclick="saveProfile()">
@@ -663,9 +590,12 @@
       </button>
 
       <div class="dash-card danger-zone">
-        <h3>Profile Visibility Settings</h3>
+        <h3>Danger Zone</h3>
         <p style="font-size:0.85rem;color:#5a6a7a;margin-bottom:0.5rem;">Hide your profile temporarily or delete it permanently.</p>
         <button class="btn-danger" id="toggleLiveBtn" onclick="toggleLive()">Hide My Profile</button>
+        <a href="analytics.html" style="font-family:'Segoe UI',Arial,sans-serif;font-size:0.85rem;font-weight:600;background:none;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.9rem;color:var(--sub);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.2s;margin-top:0.5rem;">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Analytics
+        </a>
         <button class="btn-danger" onclick="confirmDelete()" style="margin-top:0.5rem;">Delete My Profile Permanently</button>
       </div>
     </div>
@@ -686,80 +616,6 @@
       </div>
     </div>
   </div>
-  </div><!-- /panelProfile -->
-
-  <!-- ANALYTICS TAB -->
-  <div class="tab-panel" id="panelAnalytics">
-    <div class="an-time-filter">
-      <button class="an-time-btn active" onclick="an_setRange(7,this)">Last 7 days</button>
-      <button class="an-time-btn" onclick="an_setRange(30,this)">Last 30 days</button>
-      <button class="an-time-btn" onclick="an_setRange(0,this)">All time</button>
-    </div>
-    <div class="an-stats-grid">
-      <div class="an-stat-card an-views">
-        <div class="an-stat-label">
-          <div class="an-stat-icon" style="background:rgba(30,115,232,0.1);">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </div>Profile Views
-        </div>
-        <div class="an-stat-value" id="anStatViews">—</div>
-        <div class="an-stat-sub" id="anStatViewsSub">Loading...</div>
-      </div>
-      <div class="an-stat-card an-wa">
-        <div class="an-stat-label">
-          <div class="an-stat-icon" style="background:rgba(37,211,102,0.1);">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-          </div>WhatsApp Taps
-        </div>
-        <div class="an-stat-value" id="anStatWa">—</div>
-        <div class="an-stat-sub" id="anStatWaSub">Loading...</div>
-      </div>
-      <div class="an-stat-card an-calls">
-        <div class="an-stat-label">
-          <div class="an-stat-icon" style="background:rgba(245,158,11,0.1);">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.5a19.79 19.79 0 01-3-8.56A2 2 0 012.48 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          </div>Call Taps
-        </div>
-        <div class="an-stat-value" id="anStatCalls">—</div>
-        <div class="an-stat-sub" id="anStatCallsSub">Loading...</div>
-      </div>
-    </div>
-    <div class="an-section-card">
-      <div class="an-section-title">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        Enquiries Over Time
-      </div>
-      <div class="an-chart-wrap">
-        <canvas id="anChartCanvas" class="an-chart-canvas"></canvas>
-        <div class="an-chart-empty" id="anChartEmpty" style="display:none;">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <p>No enquiry data yet for this period</p>
-        </div>
-      </div>
-      <div class="an-chart-legend">
-        <div class="an-legend-item"><div class="an-legend-dot" style="background:#1E73E8"></div> Views</div>
-        <div class="an-legend-item"><div class="an-legend-dot" style="background:#25D366"></div> WhatsApp</div>
-        <div class="an-legend-item"><div class="an-legend-dot" style="background:#F59E0B"></div> Calls</div>
-      </div>
-    </div>
-    <div class="an-bottom-grid">
-      <div class="an-section-card">
-        <div class="an-section-title">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Top Cities
-        </div>
-        <div class="an-cities-list" id="anCitiesList"><div class="an-empty">No city data yet</div></div>
-      </div>
-      <div class="an-section-card">
-        <div class="an-section-title">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#1E73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          Recent Activity
-        </div>
-        <div class="an-enquiry-list" id="anRecentList"><div class="an-empty">No activity yet</div></div>
-      </div>
-    </div>
-  </div><!-- /panelAnalytics -->
-
 </main>
 
 <!-- CROP MODAL -->
@@ -783,7 +639,7 @@
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <h3>Delete Profile?</h3>
-    <p>Your profile will be hidden and deactivated. You can recover it by emailing us at <a href="/cdn-cgi/l/email-protection#23404b465050404c4d4d4640570d4a4d63444e424a4f0d404c4e"><span class="__cf_email__" data-cfemail="7e1d161b0d0d1d1110101b1d0a5017103e19131f1712501d1113">[email&#160;protected]</span></a> within 30 days.</p>
+    <p>This will permanently remove your profile from ChessConnect. Students will no longer be able to find you. This cannot be undone.</p>
     <div class="confirm-btns">
       <button class="btn-cancel-confirm" onclick="closeConfirm()">Cancel</button>
       <button class="btn-delete-confirm" onclick="deleteProfile()">Yes, Delete</button>
@@ -793,51 +649,51 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── Supabase config ──
-  const SUPABASE_URL  = 'https://ipslahlvworwgzbgxppc.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwc2xhaGx2d29yd2d6Ymd4cHBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MjU5NDQsImV4cCI6MjA4ODMwMTk0NH0.P-Fogs9AckDvlImncV_F2JS3UIxZFHg8rOy6HYBQ888';
-  const STORAGE_KEY   = 'cc-auth';
+  const { createClient } = supabase;
+  const sb = createClient(
+    'https://ipslahlvworwgzbgxppc.supabase.co',
+    'sb_publishable_uEoVcVB_c-JDJRJZZdHQ3Q_C1wlMoaZ'
+  );
 
-  // ── Direct REST helpers ──
-  function getStoredSession() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch(e) { return null; }
-  }
-  function getToken() {
-    const s = getStoredSession();
-    return s?.access_token || null;
-  }
-  function getUser() {
-    const s = getStoredSession();
-    return s?.user || null;
-  }
-  function authHeaders(extra) {
-    return Object.assign({ 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' }, extra || {});
-  }
+  // ── EmailJS config ──
+  const EMAILJS_SERVICE_ID  = 'service_7sh2a9t';
+  const EMAILJS_TEMPLATE_ID = 'template_89iorxh';
+  const EMAILJS_PUBLIC_KEY  = 'l0nVoYn8YbCGx87Nj';
+  let emailJsReady = false;
+  try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); emailJsReady = true; } catch(e) {}
 
-  async function dbSelect(table, col, val) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${col}=eq.${encodeURIComponent(val)}&select=*&limit=1`, { headers: authHeaders() });
-    const text = await res.text();
-    const data = text ? JSON.parse(text) : null;
-    if (!res.ok) return { data: null, error: data || { message: 'Unknown error' } };
-    return { data: Array.isArray(data) && data.length > 0 ? data[0] : null, error: null };
-  }
-
-  async function dbUpdate(table, id, updates) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
-      method: 'PATCH',
-      headers: authHeaders({ 'Prefer': 'return=minimal' }),
-      body: JSON.stringify(updates)
-    });
-    if (res.status === 204 || res.ok) return { error: null };
-    let err; try { const t = await res.text(); err = t ? JSON.parse(t) : { message: 'Unknown error' }; } catch(e) { err = { message: 'Unknown error' }; }
-    return { error: err };
-  }
-
-  async function dbSelectMany(table, col, val, orderCol, orderAsc) {
-    const order = orderCol ? `&order=${orderCol}.${orderAsc ? 'asc' : 'desc'}` : '';
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${col}=eq.${encodeURIComponent(val)}&select=*${order}`, { headers: authHeaders() });
-    const data = await res.json();
-    return { data: Array.isArray(data) ? data : [] };
+  async function logSaveError(errorObj, context) {
+    const entry = {
+      source:     'dashboard',
+      error_code: errorObj?.code    || 'UNKNOWN',
+      error_msg:  errorObj?.message || String(errorObj) || 'Unknown error',
+      coach_name: context.name    || null,
+      fide_id:    context.fideId  || null,
+      city:       context.city    || null,
+      country:    context.country || null,
+      email:      context.email   || null,
+      step:       context.step    || null,
+      user_agent: navigator.userAgent.substring(0, 200),
+    };
+    try { await sb.from('registration_errors').insert([entry]); } catch(e) {}
+    try {
+      if (emailJsReady && EMAILJS_PUBLIC_KEY !== 'l0nVoYn8YbCGx87Nj') {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email:   'chessconnect.in@gmail.com',
+          subject:    'ChessConnect Dashboard Save Error — ' + entry.error_code,
+          coach_name: entry.coach_name || '—',
+          fide_id:    entry.fide_id    || '—',
+          city:       entry.city       || '—',
+          country:    entry.country    || '—',
+          email:      entry.email      || '—',
+          step:       entry.step       || '—',
+          error_code: entry.error_code,
+          error_msg:  entry.error_msg,
+          user_agent: entry.user_agent,
+          timestamp:  new Date().toISOString(),
+        });
+      }
+    } catch(e) {}
   }
 
   let currentUser = null;
@@ -875,36 +731,25 @@
   }
 
   // ── Init ──
-  (async () => {
-    const s = getStoredSession();
-    const user = getUser();
-    const token = getToken();
-    const expired = !s?.expires_at || (Date.now() / 1000) > s.expires_at;
-    if (user && token && !expired) {
-      currentUser = user;
+  window.addEventListener('DOMContentLoaded', async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      currentUser = session.user;
       await loadDashboard();
-    } else if (window.location.search.includes('code=') || window.location.hash.includes('access_token=')) {
-      // PKCE redirect in progress — use Supabase JS just for the exchange
-      const { createClient } = supabase;
-      const sbTemp = createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { storageKey: STORAGE_KEY, flowType: 'pkce', persistSession: true, detectSessionInUrl: true } });
-      sbTemp.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_IN' && session?.user && !currentUser) {
-          currentUser = session.user;
-          await loadDashboard();
-        }
-      });
-      // Fallback after 8s
-      setTimeout(async () => {
-        if (!currentUser) {
-          const user2 = getUser();
-          if (user2) { currentUser = user2; await loadDashboard(); }
-          else showScreen('authWall');
-        }
-      }, 8000);
     } else {
       showScreen('authWall');
     }
-  })();
+  });
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session && !currentUser) {
+      currentUser = session.user;
+      await loadDashboard();
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      showScreen('authWall');
+    }
+  });
 
   async function loadDashboard() {
     showScreen('loadingScreen');
@@ -916,7 +761,7 @@
     else avatarEl.textContent = name.charAt(0).toUpperCase();
     document.getElementById('dashUser').style.display = 'flex';
 
-    const { data, error } = await dbSelect('coaches', 'auth_user_id', currentUser.id);
+    const { data, error } = await sb.from('coaches').select('*').eq('auth_user_id', currentUser.id).maybeSingle();
     if (error) {
       console.error('Dashboard load error:', JSON.stringify(error));
       // Show error details on screen instead of silent fail
@@ -1112,11 +957,20 @@
     // photo_url is intentionally excluded — it is only set by admin approval
     // photo_pending_url is set directly by the upload flow, not via saveProfile
 
-    const { error } = await dbUpdate('coaches', coachProfile.id, updates);
+    const { error } = await sb.from('coaches').update(updates).eq('id', coachProfile.id);
     btn.disabled = false; spinner.classList.remove('show');
     if (error) {
       text.textContent = 'Save Changes';
-      showSaveError(error.message || JSON.stringify(error), error.code);
+      const ctx = {
+        name:    coachProfile.full_name,
+        fideId:  coachProfile.fide_id,
+        city:    document.getElementById('dCity').value,
+        country: document.getElementById('dCountry').value,
+        email:   currentUser?.email,
+        step:    'Dashboard — profile save',
+      };
+      await logSaveError(error, ctx);
+      showSaveError(error.message || 'Unknown error', error.code);
     } else {
       text.textContent = 'Save Changes';
       Object.assign(coachProfile, updates);
@@ -1126,7 +980,7 @@
 
   async function toggleLive() {
     const newState = !coachProfile.is_live;
-    const { error } = await dbUpdate('coaches', coachProfile.id, { is_live: newState });
+    const { error } = await sb.from('coaches').update({ is_live: newState }).eq('id', coachProfile.id);
     if (!error) {
       coachProfile.is_live = newState;
       updateStatusBanner(newState);
@@ -1140,21 +994,15 @@
 
   async function deleteProfile() {
     closeConfirm();
-    const { error } = await dbUpdate('coaches', coachProfile.id, { is_deleted: true, is_live: false });
-    if (!error) { localStorage.removeItem(STORAGE_KEY); window.location.href = 'index.html'; }
+    const { error } = await sb.from('coaches').delete().eq('id', coachProfile.id);
+    if (!error) { await sb.auth.signOut(); window.location.href = 'index.html'; }
     else { showToast('Error deleting profile. Please try again.', 'error'); }
   }
 
   async function signInWithGoogle() {
-    const { createClient } = supabase;
-    const sbAuth = createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { storageKey: STORAGE_KEY, flowType: 'pkce', persistSession: true, detectSessionInUrl: true } });
-    await sbAuth.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
+    await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
   }
-  async function signOut() {
-    try { await fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: 'POST', headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + getToken() } }); } catch(e) {}
-    localStorage.removeItem(STORAGE_KEY);
-    window.location.href = 'index.html';
-  }
+  async function signOut() { await sb.auth.signOut(); window.location.href = 'index.html'; }
 
   function showScreen(id) {
     ['loadingScreen','authWall','noProfileWall','dashMain'].forEach(s => {
@@ -1247,7 +1095,6 @@
 
   async function confirmCrop() {
     if (!cropper) return;
-    if (!coachProfile?.id) { showToast('Profile not loaded yet. Please wait.', 'error'); return; }
     const btn = document.querySelector('.btn-crop-confirm');
     btn.textContent = 'Uploading...'; btn.disabled = true;
 
@@ -1261,24 +1108,26 @@
       prog.classList.add('show'); bar.style.width = '30%'; stat.textContent = 'Uploading...';
 
       const fileName = `coach_${coachProfile.id}_${Date.now()}.jpg`;
-      const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/coach-photos/${fileName}`, {
-        method: 'POST',
-        headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'image/jpeg', 'x-upsert': 'true' },
-        body: blob
+      const { data, error } = await sb.storage.from('coach-photos').upload(fileName, blob, {
+        cacheControl: '3600', upsert: true, contentType: 'image/jpeg'
       });
       bar.style.width = '80%';
-      if (!uploadRes.ok) {
+      if (error) {
         prog.classList.remove('show'); bar.style.width = '0%';
-        showToast('Upload failed. Please try again.', 'error');
+        showToast('Upload failed: ' + error.message, 'error');
         btn.textContent = 'Use This Photo'; btn.disabled = false;
         return;
       }
-      const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/coach-photos/${fileName}`;
+      const { data: urlData } = sb.storage.from('coach-photos').getPublicUrl(fileName);
+      const publicUrl = urlData.publicUrl;
       bar.style.width = '100%'; stat.textContent = 'Done!';
       setTimeout(() => { prog.classList.remove('show'); bar.style.width = '0%'; }, 1200);
 
       // Save to photo_pending_url, reset photo_reviewed
-      await dbUpdate('coaches', coachProfile.id, { photo_pending_url: publicUrl, photo_reviewed: false });
+      await sb.from('coaches').update({
+        photo_pending_url: publicUrl,
+        photo_reviewed: false
+      }).eq('id', coachProfile.id);
 
       coachProfile.photo_pending_url = publicUrl;
       coachProfile.photo_reviewed = false;
@@ -1296,7 +1145,11 @@
 
   async function removePhoto() {
     // Clear both pending and approved photo
-    await dbUpdate('coaches', coachProfile.id, { photo_url: null, photo_pending_url: null, photo_reviewed: false });
+    await sb.from('coaches').update({
+      photo_url: null,
+      photo_pending_url: null,
+      photo_reviewed: false
+    }).eq('id', coachProfile.id);
     coachProfile.photo_url = null;
     coachProfile.photo_pending_url = null;
 
@@ -1400,137 +1253,6 @@
       setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
     });
   }
-
-  // ── TAB SWITCHER ──
-  function switchTab(tab) {
-    document.getElementById('panelProfile').classList.toggle('active', tab === 'profile');
-    document.getElementById('panelAnalytics').classList.toggle('active', tab === 'analytics');
-    document.getElementById('tabBtnProfile').classList.toggle('active', tab === 'profile');
-    document.getElementById('tabBtnAnalytics').classList.toggle('active', tab === 'analytics');
-    if (tab === 'analytics' && coachProfile && an_allEnquiries.length === 0 && !an_loaded) {
-      an_loadEnquiries();
-    }
-  }
-
-  // ── ANALYTICS ──
-  let an_allEnquiries = [];
-  let an_currentRange = 7;
-  let an_loaded = false;
-
-  async function an_loadEnquiries() {
-    if (!coachProfile) return;
-    an_loaded = true;
-    const { data: enqs } = await dbSelectMany('enquiries', 'coach_id', coachProfile.id, 'created_at', false);
-    an_allEnquiries = enqs || [];
-    an_renderAll();
-  }
-
-  function an_setRange(days, btn) {
-    an_currentRange = days;
-    document.querySelectorAll('.an-time-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    an_renderAll();
-  }
-
-  function an_getFiltered() {
-    if (an_currentRange === 0) return an_allEnquiries;
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - an_currentRange);
-    return an_allEnquiries.filter(e => new Date(e.created_at) >= cutoff);
-  }
-
-  function an_renderAll() {
-    const data = an_getFiltered();
-    an_renderStats(data); an_renderChart(data); an_renderCities(data); an_renderRecent(data);
-  }
-
-  function an_renderStats(data) {
-    const views = data.filter(e => e.type==='view').length;
-    const wa    = data.filter(e => e.type==='whatsapp').length;
-    const calls = data.filter(e => e.type==='call').length;
-    document.getElementById('anStatViews').textContent = views;
-    document.getElementById('anStatWa').textContent    = wa;
-    document.getElementById('anStatCalls').textContent = calls;
-    const total = views + wa + calls;
-    const label = an_currentRange === 0 ? 'all time' : `last ${an_currentRange} days`;
-    document.getElementById('anStatViewsSub').textContent  = total > 0 ? `${((views/total)*100).toFixed(0)}% of total · ${label}` : `No data · ${label}`;
-    document.getElementById('anStatWaSub').textContent     = wa > 0 ? `${((wa/(views||1))*100).toFixed(0)}% view→tap rate` : `No taps · ${label}`;
-    document.getElementById('anStatCallsSub').textContent  = calls > 0 ? `${((calls/(views||1))*100).toFixed(0)}% view→call rate` : `No calls · ${label}`;
-  }
-
-  function an_renderChart(data) {
-    const canvas = document.getElementById('anChartCanvas');
-    const empty  = document.getElementById('anChartEmpty');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const days = an_currentRange === 0 ? 30 : an_currentRange;
-    const buckets = [];
-    for (let i = days-1; i >= 0; i--) {
-      const d = new Date(); d.setDate(d.getDate()-i);
-      buckets.push({ label: d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}), date: d.toDateString(), views:0, wa:0, calls:0 });
-    }
-    data.forEach(e => {
-      const b = buckets.find(b => b.date === new Date(e.created_at).toDateString());
-      if (!b) return;
-      if (e.type==='view') b.views++; else if (e.type==='whatsapp') b.wa++; else if (e.type==='call') b.calls++;
-    });
-    const hasData = buckets.some(b => b.views+b.wa+b.calls > 0);
-    if (!hasData) { canvas.style.display='none'; empty.style.display='flex'; return; }
-    canvas.style.display='block'; empty.style.display='none';
-    canvas.width = canvas.parentElement.clientWidth || 600; canvas.height = 180;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const W=canvas.width, H=canvas.height, padL=36, padR=16, padT=16, padB=32;
-    const chartW=W-padL-padR, chartH=H-padT-padB;
-    const maxVal = Math.max(...buckets.map(b=>b.views+b.wa+b.calls),1);
-    const colW = chartW/buckets.length;
-    ctx.strokeStyle='#E2E8F4'; ctx.lineWidth=1;
-    for (let i=0;i<=4;i++) {
-      const y=padT+(chartH/4)*i;
-      ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(W-padR,y); ctx.stroke();
-      ctx.fillStyle='#7A8AA0'; ctx.font='10px sans-serif'; ctx.textAlign='right';
-      ctx.fillText(Math.round(maxVal-(maxVal/4)*i), padL-4, y+3);
-    }
-    buckets.forEach((b,i) => {
-      const x=padL+i*colW+colW*0.15, bW=colW*0.7; let yB=padT+chartH;
-      const bar = (val,color) => {
-        if (!val) return; const bH=(val/maxVal)*chartH; ctx.fillStyle=color;
-        ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(x,yB-bH,bW,bH,[3,3,0,0]); else ctx.rect(x,yB-bH,bW,bH);
-        ctx.fill(); yB-=bH;
-      };
-      bar(b.calls,'#F59E0B'); bar(b.wa,'#25D366'); bar(b.views,'#1E73E8');
-    });
-    const every=Math.ceil(buckets.length/8);
-    ctx.fillStyle='#7A8AA0'; ctx.font='10px sans-serif'; ctx.textAlign='center';
-    buckets.forEach((b,i) => { if (i%every!==0) return; ctx.fillText(b.label, padL+i*colW+colW/2, H-6); });
-  }
-
-  function an_renderCities(data) {
-    const el = document.getElementById('anCitiesList');
-    const cc = {};
-    data.forEach(e => { if (e.student_city) cc[e.student_city]=(cc[e.student_city]||0)+1; });
-    const sorted = Object.entries(cc).sort((a,b)=>b[1]-a[1]).slice(0,6);
-    if (!sorted.length) { el.innerHTML='<div class="an-empty">No city data yet</div>'; return; }
-    const max = sorted[0][1];
-    el.innerHTML = sorted.map(([city,count],i) => `
-      <div class="an-city-row">
-        <span class="an-city-rank">${i+1}</span>
-        <span class="an-city-name">${city}</span>
-        <div class="an-city-bar-wrap"><div class="an-city-bar" style="width:${(count/max*100).toFixed(0)}%"></div></div>
-        <span class="an-city-count">${count}</span>
-      </div>`).join('');
-  }
-
-  function an_renderRecent(data) {
-    const el = document.getElementById('anRecentList');
-    const recent = [...data].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,10);
-    if (!recent.length) { el.innerHTML='<div class="an-empty">No activity yet</div>'; return; }
-    el.innerHTML = recent.map(e => {
-      const lbl = e.type==='view'?'View':e.type==='whatsapp'?'WhatsApp':'Call';
-      const cls = e.type==='view'?'an-badge-view':e.type==='whatsapp'?'an-badge-wa':'an-badge-call';
-      return `<div class="an-enquiry-row">
-        <div class="an-enquiry-type">
-          <span class="an-badge ${cls}">${lbl}</span>
-          ${e.student_city?`<span style="font-size:0.8rem;color:var(--sub)">from ${e.student_city}</span>`:''}
-        </div>
-        <span class="an-enquiry-time">${
+</script>
+</body>
+</html>
