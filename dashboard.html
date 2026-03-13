@@ -797,7 +797,7 @@
   const sb = createClient(
     'https://ipslahlvworwgzbgxppc.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwc2xhaGx2d29yd2d6Ymd4cHBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MjU5NDQsImV4cCI6MjA4ODMwMTk0NH0.P-Fogs9AckDvlImncV_F2JS3UIxZFHg8rOy6HYBQ888',
-    { auth: { storageKey: 'cc-auth', flowType: 'pkce' } }
+    { auth: { storageKey: 'cc-auth', flowType: 'pkce', persistSession: true, detectSessionInUrl: true } }
   );
 
   // ── EmailJS config ──
@@ -875,36 +875,31 @@
   }
 
   // ── Init ──
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'INITIAL_SESSION') {
-      if (session?.user) {
-        currentUser = session.user;
-        await loadDashboard();
-      } else {
-        showScreen('authWall');
-      }
-    } else if (event === 'SIGNED_IN') {
-      if (!currentUser) {
-        currentUser = session.user;
-        await loadDashboard();
-      }
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
+  (async () => {
+    // 1. Manually trigger the session check to resolve the PKCE exchange
+    const { data: { session }, error } = await sb.auth.getSession();
+
+    if (session?.user) {
+      currentUser = session.user;
+      await loadDashboard();
+    } else if (!window.location.hash.includes('access_token=') && !window.location.search.includes('code=')) {
+      // Only show auth wall if we aren't currently in the middle of a redirect
       showScreen('authWall');
     }
-  });
 
-  setTimeout(async () => {
-    if (!currentUser) {
-      const { data: { session } } = await sb.auth.getSession();
-      if (session?.user) {
-        currentUser = session.user;
-        await loadDashboard();
-      } else {
+    // 2. Keep the listener for subsequent changes (tab sync, sign out, etc.)
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+        if (!currentUser) {
+          currentUser = session.user;
+          await loadDashboard();
+        }
+      } else if (event === 'SIGNED_OUT') {
+        currentUser = null;
         showScreen('authWall');
       }
-    }
-  }, 3000);
+    });
+  })();
 
   async function loadDashboard() {
     showScreen('loadingScreen');
