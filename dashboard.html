@@ -1003,7 +1003,7 @@ document.getElementById('dCountry').value = COUNTRY_MAP[p.country] || p.country 
   async function signInWithGoogle() {
     await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
   }
-  async function signOut() { await sb.auth.signOut(); window.location.href = 'index.html'; }
+  async function signOut() { try { await sb.auth.signOut(); } catch(e) {} finally { localStorage.clear(); window.location.href = 'index.html'; } }
 
   function showScreen(id) {
     ['loadingScreen','authWall','noProfileWall','dashMain'].forEach(s => {
