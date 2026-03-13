@@ -787,7 +787,7 @@
     // WhatsApp — split stored value (+91XXXXXXXXXX) into code + number
     const storedWa = p.whatsapp || '';
     let waCode = '+91', waNum = storedWa;
-    const codeMatch = storedWa.match(/^(\+\d{1,4}?)(\d{10,})$/);
+    const codeMatch = storedWa.match(/^(\+\d{1,4})(.*)/);
     if (codeMatch) { waCode = codeMatch[1]; waNum = codeMatch[2].trim(); }
     // Set code dropdown
     const codeSel = document.getElementById('dWaCode');
@@ -795,8 +795,7 @@
     document.getElementById('dWhatsapp').value = waNum;
 
     document.getElementById('dCity').value       = p.city || '';
-        const COUNTRY_MAP = { 'IND':'India','USA':'United States','GBR':'United Kingdom','UAE':'United Arab Emirates','AUS':'Australia','GER':'Germany','FRA':'France','ESP':'Spain','RUS':'Russia','CHN':'China','JPN':'Japan','KOR':'South Korea','BRA':'Brazil','ARG':'Argentina','MEX':'Mexico' };
-document.getElementById('dCountry').value = COUNTRY_MAP[p.country] || p.country || 'India';
+        document.getElementById('dCountry').value    = p.country || 'India';
     document.getElementById('dBio').value        = p.bio || '';
     updateBioCount();
     document.getElementById('dExperience').value = p.experience || '';
