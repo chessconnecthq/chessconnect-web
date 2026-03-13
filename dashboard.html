@@ -787,7 +787,7 @@
     // WhatsApp — split stored value (+91XXXXXXXXXX) into code + number
     const storedWa = p.whatsapp || '';
     let waCode = '+91', waNum = storedWa;
-    const codeMatch = storedWa.match(/^(\+\d{1,4})(.*)/);
+    const codeMatch = storedWa.match(/^(\+91|\+1|\+44|\+971|\+61|\+49|\+7|\+86|\+33|\+34|\+31|\+47|\+994|\+374|\+995|\+380|\+48|\+36|\+40|\+359|\+381|\+420|\+90|\+98|\+972|\+20|\+27|\+234|\+880|\+94|\+92|\+977|\+65|\+60|\+62|\+63|\+84|\+81|\+82|\+55|\+54|\+52|\+57|\+51|\+53)(\d+)$/);
     if (codeMatch) { waCode = codeMatch[1]; waNum = codeMatch[2].trim(); }
     // Set code dropdown
     const codeSel = document.getElementById('dWaCode');
