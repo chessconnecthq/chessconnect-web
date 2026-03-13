@@ -1121,20 +1121,21 @@ document.getElementById('dCountry').value = COUNTRY_MAP[p.country] || p.country 
       const bar  = document.getElementById('uploadBar');
       const stat = document.getElementById('uploadStatus');
       prog.classList.add('show'); bar.style.width = '30%'; stat.textContent = 'Uploading...';
-
       const fileName = `coach_${coachProfile.id}_${Date.now()}.jpg`;
-      const { data, error } = await sb.storage.from('coach-photos').upload(fileName, blob, {
-        cacheControl: '3600', upsert: true, contentType: 'image/jpeg'
-      });
-      bar.style.width = '80%';
-      if (error) {
-        prog.classList.remove('show'); bar.style.width = '0%';
-        showToast('Upload failed: ' + error.message, 'error');
-        btn.textContent = 'Use This Photo'; btn.disabled = false;
-        return;
-      }
-      const { data: urlData } = sb.storage.from('coach-photos').getPublicUrl(fileName);
-      const publicUrl = urlData.publicUrl;
+const token = (await sb.auth.getSession()).data.session?.access_token;
+const uploadRes = await fetch(`https://ipslahlvworwgzbgxppc.supabase.co/storage/v1/object/coach-photos/${fileName}`, {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'image/jpeg', 'x-upsert': 'true' },
+  body: blob
+});
+bar.style.width = '80%';
+if (!uploadRes.ok) {
+  prog.classList.remove('show'); bar.style.width = '0%';
+  showToast('Upload failed. Please try again.', 'error');
+  btn.textContent = 'Use This Photo'; btn.disabled = false;
+  return;
+}
+const publicUrl = `https://ipslahlvworwgzbgxppc.supabase.co/storage/v1/object/public/coach-photos/${fileName}`;      
       bar.style.width = '100%'; stat.textContent = 'Done!';
       setTimeout(() => { prog.classList.remove('show'); bar.style.width = '0%'; }, 1200);
 
