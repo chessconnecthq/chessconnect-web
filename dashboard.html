@@ -654,7 +654,7 @@
             <input type="text" id="dRating" readonly/>
           </div>
         </div>
-        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a></p>
+        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at <a href="/cdn-cgi/l/email-protection#fb98939e8888989495959e988fd59295bb9c969a9297d5989496"><span class="__cf_email__" data-cfemail="f4979c918787979b9a9a919780da9d9ab49399959d98da979b99">[email&#160;protected]</span></a></p>
       </div>
 
       <button class="btn-save" id="saveBtn" onclick="saveProfile()">
@@ -783,7 +783,7 @@
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <h3>Delete Profile?</h3>
-    <p>Your profile will be hidden and deactivated. You can recover it by emailing us at <a href="mailto:chessconnect.in@gmail.com">chessconnect.in@gmail.com</a> within 30 days.</p>
+    <p>Your profile will be hidden and deactivated. You can recover it by emailing us at <a href="/cdn-cgi/l/email-protection#f6959e93858595999898939582d89f98b6919b979f9ad895999b"><span class="__cf_email__" data-cfemail="67040f02141404080909020413490e0927000a060e0b4904080a">[email&#160;protected]</span></a> within 30 days.</p>
     <div class="confirm-btns">
       <button class="btn-cancel-confirm" onclick="closeConfirm()">Cancel</button>
       <button class="btn-delete-confirm" onclick="deleteProfile()">Yes, Delete</button>
@@ -792,7 +792,7 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const { createClient } = supabase;
   const sb = createClient(
     'https://ipslahlvworwgzbgxppc.supabase.co',
@@ -893,6 +893,18 @@
       showScreen('authWall');
     }
   });
+
+  setTimeout(async () => {
+    if (!currentUser) {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session?.user) {
+        currentUser = session.user;
+        await loadDashboard();
+      } else {
+        showScreen('authWall');
+      }
+    }
+  }, 3000);
 
   async function loadDashboard() {
     showScreen('loadingScreen');
@@ -1529,19 +1541,4 @@
           <span class="an-badge ${cls}">${lbl}</span>
           ${e.student_city?`<span style="font-size:0.8rem;color:var(--sub)">from ${e.student_city}</span>`:''}
         </div>
-        <span class="an-enquiry-time">${an_timeAgo(new Date(e.created_at))}</span>
-      </div>`;
-    }).join('');
-  }
-
-  function an_timeAgo(date) {
-    const diff = Math.floor((new Date() - date) / 1000);
-    if (diff < 60) return 'just now';
-    if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
-    return `${Math.floor(diff/86400)}d ago`;
-  }
-</script>
-
-</body>
-</html>
+        <span class="an-enquiry-time">${
