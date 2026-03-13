@@ -795,7 +795,8 @@
     document.getElementById('dWhatsapp').value = waNum;
 
     document.getElementById('dCity').value       = p.city || '';
-        document.getElementById('dCountry').value    = p.country || 'India';
+        const COUNTRY_MAP = { 'IND':'India','USA':'United States','GBR':'United Kingdom','UAE':'United Arab Emirates','AUS':'Australia','GER':'Germany','FRA':'France','ESP':'Spain','RUS':'Russia','CHN':'China','JPN':'Japan','KOR':'South Korea','BRA':'Brazil','ARG':'Argentina','MEX':'Mexico' };
+document.getElementById('dCountry').value = COUNTRY_MAP[p.country] || p.country || 'India';
     document.getElementById('dBio').value        = p.bio || '';
     updateBioCount();
     document.getElementById('dExperience').value = p.experience || '';
