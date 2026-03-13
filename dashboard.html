@@ -654,7 +654,7 @@
             <input type="text" id="dRating" readonly/>
           </div>
         </div>
-        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at <a href="/cdn-cgi/l/email-protection#fb98939e8888989495959e988fd59295bb9c969a9297d5989496"><span class="__cf_email__" data-cfemail="f4979c918787979b9a9a919780da9d9ab49399959d98da979b99">[email&#160;protected]</span></a></p>
+        <p style="font-size:0.8rem;color:#999;margin-top:0.5rem;">To update FIDE details, contact us at <a href="/cdn-cgi/l/email-protection#711219140202121e1f1f1412055f181f31161c10181d5f121e1c"><span class="__cf_email__" data-cfemail="56353e33252535393838333522783f3816313b373f3a7835393b">[email&#160;protected]</span></a></p>
       </div>
 
       <button class="btn-save" id="saveBtn" onclick="saveProfile()">
@@ -783,7 +783,7 @@
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <h3>Delete Profile?</h3>
-    <p>Your profile will be hidden and deactivated. You can recover it by emailing us at <a href="/cdn-cgi/l/email-protection#f6959e93858595999898939582d89f98b6919b979f9ad895999b"><span class="__cf_email__" data-cfemail="67040f02141404080909020413490e0927000a060e0b4904080a">[email&#160;protected]</span></a> within 30 days.</p>
+    <p>Your profile will be hidden and deactivated. You can recover it by emailing us at <a href="/cdn-cgi/l/email-protection#23404b465050404c4d4d4640570d4a4d63444e424a4f0d404c4e"><span class="__cf_email__" data-cfemail="7e1d161b0d0d1d1110101b1d0a5017103e19131f1712501d1113">[email&#160;protected]</span></a> within 30 days.</p>
     <div class="confirm-btns">
       <button class="btn-cancel-confirm" onclick="closeConfirm()">Cancel</button>
       <button class="btn-delete-confirm" onclick="deleteProfile()">Yes, Delete</button>
@@ -793,51 +793,51 @@
 <div class="toast" id="toast"></div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  const { createClient } = supabase;
-  const sb = createClient(
-    'https://ipslahlvworwgzbgxppc.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwc2xhaGx2d29yd2d6Ymd4cHBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MjU5NDQsImV4cCI6MjA4ODMwMTk0NH0.P-Fogs9AckDvlImncV_F2JS3UIxZFHg8rOy6HYBQ888',
-    { auth: { storageKey: 'cc-auth', flowType: 'pkce', persistSession: true, detectSessionInUrl: true } }
-  );
+  // ── Supabase config ──
+  const SUPABASE_URL  = 'https://ipslahlvworwgzbgxppc.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwc2xhaGx2d29yd2d6Ymd4cHBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MjU5NDQsImV4cCI6MjA4ODMwMTk0NH0.P-Fogs9AckDvlImncV_F2JS3UIxZFHg8rOy6HYBQ888';
+  const STORAGE_KEY   = 'cc-auth';
 
-  // ── EmailJS config ──
-  const EMAILJS_SERVICE_ID  = 'service_7sh2a9t';
-  const EMAILJS_TEMPLATE_ID = 'template_89iorxh';
-  const EMAILJS_PUBLIC_KEY  = 'l0nVoYn8YbCGx87Nj';
-  let emailJsReady = false;
-  
-  async function logSaveError(errorObj, context) {
-    const entry = {
-      source:     'dashboard',
-      error_code: errorObj?.code    || 'UNKNOWN',
-      error_msg:  errorObj?.message || String(errorObj) || 'Unknown error',
-      coach_name: context.name    || null,
-      fide_id:    context.fideId  || null,
-      city:       context.city    || null,
-      country:    context.country || null,
-      email:      context.email   || null,
-      step:       context.step    || null,
-      user_agent: navigator.userAgent.substring(0, 200),
-    };
-    try { await sb.from('registration_errors').insert([entry]); } catch(e) {}
-    try {
-      if (emailJsReady && EMAILJS_PUBLIC_KEY !== 'l0nVoYn8YbCGx87Nj') {
-        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          to_email:   'chessconnect.in@gmail.com',
-          subject:    'ChessConnect Dashboard Save Error — ' + entry.error_code,
-          coach_name: entry.coach_name || '—',
-          fide_id:    entry.fide_id    || '—',
-          city:       entry.city       || '—',
-          country:    entry.country    || '—',
-          email:      entry.email      || '—',
-          step:       entry.step       || '—',
-          error_code: entry.error_code,
-          error_msg:  entry.error_msg,
-          user_agent: entry.user_agent,
-          timestamp:  new Date().toISOString(),
-        });
-      }
-    } catch(e) {}
+  // ── Direct REST helpers ──
+  function getStoredSession() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch(e) { return null; }
+  }
+  function getToken() {
+    const s = getStoredSession();
+    return s?.access_token || null;
+  }
+  function getUser() {
+    const s = getStoredSession();
+    return s?.user || null;
+  }
+  function authHeaders(extra) {
+    return Object.assign({ 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' }, extra || {});
+  }
+
+  async function dbSelect(table, col, val) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${col}=eq.${encodeURIComponent(val)}&select=*&limit=1`, { headers: authHeaders() });
+    const text = await res.text();
+    const data = text ? JSON.parse(text) : null;
+    if (!res.ok) return { data: null, error: data || { message: 'Unknown error' } };
+    return { data: Array.isArray(data) && data.length > 0 ? data[0] : null, error: null };
+  }
+
+  async function dbUpdate(table, id, updates) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: authHeaders({ 'Prefer': 'return=minimal' }),
+      body: JSON.stringify(updates)
+    });
+    if (res.status === 204 || res.ok) return { error: null };
+    let err; try { const t = await res.text(); err = t ? JSON.parse(t) : { message: 'Unknown error' }; } catch(e) { err = { message: 'Unknown error' }; }
+    return { error: err };
+  }
+
+  async function dbSelectMany(table, col, val, orderCol, orderAsc) {
+    const order = orderCol ? `&order=${orderCol}.${orderAsc ? 'asc' : 'desc'}` : '';
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${col}=eq.${encodeURIComponent(val)}&select=*${order}`, { headers: authHeaders() });
+    const data = await res.json();
+    return { data: Array.isArray(data) ? data : [] };
   }
 
   let currentUser = null;
@@ -876,29 +876,34 @@
 
   // ── Init ──
   (async () => {
-    // 1. Manually trigger the session check to resolve the PKCE exchange
-    const { data: { session }, error } = await sb.auth.getSession();
-
-    if (session?.user) {
-      currentUser = session.user;
+    const s = getStoredSession();
+    const user = getUser();
+    const token = getToken();
+    const expired = !s?.expires_at || (Date.now() / 1000) > s.expires_at;
+    if (user && token && !expired) {
+      currentUser = user;
       await loadDashboard();
-    } else if (!window.location.hash.includes('access_token=') && !window.location.search.includes('code=')) {
-      // Only show auth wall if we aren't currently in the middle of a redirect
-      showScreen('authWall');
-    }
-
-    // 2. Keep the listener for subsequent changes (tab sync, sign out, etc.)
-    sb.auth.onAuthStateChange(async (event, session) => {
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
-        if (!currentUser) {
+    } else if (window.location.search.includes('code=') || window.location.hash.includes('access_token=')) {
+      // PKCE redirect in progress — use Supabase JS just for the exchange
+      const { createClient } = supabase;
+      const sbTemp = createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { storageKey: STORAGE_KEY, flowType: 'pkce', persistSession: true, detectSessionInUrl: true } });
+      sbTemp.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user && !currentUser) {
           currentUser = session.user;
           await loadDashboard();
         }
-      } else if (event === 'SIGNED_OUT') {
-        currentUser = null;
-        showScreen('authWall');
-      }
-    });
+      });
+      // Fallback after 8s
+      setTimeout(async () => {
+        if (!currentUser) {
+          const user2 = getUser();
+          if (user2) { currentUser = user2; await loadDashboard(); }
+          else showScreen('authWall');
+        }
+      }, 8000);
+    } else {
+      showScreen('authWall');
+    }
   })();
 
   async function loadDashboard() {
@@ -911,7 +916,7 @@
     else avatarEl.textContent = name.charAt(0).toUpperCase();
     document.getElementById('dashUser').style.display = 'flex';
 
-    const { data, error } = await sb.from('coaches').select('*').eq('auth_user_id', currentUser.id).maybeSingle();
+    const { data, error } = await dbSelect('coaches', 'auth_user_id', currentUser.id);
     if (error) {
       console.error('Dashboard load error:', JSON.stringify(error));
       // Show error details on screen instead of silent fail
@@ -1107,20 +1112,11 @@
     // photo_url is intentionally excluded — it is only set by admin approval
     // photo_pending_url is set directly by the upload flow, not via saveProfile
 
-    const { error } = await sb.from('coaches').update(updates).eq('id', coachProfile.id);
+    const { error } = await dbUpdate('coaches', coachProfile.id, updates);
     btn.disabled = false; spinner.classList.remove('show');
     if (error) {
       text.textContent = 'Save Changes';
-      const ctx = {
-        name:    coachProfile.full_name,
-        fideId:  coachProfile.fide_id,
-        city:    document.getElementById('dCity').value,
-        country: document.getElementById('dCountry').value,
-        email:   currentUser?.email,
-        step:    'Dashboard — profile save',
-      };
-      await logSaveError(error, ctx);
-      showSaveError(error.message || 'Unknown error', error.code);
+      showSaveError(error.message || JSON.stringify(error), error.code);
     } else {
       text.textContent = 'Save Changes';
       Object.assign(coachProfile, updates);
@@ -1130,7 +1126,7 @@
 
   async function toggleLive() {
     const newState = !coachProfile.is_live;
-    const { error } = await sb.from('coaches').update({ is_live: newState }).eq('id', coachProfile.id);
+    const { error } = await dbUpdate('coaches', coachProfile.id, { is_live: newState });
     if (!error) {
       coachProfile.is_live = newState;
       updateStatusBanner(newState);
@@ -1144,15 +1140,21 @@
 
   async function deleteProfile() {
     closeConfirm();
-    const { error } = await sb.from('coaches').update({ is_deleted: true, is_live: false }).eq('id', coachProfile.id);
-    if (!error) { await sb.auth.signOut(); window.location.href = 'index.html'; }
+    const { error } = await dbUpdate('coaches', coachProfile.id, { is_deleted: true, is_live: false });
+    if (!error) { localStorage.removeItem(STORAGE_KEY); window.location.href = 'index.html'; }
     else { showToast('Error deleting profile. Please try again.', 'error'); }
   }
 
   async function signInWithGoogle() {
-    await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
+    const { createClient } = supabase;
+    const sbAuth = createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { storageKey: STORAGE_KEY, flowType: 'pkce', persistSession: true, detectSessionInUrl: true } });
+    await sbAuth.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://chessconnecthq.github.io/chessconnect-web/dashboard.html' } });
   }
-  async function signOut() { try { await sb.auth.signOut(); } catch(e) {} finally { window.location.href = 'index.html'; } }
+  async function signOut() {
+    try { await fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: 'POST', headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + getToken() } }); } catch(e) {}
+    localStorage.removeItem(STORAGE_KEY);
+    window.location.href = 'index.html';
+  }
 
   function showScreen(id) {
     ['loadingScreen','authWall','noProfileWall','dashMain'].forEach(s => {
@@ -1245,6 +1247,7 @@
 
   async function confirmCrop() {
     if (!cropper) return;
+    if (!coachProfile?.id) { showToast('Profile not loaded yet. Please wait.', 'error'); return; }
     const btn = document.querySelector('.btn-crop-confirm');
     btn.textContent = 'Uploading...'; btn.disabled = true;
 
@@ -1258,26 +1261,24 @@
       prog.classList.add('show'); bar.style.width = '30%'; stat.textContent = 'Uploading...';
 
       const fileName = `coach_${coachProfile.id}_${Date.now()}.jpg`;
-      const { data, error } = await sb.storage.from('coach-photos').upload(fileName, blob, {
-        cacheControl: '3600', upsert: true, contentType: 'image/jpeg'
+      const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/coach-photos/${fileName}`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'image/jpeg', 'x-upsert': 'true' },
+        body: blob
       });
       bar.style.width = '80%';
-      if (error) {
+      if (!uploadRes.ok) {
         prog.classList.remove('show'); bar.style.width = '0%';
-        showToast('Upload failed: ' + error.message, 'error');
+        showToast('Upload failed. Please try again.', 'error');
         btn.textContent = 'Use This Photo'; btn.disabled = false;
         return;
       }
-      const { data: urlData } = sb.storage.from('coach-photos').getPublicUrl(fileName);
-      const publicUrl = urlData.publicUrl;
+      const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/coach-photos/${fileName}`;
       bar.style.width = '100%'; stat.textContent = 'Done!';
       setTimeout(() => { prog.classList.remove('show'); bar.style.width = '0%'; }, 1200);
 
       // Save to photo_pending_url, reset photo_reviewed
-      await sb.from('coaches').update({
-        photo_pending_url: publicUrl,
-        photo_reviewed: false
-      }).eq('id', coachProfile.id);
+      await dbUpdate('coaches', coachProfile.id, { photo_pending_url: publicUrl, photo_reviewed: false });
 
       coachProfile.photo_pending_url = publicUrl;
       coachProfile.photo_reviewed = false;
@@ -1295,11 +1296,7 @@
 
   async function removePhoto() {
     // Clear both pending and approved photo
-    await sb.from('coaches').update({
-      photo_url: null,
-      photo_pending_url: null,
-      photo_reviewed: false
-    }).eq('id', coachProfile.id);
+    await dbUpdate('coaches', coachProfile.id, { photo_url: null, photo_pending_url: null, photo_reviewed: false });
     coachProfile.photo_url = null;
     coachProfile.photo_pending_url = null;
 
@@ -1423,7 +1420,7 @@
   async function an_loadEnquiries() {
     if (!coachProfile) return;
     an_loaded = true;
-    const { data: enqs } = await sb.from('enquiries').select('*').eq('coach_id', coachProfile.id).order('created_at', { ascending: false });
+    const { data: enqs } = await dbSelectMany('enquiries', 'coach_id', coachProfile.id, 'created_at', false);
     an_allEnquiries = enqs || [];
     an_renderAll();
   }
