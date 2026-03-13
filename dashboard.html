@@ -735,7 +735,7 @@
     try {
       const { data: { session } } = await Promise.race([
         sb.auth.getSession(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+        new Promise((resolve) => setTimeout(() => resolve({ data: { session: null } }), 5000))
       ]);
       if (session) {
         currentUser = session.user;
