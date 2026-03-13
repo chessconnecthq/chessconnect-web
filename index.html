@@ -2243,6 +2243,15 @@
     }
   });
 
+  function goToDashboard(e) {
+  e.preventDefault();
+  const session = localStorage.getItem('cc-auth');
+  if (session) {
+    localStorage.setItem('sb-ipslahlvworwgzbgxppc-auth-token', session);
+  }
+  window.location.href = 'dashboard.html';
+}
+
   async function signOutCoach() {
     await sb.auth.signOut();
     currentUser = null;
