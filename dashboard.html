@@ -732,12 +732,26 @@
 
   // ── Init ──
   window.addEventListener('DOMContentLoaded', async () => {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session) {
-      currentUser = session.user;
-      await loadDashboard();
-    } else {
-      showScreen('authWall');
+    try {
+      const { data: { session } } = await Promise.race([
+        sb.auth.getSession(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+      ]);
+      if (session) {
+        currentUser = session.user;
+        await loadDashboard();
+      } else {
+        showScreen('authWall');
+      }
+    } catch(e) {
+      // Fallback: read session directly from localStorage
+      const stored = JSON.parse(localStorage.getItem('sb-ipslahlvworwgzbgxppc-auth-token') || localStorage.getItem('cc-auth') || 'null');
+      if (stored?.user) {
+        currentUser = stored.user;
+        await loadDashboard();
+      } else {
+        showScreen('authWall');
+      }
     }
   });
 
