@@ -2242,7 +2242,7 @@ function updateDisplays() {
   const p=PFX[theme]; if(!p) return;
   for(let i=0;i<2;i++){
     const el=document.getElementById(p+'-t'+(i+1));
-    if(el) el.textContent=fmt(Math.ceil(times[i]));
+    if(el) el.textContent=fmt(Math.floor(times[i]));
     const me=document.getElementById(p+'-m'+(i+1));
     if(me) me.textContent=moves[i]+(moves[i]===1?' move':' moves');
     const ie=document.getElementById(p+'-i'+(i+1));
@@ -2380,7 +2380,7 @@ function tick() {
 
   // Tick sound — once per second when under 10s
   if(times[active]<=10&&times[active]>0){
-    const wholeSecond=Math.ceil(times[active]);
+    const wholeSecond=Math.floor(times[active]);
     if(wholeSecond!==lastTickSecond){
       lastTickSecond=wholeSecond;
       playTick();
