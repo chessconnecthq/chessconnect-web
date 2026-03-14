@@ -2101,18 +2101,10 @@ function launchClock() {
     if(tot>0){ baseTime=tot; inc=i; }
     else { alert('Please set a valid time (at least 1 second).'); return; }
   }
-  initClockView();
-  show('screen3');
-  requestWakeLock();
-
-// Lock orientation during the game
-try {
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('landscape');
-  }
-} catch (e) {
-  console.log("Orientation lock failed:", e);
-}
+initClockView();
+show('screen3');
+requestWakeLock();
+lockLandscape();
 }
 
 function initClockView() {
