@@ -2350,8 +2350,9 @@ function pressBtn(player, e, el) {
     stripShow(false);
     updateActiveUI();
     updateDisplays();
-    if(!el.classList.contains('clock-btn')){
-      addRipple(e,el);
+    // Ripple disabled for better clock responsiveness
+    if(!el.classList.contains('clock-btn')){      
+      // addRipple(e,el);  
     }  
     playClick();
     if(navigator.vibrate) navigator.vibrate(35);
@@ -2369,8 +2370,9 @@ function pressBtn(player, e, el) {
   lastTick=performance.now();
   updateActiveUI();
   updateDisplays();
-  if(!el.classList.contains('clock-btn')){
-    addRipple(e,el);
+  // Ripple disabled for better clock responsiveness
+  if(!el.classList.contains('clock-btn')){    
+    // addRipple(e,el);
   }
   playClick();
   if(navigator.vibrate) navigator.vibrate(28);
