@@ -2350,7 +2350,9 @@ function pressBtn(player, e, el) {
     stripShow(false);
     updateActiveUI();
     updateDisplays();
-    addRipple(e,el);
+    if(!el.classList.contains('clock-btn')){
+      addRipple(e,el);
+    }  
     playClick();
     if(navigator.vibrate) navigator.vibrate(35);
     return;
@@ -2367,7 +2369,9 @@ function pressBtn(player, e, el) {
   lastTick=performance.now();
   updateActiveUI();
   updateDisplays();
-  addRipple(e,el);
+  if(!el.classList.contains('clock-btn')){
+    addRipple(e,el);
+  }
   playClick();
   if(navigator.vibrate) navigator.vibrate(28);
 }
