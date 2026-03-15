@@ -2465,17 +2465,9 @@ function setPauseIcon(p) {
    RIPPLE
 ════════════════════════════════ */
 function addRipple(e, btnEl) {
-  if(!btnEl) return;
-  const r=document.createElement('div'); r.className='ripple';
-  const rect=btnEl.getBoundingClientRect();
-  const x=(e.clientX||e.touches?.[0]?.clientX||rect.width/2)-rect.left;
-  const y=(e.clientY||e.touches?.[0]?.clientY||rect.height/2)-rect.top;
-  const sz=Math.max(rect.width,rect.height);
-  r.style.cssText=`width:${sz}px;height:${sz}px;left:${x-sz/2}px;top:${y-sz/2}px`;
-  btnEl.appendChild(r);
-  setTimeout(()=>r.remove(),450);
-}
-
+  return; // ripple disabled
+}  
+  
 /* ════════════════════════════════
    AUDIO
 ════════════════════════════════ */
