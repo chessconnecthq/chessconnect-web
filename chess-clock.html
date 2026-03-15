@@ -2333,9 +2333,9 @@ function stripShow(show) {
 function pressBtn(player, e, el) {
   initAudio();
   if(over) return;
-  // Debounce — ignore presses within 120ms of last press
+  // Debounce — ignore presses within 100ms of last press
   const now = Date.now();
-  if(now - lastPress < 120) return;
+  if(now - lastPress < 100) return;
   lastPress = now;
   const idx=player-1;
 
