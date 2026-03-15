@@ -2346,7 +2346,7 @@ function pressBtn(player, e, el) {
     moves[idx]++;              // White's first move counts immediately
     active=idx===0?1:0;
     lastTick=performance.now();
-    ticker=setInterval(tick,50);
+    ticker=setInterval(tick,100);
     stripShow(false);
     updateActiveUI();
     updateDisplays();
