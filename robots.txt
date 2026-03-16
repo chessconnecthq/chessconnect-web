@@ -15,5 +15,9 @@ Disallow: /chessconnect-web/dashboard.html
 Disallow: /chessconnect-web/analytics.html
 Disallow: /chessconnect-web/admin.html
 
+# Coming soon — not ready for indexing
+Disallow: /chessconnect-web/tournaments.html
+Disallow: /chessconnect-web/careers.html
+
 # Sitemap location
 Sitemap: https://chessconnecthq.github.io/chessconnect-web/sitemap.xml
