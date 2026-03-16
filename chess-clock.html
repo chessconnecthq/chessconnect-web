@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-<title>Free Chess Clock | ChessConnect India</title>
+<title>Free Chess Clock Online – Fischer, Bronstein &amp; US Delay | ChessConnect</title>
 
 <!-- ═══ SEO META TAGS ═══ -->
 <!-- Primary Meta -->
-<meta name="description" content="Free online chess clock for players, coaches and tournaments in India. Choose from 3 themed clocks — Heritage, Pro and Chronos 2050. Works on mobile, installable as app. No download needed."/>
-<meta name="keywords" content="chess clock, chess timer, online chess clock, free chess clock, chess clock India, chess timer online, digital chess clock, chess clock app, chess game timer, chess clock for mobile, Fischer chess clock, tournament chess clock, chess clock website, free chess timer India, chess coach India, ChessConnect"/>
+<meta name="description" content="Free online chess clock with Fischer, Bronstein and US Delay modes. 4 beautiful themes. Works perfectly on mobile. No download required. Start your game instantly."/>
+<meta name="keywords" content="chess clock, chess timer, online chess clock, free chess clock, chess clock India, chess timer online, digital chess clock, chess clock app, chess game timer, chess clock for mobile, Fischer chess clock, Bronstein delay chess clock, US delay chess clock, chess clock delay, chess increment types, tournament chess clock, chess clock website, free chess timer India, chess coach India, ChessConnect, Heritage chess clock, Chronos chess clock, minimalist chess clock, DGT chess clock alternative, lichess clock, chess.com clock, fide chess clock, rapid chess clock, blitz chess timer, otb chess clock, chess clock browser, tournament chess timer"/>
 <meta name="author" content="ChessConnect"/>
 <meta name="robots" content="index, follow"/>
 <meta name="language" content="English"/>
@@ -18,7 +18,7 @@
 <!-- ═══ OPEN GRAPH (WhatsApp, Facebook, LinkedIn previews) ═══ -->
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Chess Clock | ChessConnect"/>
-<meta property="og:description" content="Online chess clock with 3 beautiful themes. Works smoothly on mobile and runs instantly in your browser. No download needed."/>
+<meta property="og:description" content="Free chess clock with Fischer, Bronstein and US Delay modes. 4 stunning clock themes. Works instantly on mobile. No download needed."/>
 <meta property="og:url" content="https://chessconnecthq.github.io/chessconnect-web/chess-clock.html"/>
 <meta property="og:site_name" content="ChessConnect"/>
 <meta property="og:locale" content="en_IN"/>
@@ -30,13 +30,16 @@
 <!-- ═══ TWITTER / X CARD ═══ -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Free Chess Clock | ChessConnect India"/>
-<meta name="twitter:description" content="Free online chess clock for players, coaches and tournaments. 4 beautiful themes, works on mobile."/>
+<meta name="twitter:description" content="Free online chess clock with 4 themes and Fischer, Bronstein &amp; US Delay modes. Built for Indian players, coaches and tournaments. Works on mobile."/>
 <meta name="twitter:image" content="https://chessconnecthq.github.io/chessconnect-web/og-chess-clock.png"/>
 <meta name="twitter:site" content="@chessconnecthq"/>
+<meta name="twitter:creator" content="@chessconnecthq"/>
 
 <!-- ═══ GEO TARGETING — tells Google this is for India ═══ -->
 <meta name="geo.region" content="IN"/>
 <meta name="geo.placename" content="India"/>
+<meta name="geo.position" content="20.5937;78.9629"/>
+<meta name="ICBM" content="20.5937, 78.9629"/>
 
 <!-- ═══ STRUCTURED DATA (JSON-LD) — Google rich results ═══ -->
 <script type="application/ld+json">
@@ -45,9 +48,20 @@
   "@type": "WebApplication",
   "name": "ChessConnect Chess Clock",
   "url": "https://chessconnecthq.github.io/chessconnect-web/chess-clock.html",
-  "description": "Free online chess clock for players, coaches and tournaments in India. 4 themed clocks with Fischer increment support. Works on mobile and installs as app.",
-  "applicationCategory": "GameApplication",
+  "description": "Free online chess clock for players, coaches and tournaments in India. 4 themed clocks — Heritage, Pro, Chronos 2050 and ChessConnect. Supports Fischer increment, Bronstein delay and US delay time controls. Works on mobile and installs as app.",
+  "applicationCategory": "UtilityApplication",
+  "applicationSubCategory": "Chess Clock",
   "operatingSystem": "Android, iOS, Windows, macOS",
+  "featureList": [
+    "Fischer increment",
+    "Bronstein delay",
+    "US delay",
+    "4 clock themes",
+    "Mobile friendly",
+    "Installable PWA",
+    "No download needed",
+    "Tournament ready"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -58,7 +72,7 @@
     "name": "ChessConnect",
     "url": "https://chessconnecthq.github.io/chessconnect-web/"
   },
-  "keywords": "chess clock, chess timer, online chess clock India, free chess timer",
+  "keywords": "chess clock, chess timer, online chess clock India, free chess timer, Fischer increment, Bronstein delay, US delay chess clock, Heritage chess clock, Chronos chess clock, ChessConnect",
   "inLanguage": "en-IN",
   "isAccessibleForFree": true,
   "browserRequirements": "Requires JavaScript. Works on all modern browsers."
@@ -82,6 +96,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="CC Clock"/>
 <meta name="theme-color" content="#1E73E8"/>
+
+<!-- ═══ PRECONNECT — faster font and analytics load ═══ -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://www.googletagmanager.com"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
@@ -120,7 +139,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 
 /* ═══════════ SCREENS 1 & 2 — MOBILE-FIRST ═══════════ */
-#screen1,#screen2{
+#screen1,#screen2,#screen2b{
   flex-direction:column;
   align-items:stretch;
   justify-content:flex-start;
@@ -189,7 +208,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-card.selected .card-check{background:#1E73E8;border-color:#1E73E8}
 .card-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
 .clock-card.selected .card-check svg{opacity:1}
-.card-heritage,.card-pro,.card-chronos{--ca:#1E73E8}
+.card-heritage,.card-pro,.card-chronos,.card-chessconnect{--ca:#1E73E8}
 
 /* ── Install App button ── */
 .install-wrap{width:100%;margin-top:0.6rem;display:none}
@@ -249,7 +268,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 /* ═══════════ DESKTOP UPGRADE (≥700px) ═══════════ */
 @media(min-width:700px){
-  #screen1,#screen2{flex-direction:row!important;min-height:100vh}
+  #screen1,#screen2,#screen2b{flex-direction:row!important;min-height:100vh}
   .mob-header{
     flex-direction:column;align-items:flex-start;justify-content:flex-start;
     width:260px;flex-shrink:0;
@@ -459,20 +478,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 }
 
 /* ─── PRESET STRIP (inline in clock view) ─── */
-.preset-strip{
-  display:flex;align-items:center;justify-content:center;gap:4px;
-  padding:5px 10px;background:rgba(255,255,255,0.03);
-  border-radius:8px;flex-wrap:nowrap;overflow-x:auto;
-  scrollbar-width:none;max-width:430px;width:min(96vw,430px);
-  margin-top:8px;flex-shrink:0;
-}
-.preset-strip::-webkit-scrollbar{display:none}
-.ps-lbl{font-size:0.48rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#444;white-space:nowrap;flex-shrink:0}
-.ps-chip{padding:3px 8px;border-radius:5px;border:1.5px solid #444;background:transparent;color:#888;font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.16s}
-.ps-chip:hover{border-color:#C4873A;color:#C4873A}
-.ps-chip.sel{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.07)}
-.ps-sep{width:1px;height:14px;background:#1a1a1a;flex-shrink:0;margin:0 2px}
-
 /* Status */
 .clock-status{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;flex-shrink:0}
 .sdot{width:5px;height:5px;border-radius:50%;background:#C4873A;opacity:0;transition:opacity 0.3s}
@@ -580,9 +585,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-side-r.active-k{box-shadow:inset 3px 0 8px rgba(0,0,0,0.5),inset 0 0 20px rgba(196,135,58,0.18)}
 .hc-side.inactive-k{filter:brightness(0.5);cursor:not-allowed}
 .hc-side-lbl{
-  font-size:0.72rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.32em;color:rgba(230,168,72,0.95);
-  text-shadow:0 0 10px rgba(196,135,58,0.7),0 0 22px rgba(196,135,58,0.35);
+  font-size:0.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.18em;color:rgba(230,168,72,0.98);
+  text-shadow:0 0 12px rgba(196,135,58,0.9),0 0 28px rgba(196,135,58,0.55),0 0 4px rgba(0,0,0,0.8);
   white-space:nowrap;font-family:'DM Sans',sans-serif;
   writing-mode:vertical-rl;text-orientation:mixed;
   transform:rotate(180deg);pointer-events:none;
@@ -614,7 +619,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 /* Displays */
 .hc-displays{display:flex;padding:0 80px;position:relative;z-index:2;gap:0}
 .hc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.hc-plbl{font-size:0.62rem;font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(196,135,58,0.55);transition:color 0.3s;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+.hc-plbl{font-size:0.62rem;font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(220,175,80,0.82);transition:color 0.3s;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
 .hc-dunit.active .hc-plbl{color:rgba(230,185,80,0.95);text-shadow:0 0 8px rgba(196,135,58,0.3),0 1px 3px rgba(0,0,0,0.5)}
 .hc-disp{
   width:100%;background:#070503;border-radius:7px;
@@ -636,10 +641,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .hc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(196,135,58,0.12),transparent);margin:4px 3px;flex-shrink:0}
 
 /* Bottom bar */
-.hc-bot{display:flex;justify-content:center;align-items:center;padding:6px 80px 10px;position:relative;z-index:2}
+.hc-bot{display:flex;justify-content:center;align-items:center;padding:4px 80px 14px;position:relative;z-index:2}
 .hc-roman{font-family:'DM Sans',sans-serif;font-size:0.6rem;color:rgba(160,105,38,0.5);font-weight:700}
 .hc-bname{font-family:'DM Sans',sans-serif;font-style:italic;font-size:0.65rem;color:rgba(180,125,50,0.65);letter-spacing:0.04em;text-align:center}
-.hc-edition{font-size:0.48rem;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:0.14em;color:rgba(150,100,35,0.5);font-weight:700;text-align:center}
+.hc-edition{font-size:0.48rem;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:0.14em;color:rgba(220,175,80,0.82);font-weight:700;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,0.85),0 -1px 0 rgba(255,200,80,0.12)}
 
 /* ═══════════════════════════════════════
    PRO CLOCK
@@ -723,9 +728,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-side-led.on-g{background:#00E676;border-color:#00E676;box-shadow:0 0 8px rgba(0,230,118,0.85),0 0 20px rgba(0,230,118,0.3)}
 .pc-side-led.on-r{background:#FF3A3A;border-color:#FF3A3A;box-shadow:0 0 8px rgba(255,58,58,0.85),0 0 20px rgba(255,58,58,0.3)}
 .pc-side-lbl{
-  font-size:0.72rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.32em;color:rgba(225,225,225,0.95);
-  text-shadow:0 0 8px rgba(255,255,255,0.45),0 0 18px rgba(200,200,200,0.2);
+  font-size:0.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.18em;color:rgba(235,235,235,0.98);
+  text-shadow:0 0 12px rgba(255,255,255,0.65),0 0 28px rgba(200,200,200,0.35),0 0 4px rgba(0,0,0,0.8);
   white-space:nowrap;font-family:'Share Tech Mono',monospace;
   writing-mode:vertical-rl;text-orientation:mixed;
   transform:rotate(180deg);pointer-events:none;
@@ -744,12 +749,12 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     inset 0 -2px 0 rgba(0,0,0,0.6),
     inset -1px 0 0 rgba(0,0,0,0.4),
     inset 1px 0 0 rgba(255,255,255,0.03),
-    0 0 0 2px rgba(180,180,180,0.35),
+    0 0 0 2px rgba(200,200,200,0.65),
     0 6px 32px rgba(0,0,0,0.7);
-  border:2px solid rgba(200,200,200,0.45);
+  border:2px solid rgba(210,210,210,0.75);
   border-bottom:4px solid rgba(15,15,15,0.98);
-  border-left:2px solid rgba(160,160,160,0.3);
-  border-right:2px solid rgba(160,160,160,0.3);
+  border-left:2px solid rgba(180,180,180,0.65);
+  border-right:2px solid rgba(180,180,180,0.65);
   position:relative;overflow:hidden;
 }
 .pc-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);pointer-events:none;border-radius:14px}
@@ -801,7 +806,7 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-displays{display:flex;padding:0 80px;position:relative;z-index:2}
 .pc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
 /* 4. Player labels */
-.pc-plbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#808080;transition:color 0.3s;font-family:'Share Tech Mono',monospace}
+.pc-plbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(200,200,200,0.82);transition:color 0.3s;font-family:'Share Tech Mono',monospace}
 .pc-dunit.active .pc-plbl{color:#D1D1D1;text-shadow:0 0 6px rgba(209,209,209,0.15)}
 /* 8. Display border more visible */
 .pc-disp{width:100%;background:#080808;border-radius:5px;border:1.5px solid #383838;padding:9px 4px 7px;text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 4px 14px rgba(0,0,0,0.95),inset 0 1px 4px #000;transition:border-color 0.3s,box-shadow 0.3s}
@@ -821,9 +826,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .pc-divider{width:1px;background:linear-gradient(180deg,transparent,#2a2a2a,transparent);margin:4px 3px;flex-shrink:0}
 
 /* 6. Bottom bar */
-.pc-bot{display:flex;justify-content:center;align-items:center;padding:6px 80px 9px;position:relative;z-index:2}
+.pc-bot{display:flex;justify-content:center;align-items:center;padding:4px 80px 14px;position:relative;z-index:2}
 .pc-bname{font-size:0.55rem;font-weight:800;letter-spacing:0.06em;color:rgba(160,160,160,0.6)}
-.pc-tag{font-size:0.48rem;font-family:'Share Tech Mono',monospace;text-transform:uppercase;letter-spacing:0.12em;color:rgba(130,130,130,0.5);font-weight:700}
+.pc-tag{font-size:0.48rem;font-family:'Share Tech Mono',monospace;text-transform:uppercase;letter-spacing:0.12em;color:rgba(200,200,200,0.82);font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.9),0 -1px 0 rgba(255,255,255,0.1)}
 .pc-bat{font-size:0.55rem;color:rgba(120,120,120,0.45)}
 
 /* ═══════════════════════════════════════
@@ -897,14 +902,14 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-side.inactive-l{filter:brightness(0.72) saturate(0.75);cursor:not-allowed}
 /* Label */
 .cc-side-lbl{
-  font-size:0.72rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.32em;white-space:nowrap;
+  font-size:0.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.18em;white-space:nowrap;
   font-family:'Orbitron',sans-serif;
   writing-mode:vertical-rl;text-orientation:mixed;
   pointer-events:none;
 }
-.cc-side-l .cc-side-lbl{color:rgba(0,239,255,0.96);text-shadow:0 0 10px rgba(0,220,255,0.8),0 0 24px rgba(0,180,255,0.45);transform:rotate(180deg)}
-.cc-side-r .cc-side-lbl{color:rgba(238,0,255,0.96);text-shadow:0 0 10px rgba(220,0,255,0.8),0 0 24px rgba(180,0,255,0.45);transform:rotate(0deg)}
+.cc-side-l .cc-side-lbl{color:rgba(0,239,255,0.98);text-shadow:0 0 14px rgba(0,220,255,0.95),0 0 32px rgba(0,180,255,0.6),0 0 4px rgba(0,0,0,0.8);transform:rotate(180deg)}
+.cc-side-r .cc-side-lbl{color:rgba(238,0,255,0.98);text-shadow:0 0 14px rgba(220,0,255,0.95),0 0 32px rgba(180,0,255,0.6),0 0 4px rgba(0,0,0,0.8);transform:rotate(0deg)}
 /* Dot indicator */
 .cc-side-dot{
   width:8px;height:8px;border-radius:50%;flex-shrink:0;
@@ -989,8 +994,8 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-displays{display:flex;padding:0 80px;position:relative;z-index:2}
 .cc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
 /* 4. Player labels */
-.cc-plbl-1{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,200,255,0.75);font-family:'Orbitron',sans-serif;transition:color 0.3s;text-shadow:0 0 6px rgba(0,180,255,0.3)}
-.cc-plbl-2{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(200,0,255,0.75);font-family:'Orbitron',sans-serif;transition:color 0.3s;text-shadow:0 0 6px rgba(180,0,255,0.3)}
+.cc-plbl-1{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,220,255,0.82);font-family:'Orbitron',sans-serif;transition:color 0.3s;text-shadow:0 0 8px rgba(0,200,255,0.3)}
+.cc-plbl-2{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(220,0,255,0.82);font-family:'Orbitron',sans-serif;transition:color 0.3s;text-shadow:0 0 8px rgba(180,0,255,0.3)}
 #cc-p1unit.active .cc-plbl-1{color:rgba(0,239,255,0.95);text-shadow:0 0 8px rgba(0,200,255,0.4)}
 #cc-p2unit.active .cc-plbl-2{color:rgba(238,0,255,0.95);text-shadow:0 0 8px rgba(200,0,255,0.4)}
 /* 8. Display borders more visible */
@@ -1017,12 +1022,167 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .cc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(100,0,200,0.3),transparent);margin:4px 3px;flex-shrink:0}
 
 /* 6. Bottom bar */
-.cc-bot{display:flex;justify-content:center;align-items:center;padding:6px 80px 9px;position:relative;z-index:2}
+.cc-bot{display:flex;justify-content:center;align-items:center;padding:4px 80px 14px;position:relative;z-index:2}
 .cc-bname{display:flex;font-family:'Orbitron',sans-serif;font-size:0.52rem;font-weight:700;gap:0}
 .cc-bname span:first-child{color:rgba(0,200,255,0.6)}
 .cc-bname span:last-child{color:rgba(200,0,255,0.55)}
-.cc-tag{font-size:0.44rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(100,100,220,0.45);font-weight:700}
+.cc-tag{font-size:0.44rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(0,220,255,0.82);font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.9),0 -1px 0 rgba(0,255,255,0.08)}
 .cc-icons{display:flex;gap:4px;align-items:center;font-size:0.58rem;color:rgba(0,200,255,0.35)}
+
+/* ═══════════════════════════════════════
+   CHESSCONNECT CLOCK — Minimalist Brand Edition
+   Prefix: xc-   Base: Heritage structure
+═══════════════════════════════════════ */
+.chessconnect-clock{background:radial-gradient(ellipse at 50% 46%,#C8D8F0 0%,#A8C0E8 40%,#8BADD8 100%)}
+.xc-body{
+  width:min(96vw,580px);flex-shrink:0;
+  background:
+    repeating-linear-gradient(135deg,transparent 0,transparent 18px,rgba(30,115,232,0.028) 18px,rgba(30,115,232,0.028) 19px),
+    repeating-linear-gradient(45deg,transparent 0,transparent 18px,rgba(30,115,232,0.018) 18px,rgba(30,115,232,0.018) 19px),
+    linear-gradient(158deg,#FFFFFF 0%,#F5F8FF 25%,#EEF4FF 60%,#E8F0FF 100%);
+  border-radius:18px 18px 10px 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -3px 0 rgba(30,115,232,0.15),
+    inset -1px 0 0 rgba(30,115,232,0.08),
+    inset 1px 0 0 rgba(255,255,255,0.9),
+    0 0 0 2px rgba(30,115,232,0.75),
+    0 6px 32px rgba(16,44,87,0.2);
+  border:2px solid rgba(30,115,232,0.85);
+  border-bottom:4px solid rgba(16,44,87,0.95);
+  border-left:2px solid rgba(30,115,232,0.75);
+  border-right:2px solid rgba(30,115,232,0.75);
+  position:relative;overflow:hidden;
+}
+.xc-body::after{content:'';position:absolute;inset:0;border-radius:18px 18px 10px 10px;background:linear-gradient(180deg,rgba(255,255,255,0.6) 0%,transparent 30%,rgba(30,115,232,0.04) 100%);pointer-events:none}
+
+/* Side panels — glossy blue */
+.xc-side{
+  position:absolute;top:0;bottom:0;width:68px;
+  cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+  z-index:10;transition:box-shadow 0.08s;
+  display:flex;align-items:center;justify-content:center;
+}
+.xc-side-l{
+  left:0;border-radius:18px 0 0 10px;
+  background:linear-gradient(160deg,#2E86F0 0%,#1E73E8 40%,#1560C8 75%,#1050A8 100%);
+  border-right:2px solid rgba(16,44,87,0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset -3px 0 8px rgba(16,44,87,0.25),
+    inset 2px 0 4px rgba(255,255,255,0.15),
+    4px 0 18px rgba(30,115,232,0.35),
+    3px 0 8px rgba(30,115,232,0.2);
+}
+.xc-side-r{
+  right:0;border-radius:0 18px 10px 0;
+  background:linear-gradient(160deg,#2E86F0 0%,#1E73E8 40%,#1560C8 75%,#1050A8 100%);
+  border-left:2px solid rgba(16,44,87,0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 3px 0 8px rgba(16,44,87,0.25),
+    inset -2px 0 4px rgba(255,255,255,0.15),
+    -4px 0 18px rgba(30,115,232,0.35),
+    -3px 0 8px rgba(30,115,232,0.2);
+}
+.xc-side-l:active,.xc-side-l.pressing{
+  box-shadow:inset 6px 0 16px rgba(16,44,87,0.6),inset 2px 0 4px rgba(16,44,87,0.4);
+  background:linear-gradient(160deg,#1A6AD0 0%,#1560C8 50%,#1050A8 100%);
+}
+.xc-side-r:active,.xc-side-r.pressing{
+  box-shadow:inset -6px 0 16px rgba(16,44,87,0.6),inset -2px 0 4px rgba(16,44,87,0.4);
+  background:linear-gradient(160deg,#1A6AD0 0%,#1560C8 50%,#1050A8 100%);
+}
+.xc-side-l.active-k{box-shadow:inset 0 1px 0 rgba(255,255,255,0.35),inset -3px 0 8px rgba(16,44,87,0.25),inset 0 0 20px rgba(255,255,255,0.12),0 0 16px rgba(30,115,232,0.4)}
+.xc-side-r.active-k{box-shadow:inset 0 1px 0 rgba(255,255,255,0.35),inset 3px 0 8px rgba(16,44,87,0.25),inset 0 0 20px rgba(255,255,255,0.12),0 0 16px rgba(30,115,232,0.4)}
+.xc-side.inactive-k{filter:brightness(0.65);cursor:not-allowed}
+.xc-side-lbl{
+  font-size:0.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.18em;color:rgba(255,255,255,0.98);
+  text-shadow:0 0 12px rgba(255,255,255,0.5),0 1px 3px rgba(16,44,87,0.6);
+  white-space:nowrap;font-family:'DM Sans',sans-serif;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  transform:rotate(180deg);pointer-events:none;
+}
+.xc-side-r .xc-side-lbl{transform:rotate(0deg)}
+
+/* Center controls */
+.xc-top{display:flex;align-items:center;padding:11px 80px 9px;position:relative;z-index:2;gap:8px}
+.xc-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.xc-brand{font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:800;color:#102C57;letter-spacing:0.04em}
+.xc-ctrls{display:flex;gap:5px}
+.xc-cbtn{
+  padding:5px 11px;border-radius:5px;
+  border:1.5px solid rgba(30,115,232,0.65);
+  background:rgba(238,244,255,0.8);
+  color:#102C57;
+  font-size:0.58rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;
+  box-shadow:0 2px 6px rgba(16,44,87,0.12),inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.xc-cbtn:hover{border-color:rgba(30,115,232,0.75);color:#1E73E8;background:rgba(220,235,255,0.9)}
+.xc-cbtn:active{transform:translateY(1px)}
+.xc-cbtn.on{border-color:#1E73E8;color:#1E73E8;background:rgba(200,220,255,0.9);box-shadow:0 2px 10px rgba(30,115,232,0.2),inset 0 1px 0 rgba(255,255,255,0.8)}
+.xc-rot-btn.rotate-on{border-color:#1E73E8!important;color:#1E73E8!important;background:rgba(200,220,255,0.9)!important}
+.xc-cstatus{font-size:0.62rem;font-family:'DM Sans',sans-serif;color:rgba(30,115,232,0.88);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center}
+.xc-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
+
+/* Displays */
+.xc-displays{display:flex;padding:0 80px;position:relative;z-index:2;gap:0}
+.xc-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.xc-plbl{font-size:0.62rem;font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(16,44,87,0.78);transition:color 0.3s}
+.xc-dunit.active .xc-plbl{color:rgba(30,115,232,0.95)}
+.xc-disp{
+  width:100%;
+  background:linear-gradient(180deg,#E8F0FF 0%,#EEF4FF 40%,#E4EEF8 100%);
+  border-radius:7px;
+  border:1.5px solid rgba(30,115,232,0.55);
+  padding:9px 5px 7px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:
+    inset 0 2px 10px rgba(16,44,87,0.12),
+    inset 0 1px 3px rgba(16,44,87,0.08),
+    inset 0 -1px 0 rgba(255,255,255,0.7);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.xc-disp::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.55) 0%,rgba(255,255,255,0.1) 35%,transparent 100%);pointer-events:none}
+.xc-dunit.active .xc-disp{
+  border-color:rgba(30,115,232,0.6);
+  box-shadow:
+    inset 0 2px 10px rgba(16,44,87,0.1),
+    inset 0 1px 3px rgba(16,44,87,0.06),
+    inset 0 -1px 0 rgba(255,255,255,0.7),
+    0 0 18px rgba(30,115,232,0.15),
+    0 0 45px rgba(30,115,232,0.06)
+}
+.xc-dunit.flagged .xc-disp{border-color:#FF3A3A!important;animation:flagPulse 0.5s ease infinite alternate}
+.xc-time{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:clamp(2.2rem,10.5vw,3rem);letter-spacing:0.06em;color:#3A6BAF;line-height:1;transition:color 0.3s,text-shadow 0.3s;user-select:none;font-variant-numeric:tabular-nums}
+.xc-dunit.active .xc-time{color:#1E73E8;text-shadow:0 0 10px rgba(30,115,232,0.4),0 0 28px rgba(30,115,232,0.2),0 0 52px rgba(30,115,232,0.08)}
+.xc-dunit.flagged .xc-time{color:#FF3A3A!important;text-shadow:0 0 12px rgba(255,58,58,0.6)!important}
+.xc-dunit.warning .xc-time{color:#FF8C00!important;text-shadow:0 0 10px rgba(255,140,0,0.55)!important;animation:warnBlink 1s ease infinite}
+.xc-moves{font-size:0.58rem;color:rgba(30,115,232,0.5);font-family:'DM Sans',sans-serif;transition:color 0.3s;font-weight:600}
+.xc-dunit.active .xc-moves{color:rgba(30,115,232,0.75)}
+.xc-inc{position:absolute;bottom:4px;right:6px;font-size:0.5rem;font-family:'DM Sans',sans-serif;color:rgba(30,115,232,0.5);font-weight:700;letter-spacing:0.04em}
+.xc-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(30,115,232,0.15),transparent);margin:4px 3px;flex-shrink:0}
+
+/* Pause overlay */
+.chessconnect-clock .pause-overlay{background:rgba(230,240,255,0.88)!important}
+.chessconnect-clock .po-text{color:#102C57!important}
+.chessconnect-clock .po-sub{color:rgba(16,44,87,0.5)!important}
+
+/* Bottom bar */
+.xc-bot{display:flex;justify-content:center;align-items:center;padding:4px 80px 14px;position:relative;z-index:2}
+
+/* Fit hint */
+@keyframes fitHintXC{
+  0%,100%{border-color:rgba(30,115,232,0.45);box-shadow:none;color:#102C57}
+  40%{border-color:#1E73E8;box-shadow:0 0 10px rgba(30,115,232,0.5),0 0 22px rgba(30,115,232,0.25);color:#1E73E8}
+}
+.fit-hint-xc{animation:fitHintXC 0.9s ease-in-out 3;}
+
+/* Snd/fs/rot button classes */
+.xc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.xc-fs-btn,.xc-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
 
 /* Ripple */
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.22);transform:scale(0);animation:rippleA 0.45s ease-out forwards;pointer-events:none;z-index:50}
@@ -1104,7 +1264,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .s3-btn.fs-active{border-color:#C4873A;color:#C4873A;background:rgba(196,135,58,0.12)}
 
 
-/* ── Fit to Screen mode ── */
+/* ── Fit to Screen hint pulse — fires on game start ── */
+@keyframes fitHintHC{
+  0%,100%{border-color:rgba(196,135,58,0.55);box-shadow:none;color:rgba(220,175,80,0.95)}
+  40%{border-color:#E8C050;box-shadow:0 0 10px rgba(196,135,58,0.7),0 0 22px rgba(196,135,58,0.35);color:#F0D060}
+}
+@keyframes fitHintPC{
+  0%,100%{border-color:rgba(180,180,180,0.45);box-shadow:none;color:rgba(210,210,210,0.95)}
+  40%{border-color:#D1D1D1;box-shadow:0 0 10px rgba(255,255,255,0.5),0 0 22px rgba(200,200,200,0.25);color:#fff}
+}
+@keyframes fitHintCC{
+  0%,100%{border-color:rgba(0,200,255,0.5);box-shadow:none;color:rgba(0,230,255,0.92)}
+  40%{border-color:#00EFFF;box-shadow:0 0 10px rgba(0,239,255,0.7),0 0 22px rgba(0,200,255,0.35);color:#00EFFF}
+}
+.fit-hint-hc{animation:fitHintHC 0.9s ease-in-out 3;}
+.fit-hint-pc{animation:fitHintPC 0.9s ease-in-out 3;}
+.fit-hint-cc{animation:fitHintCC 0.9s ease-in-out 3;}
 .fit-mode-active .s3-bar{
   opacity:0;pointer-events:none;
   transition:opacity 0.3s;
@@ -1116,10 +1291,6 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-view.fit-mode .clock-3d{
   transform-origin:center center;
   transition:transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
-}
-.clock-view.fit-mode .preset-strip,
-.clock-view.fit-mode .clock-status{
-  opacity:0;pointer-events:none;height:0;overflow:hidden;margin:0;padding:0;
 }
 /* Tap anywhere on fit-mode to show exit hint */
 .fit-exit-hint{
@@ -1276,9 +1447,84 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   color:#1E73E8;letter-spacing:0.01em;
 }
 
+/* ═══════════ SCREEN 2B — INCREMENT TYPE ═══════════ */
+.it-cards{display:flex;flex-direction:column;gap:0.6rem;width:100%}
+.it-card{
+  border-radius:12px;border:2px solid #E5E9F2;background:#fff;
+  cursor:pointer;overflow:hidden;
+  transition:border-color 0.2s,box-shadow 0.2s;
+  box-shadow:0 1px 6px rgba(16,44,87,0.06);
+  -webkit-tap-highlight-color:transparent;user-select:none;
+  position:relative;
+}
+.it-card:active{transform:scale(0.985)}
+.it-card.selected{
+  border-color:#1E73E8!important;
+  box-shadow:0 0 0 1px #1E73E8,0 4px 16px rgba(30,115,232,0.12)
+}
+.it-card-inner{padding:0.75rem 0.9rem;display:flex;align-items:flex-start;gap:0.75rem}
+.it-icon{
+  width:36px;height:36px;border-radius:8px;
+  background:#EEF4FF;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.it-icon svg{width:18px;height:18px;stroke:#1E73E8;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.it-text{flex:1;min-width:0}
+.it-name{font-size:0.92rem;font-weight:800;color:#102C57;margin-bottom:3px}
+.it-tag{
+  display:inline-block;font-size:0.48rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.1em;
+  padding:2px 6px;border-radius:4px;margin-bottom:5px;
+}
+.it-tag-fischer{background:#EEF4FF;color:#1E73E8}
+.it-tag-delay{background:#EEF4FF;color:#1E73E8}
+.it-tag-bronstein{background:#EEF4FF;color:#1E73E8}
+.it-desc{font-size:0.65rem;color:#6B7280;line-height:1.55}
+.it-example{
+  font-size:0.6rem;font-weight:700;color:#1E73E8;
+  margin-top:4px;font-family:'Rajdhani',sans-serif;
+  letter-spacing:0.02em;
+}
+.it-check{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid #E5E9F2;background:#F8FAFF;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;margin-top:2px;
+}
+.it-card.selected .it-check{background:#1E73E8;border-color:#1E73E8}
+.it-check svg{
+  width:10px;height:10px;stroke:#fff;fill:none;
+  stroke-width:3;stroke-linecap:round;stroke-linejoin:round;
+  opacity:0;transition:opacity 0.2s;
+}
+.it-card.selected .it-check svg{opacity:1}
+/* All cards use the same blue selection state */
+/* Dynamic label on custom row */
+.cust-inc-label{
+  font-size:0.58rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.1em;
+  color:#6B7280;flex-shrink:0;
+  transition:color 0.2s;
+  min-width:4ch;text-align:center;
+}
+
 </style>
 </head>
 <body>
+
+<!-- ═══ HIDDEN SEO CONTENT — visible to Google, hidden from users ═══ -->
+<div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;" aria-hidden="true">
+  <h1>Free Online Chess Clock — Fischer, Bronstein and US Delay</h1>
+  <p>A free chess clock that runs directly in your browser. No download or app installation needed. Supports Fischer increment, Bronstein delay and US delay time controls. Perfect for tournament play, coaching sessions and home practice. Works on all mobile phones and tablets.</p>
+  <h2>Chess Clock with Fischer Increment</h2>
+  <p>Fischer increment adds time to your clock after every move. The most widely used time control in tournaments worldwide including FIDE and USCF events.</p>
+  <h2>Bronstein Delay Chess Clock</h2>
+  <p>Bronstein delay gives back only the time you actually used — your clock never grows beyond its starting value. Ideal for correspondence and long format games.</p>
+  <h2>US Delay Chess Clock</h2>
+  <p>US delay freezes the clock for a set number of seconds before it starts counting down. The standard format for USCF rated games and American tournaments.</p>
+  <h2>4 Beautiful Clock Themes</h2>
+  <p>Choose from Heritage walnut wood, Pro brushed steel, Chronos 2050 sci-fi, and ChessConnect minimalist brand edition.</p>
+</div>
 
 <!-- ═══════════════ SCREEN 1 — SELECT CLOCK ═══════════════ -->
 <div class="screen" id="screen1">
@@ -1286,11 +1532,11 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="mob-header">
     <div class="mob-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
     <div class="mob-steps">
-      <div class="mob-step active"><div class="mob-dot active">1</div><div class="mob-slbl">Choose</div></div>
+      <div class="mob-step active"><div class="mob-dot active">1</div><div class="mob-slbl">Theme</div></div>
       <div class="mob-line" id="sl1"></div>
-      <div class="mob-step"><div class="mob-dot" id="dot2">2</div><div class="mob-slbl">Time</div></div>
+      <div class="mob-step"><div class="mob-dot" id="dot2">2</div><div class="mob-slbl">Mode</div></div>
       <div class="mob-line"></div>
-      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Rotate</div></div>
+      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Time</div></div>
       <div class="mob-line"></div>
       <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
     </div>
@@ -1327,9 +1573,18 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
     </div>
+    <div class="clock-card card-chessconnect" id="card-chessconnect" onclick="selectClock('chessconnect',this)">
+      <div class="card-inner">
+        <div class="card-info">
+          <div class="card-name">ChessConnect</div>
+          <div class="card-desc">Clean white body · Blue side panels · Navy digits · Minimalist · Brand Edition</div>
+        </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
   </div>
 
-  <button class="next-btn" id="nextBtn" onclick="goToStep2()">Set Time →</button>
+  <button class="next-btn" id="nextBtn" onclick="goToStep2()">Select Mode →</button>
 
   <!-- Install App button — shown only if not already installed -->
   <div class="install-wrap" id="installWrap">
@@ -1372,11 +1627,11 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="mob-header">
     <div class="mob-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
     <div class="mob-steps">
-      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Choose</div></div>
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Theme</div></div>
       <div class="mob-line filled"></div>
-      <div class="mob-step active"><div class="mob-dot active">2</div><div class="mob-slbl">Time</div></div>
-      <div class="mob-line"></div>
-      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Rotate</div></div>
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Mode</div></div>
+      <div class="mob-line filled"></div>
+      <div class="mob-step active"><div class="mob-dot active">3</div><div class="mob-slbl">Time</div></div>
       <div class="mob-line"></div>
       <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
     </div>
@@ -1419,16 +1674,97 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       <span class="cust-sep">s</span>
     </div>
     <div class="cust-inc">
-      <label>+Inc</label>
+      <span class="cust-inc-label" id="custIncLabel">+INC</span>
       <input id="ctI" type="number" value="5" min="0" max="300" placeholder="0"/>
       <label style="font-size:0.48rem;color:#2a2a2a">sec</label>
     </div>
   </div>
 
   <div class="s2-btns">
-    <button class="back-btn" onclick="goToStep1()">← Back</button>
+    <button class="back-btn" onclick="goToStep2b_back()">← Back</button>
     <button class="launch-btn" onclick="goToStep3()">Next →</button>
   </div>
+  </div><!-- /mob-content -->
+</div>
+
+
+<!-- ═══════════════ SCREEN 2B — CHOOSE TIME MODE ═══════════════ -->
+<div class="screen hidden" id="screen2b">
+  <!-- HEADER -->
+  <div class="mob-header">
+    <div class="mob-logo"><span class="chess">Chess</span><span class="connect">Connect</span></div>
+    <div class="mob-steps">
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Theme</div></div>
+      <div class="mob-line filled"></div>
+      <div class="mob-step active"><div class="mob-dot active">2</div><div class="mob-slbl">Mode</div></div>
+      <div class="mob-line"></div>
+      <div class="mob-step"><div class="mob-dot">3</div><div class="mob-slbl">Time</div></div>
+      <div class="mob-line"></div>
+      <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
+    </div>
+  </div>
+  <!-- CONTENT -->
+  <div class="mob-content">
+    <div class="mob-title">Choose Mode</div>
+    <div class="mob-sub">How does extra time work each move?</div>
+
+    <div class="it-cards">
+
+      <!-- Fischer -->
+      <div class="it-card" id="it-card-fischer" onclick="selectIncType('fischer',this)">
+        <div class="it-card-inner">
+          <div class="it-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/><line x1="19" y1="4" x2="22" y2="4"/><line x1="20.5" y1="2.5" x2="20.5" y2="5.5"/></svg>
+          </div>
+          <div class="it-text">
+            <div class="it-tag it-tag-fischer">Most Common</div>
+            <div class="it-name">Fischer Increment</div>
+            <div class="it-desc">A fixed number of seconds is added to your clock immediately after you press it — every single move, regardless of how fast or slow you played.</div>
+            <div class="it-example">e.g. 10+5 → you get +5s every move. Move in 3s? Your clock grows.</div>
+          </div>
+          <div class="it-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+      </div>
+
+      <!-- US Delay -->
+      <div class="it-card it-delay" id="it-card-delay" onclick="selectIncType('delay',this)">
+        <div class="it-card-inner">
+          <div class="it-icon" style="background:#EEF4FF">
+            <svg viewBox="0 0 24 24" style="stroke:#1E73E8"><path d="M5 3h14M5 21h14M7 3v4l5 5-5 5v4M17 3v4l-5 5 5 5v4"/></svg>
+          </div>
+          <div class="it-text">
+            <div class="it-tag it-tag-delay">USCF Standard</div>
+            <div class="it-name">US Delay</div>
+            <div class="it-desc">Your clock waits for a set number of seconds before it starts counting down. You always get the full delay — but unused delay time is never added to your clock.</div>
+            <div class="it-example" style="color:#1E73E8">e.g. 10 d/5 → clock freezes for 5s then counts down. Total never increases.</div>
+          </div>
+          <div class="it-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Bronstein -->
+      <div class="it-card it-bronstein" id="it-card-bronstein" onclick="selectIncType('bronstein',this)">
+        <div class="it-card-inner">
+          <div class="it-icon" style="background:#EEF4FF">
+            <svg viewBox="0 0 24 24" style="stroke:#1E73E8"><path d="M12 2l7 4v5c0 5-3.5 9.74-7 11-3.5-1.26-7-6-7-11V6l7-4z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <div class="it-text">
+            <div class="it-tag it-tag-bronstein">Balanced</div>
+            <div class="it-name">Bronstein Delay</div>
+            <div class="it-desc">After you press your clock, you get back only the time you actually used — up to the delay maximum. Move fast and you recover it all. Move slow and you only get part of it back.</div>
+            <div class="it-example" style="color:#1E73E8">e.g. 10|5 → used 3s? Get 3s back. Used 8s? Get only 5s back. Clock never grows.</div>
+          </div>
+          <div class="it-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+      </div>
+
+    </div><!-- /it-cards -->
+
+    <div class="s2-btns" style="margin-top:1rem">
+      <button class="back-btn" onclick="goToStep1()">← Back</button>
+      <button class="next-btn" id="modeNextBtn" onclick="goToStep2b_next()" style="flex:1;margin-top:0;border-radius:10px;padding:0.9rem">Set Time Control →</button>
+    </div>
+
   </div><!-- /mob-content -->
 </div>
 
@@ -1438,13 +1774,13 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <div class="rotate-card">
     <!-- Step progress -->
     <div class="mob-steps">
-      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Choose</div></div>
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Theme</div></div>
+      <div class="mob-line filled"></div>
+      <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Mode</div></div>
       <div class="mob-line filled"></div>
       <div class="mob-step done"><div class="mob-dot done">✓</div><div class="mob-slbl">Time</div></div>
       <div class="mob-line filled"></div>
-      <div class="mob-step active"><div class="mob-dot active">3</div><div class="mob-slbl">Rotate</div></div>
-      <div class="mob-line"></div>
-      <div class="mob-step"><div class="mob-dot">4</div><div class="mob-slbl">Play</div></div>
+      <div class="mob-step active"><div class="mob-dot active">4</div><div class="mob-slbl">Play</div></div>
     </div>
 
     <!-- Title -->
@@ -1534,15 +1870,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       </div>
       <div class="hc-top">
         <div class="hc-center">
-          <div class="hc-brand">ChessConnect</div>
+          <div class="hc-brand">ChessConnect <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.06em;">· Heritage</span></div>
           <div class="hc-ctrls">
-            <button class="hc-cbtn" id="hc-pause" onclick="togglePause()" aria-label="Pause game">PAUSE</button>
-            <button class="hc-cbtn" onclick="restartClock()" aria-label="Restart game">RESTART</button>
+            <button class="hc-cbtn" id="hc-pause" onclick="togglePause()" aria-label="Pause game">
+              <svg class="pause-icon-svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px;display:block"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+            <button class="hc-cbtn hc-snd-btn" onclick="restartClock()" title="Restart" aria-label="Restart game">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="hc-cbtn hc-snd-btn" onclick="newGame()" title="Home" aria-label="Go to home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
             <button class="hc-cbtn hc-snd-btn" id="hc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
               <svg id="hc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
             </button>
             <button class="hc-cbtn hc-fs-btn" id="hc-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
-              <svg id="hc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit
+              <svg id="hc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit to Screen
             </button>
             <button class="hc-cbtn hc-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
             </button>
@@ -1571,22 +1914,10 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         </div>
       </div>
       <!-- Bottom branding -->
-      <div class="hc-bot">
-        <div style="text-align:center"><div class="hc-edition">Heritage Edition · Tournament</div></div>
-      </div>
+      <div class="hc-bot"></div>
     </div>
     </div><!-- /clock-surface -->
     <!-- Quick preset strip BELOW clock body -->
-    <div class="preset-strip" id="hc-strip">
-      <div class="ps-chip" onclick="quickTC(60,1,this)">1+1</div>
-      <div class="ps-chip" onclick="quickTC(120,1,this)">2+1</div>
-      <div class="ps-chip" onclick="quickTC(180,2,this)">3+2</div>
-      <div class="ps-chip" onclick="quickTC(300,3,this)">5+3</div>
-      <div class="ps-chip sel" id="hps-sel" onclick="quickTC(600,5,this)">10+5</div>
-      <div class="ps-chip" onclick="quickTC(900,10,this)">15+10</div>
-      <div class="ps-chip" onclick="quickTC(3600,30,this)">60+30</div>
-      <div class="ps-chip" onclick="quickTC(5400,30,this)">90+30</div>
-    </div>
     </div><!-- /clock-3d -->
   </div>
 
@@ -1606,15 +1937,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       </div>
       <div class="pc-top">
         <div class="pc-center">
-          <div class="pc-brand-t">ChessConnect</div>
+          <div class="pc-brand-t">ChessConnect <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.06em;">· Pro</span></div>
           <div class="pc-ctrls">
-            <button class="pc-cbtn" id="pc-pause" onclick="togglePause()" aria-label="Pause game">PAUSE</button>
-            <button class="pc-cbtn" onclick="restartClock()" aria-label="Restart game">RESTART</button>
+            <button class="pc-cbtn" id="pc-pause" onclick="togglePause()" aria-label="Pause game">
+              <svg class="pause-icon-svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px;display:block"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+            <button class="pc-cbtn pc-snd-btn" onclick="restartClock()" title="Restart" aria-label="Restart game">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="pc-cbtn pc-snd-btn" onclick="newGame()" title="Home" aria-label="Go to home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
             <button class="pc-cbtn pc-snd-btn" id="pc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
               <svg id="pc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
             </button>
             <button class="pc-cbtn pc-fs-btn" id="pc-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
-              <svg id="pc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit
+              <svg id="pc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit to Screen
             </button>
             <button class="pc-cbtn pc-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
             </button>
@@ -1642,21 +1980,9 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
           </div>
         </div>
       </div>
-      <div class="pc-bot">
-        <div class="pc-tag">Pro Edition · Tournament</div>
-      </div>
+      <div class="pc-bot"></div>
     </div>
     </div><!-- /clock-surface -->
-    <div class="preset-strip" id="pc-strip">
-      <div class="ps-chip" onclick="quickTC(60,1,this)">1+1</div>
-      <div class="ps-chip" onclick="quickTC(120,1,this)">2+1</div>
-      <div class="ps-chip" onclick="quickTC(180,2,this)">3+2</div>
-      <div class="ps-chip" onclick="quickTC(300,3,this)">5+3</div>
-      <div class="ps-chip sel" onclick="quickTC(600,5,this)">10+5</div>
-      <div class="ps-chip" onclick="quickTC(900,10,this)">15+10</div>
-      <div class="ps-chip" onclick="quickTC(3600,30,this)">60+30</div>
-      <div class="ps-chip" onclick="quickTC(5400,30,this)">90+30</div>
-    </div>
     </div><!-- /clock-3d -->
   </div>
 
@@ -1700,15 +2026,22 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
       </div>
       <div class="cc-top">
         <div class="cc-center">
-          <div class="cc-brand"><span class="cc-b1">Chess</span><span class="cc-b2">Connect</span></div>
+          <div class="cc-brand"><span class="cc-b1">Chess</span><span class="cc-b2">Connect</span><span style="font-size:0.58rem;font-weight:700;letter-spacing:0.06em;color:rgba(200,120,255,0.95);margin-left:4px;">· Chronos 2050</span></div>
           <div class="cc-ctrls">
-            <button class="cc-cbtn" id="cc-pause" onclick="togglePause()" aria-label="Pause game">PAUSE</button>
-            <button class="cc-cbtn" onclick="restartClock()" aria-label="Restart game">RESTART</button>
+            <button class="cc-cbtn" id="cc-pause" onclick="togglePause()" aria-label="Pause game">
+              <svg class="pause-icon-svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px;display:block"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+            <button class="cc-cbtn cc-snd-btn" onclick="restartClock()" title="Restart" aria-label="Restart game">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="cc-cbtn cc-snd-btn" onclick="newGame()" title="Home" aria-label="Go to home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
             <button class="cc-cbtn cc-snd-btn" id="cc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
               <svg id="cc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
             </button>
             <button class="cc-cbtn cc-fs-btn" id="cc-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
-              <svg id="cc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit
+              <svg id="cc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit to Screen
             </button>
             <button class="cc-cbtn cc-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
             </button>
@@ -1736,21 +2069,72 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
           </div>
         </div>
       </div>
-      <div class="cc-bot">
-        <div class="cc-tag">Chronos 2050 Edition · Tournament</div>
-      </div>
+      <div class="cc-bot"></div>
     </div>
     </div><!-- /clock-surface -->
-    <div class="preset-strip" id="cc-strip">
-      <div class="ps-chip" onclick="quickTC(60,1,this)">1+1</div>
-      <div class="ps-chip" onclick="quickTC(120,1,this)">2+1</div>
-      <div class="ps-chip" onclick="quickTC(180,2,this)">3+2</div>
-      <div class="ps-chip" onclick="quickTC(300,3,this)">5+3</div>
-      <div class="ps-chip sel" onclick="quickTC(600,5,this)">10+5</div>
-      <div class="ps-chip" onclick="quickTC(900,10,this)">15+10</div>
-      <div class="ps-chip" onclick="quickTC(3600,30,this)">60+30</div>
-      <div class="ps-chip" onclick="quickTC(5400,30,this)">90+30</div>
+    </div><!-- /clock-3d -->
+  </div>
+
+  <!-- ── CHESSCONNECT CLOCK ── -->
+  <div class="clock-view chessconnect-clock" id="chessconnect-clock">
+    <div class="clock-3d">
+    <div class="clock-surface">
+    <div class="xc-body">
+      <div class="hc-corners"></div>
+      <div class="pause-overlay" id="po-chessconnect" onclick="togglePause()"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap anywhere to resume</div></div>
+      <div class="xc-side xc-side-l inactive-k" id="xk1" onpointerdown="pressBtn(1,event,this)" role="button" aria-label="Player 1 clock button">
+        <div class="xc-side-lbl" id="xc-slbl1">Player 1</div>
+      </div>
+      <div class="xc-side xc-side-r inactive-k" id="xk2" onpointerdown="pressBtn(2,event,this)" role="button" aria-label="Player 2 clock button">
+        <div class="xc-side-lbl" id="xc-slbl2">Player 2</div>
+      </div>
+      <div class="xc-top">
+        <div class="xc-center">
+          <div class="xc-brand">ChessConnect</div>
+          <div class="xc-ctrls">
+            <button class="xc-cbtn" id="xc-pause" onclick="togglePause()" aria-label="Pause game">
+              <svg class="pause-icon-svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px;display:block"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+            <button class="xc-cbtn xc-snd-btn" onclick="restartClock()" title="Restart" aria-label="Restart game">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="xc-cbtn xc-snd-btn" onclick="newGame()" title="Home" aria-label="Go to home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
+            <button class="xc-cbtn xc-snd-btn" id="xc-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+              <svg id="xc-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            </button>
+            <button class="xc-cbtn xc-fs-btn" id="xc-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
+              <svg id="xc-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit to Screen
+            </button>
+            <button class="xc-cbtn xc-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
+            </button>
+          </div>
+          <div class="xc-cstatus" id="xc-st">Press side panel to start</div>
+        </div>
+      </div>
+      <div class="xc-displays">
+        <div class="xc-dunit" id="xc-p1unit">
+          <div class="xc-plbl" id="xc-dlbl1">Player 1</div>
+          <div class="xc-disp">
+            <div class="xc-time" id="xc-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
+            <div class="xc-moves" id="xc-m1">0 moves</div>
+            <div class="xc-inc" id="xc-i1"></div>
+          </div>
+        </div>
+        <div class="xc-divider"></div>
+        <div class="xc-dunit" id="xc-p2unit">
+          <div class="xc-plbl" id="xc-dlbl2">Player 2</div>
+          <div class="xc-disp">
+            <div class="xc-time" id="xc-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
+            <div class="xc-moves" id="xc-m2">0 moves</div>
+            <div class="xc-inc" id="xc-i2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="xc-bot"></div>
     </div>
+    </div><!-- /clock-surface -->
     </div><!-- /clock-3d -->
   </div>
 
@@ -1795,6 +2179,11 @@ let warnDone = [false,false];
 let soundOn = true, ctx = null;
 let lastPress = 0; // debounce tracker
 let whiteIdx = -1; // which player index is White (set on first press)
+let incType = 'fischer'; // 'fischer' | 'delay' | 'bronstein'
+let delayRemaining = 0;  // seconds of delay left for active player (US Delay only)
+let moveStartTime = 0;   // performance.now() when current player's turn started (Bronstein)
+let pauseStart = 0;      // performance.now() when game was paused (Bronstein correction)
+let wasAutopaused = false; // true if tab-hide auto-paused the game
 
 /* ════════════════════════════════
    SERVICE WORKER — registered from real URL
@@ -1873,6 +2262,10 @@ window.addEventListener('appinstalled', () => {
   const wrap = document.getElementById('installWrap');
   if (wrap) wrap.classList.remove('visible');
   deferredInstallPrompt = null;
+  // GA4 — track PWA installation
+  if(typeof gtag === 'function') {
+    gtag('event', 'pwa_installed');
+  }
 });
 
 // Initialise
@@ -1901,19 +2294,35 @@ function releaseWakeLock() {
   if (wakeLock) { wakeLock.release().catch(()=>{}); wakeLock = null; }
 }
 // Re-acquire if page becomes visible again (e.g. after phone call)
+// Auto-pause when tab/app goes to background, auto-resume when it returns
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && active !== -1 && !paused && !over) {
-    requestWakeLock();
+  if (document.visibilityState === 'hidden') {
+    // Tab hidden — auto-pause if game is running and not already paused
+    if (active !== -1 && !paused && !over) {
+      togglePause();
+      wasAutopaused = true;
+    }
+  } else {
+    // Tab visible again — re-acquire wake lock
+    if (active !== -1 && !paused && !over) {
+      requestWakeLock();
+    }
+    // Auto-resume only if we were the ones who paused it
+    if (wasAutopaused && paused && !over) {
+      togglePause();
+      wasAutopaused = false;
+    }
   }
 });
 
 /* Prefix map */
-const PFX = {heritage:'hc', pro:'pc', chronos:'cc'};
+const PFX = {heritage:'hc', pro:'pc', chronos:'cc', chessconnect:'xc'};
 /* Button IDs per theme */
 const BTNS = {
-  heritage: ['hk1','hk2'],
-  pro:      ['pl1','pl2'],
-  chronos:  ['cl1','cl2'],
+  heritage:     ['hk1','hk2'],
+  pro:          ['pl1','pl2'],
+  chronos:      ['cl1','cl2'],
+  chessconnect: ['xk1','xk2'],
 };
 
 /* ════════════════════════════════
@@ -1924,6 +2333,10 @@ function selectClock(t, card) {
   document.querySelectorAll('.clock-card').forEach(c=>c.classList.remove('selected'));
   card.classList.add('selected');
   document.getElementById('nextBtn').classList.add('ready');
+  // GA4 — track which theme was selected
+  if(typeof gtag === 'function') {
+    gtag('event', 'theme_selected', { theme_name: t });
+  }
 }
 /* ════════════════════════════════
    LANDSCAPE / ROTATE — Option B
@@ -1931,7 +2344,7 @@ function selectClock(t, card) {
    iOS: toast guidance + auto-adapt on physical rotation
 ════════════════════════════════ */
 let isLandscape = false;
-let rotatToastTimer = null;
+let rotateToastTimer = null;
 
 function toggleRotate() {
   if (!isLandscape) {
@@ -1940,23 +2353,23 @@ function toggleRotate() {
     if (canLock) {
       screen.orientation.lock('landscape').then(() => {
         isLandscape = true;
-        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
+        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
       }).catch(() => {
         // Lock failed (iOS Safari, desktop) — fall back to guidance toast
         isLandscape = true;
-        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
+        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
         showRotateToast('Rotate your phone sideways for landscape ↻');
       });
     } else {
       // No lock API at all (iOS Safari) — show guidance
       isLandscape = true;
-      document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
+      document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
       showRotateToast('Rotate your phone sideways for landscape ↻');
     }
   } else {
     // — Unlock / go back to portrait —
     isLandscape = false;
-    document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
+    document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
     unlockOrientation();
     // On iOS where we only showed a toast, guide back
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
@@ -1975,14 +2388,14 @@ function showRotateToast(msg) {
   if (msgEl) msgEl.textContent = msg;
   toast.classList.add('show');
   // Auto-dismiss after 5s
-  if (rotatToastTimer) clearTimeout(rotatToastTimer);
-  rotatToastTimer = setTimeout(() => dismissRotateToast(), 5000);
+  if (rotateToastTimer) clearTimeout(rotateToastTimer);
+  rotateToastTimer = setTimeout(() => dismissRotateToast(), 5000);
 }
 
 function dismissRotateToast() {
   const toast = document.getElementById('rotateToast');
   if (toast) toast.classList.remove('show');
-  if (rotatToastTimer) { clearTimeout(rotatToastTimer); rotatToastTimer = null; }
+  if (rotateToastTimer) { clearTimeout(rotateToastTimer); rotateToastTimer = null; }
 }
 
 // Auto-dismiss rotate toast when phone actually reaches landscape
@@ -2009,9 +2422,10 @@ screen.orientation
    PLAYER LABEL HELPERS
 ════════════════════════════════ */
 const LBLIDS = {
-  heritage: { b:['hc-slbl1','hc-slbl2'], d:['hc-dlbl1','hc-dlbl2'] },
-  pro:      { b:['pc-slbl1','pc-slbl2'], d:['pc-dlbl1','pc-dlbl2'] },
-  chronos:  { b:['cc-slbl1','cc-slbl2'], d:['cc-dlbl1','cc-dlbl2'] },
+  heritage:     { b:['hc-slbl1','hc-slbl2'], d:['hc-dlbl1','hc-dlbl2'] },
+  pro:          { b:['pc-slbl1','pc-slbl2'], d:['pc-dlbl1','pc-dlbl2'] },
+  chronos:      { b:['cc-slbl1','cc-slbl2'], d:['cc-dlbl1','cc-dlbl2'] },
+  chessconnect: { b:['xc-slbl1','xc-slbl2'], d:['xc-dlbl1','xc-dlbl2'] },
 };
 function setPlayerLabels(whiteIdx) {
   if(!theme||!LBLIDS[theme]) return;
@@ -2027,8 +2441,47 @@ function resetPlayerLabels() {
   ids.d.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent='Player '+(i+1);});
 }
 
-function goToStep2() { if(theme) show('screen2'); }
-function goToStep1() { show('screen1'); }
+function goToStep2() { if(theme) show('screen2b'); }
+function goToStep1() {
+  show('screen1');
+  // Clear mode card selection so user must re-choose on return
+  document.querySelectorAll('.it-card').forEach(c => c.classList.remove('selected'));
+  const modeBtn = document.getElementById('modeNextBtn');
+  if (modeBtn) modeBtn.classList.remove('ready');
+}
+function goToStep2b_next() {
+  // incType already set via selectIncType (default 'fischer' if none chosen)
+  show('screen2');
+  updateCustIncLabel();
+}
+function goToStep2b_back() { show('screen2b'); }
+function selectIncType(type, card) {
+  incType = type;
+  document.querySelectorAll('.it-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  updateCustIncLabel();
+  // Enable the Set Time Control button
+  const btn = document.getElementById('modeNextBtn');
+  if (btn) btn.classList.add('ready');
+  // GA4 — track which increment mode was selected
+  if(typeof gtag === 'function') {
+    gtag('event', 'mode_selected', { increment_mode: type });
+  }
+}
+function updateCustIncLabel() {
+  const el = document.getElementById('custIncLabel');
+  if (!el) return;
+  if (incType === 'fischer') {
+    el.textContent = '+INC';
+    el.style.color = '#1E73E8';
+  } else if (incType === 'delay') {
+    el.textContent = 'DELAY';
+    el.style.color = '#E65100';
+  } else if (incType === 'bronstein') {
+    el.textContent = '|INC';
+    el.style.color = '#7B1FA2';
+  }
+}
 function goToStep3() {
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
   if (selChip) {
@@ -2097,7 +2550,7 @@ function launchClock() {
   // Reset landscape on new game
   isLandscape = false;
   document.getElementById('screen3').classList.remove('landscape');
-  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
+  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
   dismissRotateToast();
   unlockOrientation();
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
@@ -2119,53 +2572,34 @@ requestWakeLock();
 lockLandscape();
 }
 
-function initClockView() {
-  // Show correct clock, hide others
-  ['heritage','pro','chronos'].forEach(t=>{
-    document.getElementById(t+'-clock').classList.remove('show');
-  });
-  document.getElementById(theme+'-clock').classList.add('show');
-
+/* ════════════════════════════════
+   SHARED GAME STATE RESET
+   Called by initClockView, restartClock
+════════════════════════════════ */
+function resetGameState() {
   if(ticker){clearInterval(ticker);ticker=null;}
   active=-1; paused=false; over=false; lastTickSecond=-1;
   times=[baseTime,baseTime]; moves=[0,0]; warnDone=[false,false];
+  delayRemaining=0; moveStartTime=0; pauseStart=0; wasAutopaused=false;
   updateDisplays();
   resetBtnUI();
   document.getElementById('goBanner').classList.remove('show');
-  // Sync preset strip — highlight matching chip or clear all if custom time
-  const selChip = document.querySelector('#screen2 .tc-chip.sel');
-  document.querySelectorAll('.ps-chip').forEach(c=>c.classList.remove('sel'));
-  if(selChip){
-    document.querySelectorAll('.ps-chip').forEach(c=>{
-      if(c.textContent.trim()===selChip.textContent.trim()) c.classList.add('sel');
-    });
-  }
-  // Show preset strip
-  stripShow(true);
-  // Reset pause button
   setPauseIcon(false);
-  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+  ['heritage','pro','chronos','chessconnect'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+}
+
+function initClockView() {
+  // Show correct clock, hide others
+  ['heritage','pro','chronos','chessconnect'].forEach(t=>{
+    document.getElementById(t+'-clock').classList.remove('show');
+  });
+  document.getElementById(theme+'-clock').classList.add('show');
+  resetGameState();
 }
 
 function restartClock() {
   // Same time, same theme — just reset
-  if(ticker){clearInterval(ticker);ticker=null;}
-  active=-1; paused=false; over=false; lastTickSecond=-1;
-  times=[baseTime,baseTime]; moves=[0,0]; warnDone=[false,false];
-  updateDisplays();
-  resetBtnUI();
-  document.getElementById('goBanner').classList.remove('show');
-  // Sync preset strip — highlight matching chip or clear all if custom time
-  const selChip = document.querySelector('#screen2 .tc-chip.sel');
-  document.querySelectorAll('.ps-chip').forEach(c=>c.classList.remove('sel'));
-  if(selChip){
-    document.querySelectorAll('.ps-chip').forEach(c=>{
-      if(c.textContent.trim()===selChip.textContent.trim()) c.classList.add('sel');
-    });
-  }
-  stripShow(true);
-  setPauseIcon(false);
-  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+  resetGameState();
 }
 
 function newGame() {
@@ -2179,14 +2613,23 @@ function newGame() {
   // Reset landscape
   isLandscape=false;
   document.getElementById('screen3').classList.remove('landscape');
-  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
+  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
   dismissRotateToast();
-  ['heritage','pro','chronos'].forEach(t=>{
+  ['heritage','pro','chronos','chessconnect'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
   // Clear custom row highlight so Screen 2 looks clean on return
   const cr = document.querySelector('.custom-row');
   if(cr) cr.classList.remove('custom-active');
+  // Reset increment type to Fischer and clear card selection
+  incType = 'fischer';
+  delayRemaining = 0;
+  moveStartTime = 0;
+  pauseStart = 0;
+  document.querySelectorAll('.it-card').forEach(c => c.classList.remove('selected'));
+  // Disable Set Time Control button until mode is re-selected
+  const modeBtn = document.getElementById('modeNextBtn');
+  if (modeBtn) modeBtn.classList.remove('ready');
   show('screen1');
 }
 
@@ -2218,25 +2661,6 @@ function pickTC(secs, i, key, el) {
     if(cr) cr.classList.add('custom-active');
   });
 });
-function quickTC(secs, i, el) {
-  baseTime=secs; inc=i;
-  if(ticker){clearInterval(ticker);ticker=null;}
-  active=-1; paused=false; over=false; lastTickSecond=-1;
-  times=[secs,secs]; moves=[0,0]; warnDone=[false,false];
-  updateDisplays(); resetBtnUI();
-  document.getElementById('goBanner').classList.remove('show');
-  stripShow(true);
-  setPauseIcon(false);
-  ['heritage','pro','chronos'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
-  // Update selected chip highlight across ALL strips
-  if(el){
-    document.querySelectorAll('.ps-chip').forEach(c=>c.classList.remove('sel'));
-    // highlight same time in every strip
-    document.querySelectorAll('.ps-chip').forEach(c=>{
-      if(c.textContent.trim()===el.textContent.trim()) c.classList.add('sel');
-    });
-  }
-}
 
 /* ════════════════════════════════
    FORMAT
@@ -2259,8 +2683,19 @@ function updateDisplays() {
     const me=document.getElementById(p+'-m'+(i+1));
     if(me) me.textContent=moves[i]+(moves[i]===1?' move':' moves');
     const ie=document.getElementById(p+'-i'+(i+1));
-    if(ie) ie.textContent=inc>0?'+'+inc+'s':'';
-  }
+    if(!ie) continue;
+    if(incType==='fischer'){
+      ie.textContent=inc>0?'+'+inc+'s':'';
+    } else if(incType==='bronstein'){
+      ie.textContent=inc>0?'|'+inc+'s':'';
+    } else if(incType==='delay'){
+      // Active player: show live delay countdown when delay is burning
+      if(i===active && delayRemaining>0){
+        ie.textContent='d'+Math.ceil(delayRemaining)+'s';
+      } else {
+        ie.textContent=inc>0?'d/'+inc+'s':'';
+      }
+    }  }
 }
 
 /* ════════════════════════════════
@@ -2273,7 +2708,7 @@ function resetBtnUI() {
   if(u1) u1.className=u1.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
   if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
   setBtnState(1,'inactive'); setBtnState(2,'inactive');
-  const statusHint = theme==='heritage' ? 'Press side panel to start' : 'Tap side panel to start';
+  const statusHint = (theme==='heritage'||theme==='chessconnect') ? 'Press side panel to start' : 'Tap side panel to start';
   setClockStatus(statusHint);
   whiteIdx = -1;
   resetPlayerLabels();
@@ -2285,7 +2720,7 @@ function setBtnState(n, state) {
   const id=BTNS[theme][n-1];
   const el=document.getElementById(id); if(!el) return;
   el.className=el.className.replace(/\bactive-k\b|\binactive-k\b|\bactive-l\b|\binactive-l\b|\bxc-active\b/g,'').trim();
-  if(theme==='heritage') el.classList.add(state==='active'?'active-k':'inactive-k');
+  if(theme==='heritage'||theme==='chessconnect') el.classList.add(state==='active'?'active-k':'inactive-k');
   else el.classList.add(state==='active'?'active-l':'inactive-l');
 }
 
@@ -2320,10 +2755,16 @@ function updateActiveUI() {
   }
 }
 
-function stripShow(show) {
-  const p=PFX[theme]; if(!p) return;
-  const el=document.getElementById(p+'-strip');
-  if(el) el.style.display=show?'flex':'none';
+function triggerFitHint() {
+  // Map theme to button id and animation class
+  const map = {heritage:['hc-fs','fit-hint-hc'], pro:['pc-fs','fit-hint-pc'], chronos:['cc-fs','fit-hint-cc'], chessconnect:['xc-fs','fit-hint-xc']};
+  if(!theme||!map[theme]) return;
+  const [btnId, animClass] = map[theme];
+  const btn = document.getElementById(btnId);
+  if(!btn) return;
+  btn.classList.add(animClass);
+  // Remove after 3 pulses × 0.9s = 2.7s + small buffer
+  setTimeout(() => btn.classList.remove(animClass), 3000);
 }
 
 /* ════════════════════════════════
@@ -2345,9 +2786,10 @@ function pressBtn(player, e, el) {
     setPlayerLabels(idx);      // presser is White
     moves[idx]++;              // White's first move counts immediately
     active=idx===0?1:0;
+    moveStartTime = performance.now();
+    delayRemaining = (incType === 'delay') ? inc : 0;
     lastTick=performance.now();
     ticker=setInterval(tick,100);
-    stripShow(false);
     updateActiveUI();
     updateDisplays();
     // Ripple disabled for better clock responsiveness
@@ -2356,17 +2798,37 @@ function pressBtn(player, e, el) {
     }  
     playClick();
     if(navigator.vibrate) navigator.vibrate(35);
+    triggerFitHint(); // nudge player to use Fit to Screen
+    // GA4 — track game started with full context
+    if(typeof gtag === 'function') {
+      gtag('event', 'game_started', {
+        theme_name: theme,
+        increment_mode: incType,
+        time_control: fmt(baseTime) + (inc > 0 ? '+' + inc : '')
+      });
+    }
     return;
   }
   if(paused||active!==idx) return;
 
-  times[idx]+=inc;
+  // Apply increment based on mode
+  if(incType === 'fischer') {
+    times[idx] += inc;
+  } else if(incType === 'bronstein') {
+    const spent = (performance.now() - moveStartTime) / 1000;
+    const giveback = Math.min(inc, spent);
+    times[idx] += giveback;
+  }
+  // US Delay: nothing added — delay is handled in tick() by freezing the clock
+
   moves[idx]++;
   if(times[idx]>30){
     document.getElementById(PFX[theme]+'-p'+(idx+1)+'unit').classList.remove('warning');
     warnDone[idx]=false;
   }
   active=1-idx;
+  moveStartTime = performance.now();
+  delayRemaining = (incType === 'delay') ? inc : 0;
   lastTick=performance.now();
   updateActiveUI();
   updateDisplays();
@@ -2386,9 +2848,25 @@ let lastTickSecond = -1; // tracks which whole second we last beeped at
 function tick() {
   if(active<0||paused||over) return;
   const now=performance.now();
-  times[active]-=(now-lastTick)/1000;
-  times[active]=Math.max(0, times[active]); // clamp — never go negative
+  const elapsed=(now-lastTick)/1000;
   lastTick=now;
+
+  if(incType==='delay' && delayRemaining>0){
+    // US Delay: burn down the delay buffer first, main clock untouched
+    delayRemaining-=elapsed;
+    if(delayRemaining<0){
+      // Delay expired mid-tick — carry remainder into main clock
+      times[active]+=delayRemaining; // delayRemaining is negative here
+      times[active]=Math.max(0,times[active]);
+      delayRemaining=0;
+    }
+    updateDisplays();
+    return; // no warning/flag checks while delay is active
+  }
+
+  // Normal clock decrement (Fischer, Bronstein, or delay exhausted)
+  times[active]-=elapsed;
+  times[active]=Math.max(0,times[active]);
 
   if(times[active]<=30&&!warnDone[active]){
     warnDone[active]=true;
@@ -2441,24 +2919,36 @@ function togglePause() {
   });
   setPauseIcon(paused);
   // Show/hide pause overlay on active clock body
-  ['heritage','pro','chronos'].forEach(id=>{
+  ['heritage','pro','chronos','chessconnect'].forEach(id=>{
     const po=document.getElementById('po-'+id);
     if(po) po.classList.toggle('show', paused);
   });
   if(paused){
     setClockStatus('Paused');
     lastTick=null;
+    pauseStart=performance.now(); // record when pause started
   } else {
+    const pauseDuration=performance.now()-pauseStart;
+    // Bronstein: shift moveStartTime forward so pause time is not counted as "spent"
+    if(incType==='bronstein' && moveStartTime>0){
+      moveStartTime+=pauseDuration;
+    }
+    pauseStart=0;
     lastTick=performance.now();
     updateActiveUI();
   }
 }
 function setPauseIcon(p) {
-  const icon=document.getElementById('pauseIcon');
-  if(!icon) return;
-  icon.innerHTML=p
-    ?'<polygon points="5 3 19 12 5 21 5 3"/>'
-    :'<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+  const pausePath = '<polygon points="5 3 19 12 5 21 5 3"/>';
+  const playPath  = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+  document.querySelectorAll('.pause-icon-svg').forEach(icon => {
+    icon.innerHTML = p ? pausePath : playPath;
+  });
+  // Also toggle .on state on pause buttons so theme styling highlights when paused
+  ['hc-pause','pc-pause','cc-pause'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('on', p);
+  });
 }
 
 /* ════════════════════════════════
@@ -2577,6 +3067,10 @@ let fsToastTimer = null;
 
 function toggleFullscreen() {
   if (!isFullscreen) { enterFullscreen(); } else { exitFullscreen(); }
+  // GA4 — track fullscreen toggle
+  if(typeof gtag === 'function') {
+    gtag('event', 'fullscreen_toggled', { state: isFullscreen ? 'entered' : 'exited' });
+  }
 }
 
 function enterFullscreen() {
@@ -2729,11 +3223,17 @@ pickTC(600, 5, '10+5', document.getElementById('tc-10+5'));
     const toolUrl = 'https://chessconnecthq.github.io/chessconnect-web/chess-clock.html';
     const msg = encodeURIComponent(
       '\uD83D\uDD50 Professional chess clock for tournaments & practice!\n' +
-      '3 beautiful themes \u2014 Heritage, Pro & Chronos 2050\n' +
-      'Works on mobile, no download needed.\n' +
+      '4 beautiful themes \u2014 Heritage, Pro, Chronos 2050 & ChessConnect\n' +
+      'Fischer, Bronstein & US Delay modes. Works on mobile, no download needed.\n' +
       'Try it here: ' + toolUrl
     );
     waBtn.href = 'https://wa.me/?text=' + msg;
+    // GA4 — track WhatsApp share clicks
+    waBtn.addEventListener('click', function() {
+      if(typeof gtag === 'function') {
+        gtag('event', 'share_clicked', { method: 'whatsapp' });
+      }
+    });
   }
   const emailEl = document.getElementById('clockFeedbackEmail');
   if (emailEl) {
