@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-<title>Free Online Chess Clock | Fischer · Bronstein · US Delay</title>
+<title>Free Chess Clock Online – Fischer, Bronstein &amp; US Delay | ChessConnect</title>
 
 <!-- ═══ SEO META TAGS ═══ -->
 <!-- Primary Meta -->
-<meta name="description" content="Free online chess clock with Fischer, Bronstein and US Delay modes. 4 beautiful themes. Works perfectly on mobile. No download required. Start your game instantly."/>
+<meta name="description" content="Free online chess clock with Fischer, Bronstein and US Delay modes. 7 beautiful themes including Rosso racing red, Nova deep space and Bespoke Limited Edition. Works perfectly on mobile. No download required."/>
 <meta name="keywords" content="chess clock, chess timer, online chess clock, free chess clock, chess clock India, chess timer online, digital chess clock, chess clock app, chess game timer, chess clock for mobile, Fischer chess clock, Bronstein delay chess clock, US delay chess clock, chess clock delay, chess increment types, tournament chess clock, chess clock website, free chess timer India, chess coach India, ChessConnect, Heritage chess clock, Chronos chess clock, minimalist chess clock, DGT chess clock alternative, lichess clock, chess.com clock, fide chess clock, rapid chess clock, blitz chess timer, otb chess clock, chess clock browser, tournament chess timer"/>
 <meta name="author" content="ChessConnect"/>
 <meta name="robots" content="index, follow"/>
@@ -17,8 +17,8 @@
 
 <!-- ═══ OPEN GRAPH (WhatsApp, Facebook, LinkedIn previews) ═══ -->
 <meta property="og:type" content="website"/>
-<meta property="og:title" content="Free Chess Clock – Fischer, Bronstein & US Delay | ChessConnect"/>
-<meta property="og:description" content="Free chess clock with Fischer, Bronstein and US Delay modes. 4 stunning clock themes. Works instantly on mobile. No download needed."/>
+<meta property="og:title" content="Free Chess Clock – Fischer, Bronstein &amp; US Delay | ChessConnect"/>
+<meta property="og:description" content="Free chess clock with Fischer, Bronstein and US Delay modes. 7 stunning clock themes including Rosso, Bespoke and Nova. Works instantly on mobile. No download needed."/>
 <meta property="og:url" content="https://chessconnecthq.github.io/chessconnect-web/chess-clock.html"/>
 <meta property="og:site_name" content="ChessConnect"/>
 <meta property="og:locale" content="en_IN"/>
@@ -48,7 +48,7 @@
   "@type": "WebApplication",
   "name": "ChessConnect Chess Clock",
   "url": "https://chessconnecthq.github.io/chessconnect-web/chess-clock.html",
-  "description": "Free online chess clock for players, coaches and tournaments in India. 4 themed clocks — Heritage, Pro, Chronos 2050 and ChessConnect. Supports Fischer increment, Bronstein delay and US delay time controls. Works on mobile and installs as app.",
+  "description": "Free online chess clock for players, coaches and tournaments in India. 7 themed clocks — Heritage, Pro, Chronos 2050, ChessConnect, Nova, Bespoke Limited Edition and Rosso Racing Edition. Supports Fischer increment, Bronstein delay and US delay time controls. Works on mobile and installs as app.",
   "applicationCategory": "UtilityApplication",
   "applicationSubCategory": "Chess Clock",
   "operatingSystem": "Android, iOS, Windows, macOS",
@@ -56,7 +56,10 @@
     "Fischer increment",
     "Bronstein delay",
     "US delay",
-    "4 clock themes",
+    "7 clock themes",
+    "Rosso Ferrari racing edition",
+    "Nova deep space edition",
+    "Bespoke Limited Edition",
     "Mobile friendly",
     "Installable PWA",
     "No download needed",
@@ -208,7 +211,52 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 .clock-card.selected .card-check{background:#1E73E8;border-color:#1E73E8}
 .card-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity 0.2s}
 .clock-card.selected .card-check svg{opacity:1}
-.card-heritage,.card-pro,.card-chronos,.card-chessconnect{--ca:#1E73E8}
+.card-heritage,.card-pro,.card-chronos,.card-chessconnect,.card-nova,.card-bespoke,.card-rosso{--ca:#1E73E8}
+
+/* Limited Edition card styling — gold border + premium feel */
+.card-bespoke,.card-rosso{
+  border-color:rgba(201,169,110,0.7)!important;
+  background:linear-gradient(135deg,#FFFDF5 0%,#FFF8E8 50%,#FFFDF5 100%)!important;
+  box-shadow:0 1px 6px rgba(201,169,110,0.2),0 0 0 1px rgba(201,169,110,0.3)!important;
+}
+.card-bespoke.selected,.card-rosso.selected{
+  border-color:rgba(201,169,110,0.95)!important;
+  box-shadow:0 2px 12px rgba(201,169,110,0.35),0 0 0 1px rgba(201,169,110,0.6)!important;
+}
+.card-bespoke .card-check,.card-rosso .card-check{
+  border-color:rgba(201,169,110,0.5)!important;
+  background:#FFFDF5!important;
+}
+.card-bespoke.selected .card-check,.card-rosso.selected .card-check{
+  background:#C9A96E!important;
+  border-color:#C9A96E!important;
+}
+.card-bespoke .card-name,.card-rosso .card-name{
+  color:#7A5A1A!important;
+}
+/* LE badge */
+.le-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:0.48rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;
+  color:#7A5210;padding:2px 7px;border-radius:10px;
+  border:1px solid rgba(140,90,20,0.55);
+  background:rgba(201,169,110,0.15);
+  margin-bottom:3px;
+}
+/* Gold divider between standard and LE themes */
+.le-divider{
+  display:flex;align-items:center;gap:10px;
+  margin:4px 0;
+}
+.le-divider-line{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(140,90,20,0.45),transparent);
+}
+.le-divider-text{
+  font-size:0.52rem;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;
+  color:#7A5210;white-space:nowrap;
+  text-shadow:none;
+}
 
 /* ── Install App button ── */
 .install-wrap{width:100%;margin-top:0.6rem;display:none}
@@ -1175,14 +1223,795 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 /* Fit hint */
 @keyframes fitHintXC{
-  0%,100%{border-color:rgba(30,115,232,0.45);box-shadow:none;color:#102C57}
-  40%{border-color:#1E73E8;box-shadow:0 0 10px rgba(30,115,232,0.5),0 0 22px rgba(30,115,232,0.25);color:#1E73E8}
+  0%,100%{border-color:rgba(30,115,232,0.45);box-shadow:none;color:#102C57;transform:scale(1)}
+  40%{border-color:#1E73E8;box-shadow:0 0 14px rgba(30,115,232,0.7),0 0 32px rgba(30,115,232,0.35),0 0 4px rgba(30,115,232,0.3);color:#1E73E8;transform:scale(1.08)}
 }
-.fit-hint-xc{animation:fitHintXC 0.9s ease-in-out 3;}
+.fit-hint-xc{animation:fitHintXC 0.75s ease-in-out 5;}
 
 /* Snd/fs/rot button classes */
 .xc-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
 .xc-fs-btn,.xc-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+
+/* ═══════════════════════════════════════
+   NOVA CLOCK — Deep Space Skeleton Edition
+   Prefix: nv-   Base: Heritage structure
+═══════════════════════════════════════ */
+
+/* Star field keyframes */
+@keyframes twinkle{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+@keyframes nebulaRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes novaPulse{0%,100%{box-shadow:inset 0 0 30px rgba(0,180,255,0.08),0 0 0 2px rgba(0,180,255,0.6),0 6px 32px rgba(0,0,20,0.9)}50%{box-shadow:inset 0 0 30px rgba(0,180,255,0.15),0 0 0 2px rgba(0,180,255,0.9),0 6px 32px rgba(0,0,20,0.9)}}
+@keyframes fitHintNV{0%,100%{border-color:rgba(0,180,255,0.45);box-shadow:none;color:#00B4FF;transform:scale(1)}40%{border-color:#00B4FF;box-shadow:0 0 14px rgba(0,180,255,0.8),0 0 32px rgba(0,180,255,0.45),0 0 4px rgba(0,255,255,0.3);color:#fff;transform:scale(1.08)}}
+
+/* Screen background — deep space */
+.nova-clock{
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(80,0,200,0.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 70%,rgba(0,100,255,0.10) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,#0a0d1f 0%,#050810 60%,#020408 100%);
+}
+
+/* Floating star dots on screen background */
+.nova-clock::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,0.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 20%,rgba(255,255,255,0.9) 0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 65%,rgba(255,255,255,0.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 35%,rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 80% 15%,rgba(255,255,255,0.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 55%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 15% 75%,rgba(255,255,255,0.7) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 85%,rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 65% 90%,rgba(255,255,255,0.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 85% 80%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(2px 2px at 50% 10%,rgba(180,220,255,0.9) 0%,transparent 100%),
+    radial-gradient(1px 1px at 5% 50%,rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 95% 25%,rgba(255,255,255,0.6) 0%,transparent 100%);
+  pointer-events:none;animation:twinkle 4s ease infinite alternate;
+}
+
+/* Clock body — skeleton deep space */
+.nv-body{
+  width:min(96vw,580px);flex-shrink:0;
+  background:
+    radial-gradient(ellipse at 30% 40%,rgba(100,0,255,0.07) 0%,transparent 55%),
+    radial-gradient(ellipse at 70% 60%,rgba(0,150,255,0.06) 0%,transparent 55%),
+    linear-gradient(158deg,#080D20 0%,#060A1A 40%,#040814 100%);
+  border-radius:18px 18px 10px 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(0,180,255,0.2),
+    inset 0 -3px 0 rgba(0,0,0,0.8),
+    inset -1px 0 0 rgba(0,180,255,0.08),
+    inset 1px 0 0 rgba(0,180,255,0.08),
+    0 0 0 2px rgba(0,180,255,0.6),
+    0 6px 32px rgba(0,0,20,0.9);
+  border:2px solid rgba(0,180,255,0.75);
+  border-bottom:4px solid rgba(0,0,20,0.98);
+  border-left:2px solid rgba(0,180,255,0.55);
+  border-right:2px solid rgba(0,180,255,0.55);
+  position:relative;overflow:hidden;
+}
+/* Nova body — no looping animation to avoid timer jank */
+
+/* Nebula swirl inside body */
+.nv-body::before{
+  content:'';position:absolute;
+  width:300px;height:300px;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:
+    radial-gradient(ellipse,rgba(100,0,255,0.06) 0%,rgba(0,100,255,0.04) 40%,transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+  animation:nebulaRotate 20s linear infinite;
+}
+
+/* Glass sheen overlay */
+.nv-body::after{
+  content:'';position:absolute;inset:0;
+  border-radius:18px 18px 10px 10px;
+  background:linear-gradient(180deg,rgba(0,180,255,0.06) 0%,transparent 30%,rgba(100,0,255,0.03) 100%);
+  pointer-events:none;
+}
+
+/* Star dots ON the clock body */
+.nv-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:18px 18px 10px 10px;}
+.nv-star{position:absolute;border-radius:50%;background:rgba(255,255,255,0.85);animation:twinkle 3s ease infinite alternate;}
+.nv-star:nth-child(1){width:1.5px;height:1.5px;top:15%;left:20%;animation-delay:0s}
+.nv-star:nth-child(2){width:1px;height:1px;top:25%;left:45%;animation-delay:0.5s}
+.nv-star:nth-child(3){width:2px;height:2px;top:40%;left:30%;animation-delay:1s;background:rgba(180,220,255,0.9)}
+.nv-star:nth-child(4){width:1px;height:1px;top:60%;left:55%;animation-delay:1.5s}
+.nv-star:nth-child(5){width:1.5px;height:1.5px;top:75%;left:35%;animation-delay:0.8s}
+.nv-star:nth-child(6){width:1px;height:1px;top:20%;left:65%;animation-delay:2s}
+.nv-star:nth-child(7){width:2px;height:2px;top:55%;left:72%;animation-delay:0.3s;background:rgba(200,180,255,0.8)}
+.nv-star:nth-child(8){width:1px;height:1px;top:80%;left:60%;animation-delay:1.2s}
+
+/* Side panels — rocket white with red mission stripe */
+.nv-side{
+  position:absolute;top:0;bottom:0;width:68px;
+  cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+  z-index:10;transition:box-shadow 0.08s;
+  display:flex;align-items:center;justify-content:center;
+}
+.nv-side-l{
+  left:0;border-radius:18px 0 0 10px;
+  background:linear-gradient(160deg,#F8FAFF 0%,#E8F0FF 40%,#D8E8FF 100%);
+  border-right:3px solid #FF3B3B;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset -2px 0 8px rgba(0,0,20,0.15),
+    4px 0 20px rgba(0,180,255,0.25),
+    3px 0 8px rgba(0,0,0,0.4);
+}
+.nv-side-r{
+  right:0;border-radius:0 18px 10px 0;
+  background:linear-gradient(160deg,#F8FAFF 0%,#E8F0FF 40%,#D8E8FF 100%);
+  border-left:3px solid #FF3B3B;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 2px 0 8px rgba(0,0,20,0.15),
+    -4px 0 20px rgba(0,180,255,0.25),
+    -3px 0 8px rgba(0,0,0,0.4);
+}
+.nv-side-l:active,.nv-side-l.pressing{
+  background:linear-gradient(160deg,#D0DCFF 0%,#B8CCFF 50%,#A8C0FF 100%);
+  box-shadow:inset 6px 0 16px rgba(0,0,40,0.3),inset 2px 0 4px rgba(0,0,40,0.2);
+}
+.nv-side-r:active,.nv-side-r.pressing{
+  background:linear-gradient(160deg,#D0DCFF 0%,#B8CCFF 50%,#A8C0FF 100%);
+  box-shadow:inset -6px 0 16px rgba(0,0,40,0.3),inset -2px 0 4px rgba(0,0,40,0.2);
+}
+.nv-side-l.active-k{
+  box-shadow:inset -2px 0 8px rgba(0,0,20,0.15),inset 0 0 25px rgba(0,180,255,0.2),4px 0 25px rgba(0,180,255,0.5),0 0 40px rgba(0,180,255,0.2);
+}
+.nv-side-r.active-k{
+  box-shadow:inset 2px 0 8px rgba(0,0,20,0.15),inset 0 0 25px rgba(0,180,255,0.2),-4px 0 25px rgba(0,180,255,0.5),0 0 40px rgba(0,180,255,0.2);
+}
+.nv-side.inactive-k{filter:brightness(0.55);cursor:not-allowed}
+.nv-side-lbl{
+  font-size:0.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.18em;color:rgba(4,10,30,0.85);
+  text-shadow:0 1px 2px rgba(0,0,0,0.2);
+  white-space:nowrap;font-family:'Orbitron',sans-serif;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  transform:rotate(180deg);pointer-events:none;
+}
+.nv-side-r .nv-side-lbl{transform:rotate(0deg)}
+
+/* Center controls */
+.nv-top{display:flex;align-items:center;padding:11px 80px 9px;position:relative;z-index:2;gap:8px}
+.nv-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.nv-brand{font-family:'Orbitron',sans-serif;font-size:0.75rem;font-weight:700;color:rgba(0,180,255,0.92);letter-spacing:0.08em;text-shadow:0 0 10px rgba(0,180,255,0.5)}
+.nv-ctrls{display:flex;gap:5px}
+.nv-cbtn{
+  padding:5px 11px;border-radius:5px;
+  border:1.5px solid rgba(0,180,255,0.45);
+  background:rgba(0,10,30,0.75);
+  color:rgba(0,180,255,0.92);
+  font-size:0.58rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;font-family:'Orbitron',sans-serif;
+  box-shadow:0 2px 6px rgba(0,0,0,0.5),inset 0 1px 0 rgba(0,180,255,0.08);
+}
+.nv-cbtn:hover{border-color:rgba(0,180,255,0.8);color:#00B4FF;background:rgba(0,20,50,0.85);box-shadow:0 2px 10px rgba(0,180,255,0.2)}
+.nv-cbtn:active{transform:translateY(1px)}
+.nv-cbtn.on{border-color:#00B4FF;color:#fff;background:rgba(0,40,80,0.85);box-shadow:0 2px 14px rgba(0,180,255,0.35)}
+.nv-rot-btn.rotate-on{border-color:#00B4FF!important;color:#fff!important;background:rgba(0,40,80,0.85)!important}
+.nv-cstatus{font-size:0.58rem;font-family:'Orbitron',sans-serif;color:rgba(0,180,255,0.75);font-weight:700;text-transform:uppercase;letter-spacing:0.14em;text-align:center;text-shadow:0 0 8px rgba(0,180,255,0.4)}
+.nv-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
+.nv-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.nv-fs-btn,.nv-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+
+/* Displays — skeleton frosted space window */
+.nv-displays{display:flex;padding:0 80px;position:relative;z-index:2;gap:0}
+.nv-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nv-plbl{font-size:0.58rem;font-family:'Orbitron',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:rgba(0,180,255,0.55);transition:color 0.3s}
+.nv-dunit.active .nv-plbl{color:rgba(0,180,255,0.95);text-shadow:0 0 8px rgba(0,180,255,0.5)}
+.nv-disp{
+  width:100%;
+  background:
+    radial-gradient(ellipse at 50% 30%,rgba(80,0,200,0.08) 0%,transparent 60%),
+    linear-gradient(180deg,#0A0F25 0%,#080C1E 50%,#060A18 100%);
+  border-radius:7px;
+  border:1.5px solid rgba(0,180,255,0.6);
+  padding:9px 5px 7px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,20,0.95),
+    inset 0 1px 0 rgba(0,180,255,0.15),
+    0 0 15px rgba(0,180,255,0.1);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+/* Scan line effect on displays */
+.nv-disp::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,180,255,0.015) 3px,rgba(0,180,255,0.015) 4px);
+  pointer-events:none;
+}
+.nv-dunit.active .nv-disp{
+  border-color:rgba(0,180,255,0.9);
+  box-shadow:
+    inset 0 0 20px rgba(0,0,20,0.95),
+    inset 0 1px 0 rgba(0,180,255,0.2),
+    0 0 25px rgba(0,180,255,0.25),
+    0 0 50px rgba(0,180,255,0.1);
+}
+.nv-dunit.flagged .nv-disp{border-color:#FF3A3A!important;animation:flagPulse 0.5s ease infinite alternate}
+.nv-time{
+  font-family:'Orbitron',sans-serif;font-weight:700;
+  font-size:clamp(2rem,10vw,2.8rem);
+  letter-spacing:0.08em;color:rgba(120,160,200,0.7);
+  line-height:1;transition:color 0.3s,text-shadow 0.3s;
+  user-select:none;font-variant-numeric:tabular-nums;
+}
+.nv-dunit.active .nv-time{
+  color:#FFFFFF;
+  text-shadow:0 0 8px rgba(0,180,255,0.8),0 0 20px rgba(0,180,255,0.5),0 0 40px rgba(0,180,255,0.2);
+}
+.nv-dunit.flagged .nv-time{color:#FF3A3A!important;text-shadow:0 0 12px rgba(255,58,58,0.7)!important}
+.nv-dunit.warning .nv-time{color:#FF8C00!important;text-shadow:0 0 10px rgba(255,140,0,0.6)!important;animation:warnBlink 1s ease infinite}
+.nv-moves{font-size:0.5rem;color:rgba(0,180,255,0.35);font-family:'Orbitron',sans-serif;transition:color 0.3s;font-weight:600;letter-spacing:0.08em}
+.nv-dunit.active .nv-moves{color:rgba(0,180,255,0.65)}
+.nv-inc{position:absolute;bottom:4px;right:6px;font-size:0.46rem;font-family:'Orbitron',sans-serif;color:rgba(0,180,255,0.45);font-weight:700;letter-spacing:0.04em}
+.nv-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(0,180,255,0.2),transparent);margin:4px 3px;flex-shrink:0}
+
+/* Bottom bar */
+.nv-bot{display:flex;justify-content:center;align-items:center;padding:4px 80px 14px;position:relative;z-index:2}
+
+/* Pause overlay */
+.nova-clock .pause-overlay{background:rgba(0,5,20,0.88)!important}
+.nova-clock .po-icon{color:#00B4FF!important}
+.nova-clock .po-text{color:#00B4FF!important;text-shadow:0 0 10px rgba(0,180,255,0.5)!important}
+.nova-clock .po-sub{color:rgba(0,180,255,0.5)!important}
+
+/* Fit hint */
+.fit-hint-nv{animation:fitHintNV 0.75s ease-in-out 5;}
+
+/* ═══════════════════════════════════════
+   BESPOKE CLOCK — Limited Edition
+   British Racing Green · Hand-stitched Leather · Champagne Gold
+   Prefix: bk-   Base: Heritage structure
+═══════════════════════════════════════ */
+
+/* Keyframes */
+@keyframes bkAmbient{0%,100%{box-shadow:inset 0 0 40px rgba(201,169,110,0.06),0 0 0 2.5px rgba(201,169,110,0.7),0 8px 40px rgba(0,0,0,0.85)}50%{box-shadow:inset 0 0 40px rgba(201,169,110,0.1),0 0 0 2.5px rgba(201,169,110,0.9),0 8px 40px rgba(0,0,0,0.85)}}
+@keyframes bkGoldPulse{0%,100%{opacity:0.7}50%{opacity:1}}
+@keyframes fitHintBK{0%,100%{border-color:rgba(201,169,110,0.45);box-shadow:none;color:#C9A96E;transform:scale(1)}40%{border-color:#C9A96E;box-shadow:0 0 14px rgba(201,169,110,0.7),0 0 32px rgba(201,169,110,0.4),0 0 4px rgba(255,220,140,0.3);color:#E8C87A;transform:scale(1.08)}}
+
+/* Screen background — dark walnut panelled room */
+.bespoke-clock{
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(201,169,110,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse at 50% 100%,rgba(0,0,0,0.4) 0%,transparent 60%),
+    linear-gradient(180deg,#0D1A0F 0%,#0A1409 50%,#080F07 100%);
+}
+
+/* Diamond quilt pattern — Rolls Royce signature */
+.bespoke-clock::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    repeating-linear-gradient(45deg,rgba(255,255,255,0.012) 0px,rgba(255,255,255,0.012) 1px,transparent 1px,transparent 28px),
+    repeating-linear-gradient(-45deg,rgba(255,255,255,0.012) 0px,rgba(255,255,255,0.012) 1px,transparent 1px,transparent 28px);
+  pointer-events:none;
+}
+
+/* Clock body — British Racing Green quilted leather */
+.bk-body{
+  width:min(96vw,580px);flex-shrink:0;
+  /* Leather texture — fine grain crosshatch */
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px),
+    repeating-linear-gradient(90deg,transparent 0,transparent 18px,rgba(255,255,255,0.012) 18px,rgba(255,255,255,0.012) 19px),
+    repeating-linear-gradient(0deg,transparent 0,transparent 18px,rgba(255,255,255,0.012) 18px,rgba(255,255,255,0.012) 19px),
+    linear-gradient(158deg,#1F4A2A 0%,#1B4332 30%,#163828 60%,#122E22 100%);
+  border-radius:18px 18px 10px 10px;
+  /* Leather piping edge effect */
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.07),
+    inset 0 -4px 0 rgba(0,0,0,0.6),
+    inset -2px 0 0 rgba(0,0,0,0.3),
+    inset 2px 0 0 rgba(255,255,255,0.04),
+    0 0 0 2.5px rgba(201,169,110,0.7),
+    0 0 0 4px rgba(27,67,50,0.9),
+    0 0 0 5.5px rgba(201,169,110,0.35),
+    0 8px 40px rgba(0,0,0,0.85);
+  border:2px solid rgba(201,169,110,0.8);
+  border-bottom:5px solid rgba(10,20,12,0.98);
+  border-left:2px solid rgba(201,169,110,0.6);
+  border-right:2px solid rgba(201,169,110,0.6);
+  position:relative;overflow:hidden;
+}
+/* Bespoke body — no looping animation to avoid timer jank */
+
+/* Double stitch lines — top and bottom edges */
+.bk-body::before{
+  content:'';position:absolute;
+  left:80px;right:80px;top:0;
+  height:100%;pointer-events:none;z-index:1;
+  border-top:1.5px dashed rgba(245,237,214,0.55);
+  border-bottom:1.5px dashed rgba(245,237,214,0.55);
+  margin-top:6px;
+  box-sizing:border-box;
+}
+/* Champagne gold sheen overlay */
+.bk-body::after{
+  content:'';position:absolute;inset:0;
+  border-radius:18px 18px 10px 10px;
+  background:
+    linear-gradient(180deg,rgba(201,169,110,0.07) 0%,transparent 25%,transparent 75%,rgba(0,0,0,0.15) 100%);
+  pointer-events:none;z-index:1;
+}
+
+/* Side panels — dark green leather with vertical stitching */
+.bk-side{
+  position:absolute;top:0;bottom:0;width:68px;
+  cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+  z-index:10;transition:box-shadow 0.12s;
+  display:flex;align-items:center;justify-content:center;
+}
+.bk-side-l{
+  left:0;border-radius:18px 0 0 10px;
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 3px,rgba(0,0,0,0.1) 3px,rgba(0,0,0,0.1) 4px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px),
+    linear-gradient(160deg,#163828 0%,#122E22 50%,#0E2419 100%);
+  border-right:2px solid rgba(201,169,110,0.6);
+  box-shadow:
+    inset -3px 0 10px rgba(0,0,0,0.5),
+    inset 2px 0 4px rgba(201,169,110,0.04),
+    4px 0 20px rgba(0,0,0,0.6),
+    3px 0 8px rgba(201,169,110,0.12);
+}
+.bk-side-r{
+  right:0;border-radius:0 18px 10px 0;
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 3px,rgba(0,0,0,0.1) 3px,rgba(0,0,0,0.1) 4px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px),
+    linear-gradient(160deg,#163828 0%,#122E22 50%,#0E2419 100%);
+  border-left:2px solid rgba(201,169,110,0.6);
+  box-shadow:
+    inset 3px 0 10px rgba(0,0,0,0.5),
+    inset -2px 0 4px rgba(201,169,110,0.04),
+    -4px 0 20px rgba(0,0,0,0.6),
+    -3px 0 8px rgba(201,169,110,0.12);
+}
+/* Vertical stitching lines on side panels */
+.bk-side-l::before,.bk-side-r::before{
+  content:'';position:absolute;
+  top:12px;bottom:12px;
+  width:0;
+  border-left:1.5px dashed rgba(245,237,214,0.5);
+  pointer-events:none;
+}
+.bk-side-l::before{right:14px}
+.bk-side-r::before{left:14px}
+/* Second stitch line */
+.bk-side-l::after,.bk-side-r::after{
+  content:'';position:absolute;
+  top:12px;bottom:12px;
+  width:0;
+  border-left:1.5px dashed rgba(245,237,214,0.28);
+  pointer-events:none;
+}
+.bk-side-l::after{right:20px}
+.bk-side-r::after{left:20px}
+/* Press states */
+.bk-side-l:active,.bk-side-l.pressing{
+  box-shadow:inset 6px 0 18px rgba(0,0,0,0.7),inset 2px 0 4px rgba(0,0,0,0.5);
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 3px,rgba(0,0,0,0.12) 3px,rgba(0,0,0,0.12) 4px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(0,0,0,0.09) 3px,rgba(0,0,0,0.09) 4px),
+    linear-gradient(160deg,#0E2419 0%,#0B1D14 50%,#091710 100%);
+}
+.bk-side-r:active,.bk-side-r.pressing{
+  box-shadow:inset -6px 0 18px rgba(0,0,0,0.7),inset -2px 0 4px rgba(0,0,0,0.5);
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 3px,rgba(0,0,0,0.12) 3px,rgba(0,0,0,0.12) 4px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(0,0,0,0.09) 3px,rgba(0,0,0,0.09) 4px),
+    linear-gradient(160deg,#0E2419 0%,#0B1D14 50%,#091710 100%);
+}
+/* Active — warm gold ambient glow like Rolls Royce cabin lighting */
+.bk-side-l.active-k{
+  box-shadow:
+    inset -3px 0 10px rgba(0,0,0,0.5),
+    inset 0 0 30px rgba(201,169,110,0.12),
+    4px 0 25px rgba(201,169,110,0.35),
+    0 0 50px rgba(201,169,110,0.12);
+}
+.bk-side-r.active-k{
+  box-shadow:
+    inset 3px 0 10px rgba(0,0,0,0.5),
+    inset 0 0 30px rgba(201,169,110,0.12),
+    -4px 0 25px rgba(201,169,110,0.35),
+    0 0 50px rgba(201,169,110,0.12);
+}
+.bk-side.inactive-k{filter:brightness(0.75);cursor:not-allowed}
+
+/* Side panel labels */
+.bk-side-lbl{
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.2em;color:rgba(201,169,110,1);
+  text-shadow:0 0 10px rgba(201,169,110,0.6),0 1px 3px rgba(0,0,0,0.9);
+  white-space:nowrap;font-family:'Playfair Display',serif;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  transform:rotate(180deg);pointer-events:none;
+}
+.bk-side-r .bk-side-lbl{transform:rotate(0deg)}
+
+/* Center controls */
+.bk-top{display:flex;align-items:center;padding:11px 80px 9px;position:relative;z-index:2;gap:8px}
+.bk-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.bk-brand{
+  font-family:'Playfair Display',serif;font-size:0.82rem;font-weight:700;
+  color:rgba(201,169,110,0.95);letter-spacing:0.05em;
+  text-shadow:0 0 12px rgba(201,169,110,0.35),0 1px 3px rgba(0,0,0,0.8);
+}
+.bk-brand-sub{
+  font-family:'DM Sans',sans-serif;font-size:0.46rem;font-weight:600;
+  color:rgba(201,169,110,0.6);letter-spacing:0.25em;text-transform:uppercase;
+  text-align:center;margin-top:-2px;
+}
+.bk-ctrls{display:flex;gap:5px}
+.bk-cbtn{
+  padding:5px 11px;border-radius:4px;
+  border:1.5px solid rgba(201,169,110,0.5);
+  background:rgba(15,30,18,0.85);
+  color:rgba(201,169,110,0.9);
+  font-size:0.58rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;
+  box-shadow:0 2px 8px rgba(0,0,0,0.6),inset 0 1px 0 rgba(201,169,110,0.08);
+}
+.bk-cbtn:hover{border-color:rgba(201,169,110,0.85);color:#E8C87A;background:rgba(25,50,28,0.9);box-shadow:0 2px 12px rgba(201,169,110,0.2)}
+.bk-cbtn:active{transform:translateY(1px)}
+.bk-cbtn.on{border-color:#C9A96E;color:#E8C87A;background:rgba(40,65,35,0.9);box-shadow:0 2px 14px rgba(201,169,110,0.3)}
+.bk-rot-btn.rotate-on{border-color:#C9A96E!important;color:#E8C87A!important;background:rgba(40,65,35,0.9)!important}
+.bk-cstatus{
+  font-size:0.56rem;font-family:'DM Sans',sans-serif;
+  color:rgba(201,169,110,0.7);font-weight:700;
+  text-transform:uppercase;letter-spacing:0.14em;text-align:center;
+  text-shadow:0 1px 3px rgba(0,0,0,0.8);
+}
+.bk-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
+.bk-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.bk-fs-btn,.bk-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+
+/* Display panels — walnut veneer bezel, champagne instruments */
+.bk-displays{display:flex;padding:0 80px;position:relative;z-index:2;gap:0}
+.bk-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bk-plbl{
+  font-size:0.58rem;font-family:'Playfair Display',serif;font-weight:700;
+  font-style:normal;letter-spacing:0.08em;
+  color:rgba(220,185,120,0.95);transition:color 0.3s;
+  text-shadow:0 1px 3px rgba(0,0,0,0.8);
+}
+.bk-dunit.active .bk-plbl{color:rgba(201,169,110,0.95);text-shadow:0 0 8px rgba(201,169,110,0.3)}
+.bk-disp{
+  width:100%;
+  /* Walnut veneer instrument panel */
+  background:
+    repeating-linear-gradient(92deg,transparent 0,transparent 4px,rgba(0,0,0,0.08) 4px,rgba(0,0,0,0.08) 5px),
+    linear-gradient(180deg,#1A0E06 0%,#120A04 40%,#0E0803 100%);
+  border-radius:6px;
+  border:2px solid rgba(201,169,110,0.55);
+  padding:9px 5px 7px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:
+    inset 0 3px 12px rgba(0,0,0,0.9),
+    inset 0 1px 0 rgba(201,169,110,0.12),
+    inset 0 -1px 0 rgba(0,0,0,0.8);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+/* Gold inner bezel line */
+.bk-disp::before{
+  content:'';position:absolute;inset:3px;
+  border:1px solid rgba(201,169,110,0.15);
+  border-radius:4px;pointer-events:none;
+}
+/* Dial face sheen */
+.bk-disp::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(201,169,110,0.06) 0%,transparent 55%);
+  pointer-events:none;
+}
+.bk-dunit.active .bk-disp{
+  border-color:rgba(201,169,110,0.85);
+  box-shadow:
+    inset 0 3px 12px rgba(0,0,0,0.9),
+    inset 0 1px 0 rgba(201,169,110,0.18),
+    0 0 20px rgba(201,169,110,0.18),
+    0 0 50px rgba(201,169,110,0.07);
+}
+.bk-dunit.flagged .bk-disp{border-color:#FF3A3A!important;animation:flagPulse 0.5s ease infinite alternate}
+/* Digits — champagne gold instrument style */
+.bk-time{
+  font-family:'Rajdhani',sans-serif;font-weight:700;
+  font-size:clamp(2.2rem,10.5vw,3rem);
+  letter-spacing:0.06em;
+  color:#6B4F2A;
+  line-height:1;transition:color 0.3s,text-shadow 0.3s;
+  user-select:none;font-variant-numeric:tabular-nums;
+}
+.bk-dunit.active .bk-time{
+  color:#C9A96E;
+  text-shadow:
+    0 0 8px rgba(201,169,110,0.6),
+    0 0 20px rgba(201,169,110,0.3),
+    0 0 40px rgba(201,169,110,0.12),
+    0 1px 2px rgba(0,0,0,0.8);
+}
+.bk-dunit.flagged .bk-time{color:#FF3A3A!important;text-shadow:0 0 12px rgba(255,58,58,0.6)!important}
+.bk-dunit.warning .bk-time{color:#FF8C00!important;text-shadow:0 0 10px rgba(255,140,0,0.55)!important;animation:warnBlink 1s ease infinite}
+.bk-moves{font-size:0.56rem;color:rgba(201,169,110,0.35);font-family:'DM Sans',sans-serif;transition:color 0.3s;font-weight:600;font-style:italic}
+.bk-dunit.active .bk-moves{color:rgba(201,169,110,0.65)}
+.bk-inc{position:absolute;bottom:4px;right:6px;font-size:0.48rem;font-family:'DM Sans',sans-serif;color:rgba(201,169,110,0.4);font-weight:700;letter-spacing:0.04em}
+.bk-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(201,169,110,0.18),transparent);margin:4px 3px;flex-shrink:0}
+
+/* Bottom bar */
+.bk-bot{display:flex;justify-content:center;align-items:center;padding:4px 80px 14px;position:relative;z-index:2}
+
+/* Pause overlay — dark leather room */
+.bespoke-clock .pause-overlay{background:rgba(8,16,10,0.92)!important}
+.bespoke-clock .po-icon{color:#C9A96E!important}
+.bespoke-clock .po-text{color:#C9A96E!important;text-shadow:0 0 10px rgba(201,169,110,0.4)!important;font-family:'Playfair Display',serif!important}
+.bespoke-clock .po-sub{color:rgba(201,169,110,0.45)!important}
+
+/* Fit hint */
+.fit-hint-bk{animation:fitHintBK 0.75s ease-in-out 5;}
+
+/* ═══════════════════════════════════════
+   ROSSO CLOCK — Ferrari Racing Edition
+   Glossy Red Body · Black Leather Panels · White Stitching
+   Prefix: rs-   Base: Heritage structure
+═══════════════════════════════════════ */
+
+@keyframes rsGloss{0%,100%{box-shadow:inset 0 2px 0 rgba(255,255,255,0.45),inset 0 -4px 0 rgba(0,0,0,0.6),0 0 0 2.5px rgba(204,0,0,0.9),0 0 0 4px rgba(80,0,0,0.8),0 0 0 5.5px rgba(204,0,0,0.4),0 8px 40px rgba(0,0,0,0.9)}50%{box-shadow:inset 0 2px 0 rgba(255,255,255,0.55),inset 0 -4px 0 rgba(0,0,0,0.6),0 0 0 2.5px rgba(220,0,0,0.95),0 0 0 4px rgba(80,0,0,0.8),0 0 0 5.5px rgba(204,0,0,0.5),0 8px 40px rgba(0,0,0,0.9)}}
+@keyframes rsRimLight{0%,100%{opacity:0.6}50%{opacity:1}}
+@keyframes fitHintRS{0%,100%{border-color:rgba(204,0,0,0.5);box-shadow:none;color:#CC0000;transform:scale(1)}40%{border-color:#FF1801;box-shadow:0 0 14px rgba(255,24,1,0.85),0 0 32px rgba(255,24,1,0.45),0 0 4px rgba(255,100,100,0.3);color:#FF1801;transform:scale(1.08)}}
+
+/* Screen background — dark garage with red glow */
+.rosso-clock{
+  background:
+    radial-gradient(ellipse at 50% 30%,rgba(180,0,0,0.12) 0%,transparent 55%),
+    radial-gradient(ellipse at 50% 100%,rgba(0,0,0,0.5) 0%,transparent 60%),
+    linear-gradient(180deg,#0A0000 0%,#050000 50%,#020000 100%);
+}
+.rosso-clock::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 50% 40%,rgba(160,0,0,0.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+/* Clock body — wet gloss Ferrari lacquer */
+.rs-body{
+  width:min(96vw,580px);flex-shrink:0;
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,0.18) 0%,
+      rgba(255,255,255,0.0) 18%,
+      transparent 35%,
+      rgba(0,0,0,0.08) 75%,
+      rgba(0,0,0,0.25) 100%
+    ),
+    linear-gradient(158deg,#E80000 0%,#CC0000 25%,#B80000 55%,#990000 80%,#7A0000 100%);
+  border-radius:18px 18px 10px 10px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.45),
+    inset 0 -4px 0 rgba(0,0,0,0.6),
+    inset -1px 0 0 rgba(0,0,0,0.3),
+    inset 1px 0 0 rgba(255,200,200,0.08),
+    0 0 0 2.5px rgba(204,0,0,0.9),
+    0 0 0 4px rgba(60,0,0,0.85),
+    0 0 0 5.5px rgba(204,0,0,0.4),
+    0 8px 40px rgba(0,0,0,0.9);
+  border:2px solid rgba(220,0,0,0.9);
+  border-bottom:5px solid rgba(40,0,0,0.98);
+  border-left:2px solid rgba(180,0,0,0.7);
+  border-right:2px solid rgba(180,0,0,0.7);
+  position:relative;overflow:hidden;
+}
+/* Rosso body — no looping animation to avoid timer jank */
+/* Gloss highlight overlay */
+.rs-body::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:45%;
+  background:linear-gradient(180deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.08) 40%,transparent 100%);
+  border-radius:16px 16px 0 0;
+  pointer-events:none;z-index:1;
+}
+/* Carbon fibre micro texture */
+.rs-body::after{
+  content:'';position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 3px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 3px);
+  pointer-events:none;z-index:0;
+}
+
+/* Side panels — black leather with white stitching */
+.rs-side{
+  position:absolute;top:0;bottom:0;width:68px;
+  cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+  z-index:10;transition:box-shadow 0.08s;
+  display:flex;align-items:center;justify-content:center;
+}
+.rs-side-l{
+  left:0;border-radius:18px 0 0 10px;
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 3px,rgba(255,255,255,0.025) 3px,rgba(255,255,255,0.025) 4px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(255,255,255,0.018) 3px,rgba(255,255,255,0.018) 4px),
+    linear-gradient(160deg,#1A1A1A 0%,#111111 50%,#0A0A0A 100%);
+  border-right:2px solid rgba(220,0,0,0.7);
+  box-shadow:
+    inset -3px 0 10px rgba(0,0,0,0.7),
+    inset 2px 0 4px rgba(255,0,0,0.04),
+    4px 0 20px rgba(0,0,0,0.8),
+    3px 0 12px rgba(180,0,0,0.15);
+}
+.rs-side-r{
+  right:0;border-radius:0 18px 10px 0;
+  background:
+    repeating-linear-gradient(45deg,transparent 0,transparent 3px,rgba(255,255,255,0.025) 3px,rgba(255,255,255,0.025) 4px),
+    repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(255,255,255,0.018) 3px,rgba(255,255,255,0.018) 4px),
+    linear-gradient(160deg,#1A1A1A 0%,#111111 50%,#0A0A0A 100%);
+  border-left:2px solid rgba(220,0,0,0.7);
+  box-shadow:
+    inset 3px 0 10px rgba(0,0,0,0.7),
+    inset -2px 0 4px rgba(255,0,0,0.04),
+    -4px 0 20px rgba(0,0,0,0.8),
+    -3px 0 12px rgba(180,0,0,0.15);
+}
+/* White leather stitching — two lines each panel */
+.rs-side-l::before,.rs-side-r::before{
+  content:'';position:absolute;top:10px;bottom:10px;width:0;
+  border-left:1.5px dashed rgba(255,255,255,0.55);pointer-events:none;
+}
+.rs-side-l::after,.rs-side-r::after{
+  content:'';position:absolute;top:10px;bottom:10px;width:0;
+  border-left:1.5px dashed rgba(255,255,255,0.28);pointer-events:none;
+}
+.rs-side-l::before{right:16px}.rs-side-l::after{right:22px}
+.rs-side-r::before{left:16px}.rs-side-r::after{left:22px}
+/* Press states */
+.rs-side-l:active,.rs-side-l.pressing{
+  background:linear-gradient(160deg,#0F0F0F 0%,#080808 50%,#050505 100%);
+  box-shadow:inset 6px 0 18px rgba(0,0,0,0.9),inset 2px 0 6px rgba(0,0,0,0.7);
+}
+.rs-side-r:active,.rs-side-r.pressing{
+  background:linear-gradient(160deg,#0F0F0F 0%,#080808 50%,#050505 100%);
+  box-shadow:inset -6px 0 18px rgba(0,0,0,0.9),inset -2px 0 6px rgba(0,0,0,0.7);
+}
+/* Active — red rim light bleeding from body onto panel */
+.rs-side-l.active-k{
+  box-shadow:
+    inset -3px 0 10px rgba(0,0,0,0.7),
+    inset 0 0 30px rgba(200,0,0,0.1),
+    4px 0 30px rgba(200,0,0,0.45),
+    2px 0 8px rgba(255,24,1,0.35),
+    0 0 60px rgba(180,0,0,0.15);
+}
+.rs-side-r.active-k{
+  box-shadow:
+    inset 3px 0 10px rgba(0,0,0,0.7),
+    inset 0 0 30px rgba(200,0,0,0.1),
+    -4px 0 30px rgba(200,0,0,0.45),
+    -2px 0 8px rgba(255,24,1,0.35),
+    0 0 60px rgba(180,0,0,0.15);
+}
+.rs-side.inactive-k{filter:brightness(0.45);cursor:not-allowed}
+/* Side labels */
+.rs-side-lbl{
+  font-size:0.78rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.18em;color:rgba(255,255,255,0.85);
+  text-shadow:0 0 8px rgba(255,0,0,0.3),0 1px 3px rgba(0,0,0,0.9);
+  white-space:nowrap;font-family:'DM Sans',sans-serif;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  transform:rotate(180deg);pointer-events:none;
+}
+.rs-side-r .rs-side-lbl{transform:rotate(0deg)}
+
+/* Center controls */
+.rs-top{display:flex;align-items:center;padding:11px 80px 9px;position:relative;z-index:2;gap:8px}
+.rs-center{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.rs-brand{
+  font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:800;
+  color:#FFFFFF;letter-spacing:0.04em;
+  text-shadow:0 0 12px rgba(255,24,1,0.5),0 1px 3px rgba(0,0,0,0.8);
+}
+.rs-brand span{color:#FFFFFF}
+.rs-ctrls{display:flex;gap:5px}
+.rs-cbtn{
+  padding:5px 11px;border-radius:4px;
+  border:1.5px solid rgba(220,0,0,0.55);
+  background:rgba(10,0,0,0.82);
+  color:rgba(255,255,255,0.9);
+  font-size:0.58rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;
+  box-shadow:0 2px 8px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,100,100,0.06);
+}
+.rs-cbtn:hover{border-color:rgba(255,24,1,0.85);color:#FF1801;background:rgba(30,0,0,0.9);box-shadow:0 2px 12px rgba(200,0,0,0.3)}
+.rs-cbtn:active{transform:translateY(1px)}
+.rs-cbtn.on{border-color:#FF1801;color:#FF1801;background:rgba(40,0,0,0.9);box-shadow:0 2px 14px rgba(255,24,1,0.35)}
+.rs-rot-btn.rotate-on{border-color:#FF1801!important;color:#FF1801!important;background:rgba(40,0,0,0.9)!important}
+.rs-cstatus{font-size:0.62rem;font-family:'DM Sans',sans-serif;color:rgba(255,200,200,0.75);font-weight:800;text-transform:uppercase;letter-spacing:0.12em;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.9)}
+.rs-snd-btn.muted{border-color:rgba(255,68,68,0.7)!important;color:#FF4444!important}
+.rs-snd-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center}
+.rs-fs-btn,.rs-rot-btn{padding:5px 9px!important;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+
+/* Display panels — piano black instrument cluster */
+.rs-displays{display:flex;padding:0 80px;position:relative;z-index:2;gap:0}
+.rs-dunit{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.rs-plbl{font-size:0.62rem;font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.4);transition:color 0.3s}
+.rs-dunit.active .rs-plbl{color:rgba(255,255,255,0.9);text-shadow:0 0 8px rgba(255,24,1,0.4)}
+.rs-disp{
+  width:100%;
+  background:linear-gradient(180deg,#0D0000 0%,#080000 50%,#050000 100%);
+  border-radius:6px;
+  border:1.5px solid rgba(200,0,0,0.55);
+  padding:9px 5px 7px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:
+    inset 0 3px 14px rgba(0,0,0,0.95),
+    inset 0 1px 0 rgba(255,100,100,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.9);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+/* Inner red bezel trim */
+.rs-disp::before{
+  content:'';position:absolute;inset:3px;
+  border:1px solid rgba(200,0,0,0.2);
+  border-radius:4px;pointer-events:none;
+}
+/* Instrument cluster sheen */
+.rs-disp::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,100,100,0.06) 0%,transparent 55%);
+  pointer-events:none;
+}
+.rs-dunit.active .rs-disp{
+  border-color:rgba(255,24,1,0.85);
+  box-shadow:
+    inset 0 3px 14px rgba(0,0,0,0.95),
+    inset 0 1px 0 rgba(255,100,100,0.1),
+    0 0 20px rgba(255,24,1,0.2),
+    0 0 50px rgba(200,0,0,0.08);
+}
+.rs-dunit.flagged .rs-disp{border-color:#FF3A3A!important;animation:flagPulse 0.5s ease infinite alternate}
+/* Digits — white on dark, red glow when active */
+.rs-time{
+  font-family:'Rajdhani',sans-serif;font-weight:700;
+  font-size:clamp(2.2rem,10.5vw,3rem);
+  letter-spacing:0.06em;color:#8B2020;
+  line-height:1;transition:color 0.3s,text-shadow 0.3s;
+  user-select:none;font-variant-numeric:tabular-nums;
+}
+.rs-dunit.active .rs-time{
+  color:#FFFFFF;
+  text-shadow:
+    0 0 8px rgba(255,24,1,0.7),
+    0 0 20px rgba(255,24,1,0.4),
+    0 0 40px rgba(255,24,1,0.15),
+    0 1px 2px rgba(0,0,0,0.9);
+}
+.rs-dunit.flagged .rs-time{color:#FF3A3A!important;text-shadow:0 0 12px rgba(255,58,58,0.7)!important}
+.rs-dunit.warning .rs-time{color:#FF8C00!important;text-shadow:0 0 10px rgba(255,140,0,0.6)!important;animation:warnBlink 1s ease infinite}
+.rs-moves{font-size:0.58rem;color:rgba(255,100,100,0.35);font-family:'DM Sans',sans-serif;transition:color 0.3s;font-weight:600}
+.rs-dunit.active .rs-moves{color:rgba(255,200,200,0.65)}
+.rs-inc{position:absolute;bottom:4px;right:6px;font-size:0.5rem;font-family:'DM Sans',sans-serif;color:rgba(255,100,100,0.45);font-weight:700;letter-spacing:0.04em}
+.rs-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(200,0,0,0.25),transparent);margin:4px 3px;flex-shrink:0}
+
+/* Bottom bar */
+.rs-bot{display:flex;justify-content:center;align-items:center;padding:4px 80px 14px;position:relative;z-index:2}
+
+/* Pause overlay */
+.rosso-clock .pause-overlay{background:rgba(15,0,0,0.92)!important}
+.rosso-clock .po-icon{color:#FF1801!important}
+.rosso-clock .po-text{color:#FF1801!important;text-shadow:0 0 10px rgba(255,24,1,0.5)!important}
+.rosso-clock .po-sub{color:rgba(255,100,100,0.5)!important}
+
+/* Fit hint */
+.fit-hint-rs{animation:fitHintRS 0.75s ease-in-out 5;}
 
 /* Ripple */
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.22);transform:scale(0);animation:rippleA 0.45s ease-out forwards;pointer-events:none;z-index:50}
@@ -1266,20 +2095,20 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
 
 /* ── Fit to Screen hint pulse — fires on game start ── */
 @keyframes fitHintHC{
-  0%,100%{border-color:rgba(196,135,58,0.55);box-shadow:none;color:rgba(220,175,80,0.95)}
-  40%{border-color:#E8C050;box-shadow:0 0 10px rgba(196,135,58,0.7),0 0 22px rgba(196,135,58,0.35);color:#F0D060}
+  0%,100%{border-color:rgba(196,135,58,0.55);box-shadow:none;color:rgba(220,175,80,0.95);transform:scale(1)}
+  40%{border-color:#E8C050;box-shadow:0 0 14px rgba(196,135,58,0.9),0 0 32px rgba(196,135,58,0.55),0 0 4px rgba(255,200,80,0.4);color:#F0D060;transform:scale(1.08)}
 }
 @keyframes fitHintPC{
-  0%,100%{border-color:rgba(180,180,180,0.45);box-shadow:none;color:rgba(210,210,210,0.95)}
-  40%{border-color:#D1D1D1;box-shadow:0 0 10px rgba(255,255,255,0.5),0 0 22px rgba(200,200,200,0.25);color:#fff}
+  0%,100%{border-color:rgba(180,180,180,0.45);box-shadow:none;color:rgba(210,210,210,0.95);transform:scale(1)}
+  40%{border-color:#D1D1D1;box-shadow:0 0 14px rgba(255,255,255,0.7),0 0 32px rgba(200,200,200,0.4),0 0 4px rgba(255,255,255,0.3);color:#fff;transform:scale(1.08)}
 }
 @keyframes fitHintCC{
-  0%,100%{border-color:rgba(0,200,255,0.5);box-shadow:none;color:rgba(0,230,255,0.92)}
-  40%{border-color:#00EFFF;box-shadow:0 0 10px rgba(0,239,255,0.7),0 0 22px rgba(0,200,255,0.35);color:#00EFFF}
+  0%,100%{border-color:rgba(0,200,255,0.5);box-shadow:none;color:rgba(0,230,255,0.92);transform:scale(1)}
+  40%{border-color:#00EFFF;box-shadow:0 0 14px rgba(0,239,255,0.9),0 0 32px rgba(0,200,255,0.5),0 0 4px rgba(0,255,255,0.3);color:#00EFFF;transform:scale(1.08)}
 }
-.fit-hint-hc{animation:fitHintHC 0.9s ease-in-out 3;}
-.fit-hint-pc{animation:fitHintPC 0.9s ease-in-out 3;}
-.fit-hint-cc{animation:fitHintCC 0.9s ease-in-out 3;}
+.fit-hint-hc{animation:fitHintHC 0.75s ease-in-out 5;}
+.fit-hint-pc{animation:fitHintPC 0.75s ease-in-out 5;}
+.fit-hint-cc{animation:fitHintCC 0.75s ease-in-out 5;}
 .fit-mode-active .s3-bar{
   opacity:0;pointer-events:none;
   transition:opacity 0.3s;
@@ -1522,8 +2351,8 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
   <p>Bronstein delay gives back only the time you actually used — your clock never grows beyond its starting value. Ideal for correspondence and long format games.</p>
   <h2>US Delay Chess Clock</h2>
   <p>US delay freezes the clock for a set number of seconds before it starts counting down. The standard format for USCF rated games and American tournaments.</p>
-  <h2>4 Beautiful Clock Themes</h2>
-  <p>Choose from Heritage walnut wood, Pro brushed steel, Chronos 2050 sci-fi, and ChessConnect minimalist brand edition.</p>
+  <h2>7 Beautiful Clock Themes</h2>
+  <p>Choose from Heritage walnut wood, Pro brushed steel, Chronos 2050 sci-fi, ChessConnect minimalist, Nova deep space skeleton, Bespoke Limited Edition leather, and Rosso Ferrari racing red.</p>
 </div>
 
 <!-- ═══════════════ SCREEN 1 — SELECT CLOCK ═══════════════ -->
@@ -1546,6 +2375,12 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     <div class="mob-title">Choose Your Clock</div>
     <div class="mob-sub">Select a style to continue</div>
   <div class="clock-cards">
+    <!-- ── Always Free divider ── -->
+    <div class="le-divider" style="margin-bottom:2px;">
+      <div class="le-divider-line" style="background:linear-gradient(90deg,transparent,rgba(30,115,232,0.4),transparent)"></div>
+      <div class="le-divider-text" style="color:#1E73E8;letter-spacing:0.15em;">The Collection</div>
+      <div class="le-divider-line" style="background:linear-gradient(90deg,transparent,rgba(30,115,232,0.4),transparent)"></div>
+    </div>
     <div class="clock-card card-heritage" id="card-heritage" onclick="selectClock('heritage',this)">
       <div class="card-inner">
         <div class="card-info">
@@ -1578,6 +2413,43 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
         <div class="card-info">
           <div class="card-name">ChessConnect</div>
           <div class="card-desc">Clean white body · Blue side panels · Navy digits · Minimalist · Brand Edition</div>
+        </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
+    <div class="clock-card card-nova" id="card-nova" onclick="selectClock('nova',this)">
+      <div class="card-inner">
+        <div class="card-info">
+          <div class="card-name">Nova</div>
+          <div class="card-desc">Deep space skeleton · Rocket white panels · Mission control digits · Nova Edition</div>
+        </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
+
+    <!-- ── Limited Edition divider ── -->
+    <div class="le-divider">
+      <div class="le-divider-line"></div>
+      <div class="le-divider-text">✦ Limited Edition — Free to Try ✦</div>
+      <div class="le-divider-line"></div>
+    </div>
+
+    <div class="clock-card card-bespoke" id="card-bespoke" onclick="selectClock('bespoke',this)">
+      <div class="card-inner">
+        <div class="card-info">
+          <div class="le-badge">✦ Limited Edition</div>
+          <div class="card-name">Bespoke</div>
+          <div class="card-desc">British Racing Green · Hand-stitched leather · Champagne gold accents</div>
+        </div>
+        <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
+    <div class="clock-card card-rosso" id="card-rosso" onclick="selectClock('rosso',this)">
+      <div class="card-inner">
+        <div class="card-info">
+          <div class="le-badge">✦ Limited Edition</div>
+          <div class="card-name">Rosso</div>
+          <div class="card-desc">Glossy Ferrari red · Black leather panels · White stitching · Racing Edition</div>
         </div>
         <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
@@ -2138,6 +3010,200 @@ body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#fff;display:flex
     </div><!-- /clock-3d -->
   </div>
 
+  <!-- ── NOVA CLOCK ── -->
+  <div class="clock-view nova-clock" id="nova-clock">
+    <div class="clock-3d">
+    <div class="clock-surface">
+    <div class="nv-body">
+      <div class="nv-stars">
+        <div class="nv-star"></div><div class="nv-star"></div>
+        <div class="nv-star"></div><div class="nv-star"></div>
+        <div class="nv-star"></div><div class="nv-star"></div>
+        <div class="nv-star"></div><div class="nv-star"></div>
+      </div>
+      <div class="pause-overlay" id="po-nova" onclick="togglePause()"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap anywhere to resume</div></div>
+      <div class="nv-side nv-side-l inactive-k" id="nvk1" onpointerdown="pressBtn(1,event,this)" role="button" aria-label="Player 1 clock button">
+        <div class="nv-side-lbl" id="nv-slbl1">P1</div>
+      </div>
+      <div class="nv-side nv-side-r inactive-k" id="nvk2" onpointerdown="pressBtn(2,event,this)" role="button" aria-label="Player 2 clock button">
+        <div class="nv-side-lbl" id="nv-slbl2">P2</div>
+      </div>
+      <div class="nv-top">
+        <div class="nv-center">
+          <div class="nv-brand">ChessConnect · Nova</div>
+          <div class="nv-ctrls">
+            <button class="nv-cbtn" id="nv-pause" onclick="togglePause()" aria-label="Pause game">
+              <svg class="pause-icon-svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px;display:block"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+            <button class="nv-cbtn nv-snd-btn" onclick="restartClock()" title="Restart" aria-label="Restart game">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="nv-cbtn nv-snd-btn" onclick="newGame()" title="Home" aria-label="Go to home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
+            <button class="nv-cbtn nv-snd-btn" id="nv-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+              <svg id="nv-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            </button>
+            <button class="nv-cbtn nv-fs-btn" id="nv-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
+              <svg id="nv-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit to Screen
+            </button>
+            <button class="nv-cbtn nv-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
+            </button>
+          </div>
+          <div class="nv-cstatus" id="nv-st">Press side panel to start</div>
+        </div>
+      </div>
+      <div class="nv-displays">
+        <div class="nv-dunit" id="nv-p1unit">
+          <div class="nv-plbl" id="nv-dlbl1">Player 1</div>
+          <div class="nv-disp">
+            <div class="nv-time" id="nv-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
+            <div class="nv-moves" id="nv-m1">0 moves</div>
+            <div class="nv-inc" id="nv-i1"></div>
+          </div>
+        </div>
+        <div class="nv-divider"></div>
+        <div class="nv-dunit" id="nv-p2unit">
+          <div class="nv-plbl" id="nv-dlbl2">Player 2</div>
+          <div class="nv-disp">
+            <div class="nv-time" id="nv-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
+            <div class="nv-moves" id="nv-m2">0 moves</div>
+            <div class="nv-inc" id="nv-i2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="nv-bot"></div>
+    </div>
+    </div><!-- /clock-surface -->
+    </div><!-- /clock-3d -->
+  </div>
+
+  <!-- ── BESPOKE CLOCK — Limited Edition ── -->
+  <div class="clock-view bespoke-clock" id="bespoke-clock">
+    <div class="clock-3d">
+    <div class="clock-surface">
+    <div class="bk-body">
+      <div class="pause-overlay" id="po-bespoke" onclick="togglePause()"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap anywhere to resume</div></div>
+      <div class="bk-side bk-side-l inactive-k" id="bkk1" onpointerdown="pressBtn(1,event,this)" role="button" aria-label="Player 1 clock button">
+        <div class="bk-side-lbl" id="bk-slbl1">Player 1</div>
+      </div>
+      <div class="bk-side bk-side-r inactive-k" id="bkk2" onpointerdown="pressBtn(2,event,this)" role="button" aria-label="Player 2 clock button">
+        <div class="bk-side-lbl" id="bk-slbl2">Player 2</div>
+      </div>
+      <div class="bk-top">
+        <div class="bk-center">
+          <div class="bk-brand">ChessConnect · Bespoke</div>
+          <div class="bk-brand-sub">Limited Edition</div>
+          <div class="bk-ctrls">
+            <button class="bk-cbtn" id="bk-pause" onclick="togglePause()" aria-label="Pause game">
+              <svg class="pause-icon-svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px;display:block"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+            <button class="bk-cbtn bk-snd-btn" onclick="restartClock()" title="Restart" aria-label="Restart game">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="bk-cbtn bk-snd-btn" onclick="newGame()" title="Home" aria-label="Go to home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
+            <button class="bk-cbtn bk-snd-btn" id="bk-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+              <svg id="bk-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            </button>
+            <button class="bk-cbtn bk-fs-btn" id="bk-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
+              <svg id="bk-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit to Screen
+            </button>
+            <button class="bk-cbtn bk-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
+            </button>
+          </div>
+          <div class="bk-cstatus" id="bk-st">Press side panel to start</div>
+        </div>
+      </div>
+      <div class="bk-displays">
+        <div class="bk-dunit" id="bk-p1unit">
+          <div class="bk-plbl" id="bk-dlbl1">Player 1</div>
+          <div class="bk-disp">
+            <div class="bk-time" id="bk-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
+            <div class="bk-moves" id="bk-m1">0 moves</div>
+            <div class="bk-inc" id="bk-i1"></div>
+          </div>
+        </div>
+        <div class="bk-divider"></div>
+        <div class="bk-dunit" id="bk-p2unit">
+          <div class="bk-plbl" id="bk-dlbl2">Player 2</div>
+          <div class="bk-disp">
+            <div class="bk-time" id="bk-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
+            <div class="bk-moves" id="bk-m2">0 moves</div>
+            <div class="bk-inc" id="bk-i2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="bk-bot"></div>
+    </div>
+    </div><!-- /clock-surface -->
+    </div><!-- /clock-3d -->
+  </div>
+
+  <!-- ── ROSSO CLOCK — Racing Edition ── -->
+  <div class="clock-view rosso-clock" id="rosso-clock">
+    <div class="clock-3d">
+    <div class="clock-surface">
+    <div class="rs-body">
+      <div class="pause-overlay" id="po-rosso" onclick="togglePause()"><div class="po-icon">⏸</div><div class="po-text">Paused</div><div class="po-sub">Tap anywhere to resume</div></div>
+      <div class="rs-side rs-side-l inactive-k" id="rsk1" onpointerdown="pressBtn(1,event,this)" role="button" aria-label="Player 1 clock button">
+        <div class="rs-side-lbl" id="rs-slbl1">Player 1</div>
+      </div>
+      <div class="rs-side rs-side-r inactive-k" id="rsk2" onpointerdown="pressBtn(2,event,this)" role="button" aria-label="Player 2 clock button">
+        <div class="rs-side-lbl" id="rs-slbl2">Player 2</div>
+      </div>
+      <div class="rs-top">
+        <div class="rs-center">
+          <div class="rs-brand">ChessConnect · <span>Rosso</span></div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.46rem;font-weight:700;color:rgba(255,255,255,0.85);letter-spacing:0.25em;text-transform:uppercase;text-align:center;margin-top:-2px;">Limited Edition</div>
+          <div class="rs-ctrls">
+            <button class="rs-cbtn" id="rs-pause" onclick="togglePause()" aria-label="Pause game">
+              <svg class="pause-icon-svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px;display:block"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+            <button class="rs-cbtn rs-snd-btn" onclick="restartClock()" title="Restart" aria-label="Restart game">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="rs-cbtn rs-snd-btn" onclick="newGame()" title="Home" aria-label="Go to home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
+            <button class="rs-cbtn rs-snd-btn" id="rs-snd" onclick="toggleSound()" title="Sound" aria-label="Toggle sound">
+              <svg id="rs-snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            </button>
+            <button class="rs-cbtn rs-fs-btn" id="rs-fs" onclick="toggleFullscreen()" title="Fit to Screen" aria-label="Toggle fullscreen">
+              <svg id="rs-fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>Fit to Screen
+            </button>
+            <button class="rs-cbtn rs-rot-btn" onclick="toggleRotate()" title="Rotate landscape" aria-label="Toggle landscape mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:block;flex-shrink:0"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>Rotate
+            </button>
+          </div>
+          <div class="rs-cstatus" id="rs-st">Press side panel to start</div>
+        </div>
+      </div>
+      <div class="rs-displays">
+        <div class="rs-dunit" id="rs-p1unit">
+          <div class="rs-plbl" id="rs-dlbl1">Player 1</div>
+          <div class="rs-disp">
+            <div class="rs-time" id="rs-t1" aria-live="polite" aria-label="Player 1 time">10:00</div>
+            <div class="rs-moves" id="rs-m1">0 moves</div>
+            <div class="rs-inc" id="rs-i1"></div>
+          </div>
+        </div>
+        <div class="rs-divider"></div>
+        <div class="rs-dunit" id="rs-p2unit">
+          <div class="rs-plbl" id="rs-dlbl2">Player 2</div>
+          <div class="rs-disp">
+            <div class="rs-time" id="rs-t2" aria-live="polite" aria-label="Player 2 time">10:00</div>
+            <div class="rs-moves" id="rs-m2">0 moves</div>
+            <div class="rs-inc" id="rs-i2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rs-bot"></div>
+    </div>
+    </div><!-- /clock-surface -->
+    </div><!-- /clock-3d -->
+  </div>
+
 </div><!-- /screen3 -->
 
 <!-- FULLSCREEN TOAST -->
@@ -2316,13 +3382,16 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* Prefix map */
-const PFX = {heritage:'hc', pro:'pc', chronos:'cc', chessconnect:'xc'};
+const PFX = {heritage:'hc', pro:'pc', chronos:'cc', chessconnect:'xc', nova:'nv', bespoke:'bk', rosso:'rs'};
 /* Button IDs per theme */
 const BTNS = {
   heritage:     ['hk1','hk2'],
   pro:          ['pl1','pl2'],
   chronos:      ['cl1','cl2'],
   chessconnect: ['xk1','xk2'],
+  nova:         ['nvk1','nvk2'],
+  bespoke:      ['bkk1','bkk2'],
+  rosso:        ['rsk1','rsk2'],
 };
 
 /* ════════════════════════════════
@@ -2353,23 +3422,23 @@ function toggleRotate() {
     if (canLock) {
       screen.orientation.lock('landscape').then(() => {
         isLandscape = true;
-        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
+        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn,.nv-rot-btn,.bk-rot-btn,.rs-rot-btn').forEach(b=>b.classList.add('rotate-on'));
       }).catch(() => {
         // Lock failed (iOS Safari, desktop) — fall back to guidance toast
         isLandscape = true;
-        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
+        document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn,.nv-rot-btn,.bk-rot-btn,.rs-rot-btn').forEach(b=>b.classList.add('rotate-on'));
         showRotateToast('Rotate your phone sideways for landscape ↻');
       });
     } else {
       // No lock API at all (iOS Safari) — show guidance
       isLandscape = true;
-      document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.add('rotate-on'));
+      document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn,.nv-rot-btn,.bk-rot-btn,.rs-rot-btn').forEach(b=>b.classList.add('rotate-on'));
       showRotateToast('Rotate your phone sideways for landscape ↻');
     }
   } else {
     // — Unlock / go back to portrait —
     isLandscape = false;
-    document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
+    document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn,.nv-rot-btn,.bk-rot-btn,.rs-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
     unlockOrientation();
     // On iOS where we only showed a toast, guide back
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
@@ -2426,6 +3495,9 @@ const LBLIDS = {
   pro:          { b:['pc-slbl1','pc-slbl2'], d:['pc-dlbl1','pc-dlbl2'] },
   chronos:      { b:['cc-slbl1','cc-slbl2'], d:['cc-dlbl1','cc-dlbl2'] },
   chessconnect: { b:['xc-slbl1','xc-slbl2'], d:['xc-dlbl1','xc-dlbl2'] },
+  nova:         { b:['nv-slbl1','nv-slbl2'], d:['nv-dlbl1','nv-dlbl2'] },
+  bespoke:      { b:['bk-slbl1','bk-slbl2'], d:['bk-dlbl1','bk-dlbl2'] },
+  rosso:        { b:['rs-slbl1','rs-slbl2'], d:['rs-dlbl1','rs-dlbl2'] },
 };
 function setPlayerLabels(whiteIdx) {
   if(!theme||!LBLIDS[theme]) return;
@@ -2550,7 +3622,7 @@ function launchClock() {
   // Reset landscape on new game
   isLandscape = false;
   document.getElementById('screen3').classList.remove('landscape');
-  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
+  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn,.nv-rot-btn,.bk-rot-btn,.rs-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
   dismissRotateToast();
   unlockOrientation();
   const selChip = document.querySelector('#screen2 .tc-chip.sel');
@@ -2585,12 +3657,12 @@ function resetGameState() {
   resetBtnUI();
   document.getElementById('goBanner').classList.remove('show');
   setPauseIcon(false);
-  ['heritage','pro','chronos','chessconnect'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
+  ['heritage','pro','chronos','chessconnect','nova','bespoke','rosso'].forEach(id=>{const po=document.getElementById('po-'+id);if(po)po.classList.remove('show');});
 }
 
 function initClockView() {
   // Show correct clock, hide others
-  ['heritage','pro','chronos','chessconnect'].forEach(t=>{
+  ['heritage','pro','chronos','chessconnect','nova','bespoke','rosso'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
   document.getElementById(theme+'-clock').classList.add('show');
@@ -2613,9 +3685,9 @@ function newGame() {
   // Reset landscape
   isLandscape=false;
   document.getElementById('screen3').classList.remove('landscape');
-  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
+  document.querySelectorAll('.hc-rot-btn,.pc-rot-btn,.cc-rot-btn,.xc-rot-btn,.nv-rot-btn,.bk-rot-btn,.rs-rot-btn').forEach(b=>b.classList.remove('rotate-on'));
   dismissRotateToast();
-  ['heritage','pro','chronos','chessconnect'].forEach(t=>{
+  ['heritage','pro','chronos','chessconnect','nova','bespoke','rosso'].forEach(t=>{
     document.getElementById(t+'-clock').classList.remove('show');
   });
   // Clear custom row highlight so Screen 2 looks clean on return
@@ -2708,7 +3780,7 @@ function resetBtnUI() {
   if(u1) u1.className=u1.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
   if(u2) u2.className=u2.className.replace(/\bactive\b|\bflagged\b|\bwarning\b|\bxc-active\b|\bxc-inactive\b|\bxc-low\b/g,'').trim();
   setBtnState(1,'inactive'); setBtnState(2,'inactive');
-  const statusHint = (theme==='heritage'||theme==='chessconnect') ? 'Press side panel to start' : 'Tap side panel to start';
+  const statusHint = (theme==='heritage'||theme==='chessconnect'||theme==='nova'||theme==='bespoke'||theme==='rosso') ? 'Press side panel to start' : 'Tap side panel to start';
   setClockStatus(statusHint);
   whiteIdx = -1;
   resetPlayerLabels();
@@ -2720,7 +3792,7 @@ function setBtnState(n, state) {
   const id=BTNS[theme][n-1];
   const el=document.getElementById(id); if(!el) return;
   el.className=el.className.replace(/\bactive-k\b|\binactive-k\b|\bactive-l\b|\binactive-l\b|\bxc-active\b/g,'').trim();
-  if(theme==='heritage'||theme==='chessconnect') el.classList.add(state==='active'?'active-k':'inactive-k');
+  if(theme==='heritage'||theme==='chessconnect'||theme==='nova'||theme==='bespoke'||theme==='rosso') el.classList.add(state==='active'?'active-k':'inactive-k');
   else el.classList.add(state==='active'?'active-l':'inactive-l');
 }
 
@@ -2757,7 +3829,7 @@ function updateActiveUI() {
 
 function triggerFitHint() {
   // Map theme to button id and animation class
-  const map = {heritage:['hc-fs','fit-hint-hc'], pro:['pc-fs','fit-hint-pc'], chronos:['cc-fs','fit-hint-cc'], chessconnect:['xc-fs','fit-hint-xc']};
+  const map = {heritage:['hc-fs','fit-hint-hc'], pro:['pc-fs','fit-hint-pc'], chronos:['cc-fs','fit-hint-cc'], chessconnect:['xc-fs','fit-hint-xc'], nova:['nv-fs','fit-hint-nv'], bespoke:['bk-fs','fit-hint-bk'], rosso:['rs-fs','fit-hint-rs']};
   if(!theme||!map[theme]) return;
   const [btnId, animClass] = map[theme];
   const btn = document.getElementById(btnId);
@@ -2913,13 +3985,13 @@ function togglePause() {
   if(over||active===-1) return;
   paused=!paused;
   // Sync clock-face pause buttons
-  ['hc-pause','pc-pause','cc-pause','xc-pause'].forEach(id=>{
+  ['hc-pause','pc-pause','cc-pause','xc-pause','nv-pause','bk-pause','rs-pause'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.classList.toggle('on',paused);
   });
   setPauseIcon(paused);
   // Show/hide pause overlay on active clock body
-  ['heritage','pro','chronos','chessconnect'].forEach(id=>{
+  ['heritage','pro','chronos','chessconnect','nova','bespoke','rosso'].forEach(id=>{
     const po=document.getElementById('po-'+id);
     if(po) po.classList.toggle('show', paused);
   });
@@ -3047,12 +4119,12 @@ function toggleSound() {
   const offPath = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
   const newPath = soundOn ? onPath : offPath;
   // Update all 4 in-clock sound icons
-  ['hc-snd-icon','pc-snd-icon','cc-snd-icon','xc-snd-icon'].forEach(id => {
+  ['hc-snd-icon','pc-snd-icon','cc-snd-icon','xc-snd-icon','nv-snd-icon','bk-snd-icon','rs-snd-icon'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = newPath;
   });
   // Toggle muted class on all 4 sound buttons
-  ['hc-snd','pc-snd','cc-snd','xc-snd'].forEach(id => {
+  ['hc-snd','pc-snd','cc-snd','xc-snd','nv-snd','bk-snd','rs-snd'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('muted', !soundOn);
   });
@@ -3184,12 +4256,12 @@ function updateFsBtn(active) {
   const expandPath = '<path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>';
   const compressPath = '<path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/>';
   const newPath = active ? compressPath : expandPath;
-  ['hc-fs-icon','pc-fs-icon','cc-fs-icon','xc-fs-icon'].forEach(id => {
+  ['hc-fs-icon','pc-fs-icon','cc-fs-icon','xc-fs-icon','nv-fs-icon','bk-fs-icon','rs-fs-icon'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = newPath;
   });
   // Highlight active state on in-clock buttons
-  ['hc-fs','pc-fs','cc-fs','xc-fs'].forEach(id => {
+  ['hc-fs','pc-fs','cc-fs','xc-fs','nv-fs','bk-fs','rs-fs'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('on', active);
   });
@@ -3223,7 +4295,7 @@ pickTC(600, 5, '10+5', document.getElementById('tc-10+5'));
     const toolUrl = 'https://chessconnecthq.github.io/chessconnect-web/chess-clock.html';
     const msg = encodeURIComponent(
       '\uD83D\uDD50 Professional chess clock for tournaments & practice!\n' +
-      '4 beautiful themes \u2014 Heritage, Pro, Chronos 2050 & ChessConnect\n' +
+      '7 beautiful themes \u2014 Heritage, Pro, Chronos, ChessConnect, Nova, Bespoke & Rosso\n' +
       'Fischer, Bronstein & US Delay modes. Works on mobile, no download needed.\n' +
       'Try it here: ' + toolUrl
     );
